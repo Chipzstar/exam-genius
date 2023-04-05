@@ -2,7 +2,14 @@
   "name": "exam-genius",
   "version": "0.0.0",
   "license": "MIT",
-  "scripts": {},
+  "scripts": {
+    "start": "nx serve",
+    "build": "nx build",
+    "test": "nx test",
+    "nx:serve:dashboard": "nx serve dashboard-app",
+    "nx:build:dashboard": "nx build dashboard-app",
+    "nx:serve:dashboard:prod": "nx serve dashboard-app --prod --hostname 0.0.0.0"
+  },
   "private": true,
   "dependencies": {
     "@clerk/nextjs": "^4.14.2",
