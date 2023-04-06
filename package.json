@@ -8,7 +8,9 @@
     "test": "nx test",
     "nx:serve:dashboard": "nx serve dashboard-app",
     "nx:build:dashboard": "nx build dashboard-app",
-    "nx:serve:dashboard:prod": "nx serve dashboard-app --prod --hostname 0.0.0.0"
+    "nx:serve:dashboard:prod": "nx serve dashboard-app --prod --hostname 0.0.0.0",
+    "prisma:generate": "npx prismerge -i prismerge.json && npx prisma generate",
+    "prisma:studio": "npx prisma studio"
   },
   "private": true,
   "dependencies": {
@@ -23,11 +25,23 @@
     "@mantine/next": "^6.0.6",
     "@mantine/notifications": "^6.0.6",
     "@prisma/client": "^4.12.0",
+    "@sentry/nextjs": "^7.47.0",
+    "@tabler/icons-react": "^2.14.0",
+    "@tanstack/react-query": "^4.28.0",
+    "@trpc/client": "^10.18.0",
+    "@trpc/next": "^10.18.0",
+    "@trpc/react-query": "^10.18.0",
+    "@trpc/server": "^10.18.0",
+    "bcryptjs": "^2.4.3",
+    "crypto-js": "^4.1.1",
     "dayjs": "^1.11.7",
+    "google-libphonenumber": "^3.2.32",
     "next": "13.1.1",
     "react": "18.2.0",
     "react-dom": "18.2.0",
-    "tslib": "^2.3.0"
+    "superjson": "^1.12.2",
+    "tslib": "^2.3.0",
+    "zod": "^3.21.4"
   },
   "devDependencies": {
     "@babel/preset-react": "^7.14.5",

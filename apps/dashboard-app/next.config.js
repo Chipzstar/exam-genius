@@ -2,6 +2,7 @@
 
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const { withNx } = require('@nrwl/next/plugins/with-nx');
+const { withSentryConfig } = require('@sentry/nextjs');
 
 /**
  * @type {import('@nrwl/next/plugins/with-nx').WithNxOptions}
@@ -12,6 +13,10 @@ const nextConfig = {
     // See: https://github.com/gregberge/svgr
     svgr: false,
   },
+  sentry: {
+    hideSourceMaps: true,
+  },
 };
 
-module.exports = withNx(nextConfig);
+// @ts-ignore
+module.exports = withSentryConfig(withNx(nextConfig));
