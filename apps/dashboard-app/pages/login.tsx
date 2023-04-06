@@ -69,13 +69,8 @@ const Login = () => {
 		}
 	}, [router.query]);
 
-	if (!isLoaded) {
-		// handle loading state
-		return null;
-	}
-
 	return (
-		<div className='h-screen w-full overflow-x-hidden bg-white p-5'>
+		<div className='h-screen w-full overflow-x-hidden bg-white p-5 test4'>
 			<form
 				data-cy='login-form'
 				onSubmit={form.onSubmit(handleSignIn)}

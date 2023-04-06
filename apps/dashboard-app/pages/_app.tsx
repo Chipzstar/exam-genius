@@ -39,11 +39,7 @@ function CustomApp({ Component, pageProps }: AppProps) {
 						colorScheme: 'light'
 					}}
 				>
-					<Notifications>
-					<main className='app'>
-						<Component {...pageProps} />
-					</main>
-					</Notifications>
+					<Component {...pageProps} />
 				</MantineProvider>
 			</ClerkProvider>
 		</>
