@@ -39,7 +39,7 @@
     "crypto-js": "^4.1.1",
     "dayjs": "^1.11.7",
     "google-libphonenumber": "^3.2.32",
-    "next": "13.2.0",
+    "next": "13.2.4",
     "react": "18.2.0",
     "react-dom": "18.2.0",
     "superjson": "^1.12.2",
