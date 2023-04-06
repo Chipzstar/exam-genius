@@ -10,6 +10,7 @@ import { z } from 'zod';
 import { trpc } from '../utils/trpc';
 import { useSignUp } from '@clerk/nextjs';
 import VerificationCode from '../modals/VerificationCode';
+import Link from 'next/link';
 
 export function Signup() {
 	const theme = useMantineTheme();
@@ -121,9 +122,11 @@ export function Signup() {
 					</header>
 					<Group spacing='xl'>
 						<Text>Have an account?</Text>
-						<Button px='xl' variant='outline' color='dark' onClick={() => router.push(PATHS.LOGIN)}>
-							Sign in
-						</Button>
+						<Link href={PATHS.LOGIN}>
+							<Button px='xl' variant='outline' color='dark'>
+								Sign in
+							</Button>
+						</Link>
 					</Group>
 				</Group>
 				<Stack className='mx-auto my-auto w-1/3' spacing={30}>
