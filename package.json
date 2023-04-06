@@ -8,6 +8,7 @@
     "test": "nx test",
     "nx:serve:dashboard": "nx serve dashboard-app",
     "nx:build:dashboard": "nx build dashboard-app",
+    "nx:serve:dashboard:prod:local": "nx serve dashboard-app --prod",
     "nx:serve:dashboard:prod": "nx serve dashboard-app --prod --hostname 0.0.0.0",
     "prisma:generate": "npx prismerge -i prismerge.json && npx prisma generate",
     "prisma:studio": "npx prisma studio"
