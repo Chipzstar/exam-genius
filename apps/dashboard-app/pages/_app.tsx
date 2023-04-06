@@ -1,10 +1,52 @@
 import { AppProps } from 'next/app';
 import Head from 'next/head';
-import './styles.css';
+import '../styles/globals.css';
 import { createEmotionCache, MantineProvider } from '@mantine/core';
 import { ClerkProvider } from '@clerk/nextjs';
 import { trpc } from '../utils/trpc';
 import { Notifications } from '@mantine/notifications';
+import localFont from '@next/font/local';
+import Layout from '../layout/Layout';
+
+const poppins = localFont({
+	src: [
+		{
+			path: '../public/static/fonts/Poppins/Poppins-Thin.ttf',
+			weight: '300',
+			style: 'normal'
+		},
+		{
+			path: '../public/static/fonts/Poppins/Poppins-Regular.ttf',
+			weight: '400',
+			style: 'normal'
+		},
+		{
+			path: '../public/static/fonts/Poppins/Poppins-Italic.ttf',
+			weight: '400',
+			style: 'italic'
+		},
+		{
+			path: '../public/static/fonts/Poppins/Poppins-Medium.ttf',
+			weight: '500',
+			style: 'normal'
+		},
+		{
+			path: '../public/static/fonts/Poppins/Poppins-SemiBold.ttf',
+			weight: '600',
+			style: 'normal'
+		},
+		{
+			path: '../public/static/fonts/Poppins/Poppins-Bold.ttf',
+			weight: '700'
+		},
+		{
+			path: '../public/static/fonts/Poppins/Poppins-BoldItalic.ttf',
+			weight: '700',
+			style: 'italic'
+		}
+	],
+	variable: '--font-poppins'
+});
 
 const appendCache = createEmotionCache({ key: 'mantine', prepend: false });
 
@@ -36,10 +78,30 @@ function CustomApp({ Component, pageProps }: AppProps) {
 							]
 						},
 						primaryColor: 'brand',
-						colorScheme: 'light'
+						primaryShade: 5,
+						colorScheme: 'light',
+						fontFamily: 'Poppins',
+						fontFamilyMonospace: 'Monaco, Courier, monospace',
+						headings: { fontFamily: 'Poppins' },
+						components: {
+							Input: {
+								styles: (theme) => ({
+									input: {
+										borderColor: "#2742F5",
+										borderWidth: '1px',
+										borderStyle: 'solid',
+									}
+								})
+							}
+						}
 					}}
 				>
-					<Component {...pageProps} />
+					<main className={`${poppins.variable}`}>
+						<Notifications />
+						<Layout>
+							<Component {...pageProps} />
+						</Layout>
+					</main>
 				</MantineProvider>
 			</ClerkProvider>
 		</>

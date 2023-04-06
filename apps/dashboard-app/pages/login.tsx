@@ -3,7 +3,7 @@ import { notifyError } from '../utils/functions';
 import { useRouter } from 'next/router';
 import { useForm } from '@mantine/form';
 import { IconX } from '@tabler/icons-react';
-import { Anchor, Group, PasswordInput, Stack, TextInput, Text, Title, Button } from '@mantine/core';
+import { Anchor, Button, Group, PasswordInput, Stack, Text, TextInput, Title } from '@mantine/core';
 import Link from 'next/link';
 import { PATHS } from '../utils/constants';
 import Image from 'next/image';
@@ -70,7 +70,7 @@ const Login = () => {
 	}, [router.query]);
 
 	return (
-		<div className='h-screen w-full overflow-x-hidden bg-white p-5 test4'>
+		<div className='h-screen w-full overflow-x-hidden bg-white p-5'>
 			<form
 				data-cy='login-form'
 				onSubmit={form.onSubmit(handleSignIn)}
@@ -92,19 +92,22 @@ const Login = () => {
 					</Group>
 				</Group>
 				<Stack className='mx-auto my-auto w-1/3' spacing='lg'>
-					<header className='flex flex-col space-y-1'>
-						<Title order={2}>Welcome back</Title>
-						<span>Sign in to your account.</span>
+					<header className='flex flex-col'>
+						<Title align='center' color='brand' order={1} size={40} pb={16}>
+							Login
+						</Title>
 					</header>
 					<TextInput
 						label='Email'
 						{...form.getInputProps('email', { withError: true })}
 						data-cy={'login-email'}
+						size='lg'
 					/>
 					<PasswordInput
 						label='Password'
 						{...form.getInputProps('password', { withError: true })}
 						data-cy={'login-password'}
+						size='lg'
 					/>
 					<Link href={PATHS.FORGOT_PASSWORD} passHref>
 						<Anchor size='sm' color='brand'>
@@ -112,7 +115,7 @@ const Login = () => {
 						</Anchor>
 					</Link>
 					<Group py='md'>
-						<Button type='submit' size='md' loading={loading} fullWidth>
+						<Button type='submit' size='lg' loading={loading} fullWidth>
 							<Text weight='normal'>Sign in</Text>
 						</Button>
 					</Group>

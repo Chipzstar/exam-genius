@@ -9,7 +9,7 @@ const Layout = ({ children }) => {
 	const isLoggedIn = useMemo(() => !AUTH_ROUTES.includes(router.pathname), [router.pathname]);
 
 	return (
-		<div className='relative flex min-h-screen font-aeonik'>
+		<div className="font-sans relative flex min-h-screen">
 			<AppShell padding={0} navbar={isLoggedIn ? <Sidebar /> : undefined}>
 				{children}
 			</AppShell>
