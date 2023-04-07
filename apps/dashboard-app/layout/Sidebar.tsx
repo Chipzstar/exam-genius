@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-import { createStyles, Group, Navbar, getStylesRef } from '@mantine/core';
-import { IconChartLine, IconLogout, IconSettings } from '@tabler/icons-react';
+import { createStyles, getStylesRef, Group, Navbar } from '@mantine/core';
+import { IconLicense, IconLogout, IconUser } from '@tabler/icons-react';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
 import { DEFAULT_HEADER_HEIGHT, PATHS } from '../utils/constants';
@@ -28,10 +28,9 @@ const useStyles = createStyles((theme, _params) => {
 			...theme.fn.focusStyles(),
 			display: 'flex',
 			alignItems: 'center',
-			textDecoration: 'none',
-			fontSize: theme.fontSizes.sm,
+			fontSize: theme.fontSizes.lg,
 			color: theme.colorScheme === 'dark' ? theme.colors.dark[1] : theme.colors.gray[7],
-			padding: `${theme.spacing.xs}px ${theme.spacing.sm}px`,
+			padding: `10px 20px`,
 			borderRadius: theme.radius.sm,
 			fontWeight: 500,
 
@@ -69,80 +68,67 @@ const useStyles = createStyles((theme, _params) => {
 		},
 		footer: {
 			borderTop: `1px solid ${theme.colorScheme === 'dark' ? theme.colors.dark[4] : theme.colors.gray[3]}`,
-			paddingTop: theme.spacing.md
+			paddingTop: theme.spacing.lg
 		}
 	};
 });
 
 const Sidebar = () => {
-  const router = useRouter();
-  const { signOut } = useClerk();
-  const { session } = useSession();
+	const router = useRouter();
+	const { signOut } = useClerk();
+	const { session } = useSession();
 
-  const tabs = {
-    general: [
-      {
-        link: PATHS.HOME,
-        label: 'Dashboard',
-        icon: IconChartLine,
-        isActive: router.pathname === PATHS.HOME,
-        disabled: false
-      },
-      {
-        link: PATHS.PAPERS,
-        label: 'Papers',
-        icon: IconChartLine,
-        isActive: router.pathname === PATHS.PAPERS,
-        disabled: false
-      }
-    ]
-  };
-  const { classes, cx } = useStyles();
-  const [section, setSection] = useState<'account' | 'general'>('general');
+	const tabs = {
+		general: [
+			{
+				link: PATHS.HOME,
+				label: 'Papers',
+				icon: IconLicense,
+				isActive: router.pathname === PATHS.HOME,
+				disabled: false
+			},
+			{
+				link: PATHS.PROFILE,
+				label: 'Profile',
+				icon: IconUser,
+				isActive: router.pathname === PATHS.PROFILE,
+				disabled: false
+			}
+		]
+	};
+	const { classes, cx } = useStyles();
+	const [section, setSection] = useState<'account' | 'general'>('general');
 
-  const links = tabs[section].map((item, index) => (
-    <div
-      role='button'
-      className={cx(classes.link, {
-        [classes.linkDisabled]: item.disabled,
-        [classes.linkActive]: item.isActive
-      })}
-      key={index}
-      onClick={() => !item.disabled && router.push(item.link)}
-    >
-      <item.icon className={classes.linkIcon} stroke={1.5} />
-      <span>{item.label}</span>
-    </div>
-  ));
+	const links = tabs[section].map((item, index) => (
+		<div
+			role='button'
+			className={cx(classes.link, {
+				[classes.linkDisabled]: item.disabled,
+				[classes.linkActive]: item.isActive
+			})}
+			key={index}
+			onClick={() => !item.disabled && router.push(item.link)}
+		>
+			<item.icon className={classes.linkIcon} stroke={1.5} />
+			<span>{item.label}</span>
+		</div>
+	));
 
-  return (
-    <Navbar width={{ base: 250 }} p='xs'>
-      <Navbar.Section className={classes.header}>
-        <Group spacing='xs' role='button' onClick={() => router.push(PATHS.HOME)}>
-          <Image src='/static/images/logo-with-text.svg' width={100} height={35}  alt=""/>
-        </Group>
-      </Navbar.Section>
-      <Navbar.Section grow>{links}</Navbar.Section>
-      <Navbar.Section className={classes.footer}>
-        <div
-          role='button'
-          className={cx(classes.link, { [classes.linkActive]: router.pathname === PATHS.SETTINGS })}
-          onClick={() => router.push(PATHS.SETTINGS)}
-        >
-          <IconSettings className={classes.linkIcon} stroke={1.5} />
-          <span>Settings</span>
-        </div>
-        <div
-          data-cy='logout-button'
-          role='button'
-          className={classes.link}
-          onClick={() => signOut()}
-        >
-          <IconLogout className={classes.linkIcon} stroke={1.5} /> <span>Logout</span>
-        </div>
-      </Navbar.Section>
-    </Navbar>
-  );
+	return (
+		<Navbar width={{ base: 250 }} p='xs'>
+			<Navbar.Section className={classes.header}>
+				<Group spacing='xs' role='button' onClick={() => router.push(PATHS.HOME)}>
+					<Image src='/static/images/logo.svg' width={50} height={35} alt='' />
+				</Group>
+			</Navbar.Section>
+			<Navbar.Section grow mt={100} className="flex flex-col">
+				{links}
+				<div data-cy='logout-button' role='button' className={classes.link} onClick={() => signOut()}>
+					<IconLogout className={classes.linkIcon} stroke={1.5} /> <span>Logout</span>
+				</div>
+			</Navbar.Section>
+		</Navbar>
+	);
 };
 
 export default Sidebar;

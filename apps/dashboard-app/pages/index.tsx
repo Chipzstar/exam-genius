@@ -1,15 +1,41 @@
-import { Button } from '@mantine/core';
 import Page from '../layout/Page';
-import { useClerk } from '@clerk/nextjs';
+import { Button, Card, Group, Title, Text } from '@mantine/core';
+import Image from 'next/image';
 
 export function Home() {
-	const { signOut } = useClerk();
 	return (
-		<Page.Container>
+		<Page.Container
+			data_cy='homepage'
+			classNames='flex flex-col'
+			header={
+				<Page.Header extraClassNames='mb-3 justify-center'>
+					<span className='font-medium text-primary text-center text-4xl'>ExamGenius</span>
+				</Page.Header>
+			}
+		>
 			<Page.Body>
-				<div className="flex h-full justify-center items-center">
-					<Button size='xl' onClick={() => signOut()}>
-						Sign Out
+				<Title order={2} weight={600} mb='lg'>
+					Courses 📚
+				</Title>
+				<Card shadow='sm' radius='xs'>
+					<Group grow align='center' p='xl' position='apart'>
+						<Group>
+							<Image src='/static/images/maths-icon.svg' width={100} height={100} alt='maths-icon' />
+							<div className='flex flex-col space-y-4'>
+								<Title order={2}>Edexcel Mathematics</Title>
+								<Title order={3}>Year 13</Title>
+							</div>
+						</Group>
+						<div>
+							<Button size="lg">
+								<Text>{'Continue ->'}</Text>
+							</Button>
+						</div>
+					</Group>
+				</Card>
+				<div className="flex justify-end p-10">
+					<Button size="lg">
+						<Text>{'Add Course'}</Text>
 					</Button>
 				</div>
 			</Page.Body>

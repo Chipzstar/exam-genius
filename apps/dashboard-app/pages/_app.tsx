@@ -1,12 +1,13 @@
 import { AppProps } from 'next/app';
 import Head from 'next/head';
 import '../styles/globals.css';
-import { createEmotionCache, MantineProvider } from '@mantine/core';
+import { createEmotionCache, Global, MantineProvider } from '@mantine/core';
 import { ClerkProvider } from '@clerk/nextjs';
 import { trpc } from '../utils/trpc';
 import { Notifications } from '@mantine/notifications';
 import localFont from '@next/font/local';
 import Layout from '../layout/Layout';
+import React from 'react';
 
 const poppins = localFont({
 	src: [
@@ -96,7 +97,7 @@ function CustomApp({ Component, pageProps }: AppProps) {
 						}
 					}}
 				>
-					{/*<Global
+					<Global
 						styles={[
 							{
 								'@font-face': {
@@ -105,7 +106,7 @@ function CustomApp({ Component, pageProps }: AppProps) {
 									fontWeight: "normal"								}
 							}
 						]}
-					/>*/}
+					/>
 					<main className={`${poppins.variable} font-sans`}>
 						<Notifications />
 						<Layout>

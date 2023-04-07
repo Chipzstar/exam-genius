@@ -34,9 +34,11 @@ const Login = () => {
 					identifier: values.email,
 					password: values.password
 				});
+				console.log('-----------------------------------------------');
+				console.log(result);
+				console.log('-----------------------------------------------');
 				if (result.status === 'complete' && !!result.createdSessionId) {
 					console.log('Login Success');
-					console.log(result);
 					// @ts-ignore
 					await setActive({ session: result.createdSessionId });
 					await router.replace('/');
@@ -59,7 +61,7 @@ const Login = () => {
 				console.log(error);
 			}
 		},
-		[router]
+		[router, signIn, setActive]
 	);
 
 	useEffect(() => {

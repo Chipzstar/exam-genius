@@ -1,10 +1,10 @@
 import { PhoneNumberUtil } from 'google-libphonenumber';
 
 export const requirements = [
-  { re: /[0-9]/, label: 'Includes number' },
-  { re: /[a-z]/, label: 'Includes lowercase letter' },
-  { re: /[A-Z]/, label: 'Includes uppercase letter' },
-  { re: /[$&+,:;=?@#|'<>.^*()%!-]/, label: 'Includes special symbol' }
+	{ re: /[0-9]/, label: 'Includes number' },
+	{ re: /[a-z]/, label: 'Includes lowercase letter' },
+	{ re: /[A-Z]/, label: 'Includes uppercase letter' },
+	{ re: /[$&+,:;=?@#|'<>.^*()%!-]/, label: 'Includes special symbol' }
 ];
 
 export const phoneUtil = PhoneNumberUtil.getInstance();
@@ -31,7 +31,8 @@ export const PATHS = {
   PAPERS: '/papers',
   FORGOT_PASSWORD: 'forgot-password',
   SETTINGS: '/settings',
-  ONBOARDING: '/onboarding'
+  ONBOARDING: '/onboarding',
+  PROFILE: '/profile',
 };
 
 export const AUTH_ROUTES = [
