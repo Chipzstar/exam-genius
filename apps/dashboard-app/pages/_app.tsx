@@ -96,7 +96,7 @@ function CustomApp({ Component, pageProps }: AppProps) {
 						}
 					}}
 				>
-					<main className={`${poppins.variable}`}>
+					<main className={`${poppins.variable} font-sans`}>
 						<Notifications />
 						<Layout>
 							<Component {...pageProps} />
