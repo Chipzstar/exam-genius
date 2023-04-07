@@ -81,9 +81,9 @@ function CustomApp({ Component, pageProps }: AppProps) {
 						primaryColor: 'brand',
 						primaryShade: 5,
 						colorScheme: 'light',
-						fontFamily: 'Poppins',
+						fontFamily: poppins.style.fontFamily,
 						fontFamilyMonospace: 'Monaco, Courier, monospace',
-						headings: { fontFamily: 'Poppins' },
+						headings: { fontFamily: poppins.style.fontFamily },
 						components: {
 							Input: {
 								styles: theme => ({
