@@ -134,4 +134,5 @@ function CustomApp({ Component, pageProps }: AppProps) {
 	);
 }
 
+export { reportWebVitals } from 'next-axiom';
 export default trpc.withTRPC(CustomApp);
