@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { createStyles, getStylesRef, Group, Navbar } from '@mantine/core';
+import { createStyles, getStylesRef, Group, Navbar, Text } from '@mantine/core';
 import { IconLicense, IconLogout, IconUser } from '@tabler/icons-react';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
@@ -9,8 +9,7 @@ import { useClerk, useSession } from '@clerk/nextjs';
 const useStyles = createStyles((theme, _params) => {
 	return {
 		header: {
-			paddingRight: theme.spacing.md,
-			paddingLeft: theme.spacing.sm,
+			paddingLeft: theme.spacing.xs,
 			paddingTop: theme.spacing.xs,
 			color: theme.colorScheme === 'dark' ? theme.white : theme.black,
 			minHeight: DEFAULT_HEADER_HEIGHT - 10
@@ -50,7 +49,6 @@ const useStyles = createStyles((theme, _params) => {
 		},
 		linkActive: {
 			'&, &:hover': {
-				backgroundColor: theme.fn.variant({ variant: 'light', color: theme.primaryColor }).background,
 				color: theme.fn.variant({ variant: 'light', color: theme.primaryColor }).color,
 				[`& .${getStylesRef('icon')}`]: {
 					color: theme.fn.variant({ variant: 'light', color: theme.primaryColor }).color
@@ -117,8 +115,11 @@ const Sidebar = () => {
 	return (
 		<Navbar width={{ base: 250 }} p='xs'>
 			<Navbar.Section className={classes.header}>
-				<Group spacing='xs' role='button' onClick={() => router.push(PATHS.HOME)}>
-					<Image src='/static/images/logo.svg' width={50} height={35} alt='' />
+				<Group spacing='sm' role='button' onClick={() => router.push(PATHS.HOME)}>
+					<Image src='/static/images/logo-blue.svg' width={40} height={35} alt='' />
+                    <Text size={24} weight='600' color="brand">
+                        ExamGenius
+                    </Text>
 				</Group>
 			</Navbar.Section>
 			<Navbar.Section grow mt={100} className="flex flex-col">
