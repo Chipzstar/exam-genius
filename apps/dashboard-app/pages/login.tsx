@@ -7,7 +7,7 @@ import { Anchor, Button, Group, PasswordInput, Stack, Text, TextInput, Title } f
 import Link from 'next/link';
 import { PATHS } from '../utils/constants';
 import Image from 'next/image';
-import { useSignIn } from '@clerk/nextjs';
+import { SignIn, useSignIn } from '@clerk/nextjs';
 import { LoginUser } from '../utils/types';
 
 const Login = () => {
@@ -84,44 +84,10 @@ const Login = () => {
 						<Image src='/static/images/logo.svg' width={30} height={30} alt='logo' />
 						<span className='text-2xl font-medium'>Exam Genius</span>
 					</header>
-					<Group spacing='xl'>
-						<Text>{"Don't have an account?"}</Text>
-						<Link href={PATHS.SIGNUP}>
-							<span role='button' className='text-primary'>
-								Sign up
-							</span>
-						</Link>
-					</Group>
 				</Group>
-				<Stack className='mx-auto my-auto w-1/3' spacing='lg'>
-					<header className='flex flex-col'>
-						<Title align='center' color='brand' order={1} size={40} pb={16}>
-							Login
-						</Title>
-					</header>
-					<TextInput
-						label='Email'
-						{...form.getInputProps('email', { withError: true })}
-						data-cy={'login-email'}
-						size='lg'
-					/>
-					<PasswordInput
-						label='Password'
-						{...form.getInputProps('password', { withError: true })}
-						data-cy={'login-password'}
-						size='lg'
-					/>
-					<Link href={PATHS.FORGOT_PASSWORD} passHref>
-						<Anchor size='sm' color='brand'>
-							Forgot password?
-						</Anchor>
-					</Link>
-					<Group py='md'>
-						<Button type='submit' size='lg' loading={loading} fullWidth>
-							<Text weight='normal'>Sign in</Text>
-						</Button>
-					</Group>
-				</Stack>
+				<div className='flex h-full justify-center items-center'>
+					<SignIn path='/login' routing='hash' signUpUrl='/signup'/>
+				</div>
 			</form>
 		</div>
 	);

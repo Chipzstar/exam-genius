@@ -8,6 +8,7 @@ import { Notifications } from '@mantine/notifications';
 import localFont from '@next/font/local';
 import Layout from '../layout/Layout';
 import React from 'react';
+import Favicon from '../components/Favicon';
 
 const poppins = localFont({
 	src: [
@@ -55,7 +56,21 @@ function CustomApp({ Component, pageProps }: AppProps) {
 	return (
 		<>
 			<Head>
+                <Favicon />
 				<title>Exam Genius</title>
+                <meta
+                    name='description'
+                    content=''
+                />
+                <meta
+                    name='keywords'
+                    content=''
+                />
+                <meta httpEquiv='content-language' content='en-GB' />
+                <meta
+                    name='viewport'
+                    content='minimum-scale=1, initial-scale=1, width=device-width'
+                />
 			</Head>
 			<ClerkProvider {...pageProps}>
 				<MantineProvider

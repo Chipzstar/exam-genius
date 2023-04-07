@@ -3,10 +3,7 @@
   "version": "0.0.0",
   "license": "MIT",
   "scripts": {
-    "start": "nx serve",
-    "build": "nx build",
-    "test": "nx test",
-    "nx:serve:dashboard": "nx serve dashboard-app",
+    "nx:serve:dashboard": "doppler run -c dev -p exam-genius -- nx serve dashboard-app",
     "nx:build:dashboard": "nx build dashboard-app",
     "nx:build:dashboard:prod": "nx build dashboard-app --prod --skip-nx-cache",
     "nx:serve:dashboard:prod:local": "nx serve dashboard-app --prod",
