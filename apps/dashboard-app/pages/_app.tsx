@@ -1,7 +1,7 @@
 import { AppProps } from 'next/app';
 import Head from 'next/head';
 import '../styles/globals.css';
-import { createEmotionCache, MantineProvider } from '@mantine/core';
+import { createEmotionCache, Global, MantineProvider } from '@mantine/core';
 import { ClerkProvider } from '@clerk/nextjs';
 import { trpc } from '../utils/trpc';
 import { Notifications } from '@mantine/notifications';
@@ -96,6 +96,16 @@ function CustomApp({ Component, pageProps }: AppProps) {
 						}
 					}}
 				>
+					<Global
+						styles={[
+							{
+								'@font-face': {
+									'font-family': 'Poppins',
+									src: `url("/static/fonts/Poppins/Poppins-Regular.ttf") format("truetype")`
+								}
+							}
+						]}
+					/>
 					<main className={`${poppins.variable} font-sans`}>
 						<Notifications />
 						<Layout>
