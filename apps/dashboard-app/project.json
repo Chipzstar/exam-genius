@@ -10,7 +10,7 @@
       "defaultConfiguration": "production",
       "options": {
         "root": "apps/dashboard-app",
-        "outputPath": "dist/apps/dashboard-app"
+        "outputPath": "build/apps/dashboard-app"
       },
       "configurations": {
         "development": {

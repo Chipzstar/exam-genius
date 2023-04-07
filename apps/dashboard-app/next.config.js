@@ -13,9 +13,7 @@ const nextConfig = {
     // See: https://github.com/gregberge/svgr
     svgr: false,
   },
-  sentry: {
-    hideSourceMaps: true,
-  },
+  distDir: "build"
 };
 
 // @ts-ignore
