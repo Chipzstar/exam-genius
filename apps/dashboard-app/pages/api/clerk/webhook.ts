@@ -4,6 +4,7 @@ import { cors, runMiddleware } from '../cors';
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
 	// Run the middleware
 	await runMiddleware(req, res, cors)
+	console.log(req.method)
 	if (req.method === 'POST') {
 		try {
 			// Validate the incoming data and return 400 if it's not what is expected
