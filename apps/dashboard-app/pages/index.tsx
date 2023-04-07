@@ -28,7 +28,7 @@ export function Home() {
 						</Group>
 						<div>
 							<Button size="lg">
-								<Text>{'Continue ->'}</Text>
+								<Text>{'Continue →'}</Text>
 							</Button>
 						</div>
 					</Group>
