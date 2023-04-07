@@ -5,10 +5,10 @@ import { createEmotionCache, MantineProvider } from '@mantine/core';
 import { ClerkProvider } from '@clerk/nextjs';
 import { trpc } from '../utils/trpc';
 import { Notifications } from '@mantine/notifications';
-import localFont from '@next/font/local';
 import Layout from '../layout/Layout';
+import { Poppins } from '@next/font/google';
 
-const poppins = localFont({
+/*const poppins = localFont({
 	src: [
 		{
 			path: '../public/static/fonts/Poppins/Poppins-Thin.ttf',
@@ -46,7 +46,13 @@ const poppins = localFont({
 		}
 	],
 	variable: '--font-poppins'
-});
+});*/
+
+const poppins = Poppins({
+	weight: ['400', '700'],
+	style: ['normal', 'italic'],
+	subsets:['latin']
+})
 
 const appendCache = createEmotionCache({ key: 'mantine', prepend: false });
 
@@ -101,7 +107,7 @@ function CustomApp({ Component, pageProps }: AppProps) {
 						}
 					}}
 				>
-					<main className={`${poppins.variable}`}>
+					<main className={`${poppins.className}`}>
 						<Notifications />
 						<Layout>
 							<Component {...pageProps} />
