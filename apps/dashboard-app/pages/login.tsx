@@ -86,7 +86,7 @@ const Login = () => {
 					</header>
 				</Group>
 				<div className='flex h-full justify-center items-center'>
-					<SignIn path='/login' routing='hash' signUpUrl='/signup'/>
+					<SignIn path='/login' routing='hash' signUpUrl='/signup' />
 				</div>
 			</form>
 		</div>
