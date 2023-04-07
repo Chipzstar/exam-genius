@@ -3,7 +3,7 @@ import { cors, runMiddleware } from '../cors';
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
 	// Run the middleware
-	await runMiddleware(req, res, cors)
+	// await runMiddleware(req, res, cors)
 	console.log(req.method)
 	if (req.method === 'POST') {
 		try {
@@ -14,7 +14,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 			// Catch and log errors - return a 500 with a message
 			console.error(error);
 			// Sentry.captureException(error);
-			res.status(500).send({ message: 'Server error!' });
+			return res.status(500).send({ message: 'Server error!' });
 		}
 	} else {
 		return res.status(405).send({ message: 'Method not allowed.' });
