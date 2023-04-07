@@ -54,11 +54,6 @@ function CustomApp({ Component, pageProps }: AppProps) {
 	return (
 		<>
 			<Head>
-				<style jsx global>{`
-					html {
-						font-family: ${poppins.style.fontFamily};
-					}
-				`}</style>
 				<title>Exam Genius</title>
 			</Head>
 			<ClerkProvider {...pageProps}>
