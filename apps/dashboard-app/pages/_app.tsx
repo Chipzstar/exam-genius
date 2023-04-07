@@ -54,6 +54,11 @@ function CustomApp({ Component, pageProps }: AppProps) {
 	return (
 		<>
 			<Head>
+				<style jsx global>{`
+					html {
+						font-family: ${poppins.style.fontFamily};
+					}
+				`}</style>
 				<title>Exam Genius</title>
 			</Head>
 			<ClerkProvider {...pageProps}>
@@ -85,11 +90,11 @@ function CustomApp({ Component, pageProps }: AppProps) {
 						headings: { fontFamily: 'Poppins' },
 						components: {
 							Input: {
-								styles: (theme) => ({
+								styles: theme => ({
 									input: {
-										borderColor: "#2742F5",
+										borderColor: '#2742F5',
 										borderWidth: '1px',
-										borderStyle: 'solid',
+										borderStyle: 'solid'
 									}
 								})
 							}
