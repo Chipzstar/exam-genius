@@ -100,9 +100,9 @@ function CustomApp({ Component, pageProps }: AppProps) {
 						styles={[
 							{
 								'@font-face': {
-									'font-family': 'Poppins',
-									src: `url("/static/fonts/Poppins/Poppins-Regular.ttf") format("truetype")`
-								}
+									fontFamily: 'Poppins',
+									src: `url("/static/fonts/Poppins/Poppins-Regular.ttf") format("truetype")`,
+									fontWeight: "normal"								}
 							}
 						]}
 					/>
