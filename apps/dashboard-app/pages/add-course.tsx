@@ -7,7 +7,7 @@ const AddCourse = () => {
 	return (
 		<Page.Container>
 			<header className='py-6'>
-				<Title align='center' order={2} size='h1' color='brand' weight='normal'>
+				<Title align='center' order={2} size='h1' color='brand' weight={600}>
 					Choose your Subjects
 				</Title>
 			</header>
