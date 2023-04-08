@@ -11,7 +11,7 @@ export function Home() {
 				<Title order={2} weight={600} mb='lg'>
 					Courses 📚
 				</Title>
-				<Card shadow='sm' radius='xs'>
+				<Card shadow='sm' radius='md'>
 					<Group grow align='center' p='xl' position='apart'>
 						<Group>
 							<Image src='/static/images/maths-icon.svg' width={100} height={100} alt='maths-icon' />
@@ -21,9 +21,11 @@ export function Home() {
 							</div>
 						</Group>
 						<div>
-							<Button size='lg'>
-								<Text>{'Continue →'}</Text>
-							</Button>
+							<Link href={`${PATHS.MATHS}?board=edexcel`} passHref>
+								<Button size='lg'>
+									<Text>{'Continue →'}</Text>
+								</Button>
+							</Link>
 						</div>
 					</Group>
 				</Card>
