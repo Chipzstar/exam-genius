@@ -5,13 +5,13 @@
   "scripts": {
     "nx:serve:dashboard": "doppler run -c dev -p exam-genius -- nx serve dashboard-app",
     "nx:build:dashboard": "nx build dashboard-app",
-    "nx:build:dashboard:prod": "nx build dashboard-app --prod --skip-nx-cache",
+    "nx:build:dashboard:prod": "npx prisma generate && nx build dashboard-app --prod --skip-nx-cache",
     "nx:serve:dashboard:prod:local": "nx serve dashboard-app --prod",
     "nx:serve:dashboard:prod": "nx serve dashboard-app --prod --hostname 0.0.0.0",
     "nx:test:dashboard:local": "nx build dashboard-app && nx serve dashboard-app --prod",
     "nx:build:landing": "nx build landing-page",
     "nx:build:landing:prod": "nx build landing-page --prod --skip-nx-cache",
-    "prisma:generate": "npx prismerge -i prismerge.json && npx prisma generate",
+    "prisma:generate": "npx prisma generate",
     "prisma:studio": "npx prisma studio",
     "prisma:push": "npx prisma db push",
     "prisma:pull": "npx prisma db pull"

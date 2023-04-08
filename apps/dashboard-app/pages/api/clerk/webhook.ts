@@ -4,7 +4,7 @@ import prisma from '../../../prisma';
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
 	// Run the middleware
-	// await runMiddleware(req, res, cors)
+	await runMiddleware(req, res, cors)
 	console.log(req.method)
 	if (req.method === 'POST') {
 		try {
