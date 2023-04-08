@@ -3,8 +3,7 @@ import { ParsedUrlQuery } from 'querystring';
 import Page from '../../layout/Page';
 import { Button, Card, Group, Text, Title } from '@mantine/core';
 import Image from 'next/image';
-import Link from 'next/link';
-import { PATHS, SUBJECT_PAPERS } from '../../utils/constants';
+import { SUBJECT_PAPERS } from '../../utils/constants';
 import { GetServerSideProps, InferGetServerSidePropsType } from 'next';
 import { capitalize } from '../../utils/functions';
 
@@ -46,19 +45,12 @@ const Course = ({ query }: InferGetServerSidePropsType<typeof getServerSideProps
 							</Group>
 							<div>
 								<Button size='lg'>
-									<Text>{'Continue →'}</Text>
+									<Text weight="normal">{'Get Papers'}</Text>
 								</Button>
 							</div>
 						</Group>
 					</Card>
 				))}
-				<div className='flex justify-end p-10'>
-					<Link href={PATHS.NEW_SUBJECT} passHref>
-						<Button size='lg'>
-							<Text>{'Add Course'}</Text>
-						</Button>
-					</Link>
-				</div>
 			</Page.Body>
 		</Page.Container>
 	);
