@@ -6,15 +6,7 @@ import { PATHS } from '../utils/constants';
 
 export function Home() {
 	return (
-		<Page.Container
-			data_cy='homepage'
-			extraClassNames='flex flex-col'
-			header={
-				<Page.Header extraClassNames='mb-3 justify-center'>
-					<span className='font-medium text-primary text-center text-4xl'>ExamGenius</span>
-				</Page.Header>
-			}
-		>
+		<Page.Container data_cy='homepage' extraClassNames='flex flex-col py-6'>
 			<Page.Body>
 				<Title order={2} weight={600} mb='lg'>
 					Courses 📚
