@@ -15,10 +15,10 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 			// store the user in db
 			const user = await prisma.user.create({
 				data: {
-					email: payload.email,
-					full_name: `${payload.first_name} ${payload.last_name}`,
-					firstname: payload.firstname,
-					lastname: payload.year
+					email: payload.data.email_addresses[0].email_address,
+					full_name: `${payload.data.first_name} ${payload.data.last_name}`,
+					firstname: payload.data.first_name,
+					lastname: payload.data.last_name
 				}
 			});
 			console.log('-----------------------------------------------');
