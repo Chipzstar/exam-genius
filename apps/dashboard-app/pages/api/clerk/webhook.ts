@@ -24,7 +24,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 			console.log('-----------------------------------------------');
 			console.log(user);
 			console.log('-----------------------------------------------');
-			return user;
+			return res.status(200).json(user);
 		} catch (error) {
 			// Catch and log errors - return a 500 with a message
 			console.error(error);
