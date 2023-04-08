@@ -1,7 +1,9 @@
-import { Button, Group, SimpleGrid, Text, Title } from '@mantine/core';
+import { Box, Button, Group, SimpleGrid, Text, Title } from '@mantine/core';
 import React from 'react';
 import Page from '../layout/Page';
 import SubjectCard from '../components/SubjectCard';
+import Link from 'next/link';
+import { PATHS } from '../utils/constants';
 
 const AddCourse = () => {
 	return (
@@ -21,9 +23,13 @@ const AddCourse = () => {
 					<SubjectCard subject='Psychology' src='/static/images/psychology-icon.svg' />
 				</SimpleGrid>
 				<Group position='right' pt='lg'>
-					<Button size='xl'>
-						<Text>Next</Text>
-					</Button>
+					<Link href={PATHS.EXAM_BOARD} passHref>
+						<Box w={140}>
+							<Button fullWidth size='xl'>
+								<Text>Next</Text>
+							</Button>
+						</Box>
+					</Link>
 				</Group>
 			</Page.Body>
 		</Page.Container>

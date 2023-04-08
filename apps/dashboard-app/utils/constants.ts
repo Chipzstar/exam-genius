@@ -33,7 +33,8 @@ export const PATHS = {
 	SETTINGS: '/settings',
 	ONBOARDING: '/onboarding',
 	PROFILE: '/profile',
-	NEW_COURSE: '/add-course'
+	NEW_COURSE: '/add-course',
+	EXAM_BOARD: '/exam-board'
 };
 
 export const AUTH_ROUTES = [PATHS.LOGIN, PATHS.SIGNUP, PATHS.FORGOT_PASSWORD];
