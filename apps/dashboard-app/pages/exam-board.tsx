@@ -1,5 +1,5 @@
 import React from 'react';
-import { Box, Button, SimpleGrid, Text, Title } from '@mantine/core';
+import { Box, Button, Radio, SimpleGrid, Text, Title } from '@mantine/core';
 import Page from '../layout/Page';
 import ExamBoardCard from '../components/ExamBoardCard';
 import Link from 'next/link';
@@ -14,11 +14,13 @@ const ExamBoard = () => {
 				</Title>
 			</header>
 			<Page.Body extraClassNames='justify-center'>
-				<SimpleGrid cols={3}>
-					<ExamBoardCard src='/static/images/aqa-icon.svg' />
-					<ExamBoardCard src='/static/images/edexcel-icon.svg' />
-					<ExamBoardCard src='/static/images/ocr-icon.svg' />
-				</SimpleGrid>
+				<Radio.Group name='board'>
+					<SimpleGrid cols={3}>
+						<ExamBoardCard value='aqa' src='/static/images/aqa-icon.svg' />
+						<ExamBoardCard value='edexcel' src='/static/images/edexcel-icon.svg' />
+						<ExamBoardCard value='ocr' src='/static/images/ocr-icon.svg' />
+					</SimpleGrid>
+				</Radio.Group>
 			</Page.Body>
 			<Page.Footer extraClassNames='justify-end'>
 				<Link href={PATHS.HOME} passHref>

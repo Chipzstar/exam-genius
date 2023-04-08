@@ -20,7 +20,6 @@ export const BANNER_HEIGHT = 65;
 export const STORAGE_KEYS = {
 	ACCOUNT: 'account',
 	SIGNUP_FORM: 'signup-form',
-	ONBOARDING_STEP: 'onboarding-step',
 	TEST_MODE: 'test-mode'
 };
 

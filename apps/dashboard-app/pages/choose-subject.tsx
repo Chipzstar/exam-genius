@@ -1,4 +1,4 @@
-import { Box, Button, Group, SimpleGrid, Text, Title } from '@mantine/core';
+import { Box, Button, Group, Radio, SimpleGrid, Text, Title } from '@mantine/core';
 import React from 'react';
 import Page from '../layout/Page';
 import SubjectCard from '../components/SubjectCard';
@@ -14,14 +14,16 @@ const ChooseSubject = () => {
 				</Title>
 			</header>
 			<Page.Body extraClassNames='justify-between py-8'>
-				<SimpleGrid cols={3}>
-					<SubjectCard subject='Maths' src='/static/images/maths-icon.svg' />
-					<SubjectCard subject='Biology' src='/static/images/biology-icon.svg' />
-					<SubjectCard subject='Chemistry' src='/static/images/chemistry-icon.svg' />
-					<SubjectCard subject='Economics' src='/static/images/economics-icon.svg' />
-					<SubjectCard subject='Physics' src='/static/images/physics-icon.svg' />
-					<SubjectCard subject='Psychology' src='/static/images/psychology-icon.svg' />
-				</SimpleGrid>
+				<Radio.Group name='subject'>
+					<SimpleGrid cols={3}>
+						<SubjectCard subject='Maths' src='/static/images/maths-icon.svg' />
+						<SubjectCard subject='Biology' src='/static/images/biology-icon.svg' />
+						<SubjectCard subject='Chemistry' src='/static/images/chemistry-icon.svg' />
+						<SubjectCard subject='Economics' src='/static/images/economics-icon.svg' />
+						<SubjectCard subject='Physics' src='/static/images/physics-icon.svg' />
+						<SubjectCard subject='Psychology' src='/static/images/psychology-icon.svg' />
+					</SimpleGrid>
+				</Radio.Group>
 				<Group position='right' pt='lg'>
 					<Link href={PATHS.EXAM_BOARD} passHref>
 						<Box w={140}>
