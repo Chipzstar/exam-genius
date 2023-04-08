@@ -112,7 +112,7 @@ export function Signup() {
 				</header>
 			</Group>
 			<div className='h-full flex justify-center items-center'>
-				<SignUp path='/signup' routing='path' signInUrl='/login' />
+				<SignUp path='/signup' routing='hash' signInUrl='/login' />
 			</div>
 		</div>
 	);
