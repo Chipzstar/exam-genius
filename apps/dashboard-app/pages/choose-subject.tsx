@@ -5,9 +5,9 @@ import SubjectCard from '../components/SubjectCard';
 import Link from 'next/link';
 import { PATHS } from '../utils/constants';
 
-const AddCourse = () => {
+const ChooseSubject = () => {
 	return (
-		<Page.Container>
+		<Page.Container extraClassNames='bg-white'>
 			<header className='py-6'>
 				<Title align='center' order={2} size='h1' color='brand' weight={600}>
 					Choose your Subjects
@@ -36,4 +36,4 @@ const AddCourse = () => {
 	);
 };
 
-export default AddCourse;
+export default ChooseSubject;

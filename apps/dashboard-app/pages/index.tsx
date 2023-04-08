@@ -8,7 +8,7 @@ export function Home() {
 	return (
 		<Page.Container
 			data_cy='homepage'
-			classNames='flex flex-col'
+			extraClassNames='flex flex-col'
 			header={
 				<Page.Header extraClassNames='mb-3 justify-center'>
 					<span className='font-medium text-primary text-center text-4xl'>ExamGenius</span>
@@ -36,7 +36,7 @@ export function Home() {
 					</Group>
 				</Card>
 				<div className='flex justify-end p-10'>
-					<Link href={PATHS.NEW_COURSE} passHref>
+					<Link href={PATHS.NEW_SUBJECT} passHref>
 						<Button size='lg'>
 							<Text>{'Add Course'}</Text>
 						</Button>

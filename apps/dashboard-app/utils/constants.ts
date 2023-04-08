@@ -33,7 +33,7 @@ export const PATHS = {
 	SETTINGS: '/settings',
 	ONBOARDING: '/onboarding',
 	PROFILE: '/profile',
-	NEW_COURSE: '/add-course',
+	NEW_SUBJECT: '/choose-subject',
 	EXAM_BOARD: '/exam-board'
 };
 

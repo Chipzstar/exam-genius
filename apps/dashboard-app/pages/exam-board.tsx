@@ -7,13 +7,13 @@ import { PATHS } from '../utils/constants';
 
 const ExamBoard = () => {
 	return (
-		<Page.Container>
+		<Page.Container extraClassNames='bg-white'>
 			<header className='py-6'>
 				<Title align='center' order={2} size='h1' color='brand' weight={600}>
 					Choose your exam board
 				</Title>
 			</header>
-			<Page.Body extraClassNames='justify-center py-8'>
+			<Page.Body extraClassNames='justify-center'>
 				<SimpleGrid cols={3}>
 					<ExamBoardCard src='/static/images/aqa-icon.svg' />
 					<ExamBoardCard src='/static/images/edexcel-icon.svg' />
@@ -22,7 +22,7 @@ const ExamBoard = () => {
 			</Page.Body>
 			<Page.Footer extraClassNames='justify-end'>
 				<Link href={PATHS.HOME} passHref>
-					<Box w={140}>
+					<Box w={140} pb='xs'>
 						<Button fullWidth size='xl'>
 							<Text>Next</Text>
 						</Button>

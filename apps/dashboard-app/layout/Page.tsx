@@ -16,7 +16,7 @@ const Page = ({ children }) => {
 const Container = ({
 	children,
 	header = undefined,
-	classNames = 'h-screen flex flex-col',
+	classNames = 'h-screen flex flex-col pb-2 bg-accent',
 	extraClassNames = '',
 	data_cy = undefined
 }: PageContainerProps) => {
@@ -59,7 +59,7 @@ Page.Body = Body;
 
 const Footer = ({
 	children,
-	classNames = 'my-4 flex px-6',
+	classNames = 'flex px-6',
 	extraClassNames = '',
 	height = DEFAULT_HEADER_HEIGHT
 }) => {
