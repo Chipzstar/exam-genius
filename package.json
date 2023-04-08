@@ -12,7 +12,9 @@
     "nx:build:landing": "nx build landing-page",
     "nx:build:landing:prod": "nx build landing-page --prod --skip-nx-cache",
     "prisma:generate": "npx prismerge -i prismerge.json && npx prisma generate",
-    "prisma:studio": "npx prisma studio"
+    "prisma:studio": "npx prisma studio",
+    "prisma:push": "npx prisma db push",
+    "prisma:pull": "npx prisma db pull"
   },
   "private": true,
   "dependencies": {

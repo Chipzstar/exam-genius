@@ -15,7 +15,8 @@ model User {
   id       Int       @id @default(autoincrement())
   email    String  @unique
   full_name  String
-  year String
-  role String
-  password String
+  firstname String
+  lastname String
+  year String?
+  role String?
 }

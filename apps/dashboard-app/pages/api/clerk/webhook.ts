@@ -1,5 +1,6 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
 import { cors, runMiddleware } from '../cors';
+import prisma from '../../../prisma';
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
 	// Run the middleware
@@ -9,7 +10,19 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 		try {
 			// Validate the incoming data and return 400 if it's not what is expected
 			const body = typeof req.body === 'object' ? req.body : JSON.parse(req.body);
-			return res.status(200).json({ userId: 'abc123' });
+			// store the user in db
+			const user = await prisma.user.create({
+				data: {
+					email: body.email,
+					full_name: `${body.first_name} ${body.last_name}`,
+					firstname: body.firstname,
+					lastname: body.year,
+				}
+			});
+			console.log('-----------------------------------------------');
+			console.log(user);
+			console.log('-----------------------------------------------');
+			return user;
 		} catch (error) {
 			// Catch and log errors - return a 500 with a message
 			console.error(error);
