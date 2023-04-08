@@ -1,11 +1,9 @@
-import { Button, Container, createStyles, Group, rem, Text, Title } from '@mantine/core';
+import { Button, createStyles, Group, rem, Text, Title } from '@mantine/core';
+import Link from 'next/link';
+import Page from '../layout/Page';
+import { PATHS } from '../utils/constants';
 
 const useStyles = createStyles(theme => ({
-	root: {
-		paddingTop: rem(80),
-		paddingBottom: rem(80)
-	},
-
 	label: {
 		textAlign: 'center',
 		fontWeight: 900,
@@ -39,23 +37,25 @@ const useStyles = createStyles(theme => ({
 }));
 
 function NotFoundTitle() {
-  const { classes } = useStyles();
+	const { classes } = useStyles();
 
-  return (
-    <Container className={classes.root}>
-      <div className={classes.label}>404</div>
-      <Title className={classes.title}>You have found a secret place.</Title>
-      <Text color="dimmed" size="lg" align="center" className={classes.description}>
-        Unfortunately, this is only a 404 page. You may have mistyped the address, or the page has
-        been moved to another URL.
-      </Text>
-      <Group position="center">
-        <Button variant="subtle" size="md">
-          Take me back to home page
-        </Button>
-      </Group>
-    </Container>
-  );
+	return (
+		<Page.Container extraClassNames='flex flex-col justify-center items-center'>
+			<div className={classes.label}>404</div>
+			<Title className={classes.title}>You have found a secret place.</Title>
+			<Text color='dimmed' size='lg' align='center' className={classes.description}>
+				Unfortunately, this is only a 404 page. You may have mistyped the address, or the page has been moved to
+				another URL.
+			</Text>
+			<Group position='center'>
+				<Link href={PATHS.HOME} passHref>
+					<Button variant='subtle' size='md'>
+						Take me back to home page
+					</Button>
+				</Link>
+			</Group>
+		</Page.Container>
+	);
 }
 
 export default NotFoundTitle;

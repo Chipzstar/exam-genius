@@ -1,17 +1,13 @@
 import React, { useCallback, useState } from 'react';
-import Image from 'next/image';
 import { useRouter } from 'next/router';
 import { useForm, zodResolver } from '@mantine/form';
 import { PATHS } from '../utils/constants';
-import { Group, useMantineTheme } from '@mantine/core';
 import { getE164Number, getStrength, notifyError, notifySuccess } from '../utils/functions';
 import { IconCheck, IconX } from '@tabler/icons-react';
 import { z } from 'zod';
 import { SignUp, useSignUp } from '@clerk/nextjs';
-import VerificationCode from '../modals/VerificationCode';
 
 export function Signup() {
-	const theme = useMantineTheme();
 	const [loading, setLoading] = useState(false);
 	const [code_form, showCodeForm] = useState(false);
 	const { signUp, setActive, setSession } = useSignUp();
@@ -98,19 +94,7 @@ export function Signup() {
 	);
 
 	return (
-		<div className='h-screen w-full overflow-x-hidden bg-white p-5'>
-			<VerificationCode
-				opened={code_form}
-				onClose={() => showCodeForm(false)}
-				onSubmit={confirmSignUp}
-				loading={loading}
-			/>
-			<Group position='apart' px='xl'>
-				<header className='flex flex-row space-x-2'>
-					<Image src='/static/images/logo.svg' width={30} height={30} alt='logo' />
-					<span className='text-2xl font-medium'>Exam Genius</span>
-				</header>
-			</Group>
+		<div className='h-screen w-full overflow-x-hidden bg-white px-5 pt-5'>
 			<div className='h-full flex justify-center items-center'>
 				<SignUp path='/signup' routing='hash' signInUrl='/login' />
 			</div>
