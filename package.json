@@ -5,7 +5,7 @@
   "scripts": {
     "nx:serve:dashboard": "doppler run -c dev -p exam-genius -- nx serve dashboard-app",
     "nx:build:dashboard": "nx build dashboard-app",
-    "nx:build:dashboard:prod": "npx prisma generate && nx build dashboard-app --prod --skip-nx-cache",
+    "nx:build:dashboard:prod": "npx prisma generate && npx prisma migrate deploy && nx build dashboard-app --prod --skip-nx-cache",
     "nx:serve:dashboard:prod:local": "nx serve dashboard-app --prod",
     "nx:serve:dashboard:prod": "nx serve dashboard-app --prod --hostname 0.0.0.0",
     "nx:test:dashboard:local": "nx build dashboard-app && nx serve dashboard-app --prod",

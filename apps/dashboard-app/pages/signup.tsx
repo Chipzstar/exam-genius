@@ -3,14 +3,12 @@ import Image from 'next/image';
 import { useRouter } from 'next/router';
 import { useForm, zodResolver } from '@mantine/form';
 import { PATHS } from '../utils/constants';
-import { Button, Group, PasswordInput, Select, Stack, Text, TextInput, Title, useMantineTheme } from '@mantine/core';
+import { Group, useMantineTheme } from '@mantine/core';
 import { getE164Number, getStrength, notifyError, notifySuccess } from '../utils/functions';
-import { IconCheck, IconChevronDown, IconX } from '@tabler/icons-react';
+import { IconCheck, IconX } from '@tabler/icons-react';
 import { z } from 'zod';
-import { trpc } from '../utils/trpc';
 import { SignUp, useSignUp } from '@clerk/nextjs';
 import VerificationCode from '../modals/VerificationCode';
-import Link from 'next/link';
 
 export function Signup() {
 	const theme = useMantineTheme();
@@ -32,7 +30,6 @@ export function Signup() {
 		year: z.string(),
 		role: z.enum(['student', 'teacher', 'examiner']).default('student')
 	});
-	const register = trpc.auth.signup.useMutation();
 	const router = useRouter();
 	const form = useForm({
 		initialValues: {
@@ -57,7 +54,6 @@ export function Signup() {
 				await setActive({ session: result.createdSessionId });
 				// @ts-ignore
 				await setSession(result.createdSessionId);
-				// const user = await register.mutateAsync(values);
 				showCodeForm(false);
 				setLoading(false);
 				notifySuccess('verification-success', 'Verification successful!', <IconCheck size={20} />);
@@ -116,7 +112,7 @@ export function Signup() {
 				</header>
 			</Group>
 			<div className='h-full flex justify-center items-center'>
-				<SignUp path='/signup' routing='path' signInUrl='/login' redirectUrl="/" />
+				<SignUp path='/signup' routing='path' signInUrl='/login' redirectUrl='/' />
 			</div>
 		</div>
 	);
