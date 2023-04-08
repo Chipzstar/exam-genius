@@ -1,6 +1,8 @@
 import Page from '../layout/Page';
-import { Button, Card, Group, Title, Text } from '@mantine/core';
+import { Button, Card, Group, Text, Title } from '@mantine/core';
 import Image from 'next/image';
+import Link from 'next/link';
+import { PATHS } from '../utils/constants';
 
 export function Home() {
 	return (
@@ -27,16 +29,18 @@ export function Home() {
 							</div>
 						</Group>
 						<div>
-							<Button size="lg">
+							<Button size='lg'>
 								<Text>{'Continue →'}</Text>
 							</Button>
 						</div>
 					</Group>
 				</Card>
-				<div className="flex justify-end p-10">
-					<Button size="lg">
-						<Text>{'Add Course'}</Text>
-					</Button>
+				<div className='flex justify-end p-10'>
+					<Link href={PATHS.NEW_COURSE} passHref>
+						<Button size='lg'>
+							<Text>{'Add Course'}</Text>
+						</Button>
+					</Link>
 				</div>
 			</Page.Body>
 		</Page.Container>

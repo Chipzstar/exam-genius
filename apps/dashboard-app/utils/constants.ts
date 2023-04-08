@@ -18,25 +18,22 @@ export const DEFAULT_HEADER_HEIGHT = 75;
 export const BANNER_HEIGHT = 65;
 
 export const STORAGE_KEYS = {
-  ACCOUNT: 'account',
-  SIGNUP_FORM: 'signup-form',
-  ONBOARDING_STEP: 'onboarding-step',
-  TEST_MODE: 'test-mode',
+	ACCOUNT: 'account',
+	SIGNUP_FORM: 'signup-form',
+	ONBOARDING_STEP: 'onboarding-step',
+	TEST_MODE: 'test-mode'
 };
 
 export const PATHS = {
-  HOME: '/',
-  SIGNUP: '/signup',
-  LOGIN: '/login',
-  PAPERS: '/papers',
-  FORGOT_PASSWORD: 'forgot-password',
-  SETTINGS: '/settings',
-  ONBOARDING: '/onboarding',
-  PROFILE: '/profile',
+	HOME: '/',
+	SIGNUP: '/signup',
+	LOGIN: '/login',
+	PAPERS: '/papers',
+	FORGOT_PASSWORD: 'forgot-password',
+	SETTINGS: '/settings',
+	ONBOARDING: '/onboarding',
+	PROFILE: '/profile',
+	NEW_COURSE: '/add-course'
 };
 
-export const AUTH_ROUTES = [
-  PATHS.LOGIN,
-  PATHS.SIGNUP,
-  PATHS.FORGOT_PASSWORD
-];
+export const AUTH_ROUTES = [PATHS.LOGIN, PATHS.SIGNUP, PATHS.FORGOT_PASSWORD];
