@@ -1,22 +1,24 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
 import { cors, runMiddleware } from '../cors';
 import prisma from '../../../prisma';
+import { log } from 'next-axiom';
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
 	// Run the middleware
-	await runMiddleware(req, res, cors)
-	console.log(req.method)
+	await runMiddleware(req, res, cors);
+	console.log(req.method);
 	if (req.method === 'POST') {
 		try {
 			// Validate the incoming data and return 400 if it's not what is expected
-			const body = typeof req.body === 'object' ? req.body : JSON.parse(req.body);
+			const payload = typeof req.body === 'object' ? req.body : JSON.parse(req.body);
+			log.info(payload);
 			// store the user in db
 			const user = await prisma.user.create({
 				data: {
-					email: body.email,
-					full_name: `${body.first_name} ${body.last_name}`,
-					firstname: body.firstname,
-					lastname: body.year,
+					email: payload.email,
+					full_name: `${payload.first_name} ${payload.last_name}`,
+					firstname: payload.firstname,
+					lastname: payload.year
 				}
 			});
 			console.log('-----------------------------------------------');
