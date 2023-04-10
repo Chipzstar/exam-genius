@@ -32,7 +32,7 @@ const ExamBoard = () => {
 				</Title>
 			</header>
 			<Page.Body extraClassNames='justify-center'>
-				<form action='/api/stripe/checkout' method='POST' className="pb-10">
+				<form action='/api/stripe/checkout?mode=subscription' method='POST' className="pb-10">
 					<input name="price_id" id="price-id" value={price_id} hidden/>
 					<Radio.Group name='board'>
 						<SimpleGrid cols={3}>

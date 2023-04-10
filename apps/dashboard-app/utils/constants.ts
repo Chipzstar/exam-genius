@@ -52,8 +52,8 @@ export const AUTH_ROUTES = [PATHS.LOGIN, PATHS.SIGNUP, PATHS.FORGOT_PASSWORD];
 
 export const SUBJECT_PAPERS : Record<string, Record<string, {label: string, icon: string, modules: string[]}>> = {
 	maths: {
-		['pure-maths']: { label: 'Pure Maths', icon: '/static/images/pure-maths-icon.svg', modules: ['C3', 'C4'] },
-		stats: { label: 'Statistics', icon: '/static/images/statistics-icon.svg', modules: ['S3', 'S4'] }
+		['pure-maths']: { label: 'Pure Maths', icon: '/static/images/pure-maths-icon.svg', modules: ['PM1', 'PM2'] },
+		stats: { label: 'Statistics & Mechanics', icon: '/static/images/statistics-icon.svg', modules: ['Statistics & Mechanics'] }
 	}
 };
 
@@ -66,4 +66,8 @@ export const SUBJECT_PRICE_IDS = {
     psychology: 'price_1MvLL0JOIoW2WbjcdjRS8C3h'
 }
 
-// export type PRICE_ID = SUBJECT_PRICE_IDS[keyof SIBJECT_PRICE_IDS]
+export const PAPER_PRICE_IDS = {
+	maths: 'price_1MvNNdJOIoW2WbjczSvv3fBH',
+}
+
+// export type PRICE_ID = SUBJECT_PRICE_IDS[keyof SUBJECT_PRICE_IDS]

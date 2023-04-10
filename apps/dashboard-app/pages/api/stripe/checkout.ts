@@ -1,11 +1,13 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
 import { cors, runMiddleware } from '../cors';
 import { stripe } from '../../../utils/clients';
+import Stripe from 'stripe';
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
 	// Run the middleware
 	await runMiddleware(req, res, cors);
 	console.log(req.method, console.table(req.body));
+	const mode = req.query.mode as Stripe.Checkout.SessionCreateParams.Mode;
 	if (req.method === 'POST') {
 		try {
 			const session = await stripe.checkout.sessions.create({
@@ -16,7 +18,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 						quantity: 1
 					}
 				],
-				mode: 'subscription',
+				mode,
 				success_url: `${req.headers.origin}/?success=true`,
 				cancel_url: `${req.headers.origin}/exam-board?canceled=true`
 			});
