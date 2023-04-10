@@ -9,7 +9,7 @@ import localFont from '@next/font/local';
 import Layout from '../layout/Layout';
 import React from 'react';
 import Favicon from '../components/Favicon';
-import { NavigationProgress } from '@mantine/nprogress';
+import { RouterTransition } from '../layout/RouterTransition';
 
 const poppins = localFont({
 	src: [
@@ -113,7 +113,7 @@ function CustomApp({ Component, pageProps }: AppProps) {
 						}
 					}}
 				>
-					<NavigationProgress />
+					<RouterTransition />
 					<Global
 						styles={[
 							{
