@@ -8,6 +8,7 @@ import { GetServerSideProps, InferGetServerSidePropsType } from 'next';
 import { capitalize } from '../../../../utils/functions';
 import Link from 'next/link';
 import NotFoundTitle from '../../../404';
+import { v4 as uuidv4 } from 'uuid';
 
 export interface PageQuery extends ParsedUrlQuery {
 	board: string;
@@ -58,7 +59,7 @@ const Papers = ({ query }: InferGetServerSidePropsType<typeof getServerSideProps
 								</div>
 							</Group>
 							<Stack>
-								<Link href={`${PATHS.MATHS}/papers?${query.board}`}>
+								<Link href={`${PATHS.VIEW_PAPER}/${uuidv4()}`}>
 									<Box w={200}>
 										<Button fullWidth size='lg'>
 											<Text weight='normal'>View Paper</Text>
