@@ -1,5 +1,5 @@
 import { Box, Button, Group, Radio, SimpleGrid, Text, Title } from '@mantine/core';
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import Page from '../layout/Page';
 import SubjectCard from '../components/SubjectCard';
 import Link from 'next/link';
@@ -7,10 +7,16 @@ import { PATHS, SUBJECT_PRICE_IDS } from '../utils/constants';
 import { useLocalStorage } from '@mantine/hooks';
 
 const ChooseSubject = () => {
+	const [subject, setSubject] = useState('');
 	const [price_id, setPriceId] = useLocalStorage<string>({
 		key: 'priceId',
 		defaultValue: ''
 	});
+
+	useEffect(() => {
+		setPriceId('');
+	}, []);
+
 	return (
 		<Page.Container extraClassNames='bg-white'>
 			<header className='py-6'>
@@ -19,13 +25,7 @@ const ChooseSubject = () => {
 				</Title>
 			</header>
 			<Page.Body extraClassNames='justify-between py-8'>
-				<Radio.Group
-					name='subject'
-					onChange={value => {
-						setPriceId(value);
-						console.log(value);
-					}}
-				>
+				<Radio.Group name='subject' onChange={value => setPriceId(value)}>
 					<SimpleGrid cols={3}>
 						<SubjectCard
 							subject='Maths'
@@ -62,7 +62,7 @@ const ChooseSubject = () => {
 				<Group position='right' pt='lg'>
 					<Link href={PATHS.EXAM_BOARD} passHref>
 						<Box w={140}>
-							<Button fullWidth size='xl'>
+							<Button fullWidth size='xl' disabled={!price_id}>
 								<Text>Next</Text>
 							</Button>
 						</Box>

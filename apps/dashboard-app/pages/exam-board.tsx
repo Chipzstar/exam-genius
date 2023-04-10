@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Box, Button, Radio, SimpleGrid, Text, Title } from '@mantine/core';
 import Page from '../layout/Page';
 import ExamBoardCard from '../components/ExamBoardCard';
@@ -8,6 +8,7 @@ import { useLocalStorage } from '@mantine/hooks';
 getStripe(process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY).then(r => console.log('Stripe loaded', r));
 
 const ExamBoard = () => {
+	const [board, setBoard] = useState('');
 	const [price_id, setPriceId] = useLocalStorage<string>({
 		key: 'priceId',
 		defaultValue: '',
@@ -34,11 +35,11 @@ const ExamBoard = () => {
 			<Page.Body extraClassNames='justify-center'>
 				<form action='/api/stripe/checkout?mode=subscription' method='POST' className="pb-10">
 					<input name="price_id" id="price-id" value={price_id} hidden/>
-					<Radio.Group name='board'>
+					<Radio.Group name='board' value={board} onChange={setBoard}>
 						<SimpleGrid cols={3}>
 							<ExamBoardCard value='aqa' src='/static/images/aqa-icon.svg' />
 							<ExamBoardCard value='edexcel' src='/static/images/edexcel-icon.svg' />
-							<ExamBoardCard value='ocr' src='/static/images/ocr-icon.svg' />
+							<ExamBoardCard value='ocr' src='/static/images/ocr-icon.svg'/>
 						</SimpleGrid>
 					</Radio.Group>
 
@@ -47,7 +48,7 @@ const ExamBoard = () => {
 						right: 20,
 						bottom: 20,
 					}}>
-						<Button type='submit' fullWidth size='xl'>
+						<Button type='submit' fullWidth size='xl' disabled={!board}>
 							<Text>Next</Text>
 						</Button>
 					</Box>
