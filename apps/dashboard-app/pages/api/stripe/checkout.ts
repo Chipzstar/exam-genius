@@ -6,7 +6,6 @@ import Stripe from 'stripe';
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
 	// Run the middleware
 	await runMiddleware(req, res, cors);
-	console.log(req.method, console.table(req.body));
 	const mode = req.query.mode as Stripe.Checkout.SessionCreateParams.Mode;
 	if (req.method === 'POST') {
 		try {

@@ -68,6 +68,11 @@ export const SUBJECT_PRICE_IDS = {
 
 export const PAPER_PRICE_IDS = {
 	maths: 'price_1MvNNdJOIoW2WbjczSvv3fBH',
+	physics: 'price_1MvNQdJOIoW2WbjczSvv3fBH',
+    chemistry: 'price_1MvNQdJOIoW2WbjczSvv3fBH',
+    biology: 'price_1MvNQdJOIoW2WbjczSvv3fBH',
+    economics: 'price_1MvNQdJOIoW2WbjczSvv3fBH',
+    psychology: 'price_1MvNQdJOIoW2WbjczSvv3fBH'
 }
 
 // export type PRICE_ID = SUBJECT_PRICE_IDS[keyof SUBJECT_PRICE_IDS]

@@ -41,11 +41,29 @@ const PaperID = () => {
 					</div>
 					<Space h='xl' />
 					<List listStyleType='disc' spacing='xl'>
-						<List.Item>Clone or download repository from GitHub</List.Item>
-						<List.Item>Install dependencies with yarn</List.Item>
-						<List.Item>To start development server run npm start command</List.Item>
-						<List.Item>Run tests to make sure your changes do not break the build</List.Item>
-						<List.Item>Submit a pull request once you are done</List.Item>
+						<List.Item>
+							Solve the quadratic equation x^2 + 3x - 10 = 0, giving your answers correct to two decimal
+							places. [4 marks]
+						</List.Item>
+						<List.Item>
+							Differentiate the function y = x^3 - 5x^2 + 2x - 7 with respect to x. [4 marks]
+						</List.Item>
+						<List.Item>The circle C has equation x^2 + y^2 - 2x + 6y - 6 = 0.</List.Item>
+						<List.Item>(a) Write down the coordinates of the centre of the circle C. [2 marks]</List.Item>
+						<List.Item>(b) Find the radius of the circle C. [3 marks]</List.Item>
+						<List.Item>
+							Solve the equation 3sin(2x) = 2cos(x) for 0 ≤ x ≤ 360°, giving your answers correct to one
+							decimal place. [5 marks]
+						</List.Item>
+						<List.Item>Differentiate the function y = ln(5x + 4). [3 marks]</List.Item>
+						<List.Item>
+							The line L1 has equation y = 2x + 1. The line L2 is perpendicular to L1 and passes through
+							the point (-2, 3).
+						</List.Item>
+						<List.Item>(a) Find the equation of the line L2. [4 marks]</List.Item>
+						<List.Item>
+							(b) Find the coordinates of the point where the lines L1 and L2 intersect. [3 marks]
+						</List.Item>
 					</List>
 				</Card>
 			</ScrollArea.Autosize>
