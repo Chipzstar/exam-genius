@@ -28,6 +28,7 @@
     "@mantine/modals": "^6.0.6",
     "@mantine/next": "^6.0.6",
     "@mantine/notifications": "^6.0.6",
+    "@mantine/nprogress": "^6.0.6",
     "@next/font": "^13.2.4",
     "@prisma/client": "^4.12.0",
     "@sentry/nextjs": "^7.47.0",
@@ -37,6 +38,7 @@
     "@trpc/next": "^10.18.0",
     "@trpc/react-query": "^10.18.0",
     "@trpc/server": "^10.18.0",
+    "add": "^2.0.6",
     "bcryptjs": "^2.4.3",
     "cors": "^2.8.5",
     "crypto-js": "^4.1.1",
@@ -49,6 +51,7 @@
     "superjson": "^1.12.2",
     "trpc-panel": "^1.2.13",
     "tslib": "^2.3.0",
+    "yarn": "^1.22.19",
     "zod": "^3.21.4"
   },
   "devDependencies": {

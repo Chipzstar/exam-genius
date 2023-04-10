@@ -34,19 +34,19 @@ export const PATHS = {
 	PROFILE: '/profile',
 	NEW_SUBJECT: '/choose-subject',
 	EXAM_BOARD: '/exam-board',
-	MATHS: '/course/maths',
-	PHYSICS: '/course/physics',
-	CHEMISTRY: '/course/chemistry',
-	BIOLOGY: '/course/biology',
-	ECONOMICS: '/course/economics',
-	PSYCHOLOGY: '/course/psychology'
+	MATHS: '/papers/maths',
+	PHYSICS: '/papers/physics',
+	CHEMISTRY: '/papers/chemistry',
+	BIOLOGY: '/papers/biology',
+	ECONOMICS: '/papers/economics',
+	PSYCHOLOGY: '/papers/psychology'
 };
 
 export const AUTH_ROUTES = [PATHS.LOGIN, PATHS.SIGNUP, PATHS.FORGOT_PASSWORD];
 
-export const SUBJECT_PAPERS : Record<string, {label: string, icon: string, modules: string[]}[]> = {
-	maths: [
-		{ label: 'Pure Maths', icon: '/static/images/pure-maths-icon.svg', modules: ['C3', 'C4'] },
-		{ label: 'Statistics', icon: '/static/images/statistics-icon.svg', modules: ['S3', 'S4'] }
-	]
+export const SUBJECT_PAPERS : Record<string, Record<string, {label: string, icon: string, modules: string[]}>> = {
+	maths: {
+		['pure-maths']: { label: 'Pure Maths', icon: '/static/images/pure-maths-icon.svg', modules: ['C3', 'C4'] },
+		stats: { label: 'Statistics', icon: '/static/images/statistics-icon.svg', modules: ['S3', 'S4'] }
+	}
 };

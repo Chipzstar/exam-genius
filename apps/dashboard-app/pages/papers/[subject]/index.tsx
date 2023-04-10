@@ -1,15 +1,16 @@
 import React, { useMemo } from 'react';
 import { ParsedUrlQuery } from 'querystring';
-import Page from '../../layout/Page';
+import Page from '../../../layout/Page';
 import { Button, Card, Group, Text, Title } from '@mantine/core';
 import Image from 'next/image';
-import { SUBJECT_PAPERS } from '../../utils/constants';
+import { PATHS, SUBJECT_PAPERS } from '../../../utils/constants';
 import { GetServerSideProps, InferGetServerSidePropsType } from 'next';
-import { capitalize } from '../../utils/functions';
+import { capitalize } from '../../../utils/functions';
+import Link from 'next/link';
 
 export interface PageQuery extends ParsedUrlQuery {
 	board: string;
-	course: string;
+	subject: string;
 }
 
 export const getServerSideProps: GetServerSideProps<{ query: PageQuery }> = async context => {
@@ -24,17 +25,17 @@ export const getServerSideProps: GetServerSideProps<{ query: PageQuery }> = asyn
 const Course = ({ query }: InferGetServerSidePropsType<typeof getServerSideProps>) => {
 
 	const papers = useMemo(() => {
-		return query?.course ? SUBJECT_PAPERS[query.course] : [];
+		return query?.subject ? Object.entries(SUBJECT_PAPERS[query.subject]) : [];
 	}, [query]);
 
 	return (
-		<Page.Container data_cy='homepage' extraClassNames='flex flex-col py-6'>
+		<Page.Container data_cy='subject-page' extraClassNames='flex flex-col py-6'>
 			<Page.Body>
 				<Title order={2} weight={600} mb='lg'>
-					{capitalize(query.board)} {capitalize(query.course)} 📚
+					{capitalize(query.board)} {capitalize(query.subject)} 📚
 				</Title>
-				{papers.map(paper => (
-					<Card shadow='sm' radius='md' mb="xl">
+				{papers.map(([id, paper]) => (
+					<Card shadow='sm' radius='md' my="lg">
 						<Group grow align='center' p='xl' position='apart'>
 							<Group spacing="xl">
 								<Image src={paper.icon} width={100} height={100} alt='maths-icon' />
@@ -44,9 +45,11 @@ const Course = ({ query }: InferGetServerSidePropsType<typeof getServerSideProps
 								</div>
 							</Group>
 							<div>
-								<Button size='lg'>
-									<Text weight="normal">{'Get Papers'}</Text>
-								</Button>
+								<Link href={`${PATHS.MATHS}/${id}?board=${query.board}`}>
+									<Button size='lg'>
+										<Text weight="normal">{'Get Papers'}</Text>
+									</Button>
+								</Link>
 							</div>
 						</Group>
 					</Card>
