@@ -35,13 +35,13 @@ const Course = ({ query }: InferGetServerSidePropsType<typeof getServerSideProps
 					{capitalize(query.board)} {capitalize(query.subject)} 📚
 				</Title>
 				{papers.map(([id, paper]) => (
-					<Card shadow='sm' radius='md' my="lg">
+					<Card shadow='sm' radius='md' my="lg" key={id}>
 						<Group grow align='center' p='xl' position='apart'>
 							<Group spacing="xl">
 								<Image src={paper.icon} width={100} height={100} alt='maths-icon' />
 								<div className='flex flex-col space-y-4'>
 									<Title order={1} size="h2" weight={500}>{paper.label}</Title>
-									{paper.modules.map(module => <Text size="xl" weight={700}>{module}</Text>)}
+									{paper.modules.map((module, index) => <Text key={index} size="xl" weight={700}>{module}</Text>)}
 								</div>
 							</Group>
 							<div>

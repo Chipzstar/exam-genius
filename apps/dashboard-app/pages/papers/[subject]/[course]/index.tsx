@@ -42,8 +42,8 @@ const Papers = ({ query }: InferGetServerSidePropsType<typeof getServerSideProps
 				<Title order={2} weight={600} mb='lg'>
 					{capitalize(course.label)} 📚
 				</Title>
-				{course.modules.map(module => (
-					<Card shadow='sm' radius='md' my='lg'>
+				{course.modules.map((module, index) => (
+					<Card shadow='sm' radius='md' my='lg' key={index}>
 						<Group grow align='center' p='xl' position='apart'>
 							<Group spacing='xl'>
 								<Image

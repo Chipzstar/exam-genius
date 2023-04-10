@@ -1,5 +1,10 @@
 import { PhoneNumberUtil } from 'google-libphonenumber';
+import * as process from 'process';
 
+export const DOMAIN_URL =
+	process.env.DOPPLER_ENVIRONMENT === 'dev'
+		? `http://${process.env.VERCEL_URL}`
+		: `https://${process.env.VERCEL_URL}`;
 export const requirements = [
 	{ re: /[0-9]/, label: 'Includes number' },
 	{ re: /[a-z]/, label: 'Includes lowercase letter' },
@@ -51,3 +56,14 @@ export const SUBJECT_PAPERS : Record<string, Record<string, {label: string, icon
 		stats: { label: 'Statistics', icon: '/static/images/statistics-icon.svg', modules: ['S3', 'S4'] }
 	}
 };
+
+export const SUBJECT_PRICE_IDS = {
+	maths: 'price_1MvKQDJOIoW2Wbjc4n53kNHm',
+	physics: 'price_1MvLKNJOIoW2WbjcvHxNAJ0o',
+    chemistry: 'price_1MvLJkJOIoW2WbjcHFPFOiOG',
+    biology: 'price_1MvLIbJOIoW2WbjcWFXrYiHO',
+	economics: 'price_1MvLMTJOIoW2Wbjc7C0kOdwc',
+    psychology: 'price_1MvLL0JOIoW2WbjcdjRS8C3h'
+}
+
+// export type PRICE_ID = SUBJECT_PRICE_IDS[keyof SIBJECT_PRICE_IDS]
