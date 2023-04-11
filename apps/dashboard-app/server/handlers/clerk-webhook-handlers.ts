@@ -18,7 +18,9 @@ export const createNewUser = async ({ event, prisma }: { event: ClerkEvent; pris
 		console.log(user);
 		log.info(JSON.stringify(user));
 		console.log('-----------------------------------------------');
+		return user;
 	} catch (err) {
 		console.error(err);
+		throw err;
 	}
 };
