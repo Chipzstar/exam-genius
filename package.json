@@ -11,7 +11,8 @@
     "nx:test:dashboard:local": "nx build dashboard-app && nx serve dashboard-app --prod",
     "nx:build:landing": "nx build landing-page",
     "nx:build:landing:prod": "nx build landing-page --prod --skip-nx-cache",
-    "prisma:generate": "npx prismerge -i prismerge.json && npx prisma generate",
+    "prisma:sync": "npx prismerge -i prismerge.json && npx prisma generate && npx prisma db push",
+    "prisma:generate": "npx prisma generate",
     "prisma:studio": "npx prisma studio",
     "prisma:push": "npx prisma db push",
     "prisma:pull": "npx prisma db pull"
