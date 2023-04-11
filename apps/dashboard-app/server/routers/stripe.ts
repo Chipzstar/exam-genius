@@ -18,7 +18,7 @@ const stripeRouter = createTRPCRouter({
 				const customerId = await getOrCreateStripeCustomerIdForUser({
 					prisma,
 					stripe,
-					userId: Number(auth?.userId)
+					userId: auth?.userId
 				});
 				if (!customerId) {
 					throw new Error('Could not create customer');

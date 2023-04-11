@@ -5,6 +5,7 @@ import stripe from '../../../server/stripe';
 import { getOrCreateStripeCustomerIdForUser } from '../../../server/handlers/stripe-webhook-handlers';
 import { getAuth } from '@clerk/nextjs/server';
 import prisma from '../../../server/prisma';
+import { log } from 'next-axiom';
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
 	// Run the middleware
@@ -13,7 +14,10 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 	if (req.method === 'POST') {
 		try {
 			const auth = getAuth(req);
-			console.log(auth);
+			if (!auth?.userId) {
+				return res.status(401).json({ error: 'Not authenticated' });
+			}
+			log.debug('Auth', auth);
 			const customerId = await getOrCreateStripeCustomerIdForUser({
 				prisma,
 				stripe,
