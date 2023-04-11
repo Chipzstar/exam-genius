@@ -1,0 +1,12 @@
+model User {
+  id                         Int                       @id @default(autoincrement())
+  email                      String                    @unique
+  full_name                  String
+  firstname                  String
+  lastname                   String
+  year                       String?
+  role                       String?
+  stripe_customer_id         String?
+  stripe_subscription_id     String?
+  stripe_subscription_status StripeSubscriptionStatus?
+}

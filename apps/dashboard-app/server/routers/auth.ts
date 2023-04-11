@@ -1,8 +1,8 @@
-import { publicProcedure, router } from '../trpc';
+import { createTRPCRouter, publicProcedure } from '../trpc';
 import { TRPCError } from '@trpc/server';
 import { log } from 'next-axiom';
 
-const authRouter = router({
+const authRouter = createTRPCRouter({
 	clerk: publicProcedure.input(Object).mutation(async ({ input, ctx }) => {
 		try {
 			console.log('-----------------------------------------------');

@@ -7,6 +7,7 @@ import { PATHS, SUBJECT_PAPERS } from '../../../utils/constants';
 import { GetServerSideProps, InferGetServerSidePropsType } from 'next';
 import { capitalize } from '../../../utils/functions';
 import Link from 'next/link';
+import { IconChevronLeft } from '@tabler/icons-react';
 
 export interface PageQuery extends ParsedUrlQuery {
 	board: string;
@@ -23,7 +24,6 @@ export const getServerSideProps: GetServerSideProps<{ query: PageQuery }> = asyn
 };
 
 const Course = ({ query }: InferGetServerSidePropsType<typeof getServerSideProps>) => {
-
 	const papers = useMemo(() => {
 		return query?.subject ? Object.entries(SUBJECT_PAPERS[query.subject]) : [];
 	}, [query]);
@@ -31,26 +31,39 @@ const Course = ({ query }: InferGetServerSidePropsType<typeof getServerSideProps
 	return (
 		<Page.Container data_cy='subject-page' extraClassNames='flex flex-col py-6'>
 			<Page.Body>
-				<Title order={2} weight={600} mb='lg'>
-					{capitalize(query.board)} {capitalize(query.subject)} 📚
-				</Title>
+				<header className='flex items-center justify-between'>
+					<div>
+						<Title order={2} weight={600}>
+							{capitalize(query.board)} {capitalize(query.subject)} 📚
+						</Title>
+					</div>
+					<div className=''>
+						<IconChevronLeft size={32} />
+					</div>
+				</header>
 				{papers.map(([id, paper]) => (
-					<Card shadow='sm' radius='md' my="lg" key={id}>
+					<Card shadow='sm' radius='md' my='lg' key={id}>
 						<Group grow align='center' p='xl' position='apart'>
-							<Group spacing="xl">
+							<Group spacing='xl'>
 								<Image src={paper.icon} width={100} height={100} alt='maths-icon' />
 								<div className='flex flex-col space-y-4'>
-									<Title order={1} size="h2" weight={500}>{paper.label}</Title>
-									{paper.modules.map((module, index) => <Text key={index} size="xl" weight={700}>{module}</Text>)}
+									<Title order={1} size='h2' weight={500}>
+										{paper.label}
+									</Title>
+									{paper.modules.map((module, index) => (
+										<Text key={index} size='xl' weight={700}>
+											{module}
+										</Text>
+									))}
 								</div>
 							</Group>
-							<div>
+							<Group position='right'>
 								<Link href={`${PATHS.MATHS}/${id}?board=${query.board}`}>
 									<Button size='lg'>
-										<Text weight="normal">{'Get Papers'}</Text>
+										<Text weight='normal'>{'Get Papers'}</Text>
 									</Button>
 								</Link>
-							</div>
+							</Group>
 						</Group>
 					</Card>
 				))}

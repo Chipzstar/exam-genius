@@ -9,6 +9,7 @@ import { capitalize } from '../../../../utils/functions';
 import Link from 'next/link';
 import NotFoundTitle from '../../../404';
 import { v4 as uuidv4 } from 'uuid';
+import { IconChevronLeft } from '@tabler/icons-react';
 
 export interface PageQuery extends ParsedUrlQuery {
 	board: string;
@@ -40,10 +41,15 @@ const Papers = ({ query }: InferGetServerSidePropsType<typeof getServerSideProps
 		<Page.Container data_cy='course-page' extraClassNames='flex flex-col py-6'>
 			<Page.Body>
 				<form method='POST' action='/api/stripe/checkout?mode=payment'>
-					<input name="price_id" id="price-id" value={PAPER_PRICE_IDS[query?.subject]} hidden/>
-					<Title order={2} weight={600} mb='lg'>
-						{capitalize(course.label)} 📚
-					</Title>
+					<input name='price_id' id='price-id' value={PAPER_PRICE_IDS[query?.subject]} hidden />
+					<header className='flex items-center justify-between'>
+						<Title order={2} weight={600}>
+							{capitalize(course.label)} 📚
+						</Title>
+						<div className=''>
+							<IconChevronLeft size={32} />
+						</div>
+					</header>
 					{course.modules.map((module, index) => (
 						<Card shadow='sm' radius='md' my='lg' key={index}>
 							<Group grow align='center' p='xl' position='apart'>
@@ -60,7 +66,7 @@ const Papers = ({ query }: InferGetServerSidePropsType<typeof getServerSideProps
 										</Title>
 									</div>
 								</Group>
-								<Stack>
+								<Stack align='end'>
 									<Link href={`${PATHS.VIEW_PAPER}/${uuidv4()}`}>
 										<Box w={200}>
 											<Button type='button' fullWidth size='lg'>

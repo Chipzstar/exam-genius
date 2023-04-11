@@ -25,7 +25,7 @@ const isAuthed = t.middleware(({ next, ctx }) => {
 	});
 });
 // Base router and procedure helpers
-export const router = t.router;
+export const createTRPCRouter = t.router;
 export const publicProcedure = t.procedure;
 // export this procedure to be used anywhere in your application
 export const protectedProcedure = t.procedure.use(isAuthed);

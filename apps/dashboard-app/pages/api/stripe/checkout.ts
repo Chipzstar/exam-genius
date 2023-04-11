@@ -1,7 +1,7 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
 import { cors, runMiddleware } from '../cors';
-import { stripe } from '../../../utils/clients';
 import Stripe from 'stripe';
+import stripe from '../../../server/stripe';
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
 	// Run the middleware
