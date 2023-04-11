@@ -3,10 +3,6 @@ import { notifyError } from '../utils/functions';
 import { useRouter } from 'next/router';
 import { useForm } from '@mantine/form';
 import { IconX } from '@tabler/icons-react';
-import { Anchor, Button, Group, PasswordInput, Stack, Text, TextInput, Title } from '@mantine/core';
-import Link from 'next/link';
-import { PATHS } from '../utils/constants';
-import Image from 'next/image';
 import { SignIn, useSignIn } from '@clerk/nextjs';
 import { LoginUser } from '../utils/types';
 
@@ -79,12 +75,12 @@ const Login = () => {
 				className='flex h-full w-full flex-col'
 				onError={() => console.log(form.errors)}
 			>
-				<Group position='apart' px='xl'>
+				{/*<Group position='apart' px='xl'>
 					<header className='flex flex-row space-x-2'>
 						<Image src='/static/images/logo.svg' width={30} height={30} alt='logo' />
 						<span className='text-2xl font-medium'>Exam Genius</span>
 					</header>
-				</Group>
+				</Group>*/}
 				<div className='flex h-full justify-center items-center'>
 					<SignIn path='/login' routing='hash' signUpUrl='/signup' />
 				</div>
