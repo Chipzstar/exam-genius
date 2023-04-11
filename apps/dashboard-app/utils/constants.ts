@@ -58,12 +58,12 @@ export const SUBJECT_PAPERS : Record<string, Record<string, {label: string, icon
 };
 
 export const SUBJECT_PRICE_IDS = {
-	maths: 'price_1MvKQDJOIoW2Wbjc4n53kNHm',
-	physics: 'price_1MvLKNJOIoW2WbjcvHxNAJ0o',
-    chemistry: 'price_1MvLJkJOIoW2WbjcHFPFOiOG',
-    biology: 'price_1MvLIbJOIoW2WbjcWFXrYiHO',
-	economics: 'price_1MvLMTJOIoW2Wbjc7C0kOdwc',
-    psychology: 'price_1MvLL0JOIoW2WbjcdjRS8C3h'
+	maths: 'price_1MvjudJOIoW2WbjcKwcajMxH',
+	physics: 'price_1Mvjs7JOIoW2Wbjc48NdXWHQ',
+    chemistry: 'price_1MvjsgJOIoW2WbjcesnP9POf',
+    biology: 'price_1MvjtOJOIoW2Wbjc5qXAKufS',
+	economics: 'price_1MvjqDJOIoW2WbjcjMwz7ybj',
+    psychology: 'price_1MvjrQJOIoW2WbjcJ3wbyOOA'
 }
 
 export const PAPER_PRICE_IDS = {

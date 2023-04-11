@@ -1,0 +1,12 @@
+model Paper {
+  id         Int    @id @unique @default(autoincrement())
+  paper_id   String @unique
+  user_id    Int
+  user       User   @relation(fields: [user_id], references: [id], onDelete: Cascade)
+  course_id  Int
+  course     Course @relation(fields: [course_id], references: [id], onDelete: Cascade)
+  name       String
+  paper_code String
+
+  @@index([user_id, course_id])
+}

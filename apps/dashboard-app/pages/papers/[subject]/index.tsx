@@ -1,13 +1,14 @@
 import React, { useMemo } from 'react';
 import { ParsedUrlQuery } from 'querystring';
 import Page from '../../../layout/Page';
-import { Button, Card, Group, Text, Title } from '@mantine/core';
+import { ActionIcon, Button, Card, Group, Text, Title } from '@mantine/core';
 import Image from 'next/image';
 import { PATHS, SUBJECT_PAPERS } from '../../../utils/constants';
 import { GetServerSideProps, InferGetServerSidePropsType } from 'next';
 import { capitalize } from '../../../utils/functions';
 import Link from 'next/link';
-import { IconChevronLeft } from '@tabler/icons-react';
+import { IconArrowLeft } from '@tabler/icons-react';
+import { useRouter } from 'next/router';
 
 export interface PageQuery extends ParsedUrlQuery {
 	board: string;
@@ -24,6 +25,7 @@ export const getServerSideProps: GetServerSideProps<{ query: PageQuery }> = asyn
 };
 
 const Course = ({ query }: InferGetServerSidePropsType<typeof getServerSideProps>) => {
+	const router = useRouter();
 	const papers = useMemo(() => {
 		return query?.subject ? Object.entries(SUBJECT_PAPERS[query.subject]) : [];
 	}, [query]);
@@ -38,7 +40,9 @@ const Course = ({ query }: InferGetServerSidePropsType<typeof getServerSideProps
 						</Title>
 					</div>
 					<div className=''>
-						<IconChevronLeft size={32} />
+						<ActionIcon size={36} onClick={router.back} color="dark" variant="transparent">
+							<IconArrowLeft />
+						</ActionIcon>
 					</div>
 				</header>
 				{papers.map(([id, paper]) => (

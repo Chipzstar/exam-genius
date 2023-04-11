@@ -10,3 +10,14 @@ model User {
   stripe_subscription_id     String?
   stripe_subscription_status StripeSubscriptionStatus?
 }
+
+enum StripeSubscriptionStatus {
+  incomplete
+  incomplete_expired
+  trialing
+  active
+  past_due
+  canceled
+  unpaid
+  paused
+}

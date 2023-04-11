@@ -14,15 +14,26 @@ datasource db {
   relationMode = "prisma"
 }
 
-enum StripeSubscriptionStatus {
-  incomplete
-  incomplete_expired
-  trialing
-  active
-  past_due
-  canceled
-  unpaid
-  paused
+model Course {
+  id        Int     @id @unique @default(autoincrement())
+  course_id String  @unique
+  name      String
+  user_id   Int
+  user      User    @relation(fields: [user_id], references: [id], onDelete: Cascade)
+  Paper     Paper[]
+
+  @@index([user_id])
+}
+
+model Paper {
+  id        Int    @id @unique @default(autoincrement())
+  paper_id  String @unique
+  user_id   Int
+  user      User   @relation(fields: [user_id], references: [id], onDelete: Cascade)
+  course_id Int
+  course    Course @relation(fields: [course_id], references: [id], onDelete: Cascade)
+
+  @@index([user_id, course_id])
 }
 
 model StripeEvent {
@@ -49,4 +60,17 @@ model User {
   stripe_customer_id         String?
   stripe_subscription_id     String?
   stripe_subscription_status StripeSubscriptionStatus?
+  Course                     Course[]
+  Paper                      Paper[]
+}
+
+enum StripeSubscriptionStatus {
+  incomplete
+  incomplete_expired
+  trialing
+  active
+  past_due
+  canceled
+  unpaid
+  paused
 }

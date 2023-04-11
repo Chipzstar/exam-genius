@@ -1,7 +1,7 @@
 import React, { useMemo } from 'react';
 import { ParsedUrlQuery } from 'querystring';
 import Page from '../../../../layout/Page';
-import { Box, Button, Card, Group, Stack, Text, Title } from '@mantine/core';
+import { ActionIcon, Box, Button, Card, Group, Stack, Text, Title } from '@mantine/core';
 import Image from 'next/image';
 import { PAPER_PRICE_IDS, PATHS, SUBJECT_PAPERS } from '../../../../utils/constants';
 import { GetServerSideProps, InferGetServerSidePropsType } from 'next';
@@ -9,7 +9,8 @@ import { capitalize } from '../../../../utils/functions';
 import Link from 'next/link';
 import NotFoundTitle from '../../../404';
 import { v4 as uuidv4 } from 'uuid';
-import { IconChevronLeft } from '@tabler/icons-react';
+import { IconArrowLeft } from '@tabler/icons-react';
+import { useRouter } from 'next/router';
 
 export interface PageQuery extends ParsedUrlQuery {
 	board: string;
@@ -27,6 +28,7 @@ export const getServerSideProps: GetServerSideProps<{ query: PageQuery }> = asyn
 };
 
 const Papers = ({ query }: InferGetServerSidePropsType<typeof getServerSideProps>) => {
+	const router = useRouter();
 	const course = useMemo(() => {
 		if (query?.subject) {
 			return SUBJECT_PAPERS[query.subject][query.course];
@@ -46,8 +48,10 @@ const Papers = ({ query }: InferGetServerSidePropsType<typeof getServerSideProps
 						<Title order={2} weight={600}>
 							{capitalize(course.label)} 📚
 						</Title>
-						<div className=''>
-							<IconChevronLeft size={32} />
+						<div className='flex'>
+							<ActionIcon size={36} onClick={router.back} color="dark" variant="transparent">
+								<IconArrowLeft />
+							</ActionIcon>
 						</div>
 					</header>
 					{course.modules.map((module, index) => (
