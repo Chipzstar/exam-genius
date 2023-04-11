@@ -8,6 +8,7 @@ export const createNewUser = async ({ event, prisma }: { event: ClerkEvent; pris
 		// create the user
 		const user = await prisma.user.create({
 			data: {
+				clerkId: event.data.id,
 				email: payload.email_addresses[0].email_address,
 				full_name: `${payload.first_name} ${payload.last_name}`,
 				firstname: payload.first_name,

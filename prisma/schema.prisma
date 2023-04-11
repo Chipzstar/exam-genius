@@ -15,23 +15,34 @@ datasource db {
 }
 
 model Course {
-  id        Int     @id @unique @default(autoincrement())
-  course_id String  @unique
-  name      String
-  user_id   Int
-  user      User    @relation(fields: [user_id], references: [id], onDelete: Cascade)
-  Paper     Paper[]
+  id         Int       @id @unique @default(autoincrement())
+  course_id  String    @unique
+  name       String
+  code       String?
+  user_id    Int
+  user       User      @relation(fields: [user_id], references: [id], onDelete: Cascade)
+  exam_board ExamBoard
+  year_level Int
+  Paper      Paper[]
 
   @@index([user_id])
 }
 
+enum ExamBoard {
+  edexcel
+  aqa
+  ocr
+}
+
 model Paper {
-  id        Int    @id @unique @default(autoincrement())
-  paper_id  String @unique
-  user_id   Int
-  user      User   @relation(fields: [user_id], references: [id], onDelete: Cascade)
-  course_id Int
-  course    Course @relation(fields: [course_id], references: [id], onDelete: Cascade)
+  id         Int    @id @unique @default(autoincrement())
+  paper_id   String @unique
+  user_id    Int
+  user       User   @relation(fields: [user_id], references: [id], onDelete: Cascade)
+  course_id  Int
+  course     Course @relation(fields: [course_id], references: [id], onDelete: Cascade)
+  name       String
+  paper_code String
 
   @@index([user_id, course_id])
 }
@@ -51,6 +62,7 @@ model StripeEvent {
 
 model User {
   id                         Int                       @id @default(autoincrement())
+  clerkId                    String                    @unique @default("")
   email                      String                    @unique
   full_name                  String
   firstname                  String

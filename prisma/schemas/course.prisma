@@ -1,9 +1,18 @@
 model Course {
-  id        Int    @id @unique @default(autoincrement())
-  course_id String @unique
-  name      String
-  user_id   Int
-  user      User   @relation(fields: [user_id], references: [id], onDelete: Cascade)
+  id         Int       @id @unique @default(autoincrement())
+  course_id  String    @unique
+  name       String
+  code       String?
+  user_id    Int
+  user       User      @relation(fields: [user_id], references: [id], onDelete: Cascade)
+  exam_board ExamBoard
+  year_level Int
 
   @@index([user_id])
+}
+
+enum ExamBoard {
+  edexcel
+  aqa
+  ocr
 }

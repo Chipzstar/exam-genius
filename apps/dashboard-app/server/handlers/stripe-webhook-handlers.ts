@@ -9,42 +9,49 @@ export const getOrCreateStripeCustomerIdForUser = async ({
 }: {
 	stripe: Stripe;
 	prisma: PrismaClient;
-	userId: number;
+	userId: string | null;
 }) => {
-	const user = await prisma.user.findUniqueOrThrow({
-		where: {
-			id: userId
+	try {
+		if (!userId) throw new Error('User not logged in!');
+		const user = await prisma.user.findUniqueOrThrow({
+			where: {
+				clerkId: userId
+			}
+		});
+
+		if (!user) throw new Error('User not found');
+
+		if (user.stripe_customer_id) {
+			return user.stripe_customer_id;
 		}
-	});
 
-	if (!user) throw new Error('User not found');
+		// create a new customer
+		const customer = await stripe.customers.create({
+			email: user.email ?? undefined,
+			name: user.full_name ?? undefined,
+			// use metadata to link this Stripe customer to internal user id
+			metadata: {
+				userId
+			}
+		});
 
-	if (user.stripe_customer_id) {
-		return user.stripe_customer_id;
-	}
+		// update with new customer id
+		const updatedUser = await prisma.user.update({
+			where: {
+				clerkId: userId
+			},
+			data: {
+				stripe_customer_id: customer.id
+			}
+		});
 
-	// create a new customer
-	const customer = await stripe.customers.create({
-		email: user.email ?? undefined,
-		name: user.full_name ?? undefined,
-		// use metadata to link this Stripe customer to internal user id
-		metadata: {
-			userId
+		if (updatedUser.stripe_customer_id) {
+			return updatedUser.stripe_customer_id;
 		}
-	});
-
-	// update with new customer id
-	const updatedUser = await prisma.user.update({
-		where: {
-			id: userId
-		},
-		data: {
-			stripe_customer_id: customer.id
-		}
-	});
-
-	if (updatedUser.stripe_customer_id) {
-		return updatedUser.stripe_customer_id;
+		return customer.id
+	} catch (err) {
+		console.error(err);
+		throw err;
 	}
 };
 
@@ -83,6 +90,7 @@ export const handleSubscriptionCreatedOrUpdated = async ({
 }) => {
 	const subscription = event.data.object as Stripe.Subscription;
 	const userId = subscription.metadata.userId;
+	console.log(userId);
 
 	// update user with subscription data
 	await prisma.user.update({

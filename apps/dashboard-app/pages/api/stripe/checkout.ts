@@ -2,6 +2,9 @@ import type { NextApiRequest, NextApiResponse } from 'next';
 import { cors, runMiddleware } from '../cors';
 import Stripe from 'stripe';
 import stripe from '../../../server/stripe';
+import { getOrCreateStripeCustomerIdForUser } from '../../../server/handlers/stripe-webhook-handlers';
+import { getAuth } from '@clerk/nextjs/server';
+import prisma from '../../../server/prisma';
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
 	// Run the middleware
@@ -9,6 +12,16 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 	const mode = req.query.mode as Stripe.Checkout.SessionCreateParams.Mode;
 	if (req.method === 'POST') {
 		try {
+			const auth = getAuth(req);
+			console.log(auth);
+			const customerId = await getOrCreateStripeCustomerIdForUser({
+				prisma,
+				stripe,
+				userId: auth.userId
+			});
+			if (!customerId) {
+				throw new Error('Could not create customer');
+			}
 			const session = await stripe.checkout.sessions.create({
 				line_items: [
 					{

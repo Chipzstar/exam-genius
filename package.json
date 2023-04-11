@@ -15,7 +15,8 @@
     "prisma:generate": "npx prisma generate",
     "prisma:studio": "npx prisma studio",
     "prisma:push": "npx prisma db push",
-    "prisma:pull": "npx prisma db pull"
+    "prisma:pull": "npx prisma db pull",
+    "create-env-file:dashboard": "doppler secrets download --no-file --format env > ./apps/dashboard-app/.env -p exam-genius -c dev"
   },
   "private": true,
   "dependencies": {
