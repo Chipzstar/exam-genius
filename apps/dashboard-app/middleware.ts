@@ -39,5 +39,5 @@ export const config = {
      * - public folder
      * - public folder
      */
-	matcher: ['/(.*?trpc.*?|(?!static|.*\\..*|_next|favicon.ico).*)', '/((?!api|_next/image|_next/static|favicon.ico).*)']
+	matcher: ['/(.*?trpc.*?|(?!static|.*\\..*|_next|favicon.ico).*)']
 };

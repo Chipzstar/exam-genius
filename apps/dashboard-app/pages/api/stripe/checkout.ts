@@ -23,14 +23,14 @@ export const validateLineItems = async ({
 	mode: Stripe.Checkout.SessionCreateParams.Mode;
 }> => {
 	try {
-		let mode: Stripe.Checkout.SessionCreateParams.Mode = 'payment';
+		const mode: Stripe.Checkout.SessionCreateParams.Mode = 'payment';
 		const line_items: Stripe.Checkout.SessionCreateParams.LineItem[] = [];
 		const user = await prisma.user.findUniqueOrThrow({
 			where: {
 				clerk_id: auth.userId
 			}
 		});
-		// check if the user is already subscribed to a plan
+		/*// check if the user is already subscribed to a plan
 		// if not subscribed add, the Genius Plan product to the checkout
 		if (user.stripe_subscription_status !== 'active') {
 			line_items.push({
@@ -40,7 +40,7 @@ export const validateLineItems = async ({
 			});
 			// set mode of the checkout session to "subscription
 			mode = 'subscription';
-		}
+		}*/
 		line_items.push({
 			price: price_id,
 			quantity: 1
@@ -63,9 +63,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 	if (req.method === 'POST') {
 		try {
 			const auth = getAuth(req);
-			if (!auth?.userId) {
-				return res.status(401).json({ error: 'Not authenticated' });
-			}
+			if (!auth?.userId) return res.status(401).json({ error: 'Not authenticated' });
 			log.debug('Auth', auth);
 			const customer_id = await getOrCreateStripeCustomerIdForUser({
 				prisma,
@@ -82,15 +80,6 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 				success_url: `${req.headers.origin}/?success=true`,
 				cancel_url: `${req.headers.origin}/exam-board?canceled=true`,
 				customer: customer_id,
-				discounts: [
-					{
-						coupon: '5b1TUPNh'
-					}
-				],
-				subscription_data: {
-					description:
-						'Our AI technology is continuously learning, so you will always receive the most accurate predicted exam papers.'
-				},
 				metadata: {
 					userId: auth.userId
 				}

@@ -2,6 +2,7 @@ import type { PrismaClient } from '@prisma/client';
 import type Stripe from 'stripe';
 import Prisma from '@prisma/client';
 import { v4 as uuidv4 } from 'uuid';
+import { nanoid } from 'nanoid'
 
 // retrieves a Stripe customer id for a given user if it exists or creates a new one
 export const getOrCreateStripeCustomerIdForUser = async ({
@@ -56,6 +57,56 @@ export const getOrCreateStripeCustomerIdForUser = async ({
 		throw err;
 	}
 };
+
+export const handleCheckoutSessionComplete = async ({
+	stripe,
+    event,
+    prisma
+} : {
+	stripe: Stripe;
+	event: Stripe.Event;
+	prisma: PrismaClient;
+}) => {
+	try {
+		const session = event.data.object as Stripe.Checkout.Session;
+		const user = await prisma.user.findUniqueOrThrow({
+			where: {
+				clerk_id: session?.metadata?.userId ?? ""
+			}
+		})
+		// uses the session id to retrieve the checkout line items
+		const line_items = await stripe.checkout.sessions.listLineItems(session.id, { limit: 5 })
+		console.log(line_items.data)
+		for (const item of line_items.data) {
+			if (!item.price) throw new Error('No price found');
+			const price = await stripe.prices.retrieve(
+				String(item.price.id)
+			);
+			if (price?.metadata?.subject && price?.metadata?.exam_board) {
+				const exam_board = price.metadata.exam_board as Prisma.ExamBoard;
+				const product_id = price.product;
+				const course = await prisma.course.create({
+					data: {
+						name: price?.nickname ?? "",
+						subject: price.metadata.subject,
+						exam_board,
+						user_id: user.clerk_id,
+						course_id: `course_${nanoid(16)}`,
+						product_id: String(product_id) ?? null,
+						year_level: 13
+					}
+				})
+				console.log('*****************************************');
+				console.log(course)
+				console.log('*****************************************');
+			}
+		}
+		return;
+	} catch (err) {
+		console.error(err);
+		throw err;
+	}
+}
 
 export const handleInvoicePaid = async ({
 	stripe,

@@ -3,6 +3,7 @@ import { buffer } from 'micro';
 import Stripe from 'stripe';
 import { prisma } from '../../../server/prisma';
 import {
+	handleCheckoutSessionComplete,
 	handleInvoicePaid,
 	handleSubscriptionCanceled,
 	handleSubscriptionCreatedOrUpdated
@@ -42,7 +43,11 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 					});
 					break;
 				case 'checkout.session.completed':
-					const checkoutSessionCompleted = event.data.object;
+					await handleCheckoutSessionComplete({
+						stripe,
+						event,
+						prisma
+					});
 					break;
 				case 'checkout.session.expired':
 					const checkoutSessionExpired = event.data.object;
