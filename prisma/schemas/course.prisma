@@ -2,11 +2,12 @@ model Course {
   id         Int       @id @unique @default(autoincrement())
   course_id  String    @unique
   name       String
+  subject    String
   code       String?
-  user_id    Int
-  user       User      @relation(fields: [user_id], references: [id], onDelete: Cascade)
+  user_id    String
+  user       User      @relation(fields: [user_id], references: [clerk_id], onDelete: Cascade)
   exam_board ExamBoard
-  product_id String
+  product_id String?
   year_level Int
 
   @@index([user_id])

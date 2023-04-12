@@ -1,9 +1,9 @@
 import { NextApiRequest, NextApiResponse } from 'next';
 import { buffer } from 'micro';
 import Stripe from 'stripe';
-import prisma from '../../../server/prisma';
+import { prisma } from '../../../server/prisma';
 import {
-	handlePaymentCreatedOrUpdated,
+	handleInvoicePaid,
 	handleSubscriptionCanceled,
 	handleSubscriptionCreatedOrUpdated
 } from '../../../server/handlers/stripe-webhook-handlers';
@@ -21,6 +21,8 @@ const endpointSecret = String(process.env.STRIPE_WEBHOOK_SECRET);
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
 	if (req.method === 'POST') {
+		console.log("PINGING WEBHOOK")
+		console.log('*****************************************');
 		const buf = await buffer(req);
 		const sig = req.headers['stripe-signature'];
 		let event: Stripe.Event;
@@ -32,21 +34,15 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 			}
 			// Handle the event
 			switch (event.type) {
-				case 'checkout.session.async_payment_failed':
-					const checkoutSessionAsyncPaymentFailed = event.data.object;
-					// Then define and call a function to handle the event checkout.session.async_payment_failed
-					break;
-				case 'checkout.session.async_payment_succeeded':
-					await handlePaymentCreatedOrUpdated({
+				case 'invoice.payment_succeeded':
+					await handleInvoicePaid({
+						stripe,
 						event,
 						prisma
 					});
 					break;
 				case 'checkout.session.completed':
-					await handlePaymentCreatedOrUpdated({
-						event,
-						prisma
-					});
+					const checkoutSessionCompleted = event.data.object;
 					break;
 				case 'checkout.session.expired':
 					const checkoutSessionExpired = event.data.object;
@@ -70,7 +66,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 					await handleSubscriptionCanceled({ event, prisma });
 					break;
 				case 'customer.subscription.updated':
-					await handleSubscriptionCanceled({ event, prisma });
+					await handleSubscriptionCreatedOrUpdated({ event, prisma });
 					break;
 				// ... handle other event types
 				default:

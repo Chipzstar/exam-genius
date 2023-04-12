@@ -8,10 +8,13 @@ import { useLocalStorage } from '@mantine/hooks';
 getStripe(process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY).then(r => console.log('Stripe loaded', r));
 
 const ExamBoard = () => {
-	const [board, setBoard] = useState('');
-	const [price_id, setPriceId] = useLocalStorage<string>({
-		key: 'priceId',
-		defaultValue: '',
+	const [subject, setSubject] = useLocalStorage<string>({
+		key: 'subject',
+		defaultValue: ''
+	});
+	const [board, setBoard] = useLocalStorage<string>({
+		key: 'board',
+		defaultValue: ''
 	});
 
 	React.useEffect(() => {
@@ -34,7 +37,8 @@ const ExamBoard = () => {
 			</header>
 			<Page.Body extraClassNames='justify-center'>
 				<form action='/api/stripe/checkout?mode=payment' method='POST' className="pb-10">
-					<input name="price_id" id="price-id" value={price_id} hidden/>
+					<input name="exam_board" id="exam-board" value={board} hidden/>
+					<input name="subject" id="subject" value={subject} hidden/>
 					<Radio.Group name='board' value={board} onChange={setBoard}>
 						<SimpleGrid cols={3}>
 							<ExamBoardCard value='aqa' src='/static/images/aqa-icon.svg' />

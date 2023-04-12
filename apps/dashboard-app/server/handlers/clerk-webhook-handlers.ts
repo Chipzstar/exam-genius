@@ -1,6 +1,7 @@
 import type { PrismaClient } from '@prisma/client';
 import { ClerkEvent } from '../../utils/types';
 import { log } from 'next-axiom';
+import { v4 as uuidv4 } from 'uuid';
 
 export const createNewUser = async ({ event, prisma }: { event: ClerkEvent; prisma: PrismaClient }) => {
 	try {
@@ -8,7 +9,8 @@ export const createNewUser = async ({ event, prisma }: { event: ClerkEvent; pris
 		// create the user
 		const user = await prisma.user.create({
 			data: {
-				clerkId: event.data.id,
+				clerkId: uuidv4(),
+				clerk_id: event.data.id,
 				email: payload.email_addresses[0].email_address,
 				full_name: `${payload.first_name} ${payload.last_name}`,
 				firstname: payload.first_name,
