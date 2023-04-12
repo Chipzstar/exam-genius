@@ -57,9 +57,6 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 	// let mode = req.query.mode as Stripe.Checkout.SessionCreateParams.Mode;
 	const { exam_board, subject } = req.body;
 	const price_id = SUBJECT_STRIPE_IDS[subject][exam_board]
-	console.log("-----------------------------------------")
-	console.log("PRICE_ID", price_id)
-	console.log("-----------------------------------------")
 	if (req.method === 'POST') {
 		try {
 			const auth = getAuth(req);

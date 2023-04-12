@@ -30,31 +30,25 @@ const Login = () => {
 					identifier: values.email,
 					password: values.password
 				});
-				console.log('-----------------------------------------------');
-				console.log(result);
-				console.log('-----------------------------------------------');
 				if (result.status === 'complete' && !!result.createdSessionId) {
-					console.log('Login Success');
 					// @ts-ignore
 					await setActive({ session: result.createdSessionId });
 					await router.replace('/');
 					return;
 				} else {
-					console.log('Login Failed');
 					// Something went wrong
 					if (result.status === 'needs_identifier') {
 						form.setFieldError('email', 'Email is incorrect');
 					} else if (result.status === 'needs_first_factor') {
 						form.setFieldError('password', 'Password is incorrect');
 					} else {
-						notifyError('login-failure', 'Password is incorrect', <IconX />);
+						notifyError('login-failure', 'Password is incorrect', <IconX size={20} />);
 					}
 				}
 				setLoading(false);
 			} catch (error) {
 				setLoading(false);
 				notifyError('login-failure', error.error?.message ?? error.message, <IconX />);
-				console.log(error);
 			}
 		},
 		[router, signIn, setActive]
@@ -69,12 +63,7 @@ const Login = () => {
 
 	return (
 		<div className='h-screen w-full overflow-x-hidden bg-white p-5'>
-			<form
-				data-cy='login-form'
-				onSubmit={form.onSubmit(handleSignIn)}
-				className='flex h-full w-full flex-col'
-				onError={() => console.log(form.errors)}
-			>
+			<form data-cy='login-form' onSubmit={form.onSubmit(handleSignIn)} className='flex h-full w-full flex-col'>
 				{/*<Group position='apart' px='xl'>
 					<header className='flex flex-row space-x-2'>
 						<Image src='/static/images/logo.svg' width={30} height={30} alt='logo' />

@@ -35,7 +35,6 @@ const stripeRouter = createTRPCRouter({
 					success_url: `${req.headers.origin}/?success=true`,
 					cancel_url: `${req.headers.origin}/exam-board?canceled=true`
 				});
-				console.log(session);
 				return session.url;
 			} catch (err) {
 				console.error(err);

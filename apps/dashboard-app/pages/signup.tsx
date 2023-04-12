@@ -56,7 +56,6 @@ export function Signup() {
 				router.push(PATHS.HOME);
 			} catch (error) {
 				setLoading(false);
-				console.log('Signup Failed');
 				notifyError('signup-failure', 'Signup failed. Please try again', <IconX size={20} />);
 			}
 		},
@@ -77,7 +76,6 @@ export function Signup() {
 				// Prepare the verification process for the email address.
 				// This method will send a one-time code to the email address supplied to the current sign-up.
 				await signUp.prepareEmailAddressVerification();
-				console.log('Showing code form...');
 				showCodeForm(true);
 				setLoading(false);
 				notifySuccess(

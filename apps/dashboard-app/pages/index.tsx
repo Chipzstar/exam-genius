@@ -4,7 +4,6 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { PATHS } from '../utils/constants';
 import { trpc } from '../utils/trpc';
-import { useEffect } from 'react';
 
 export function Home() {
 	/*const courses = [{
@@ -12,11 +11,7 @@ export function Home() {
 		name: "Edexcel Maths",
 		year_level: 13
 	}]*/
-	const { data: courses }= trpc.course.getCourses.useQuery();
-
-	useEffect(() => {
-		console.log(courses);
-	}, [courses]);
+	const { data: courses } = trpc.course.getCourses.useQuery();
 
 	return (
 		<Page.Container data_cy='homepage' extraClassNames='flex flex-col py-6'>
