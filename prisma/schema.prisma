@@ -22,6 +22,7 @@ model Course {
   user_id    Int
   user       User      @relation(fields: [user_id], references: [id], onDelete: Cascade)
   exam_board ExamBoard
+  product_id String
   year_level Int
   Paper      Paper[]
 

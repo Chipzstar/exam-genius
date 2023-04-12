@@ -3,6 +3,7 @@ import { buffer } from 'micro';
 import Stripe from 'stripe';
 import prisma from '../../../server/prisma';
 import {
+	handlePaymentCreatedOrUpdated,
 	handleSubscriptionCanceled,
 	handleSubscriptionCreatedOrUpdated
 } from '../../../server/handlers/stripe-webhook-handlers';
@@ -36,12 +37,16 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 					// Then define and call a function to handle the event checkout.session.async_payment_failed
 					break;
 				case 'checkout.session.async_payment_succeeded':
-					const checkoutSessionAsyncPaymentSucceeded = event.data.object;
-					// Then define and call a function to handle the event checkout.session.async_payment_succeeded
+					await handlePaymentCreatedOrUpdated({
+						event,
+						prisma
+					});
 					break;
 				case 'checkout.session.completed':
-					const checkoutSessionCompleted = event.data.object;
-					// Then define and call a function to handle the event checkout.session.completed
+					await handlePaymentCreatedOrUpdated({
+						event,
+						prisma
+					});
 					break;
 				case 'checkout.session.expired':
 					const checkoutSessionExpired = event.data.object;
