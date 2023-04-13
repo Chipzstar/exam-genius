@@ -18,7 +18,6 @@ export const createNewUser = async ({ event, prisma }: { event: ClerkEvent; pris
 			}
 		});
 		console.log('-----------------------------------------------');
-		console.log(user);
 		log.debug('New user!!', user);
 		console.log('-----------------------------------------------');
 		return user;
@@ -27,3 +26,21 @@ export const createNewUser = async ({ event, prisma }: { event: ClerkEvent; pris
 		throw err;
 	}
 };
+
+export const deleteUser = async ({ event, prisma }: { event: ClerkEvent; prisma: PrismaClient})=> {
+	try {
+	    const payload = event.data;
+		const user = await prisma.user.delete({
+            where: {
+                clerk_id: payload.id
+            }
+        });
+		console.log('-----------------------------------------------');
+		log.debug('User deleted!!', user);
+		console.log('-----------------------------------------------');
+		return;
+	} catch (err) {
+	    console.error(err)
+		throw err;
+	}
+}

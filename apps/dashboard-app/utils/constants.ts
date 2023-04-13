@@ -1,5 +1,6 @@
 import { PhoneNumberUtil } from 'google-libphonenumber';
 import * as process from 'process';
+import { CourseInfo, ExamBoard, Subject } from './types';
 
 export const DOMAIN_URL =
 	process.env.DOPPLER_ENVIRONMENT === 'dev'
@@ -45,15 +46,308 @@ export const PATHS = {
 	BIOLOGY: '/papers/biology',
 	ECONOMICS: '/papers/economics',
 	PSYCHOLOGY: '/papers/psychology',
-	VIEW_PAPER: '/view-paper',
+	VIEW_PAPER: '/view-paper'
 };
 
 export const AUTH_ROUTES = [PATHS.LOGIN, PATHS.SIGNUP, PATHS.FORGOT_PASSWORD];
 
-export const SUBJECT_PAPERS : Record<string, Record<string, {label: string, icon: string, modules: string[]}>> = {
+export const SUBJECT_PAPERS: Record<
+	Subject,
+	Record<
+		ExamBoard,
+		Record<
+			string,
+			CourseInfo
+		>
+	>
+> = {
 	maths: {
-		['pure-maths']: { label: 'Pure Maths', icon: '/static/images/pure-maths-icon.svg', modules: ['PM1', 'PM2'] },
-		stats: { label: 'Statistics & Mechanics', icon: '/static/images/statistics-icon.svg', modules: ['Statistics & Mechanics'] }
+		edexcel: {
+			['pure-maths']: {
+				label: 'Pure Maths',
+				icon: '/static/images/pure-maths-icon.svg',
+				modules: ['PM1', 'PM2']
+			},
+			stats: {
+				label: 'Statistics & Mechanics',
+				icon: '/static/images/statistics-icon.svg',
+				modules: ['Statistics & Mechanics']
+			}
+		},
+		aqa: {
+			['pure-maths']: {
+				label: 'Pure Maths',
+				icon: '/static/images/pure-maths-icon.svg',
+				modules: ['PM1', 'PM2']
+			},
+			stats: {
+				label: 'Statistics & Mechanics',
+				icon: '/static/images/statistics-icon.svg',
+				modules: ['Statistics & Mechanics']
+			}
+		},
+		ocr: {
+			['pure-maths']: {
+				label: 'Pure Maths',
+				icon: '/static/images/pure-maths-icon.svg',
+				modules: ['PM1', 'PM2']
+			},
+			stats: {
+				label: 'Statistics & Mechanics',
+				icon: '/static/images/statistics-icon.svg',
+				modules: ['Statistics & Mechanics']
+			}
+		}
+	},
+	economics: {
+		edexcel: {
+			microeconomics: {
+				label: 'Paper 1',
+				icon: '/static/images/microeconomics-icon.svg',
+				modules: ['Microeconomics']
+			},
+			macroeconomics: {
+				label: 'Paper 2',
+				icon: '/static/images/macroeconomics-icon.svg',
+				modules: ['Macroeconomics']
+			},
+			themes: {
+				label: 'Paper 3',
+				icon: '/static/images/economics-themes-icon.svg',
+				modules: ['Themes in Economics']
+			}
+		},
+		ocr: {
+			microeconomics: {
+				label: 'Paper 1',
+				icon: '/static/images/microeconomics-icon.svg',
+				modules: ['Microeconomics']
+			},
+			macroeconomics: {
+				label: 'Paper 2',
+				icon: '/static/images/macroeconomics-icon.svg',
+				modules: ['Macroeconomics']
+			},
+			themes: {
+				label: 'Paper 3',
+				icon: '/static/images/economics-themes-icon.svg',
+				modules: ['Themes in Economics']
+			}
+		},
+		aqa: {
+			microeconomics: {
+				label: 'Paper 1',
+				icon: '/static/images/microeconomics-icon.svg',
+				modules: ['Microeconomics']
+			},
+			macroeconomics: {
+				label: 'Paper 2',
+				icon: '/static/images/macroeconomics-icon.svg',
+				modules: ['Macroeconomics']
+			},
+			themes: {
+				label: 'Paper 3',
+				icon: '/static/images/economics-themes-icon.svg',
+				modules: ['Themes in Economics']
+			}
+		}
+	},
+	biology: {
+		aqa: {
+			paper_1: {
+				label: 'Paper 1',
+                icon: '/static/images/biology-icon.svg',
+                modules: ['Paper 1']
+			},
+			paper_2: {
+				label: 'Paper 2',
+                icon: '/static/images/biology-icon.svg',
+                modules: ['Paper 2']
+			},
+			paper_3: {
+                label: 'Paper 3',
+                icon: '/static/images/biology-icon.svg',
+                modules: ['Paper 3']
+            }
+		},
+		ocr: {
+			paper_1: {
+				label: 'Paper 1',
+				icon: '/static/images/biology-icon.svg',
+				modules: ['Paper 1']
+			},
+			paper_2: {
+				label: 'Paper 2',
+				icon: '/static/images/biology-icon.svg',
+				modules: ['Paper 2']
+			},
+			paper_3: {
+				label: 'Paper 3',
+				icon: '/static/images/biology-icon.svg',
+				modules: ['Paper 3']
+			}
+		},
+		edexcel: {
+			paper_1: {
+				label: 'Paper 1',
+				icon: '/static/images/biology-icon.svg',
+				modules: ['Paper 1']
+			},
+			paper_2: {
+				label: 'Paper 2',
+				icon: '/static/images/biology-icon.svg',
+				modules: ['Paper 2']
+			},
+			paper_3: {
+				label: 'Paper 3',
+				icon: '/static/images/biology-icon.svg',
+				modules: ['Paper 3']
+			}
+		}
+	},
+	chemistry: {
+		edexcel: {
+			paper_1: {
+				label: 'Paper 1',
+                icon: '/static/images/chemistry-icon.svg',
+                modules: ['Paper 1']
+			},
+			paper_2: {
+				label: 'Paper 2',
+                icon: '/static/images/chemistry-icon.svg',
+                modules: ['Paper 2']
+			},
+			paper_3: {
+				label: 'Paper 3',
+                icon: '/static/images/chemistry-icon.svg',
+                modules: ['Paper 3']
+			}
+		},
+		aqa: {
+			paper_1: {
+				label: 'Paper 1',
+				icon: '/static/images/chemistry-icon.svg',
+				modules: ['Paper 1']
+			},
+			paper_2: {
+				label: 'Paper 2',
+				icon: '/static/images/chemistry-icon.svg',
+				modules: ['Paper 2']
+			},
+			paper_3: {
+				label: 'Paper 3',
+				icon: '/static/images/chemistry-icon.svg',
+				modules: ['Paper 3']
+			}
+		},
+		ocr: {
+			paper_1: {
+				label: 'Paper 1',
+				icon: '/static/images/chemistry-icon.svg',
+				modules: ['Paper 1']
+			},
+			paper_2: {
+				label: 'Paper 2',
+				icon: '/static/images/chemistry-icon.svg',
+				modules: ['Paper 2']
+			},
+			paper_3: {
+				label: 'Paper 3',
+				icon: '/static/images/chemistry-icon.svg',
+				modules: ['Paper 3']
+			}
+		}
+	},
+	physics: {
+		aqa: {
+			paper_1: {
+				label: 'Paper 1',
+                icon: '/static/images/physics-icon.svg',
+				modules: ['Paper 1']
+			},
+			paper_2: {
+				label: 'Paper 2',
+                icon: '/static/images/physics-icon.svg',
+                modules: ['Paper 2']
+			},
+			paper_3: {
+				label: 'Paper 3',
+                icon: '/static/images/physics-icon.svg',
+                modules: ['Paper 3']
+			}
+		},
+		ocr: {
+			paper_1: {
+				label: 'Paper 1',
+				icon: '/static/images/physics-icon.svg',
+				modules: ['Paper 1']
+			},
+			paper_2: {
+				label: 'Paper 2',
+				icon: '/static/images/physics-icon.svg',
+				modules: ['Paper 2']
+			},
+			paper_3: {
+				label: 'Paper 3',
+				icon: '/static/images/physics-icon.svg',
+				modules: ['Paper 3']
+			}
+		},
+		edexcel: {
+			paper_1: {
+				label: 'Paper 1',
+				icon: '/static/images/physics-icon.svg',
+				modules: ['Paper 1']
+			},
+			paper_2: {
+				label: 'Paper 2',
+				icon: '/static/images/physics-icon.svg',
+				modules: ['Paper 2']
+			},
+			paper_3: {
+				label: 'Paper 3',
+				icon: '/static/images/physics-icon.svg',
+				modules: ['Paper 3']
+			}
+		}
+	},
+	psychology: {
+		edexcel: {
+			paper_1: {
+				label: 'Paper 1',
+                icon: '/static/images/psychology-icon.svg',
+                modules: ['Introductory Topics in Psychology']
+			},
+			paper_2: {
+				label: 'Paper 2',
+                icon: '/static/images/psychology-icon.svg',
+				modules: ['Psychology in Context']
+			}
+		},
+		aqa: {
+			paper_1: {
+				label: 'Paper 1',
+				icon: '/static/images/psychology-icon.svg',
+				modules: ['Introductory Topics in Psychology']
+			},
+			paper_2: {
+				label: 'Paper 2',
+				icon: '/static/images/psychology-icon.svg',
+				modules: ['Psychology in Context']
+			}
+		},
+		ocr: {
+			paper_1: {
+				label: 'Paper 1',
+				icon: '/static/images/psychology-icon.svg',
+				modules: ['Introductory Topics in Psychology']
+			},
+			paper_2: {
+				label: 'Paper 2',
+				icon: '/static/images/psychology-icon.svg',
+				modules: ['Psychology in Context']
+			}
+		}
 	}
 };
 
@@ -68,12 +362,12 @@ export const SUBJECT_STRIPE_IDS = {
 		aqa: 'price_1Mvjs7JOIoW2Wbjc48NdXWHQ',
 		ocr: 'price_1Mw41LJOIoW2Wbjc1whPSsRc'
 	},
-    chemistry: {
+	chemistry: {
 		aqa: 'price_1MvjsgJOIoW2WbjcesnP9POf',
 		edexcel: 'price_1Mw3zGJOIoW2WbjceY3t5SLl',
 		ocr: 'price_1Mw3yAJOIoW2Wbjcpqj3TX3t'
 	},
-    biology: {
+	biology: {
 		aqa: 'price_1MvjtOJOIoW2Wbjc5qXAKufS',
 		edexcel: 'price_1Mw3tNJOIoW2WbjcYbBe8af4',
 		ocr: 'price_1Mw3u1JOIoW2WbjcCinfxGiN'
@@ -83,20 +377,20 @@ export const SUBJECT_STRIPE_IDS = {
 		edexcel: 'price_1Mw45BJOIoW2Wbjccpx1GDJ7',
 		ocr: 'price_1Mw44nJOIoW2WbjcO6diAxi5'
 	},
-    psychology: {
+	psychology: {
 		edexcel: 'price_1MvjrQJOIoW2WbjcJ3wbyOOA',
 		aqa: 'price_1Mw42jJOIoW2WbjcQkXcvRi0',
 		ocr: 'price_1Mw433JOIoW2Wbjc49JK3BjR'
 	}
-}
+};
 
 export const PAPER_PRICE_IDS = {
 	maths: 'price_1MvNNdJOIoW2WbjczSvv3fBH',
 	physics: 'price_1MvNQdJOIoW2WbjczSvv3fBH',
-    chemistry: 'price_1MvNQdJOIoW2WbjczSvv3fBH',
-    biology: 'price_1MvNQdJOIoW2WbjczSvv3fBH',
-    economics: 'price_1MvNQdJOIoW2WbjczSvv3fBH',
-    psychology: 'price_1MvNQdJOIoW2WbjczSvv3fBH'
-}
+	chemistry: 'price_1MvNQdJOIoW2WbjczSvv3fBH',
+	biology: 'price_1MvNQdJOIoW2WbjczSvv3fBH',
+	economics: 'price_1MvNQdJOIoW2WbjczSvv3fBH',
+	psychology: 'price_1MvNQdJOIoW2WbjczSvv3fBH'
+};
 
 // export type PRICE_ID = SUBJECT_PRICE_IDS[keyof SUBJECT_PRICE_IDS]

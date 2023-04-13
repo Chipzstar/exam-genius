@@ -1,7 +1,7 @@
 import React, { useMemo } from 'react';
 import { ParsedUrlQuery } from 'querystring';
 import Page from '../../../layout/Page';
-import { ActionIcon, Button, Card, Group, Text, Title } from '@mantine/core';
+import { Button, Card, Group, Text, Title } from '@mantine/core';
 import Image from 'next/image';
 import { PATHS, SUBJECT_PAPERS } from '../../../utils/constants';
 import { GetServerSideProps, InferGetServerSidePropsType } from 'next';
@@ -9,10 +9,11 @@ import { capitalize } from '../../../utils/functions';
 import Link from 'next/link';
 import { IconArrowLeft } from '@tabler/icons-react';
 import { useRouter } from 'next/router';
+import { ExamBoard, Subject } from '../../../utils/types';
 
 export interface PageQuery extends ParsedUrlQuery {
-	board: string;
-	subject: string;
+	board: ExamBoard;
+	subject: Subject;
 }
 
 export const getServerSideProps: GetServerSideProps<{ query: PageQuery }> = async context => {
@@ -27,7 +28,13 @@ export const getServerSideProps: GetServerSideProps<{ query: PageQuery }> = asyn
 const Course = ({ query }: InferGetServerSidePropsType<typeof getServerSideProps>) => {
 	const router = useRouter();
 	const papers = useMemo(() => {
-		return query?.subject ? Object.entries(SUBJECT_PAPERS[query.subject]) : [];
+		if (query?.subject && query?.board) {
+			const paper = SUBJECT_PAPERS[query.subject][query.board];
+			console.log(paper)
+			return Object.entries(paper);
+		} else {
+			return [];
+		}
 	}, [query]);
 
 	return (
@@ -39,22 +46,22 @@ const Course = ({ query }: InferGetServerSidePropsType<typeof getServerSideProps
 							{capitalize(query.board)} {capitalize(query.subject)} 📚
 						</Title>
 					</div>
-					<div className=''>
-						<ActionIcon size={36} onClick={router.back} color="dark" variant="transparent">
-							<IconArrowLeft />
-						</ActionIcon>
+					<div className='flex'>
+						<Button leftIcon={<IconArrowLeft />} size="md" variant="outline" onClick={router.back}>
+							Back
+						</Button>
 					</div>
 				</header>
-				{papers.map(([id, paper]) => (
+				{papers.map(([id, course]) => (
 					<Card shadow='sm' radius='md' my='lg' key={id}>
 						<Group grow align='center' p='xl' position='apart'>
 							<Group spacing='xl'>
-								<Image src={paper.icon} width={100} height={100} alt='maths-icon' />
+								<Image src={course.icon} width={100} height={100} alt='maths-icon' />
 								<div className='flex flex-col space-y-4'>
 									<Title order={1} size='h2' weight={500}>
-										{paper.label}
+										{course.label}
 									</Title>
-									{paper.modules.map((module, index) => (
+									{course.modules.map((module, index) => (
 										<Text key={index} size='xl' weight={700}>
 											{module}
 										</Text>
@@ -62,7 +69,7 @@ const Course = ({ query }: InferGetServerSidePropsType<typeof getServerSideProps
 								</div>
 							</Group>
 							<Group position='right'>
-								<Link href={`${PATHS.MATHS}/${id}?board=${query.board}`}>
+								<Link href={`${PATHS.PAPERS}/${query.subject}/${id}?board=${query.board}`}>
 									<Button size='lg'>
 										<Text weight='normal'>{'Get Papers'}</Text>
 									</Button>

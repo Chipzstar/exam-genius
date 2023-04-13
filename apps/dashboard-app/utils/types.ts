@@ -63,3 +63,13 @@ export interface PrivateMetadata {}
 export interface PublicMetadata {}
 
 export interface UnsafeMetadata {}
+
+export type Subject = "maths" | "biology" | "chemistry" | "physics" | "economics" | "psychology";
+
+export type ExamBoard = "edexcel" | "aqa" | "ocr"
+
+export type CourseInfo = {
+  label: string;
+  icon: string;
+  modules: string[];
+}

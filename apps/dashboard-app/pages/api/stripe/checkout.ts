@@ -25,11 +25,6 @@ export const validateLineItems = async ({
 	try {
 		const mode: Stripe.Checkout.SessionCreateParams.Mode = 'payment';
 		const line_items: Stripe.Checkout.SessionCreateParams.LineItem[] = [];
-		const user = await prisma.user.findUniqueOrThrow({
-			where: {
-				clerk_id: auth.userId
-			}
-		});
 		/*// check if the user is already subscribed to a plan
 		// if not subscribed add, the Genius Plan product to the checkout
 		if (user.stripe_subscription_status !== 'active') {
