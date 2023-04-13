@@ -5,7 +5,7 @@ import { log } from 'next-axiom';
 import { buffer } from 'micro';
 import { Webhook, WebhookRequiredHeaders } from 'svix';
 import { IncomingHttpHeaders } from 'http';
-import { createNewUser, deleteUser } from '../../../server/handlers/clerk-webhook-handlers';
+import { createNewUser, deleteUser, updateUser } from '../../../server/handlers/clerk-webhook-handlers';
 import { ClerkEvent } from '../../../utils/types';
 
 // Disable the bodyParser so we can access the raw
@@ -38,6 +38,9 @@ export default async function handler(req: NextApiRequestWithSvixRequiredHeaders
 			switch (event.type) {
 				case 'user.created':
 					await createNewUser({event, prisma})
+					break;
+				case 'user.updated':
+					await updateUser({event, prisma})
 					break;
 				case 'user.deleted':
 					await deleteUser({event, prisma})
