@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { Box, Button, Radio, SimpleGrid, Text, Title } from '@mantine/core';
 import Page from '../layout/Page';
 import ExamBoardCard from '../components/ExamBoardCard';
@@ -18,6 +18,7 @@ const ExamBoard = () => {
 	});
 
 	React.useEffect(() => {
+		setBoard('')
 		// Check to see if this is a redirect back from Checkout
 		const query = new URLSearchParams(window.location.search);
 		if (query.get('success')) {
@@ -46,7 +47,6 @@ const ExamBoard = () => {
 							<ExamBoardCard value='ocr' src='/static/images/ocr-icon.svg'/>
 						</SimpleGrid>
 					</Radio.Group>
-
 					<Box w={140} sx={{
 						position: 'absolute',
 						right: 20,
