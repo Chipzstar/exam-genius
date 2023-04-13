@@ -64,12 +64,6 @@ const Login = () => {
 	return (
 		<div className='h-screen w-full overflow-x-hidden bg-white p-5'>
 			<form data-cy='login-form' onSubmit={form.onSubmit(handleSignIn)} className='flex h-full w-full flex-col'>
-				{/*<Group position='apart' px='xl'>
-					<header className='flex flex-row space-x-2'>
-						<Image src='/static/images/logo.svg' width={30} height={30} alt='logo' />
-						<span className='text-2xl font-medium'>Exam Genius</span>
-					</header>
-				</Group>*/}
 				<div className='flex h-full justify-center items-center'>
 					<SignIn path='/login' routing='hash' signUpUrl='/signup' />
 				</div>

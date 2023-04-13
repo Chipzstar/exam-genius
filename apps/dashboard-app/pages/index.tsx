@@ -7,11 +7,6 @@ import { trpc } from '../utils/trpc';
 import { useViewportSize } from '@mantine/hooks';
 
 export function Home() {
-	/*const courses = [{
-		subject: "maths",
-		name: "Edexcel Maths",
-		year_level: 13
-	}]*/
 	const { height } = useViewportSize();
 	const { data: courses } = trpc.course.getCourses.useQuery();
 

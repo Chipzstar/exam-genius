@@ -353,34 +353,34 @@ export const SUBJECT_PAPERS: Record<
 
 export const SUBJECT_STRIPE_IDS = {
 	maths: {
-		edexcel: 'price_1MvjudJOIoW2WbjcKwcajMxH',
+		edexcel: 'price_1MwPn1JOIoW2WbjcxUfvTXK8',
 		aqa: 'price_1Mw3w7JOIoW2WbjcdaoC1OhI',
-		ocr: 'price_1Mw3wPJOIoW2WbjcABWfLoa3'
+		ocr: 'price_1MwPneJOIoW2WbjcMeKhILIE'
 	},
 	physics: {
-		edexcel: 'price_1Mw3znJOIoW2WbjcvJSshzHe',
-		aqa: 'price_1Mvjs7JOIoW2Wbjc48NdXWHQ',
-		ocr: 'price_1Mw41LJOIoW2Wbjc1whPSsRc'
+		edexcel: 'price_1MwPhXJOIoW2WbjcTzW1nSve',
+		aqa: 'price_1MwPgdJOIoW2Wbjc3nX7RBfi',
+		ocr: 'price_1MwPgvJOIoW2Wbjcu1cXvuOx'
 	},
 	chemistry: {
-		aqa: 'price_1MvjsgJOIoW2WbjcesnP9POf',
-		edexcel: 'price_1Mw3zGJOIoW2WbjceY3t5SLl',
+		aqa: 'price_1MwPj2JOIoW2WbjcIFNBJDFH',
+		edexcel: 'price_1MwPkTJOIoW2WbjcFTKw2yV8',
 		ocr: 'price_1Mw3yAJOIoW2Wbjcpqj3TX3t'
 	},
 	biology: {
-		aqa: 'price_1MvjtOJOIoW2Wbjc5qXAKufS',
-		edexcel: 'price_1Mw3tNJOIoW2WbjcYbBe8af4',
+		aqa: 'price_1MwPpSJOIoW2WbjcyDaUyhst',
+		edexcel: 'price_1MwPp2JOIoW2Wbjczl6fmsn8',
 		ocr: 'price_1Mw3u1JOIoW2WbjcCinfxGiN'
 	},
 	economics: {
-		aqa: 'price_1MvjqDJOIoW2WbjcjMwz7ybj',
-		edexcel: 'price_1Mw45BJOIoW2Wbjccpx1GDJ7',
+		aqa: 'price_1MwPsmJOIoW2WbjchvRGzqbk',
+		edexcel: 'price_1MwPqrJOIoW2WbjcIgj6Xost',
 		ocr: 'price_1Mw44nJOIoW2WbjcO6diAxi5'
 	},
 	psychology: {
-		edexcel: 'price_1MvjrQJOIoW2WbjcJ3wbyOOA',
+		edexcel: 'price_1MwQ0XJOIoW2WbjceLcjAeMQ',
 		aqa: 'price_1Mw42jJOIoW2WbjcQkXcvRi0',
-		ocr: 'price_1Mw433JOIoW2Wbjc49JK3BjR'
+		ocr: 'price_1MwQ1WJOIoW2WbjcEVA5vuyv'
 	}
 };
 
