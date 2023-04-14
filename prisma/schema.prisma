@@ -18,16 +18,25 @@ model Course {
   id         Int       @id @unique @default(autoincrement())
   course_id  String    @unique
   name       String
-  subject    String
+  subject    Subject
   code       String?
   user_id    String
   user       User      @relation(fields: [user_id], references: [clerk_id], onDelete: Cascade)
   exam_board ExamBoard
   product_id String?
   year_level Int
-  Paper      Paper[]
+  papers     Paper[]
 
   @@index([user_id])
+}
+
+enum Subject {
+  maths
+  biology
+  chemistry
+  economics
+  physics
+  psychology
 }
 
 enum ExamBoard {
@@ -37,14 +46,19 @@ enum ExamBoard {
 }
 
 model Paper {
-  id         Int    @id @unique @default(autoincrement())
-  paper_id   String @unique
-  user_id    String
-  user       User   @relation(fields: [user_id], references: [clerk_id], onDelete: Cascade)
-  course_id  Int
-  course     Course @relation(fields: [course_id], references: [id], onDelete: Cascade)
-  name       String
-  paper_code String
+  id           Int       @id @unique @default(autoincrement())
+  paper_id     String    @unique
+  paper_code   String
+  paper_number Int       @default(1)
+  name         String
+  subject      Subject
+  exam_board   ExamBoard
+  unit_name    String
+  user_id      String
+  user         User      @relation(fields: [user_id], references: [clerk_id], onDelete: Cascade)
+  course_id    String
+  course       Course    @relation(fields: [course_id], references: [course_id], onDelete: Cascade)
+  content      String    @db.Text
 
   @@index([user_id, course_id])
 }

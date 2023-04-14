@@ -2,15 +2,25 @@ model Course {
   id         Int       @id @unique @default(autoincrement())
   course_id  String    @unique
   name       String
-  subject    String
+  subject    Subject
   code       String?
   user_id    String
   user       User      @relation(fields: [user_id], references: [clerk_id], onDelete: Cascade)
   exam_board ExamBoard
   product_id String?
   year_level Int
+  papers     Paper[]
 
   @@index([user_id])
+}
+
+enum Subject {
+  maths
+  biology
+  chemistry
+  economics
+  physics
+  psychology
 }
 
 enum ExamBoard {

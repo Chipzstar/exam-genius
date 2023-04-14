@@ -1,0 +1,7 @@
+Prompt 1:
+
+`I am training a GPT model on past paper A-level ${subject} ${course} questions. ` +
+							`The training data will use A-level ${exam_board} ${subject} ${course} past paper questions from the years 2018 to 2022.` +
+							'Generate a new sample past paper for the upcoming exam in June based on this past paper and mark scheme provided above. ' +
+							`The past paper should have ${num_questions} questions. The total mark for this paper is ${num_marks}. Questions should all be relevant to the ` +
+							`${exam_board} ${course} specification.`

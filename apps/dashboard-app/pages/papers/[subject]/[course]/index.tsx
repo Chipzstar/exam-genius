@@ -8,7 +8,6 @@ import { GetServerSideProps, InferGetServerSidePropsType } from 'next';
 import { capitalize } from '../../../../utils/functions';
 import Link from 'next/link';
 import NotFoundTitle from '../../../404';
-import { v4 as uuidv4 } from 'uuid';
 import { IconArrowLeft } from '@tabler/icons-react';
 import { useRouter } from 'next/router';
 
@@ -38,8 +37,7 @@ const Papers = ({ query }: InferGetServerSidePropsType<typeof getServerSideProps
 		{ title: 'Papers', href: `${PATHS.PAPERS}/${query.subject}/${query.course}?board=${query.board}`}
 	].map((item, index) => (
 		<Anchor href={item.href} key={index} weight={router.pathname === item.href ? 'bold' : 'normal'}>
-			{' '}
-			{item.title}{' '}
+			{item.title}
 		</Anchor>
 	));
 
@@ -86,7 +84,7 @@ const Papers = ({ query }: InferGetServerSidePropsType<typeof getServerSideProps
 									</div>
 								</div>
 								<Stack align='end'>
-									<Link href={`${PATHS.VIEW_PAPER}/${uuidv4()}`}>
+									<Link href={`${PATHS.VIEW_PAPER}/paper_aJ$L7TkWdG5Wv9i89`}>
 										<Box w={200}>
 											<Button type='button' fullWidth size='lg'>
 												<Text weight='normal'>View Paper</Text>

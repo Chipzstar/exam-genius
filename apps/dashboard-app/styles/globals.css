@@ -5,6 +5,22 @@
 @import url("https://fonts.googleapis.com/css2?family=Poppins&display=swap");
 @import './styles.css';
 
+@layer base {
+    ul, ol {
+        list-style: revert;
+    }
+    ol > ol {
+        list-style: lower-alpha;
+    }
+    ol > li {
+        padding: 10px 0
+
+    }
+    ol > ol > li {
+        margin-left: 20px;
+    }
+}
+
 html {
     -webkit-text-size-adjust: 100%;
     line-height: 1.5;
