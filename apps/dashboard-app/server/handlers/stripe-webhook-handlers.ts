@@ -1,8 +1,8 @@
 import type { PrismaClient } from '@prisma/client';
-import type Stripe from 'stripe';
 import Prisma from '@prisma/client';
+import type Stripe from 'stripe';
 import { v4 as uuidv4 } from 'uuid';
-import { nanoid } from 'nanoid'
+import { nanoid } from 'nanoid';
 
 // retrieves a Stripe customer id for a given user if it exists or creates a new one
 export const getOrCreateStripeCustomerIdForUser = async ({
@@ -83,12 +83,13 @@ export const handleCheckoutSessionComplete = async ({
 				String(item.price.id)
 			);
 			if (price?.metadata?.subject && price?.metadata?.exam_board) {
+				const subject = price.metadata.subject as Prisma.Subject;
 				const exam_board = price.metadata.exam_board as Prisma.ExamBoard;
 				const product_id = price.product;
 				const course = await prisma.course.create({
 					data: {
 						name: price?.nickname ?? "",
-						subject: price.metadata.subject,
+						subject,
 						exam_board,
 						user_id: user.clerk_id,
 						course_id: `course_${nanoid(16)}`,
@@ -138,12 +139,13 @@ export const handleInvoicePaid = async ({
 			console.log(price)
 			console.log("-----------------------------------------")
 			if (price?.metadata?.subject && price?.metadata?.exam_board) {
+				const subject = price.metadata.subject as Prisma.Subject;
 				const exam_board = price.metadata.exam_board as Prisma.ExamBoard;
 				const product_id = price.product;
 				const course = await prisma.course.create({
 					data: {
 						name: price?.nickname ?? "",
-						subject: price.metadata.subject,
+						subject,
 						exam_board,
 						user_id: user.clerk_id,
 						course_id: `course_${uuidv4()}`,
