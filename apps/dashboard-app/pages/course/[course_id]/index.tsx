@@ -13,7 +13,7 @@ import { trpc } from '../../../utils/trpc';
 import NotFoundTitle from '../../404';
 
 export interface PageQuery extends ParsedUrlQuery {
-	id: string;
+	course_id: string;
 }
 
 export const getServerSideProps: GetServerSideProps<{ query: PageQuery }> = async context => {
@@ -28,7 +28,7 @@ export const getServerSideProps: GetServerSideProps<{ query: PageQuery }> = asyn
 
 const Course = ({ query }: InferGetServerSidePropsType<typeof getServerSideProps>) => {
 	const router = useRouter();
-	const { data: course } = trpc.course.getSingleCourse.useQuery({ id: query.id });
+	const { data: course } = trpc.course.getSingleCourse.useQuery({ id: query.course_id });
 
 	const course_info = useMemo(() => {
 		if (course) {

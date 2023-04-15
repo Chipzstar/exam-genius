@@ -1,4 +1,17 @@
-import { ActionIcon, Button, Card, LoadingOverlay, ScrollArea, Space, Stack, Text, Title } from '@mantine/core';
+import {
+	ActionIcon,
+	Button,
+	Card,
+	createStyles,
+	getStylesRef,
+	LoadingOverlay,
+	Pagination,
+	ScrollArea,
+	Space,
+	Stack,
+	Text,
+	Title
+} from '@mantine/core';
 import Page from '../../../../layout/Page';
 import React from 'react';
 import { useViewportSize } from '@mantine/hooks';
@@ -6,10 +19,45 @@ import { IconArrowLeft, IconDownload } from '@tabler/icons-react';
 import { useRouter } from 'next/router';
 import { trpc } from '../../../../utils/trpc';
 import parse from 'html-react-parser';
+import { GetServerSideProps } from 'next';
+import { ParsedUrlQuery } from 'querystring';
+import { Carousel } from '@mantine/carousel';
 
-const PaperID = () => {
+export interface PageQuery extends ParsedUrlQuery {
+	course_id: string;
+	unit: string;
+	paper: string;
+}
+
+export const getServerSideProps: GetServerSideProps<{ query: PageQuery }> = async context => {
+	const query = context.query as PageQuery;
+	console.log(query);
+	return {
+		props: {
+			query
+		}
+	};
+};
+
+const useStyles = createStyles(() => ({
+	controls: {
+		ref: getStylesRef('controls'),
+		transition: 'opacity 150ms ease',
+		opacity: 0,
+	},
+	root: {
+		'&:hover': {
+			[`& .${getStylesRef('controls')}`]: {
+				opacity: 1,
+			},
+		},
+	},
+}));
+
+const Paper = ({ query }) => {
+	const { classes } = useStyles();
 	const router = useRouter();
-	const { isLoading, data: paper } = trpc.paper.getSinglePaper.useQuery({ paperId: String(router.query.id) });
+	const { isLoading, data: papers } = trpc.paper.getCoursePapers.useQuery({ courseId: query.course_id }, { initialData: []});
 	const { height } = useViewportSize();
 	return (
 		<Page.Container>
@@ -20,38 +68,44 @@ const PaperID = () => {
 			</header>
 			<Page.Body extraClassNames='justify-center w-full'>
 				<ScrollArea.Autosize
-					mah={height - 100}
-					p='lg'
+					mah={height - 200}
+					p='sm'
 					styles={theme => ({
 						root: {
-							padding: theme.spacing.xl
+
 						}
 					})}
 				>
-					<Card shadow='sm' radius='md' className='w-full' p='xl' mih={height - 200}>
-						<div className='flex justify-center'>
-							<Stack justify='center' align='center'>
-								<Title color='brand'>ExamGenius</Title>
-								{paper?.name && (
-									<Text size={30} weight={600}>
-										{paper.name}
-									</Text>
-								)}
-								<Text size='lg'>AI Predicted Paper</Text>
-							</Stack>
-							<ActionIcon
-								size='xl'
-								sx={{
-									position: 'absolute',
-									right: 25
-								}}
-							>
-								<IconDownload />
-							</ActionIcon>
-						</div>
-						<Space h='xl' />
-						<div className='h-full p-6'>
-							{/*<ol type='1'>
+					<Carousel mx='auto' classNames={classes}>
+						{!papers ? (
+							<LoadingOverlay visible={isLoading} />
+						) : (
+							papers.map((paper, index) => (
+								<Carousel.Slide key={index}>
+									<Card shadow='sm' radius='md' className='w-full' p='xl' mih={height - 300}>
+										<div className='flex justify-center'>
+											<Stack justify='center' align='center'>
+												<Title color='brand'>ExamGenius</Title>
+												{paper.name && (
+													<Text size={30} weight={600}>
+														{paper.name}
+													</Text>
+												)}
+												<Text size='lg'>AI Predicted Paper</Text>
+											</Stack>
+											<ActionIcon
+												size='xl'
+												sx={{
+													position: 'absolute',
+													right: 25
+												}}
+											>
+												<IconDownload />
+											</ActionIcon>
+										</div>
+										<Space h='xl' />
+										<div className='h-full px-6 py-2'>
+											{/*<ol type='1'>
 								<li>For the function f(x) = x^3 - 9x^2 + 14x - 6, find:</li>
 								<ol type='a'>
 									<li>The values of x for which f(x) = 0.</li>
@@ -125,13 +179,18 @@ const PaperID = () => {
 									<li>The values of x and y if A has the form [x y 0; 0 x y; 0 0 z].</li>
 								</ol>
 							</ol>*/}
-							{!paper ? <LoadingOverlay visible={isLoading} /> : parse(paper.content, { trim: true })}
-						</div>
-					</Card>
+											{parse(paper.content, { trim: true })}
+										</div>
+									</Card>
+								</Carousel.Slide>
+							))
+						)}
+					</Carousel>
 				</ScrollArea.Autosize>
+				<Pagination total={papers.length} position="center"/>
 			</Page.Body>
 		</Page.Container>
 	);
 };
 
-export default PaperID;
+export default Paper;

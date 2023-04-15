@@ -17,12 +17,11 @@ export interface PageQuery extends ParsedUrlQuery {
 	board: ExamBoard;
 	subject: Subject;
 	unit: string;
-	id: string;
+	course_id: string;
 }
 
 export const getServerSideProps: GetServerSideProps<{ query: PageQuery }> = async context => {
 	const query = context.query as PageQuery;
-	console.log(query)
 	return {
 		props: {
 			query
@@ -32,15 +31,15 @@ export const getServerSideProps: GetServerSideProps<{ query: PageQuery }> = asyn
 
 const Papers = ({ query }: InferGetServerSidePropsType<typeof getServerSideProps>) => {
 	const router = useRouter();
-	const { data: course } = trpc.course.getSingleCourse.useQuery({id: query.id});
-	const { data : papers } = trpc.paper.getCoursePapers.useQuery({courseId: query.id});
+	const { data: course } = trpc.course.getSingleCourse.useQuery({id: query.course_id});
+	const { data : papers } = trpc.paper.getCoursePapers.useQuery({courseId: query.course_id});
 	const items = [
 		{ title: 'Courses', href: PATHS.HOME },
 		{
 			title: genCourseOrPaperName(query.subject, query.board),
-			href: `${PATHS.COURSE}/${query.id}?subject=${query.subject}&board=${query.board}`
+			href: `${PATHS.COURSE}/${query.course_id}?subject=${query.subject}&board=${query.board}`
 		},
-		{ title: capitalize(query.unit), href: `${PATHS.COURSE}/${query.id}/${query.unit}?subject=${query.subject}&board=${query.board}`}
+		{ title: capitalize(query.unit), href: `${PATHS.COURSE}/${query.course_id}/${query.unit}?subject=${query.subject}&board=${query.board}`}
 	].map((item, index) => (
 		<Anchor href={item.href} key={index} weight={router.pathname === item.href ? 'bold' : 'normal'}>
 			{item.title}
@@ -63,7 +62,7 @@ const Papers = ({ query }: InferGetServerSidePropsType<typeof getServerSideProps
 					<input name="exam_board" id="exam-board" value={query.board} hidden/>
 					<input name="subject" id="subject" value={query.subject} hidden/>
 					<input name="unit" id="unit" value={query.unit} hidden/>
-					<input name="course_id" id="course-id" value={query.id} hidden/>
+					<input name="course_id" id="course-id" value={query.course_id} hidden/>
 					<header className='flex items-center justify-between'>
 						<Title order={2} weight={600}>
 							{capitalize(course_info.label)} 📚
@@ -91,10 +90,10 @@ const Papers = ({ query }: InferGetServerSidePropsType<typeof getServerSideProps
 									</div>
 								</div>
 								<Stack align='end'>
-									<Link href={`${router.asPath}/${paper}`}>
+									<Link href={`${PATHS.COURSE}/${query.course_id}/${query.unit}/${paper}?subject=${query.subject}&board=${query.board}`}>
 										<Box w={200}>
 											<Button type='button' fullWidth size='lg'>
-												<Text weight='normal'>View Paper</Text>
+												<Text weight='normal'>View Papers</Text>
 											</Button>
 										</Box>
 									</Link>
