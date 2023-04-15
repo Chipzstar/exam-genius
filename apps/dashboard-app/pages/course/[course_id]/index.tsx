@@ -1,7 +1,7 @@
 import React, { useMemo } from 'react';
 import { ParsedUrlQuery } from 'querystring';
 import Page from '../../../layout/Page';
-import { Button, Card, Group, Text, Title } from '@mantine/core';
+import { Button, Card, Group, LoadingOverlay, Text, Title } from '@mantine/core';
 import Image from 'next/image';
 import { PATHS, SUBJECT_PAPERS } from '../../../utils/constants';
 import { GetServerSideProps, InferGetServerSidePropsType } from 'next';
@@ -10,7 +10,6 @@ import Link from 'next/link';
 import { IconArrowLeft } from '@tabler/icons-react';
 import { useRouter } from 'next/router';
 import { trpc } from '../../../utils/trpc';
-import NotFoundTitle from '../../404';
 
 export interface PageQuery extends ParsedUrlQuery {
 	course_id: string;
@@ -28,7 +27,7 @@ export const getServerSideProps: GetServerSideProps<{ query: PageQuery }> = asyn
 
 const Course = ({ query }: InferGetServerSidePropsType<typeof getServerSideProps>) => {
 	const router = useRouter();
-	const { data: course } = trpc.course.getSingleCourse.useQuery({ id: query.course_id });
+	const { isLoading, data: course } = trpc.course.getSingleCourse.useQuery({ id: query.course_id });
 
 	const course_info = useMemo(() => {
 		if (course) {
@@ -40,7 +39,7 @@ const Course = ({ query }: InferGetServerSidePropsType<typeof getServerSideProps
 	}, [course]);
 
 	return !course ? (
-		<NotFoundTitle />
+		<LoadingOverlay visible={isLoading}/>
 	) : (
 		<Page.Container data_cy='subject-page' extraClassNames='flex flex-col py-6'>
 			<Page.Body>

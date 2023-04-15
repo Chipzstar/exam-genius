@@ -74,7 +74,7 @@ export const handleCheckoutSessionComplete = async ({
 	try {
 		const session = event.data.object as Stripe.Checkout.Session;
 		console.log('-----------------------------------------------');
-		console.log(session)
+		console.log(session?.metadata)
 		console.log('-----------------------------------------------');
 		const checkout_type = String(session?.metadata?.type);
 		const user = await prisma.user.findUniqueOrThrow({
@@ -111,7 +111,9 @@ export const handleCheckoutSessionComplete = async ({
 					console.log('*****************************************');
 				}
 			} else {
-				if (['exam_board', 'subject', 'unit', 'course_id'].every(key => Object.keys(price?.metadata).includes(key))) {
+				console.log('-----------------------------------------------');
+				// @ts-ignore
+				if (session && ['exam_board', 'subject', 'unit', 'course_id'].every(key => Object.keys(session?.metadata).includes(key))) {
 					const subject = price.metadata.subject as Prisma.Subject;
 					const exam_board = price.metadata.exam_board as Prisma.ExamBoard;
 					const unit_name = price.metadata.unit as string;

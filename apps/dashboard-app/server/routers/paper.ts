@@ -12,7 +12,6 @@ const paperRouter = createTRPCRouter({
 				}
 			});
 			console.log('-----------------------------------------------');
-			console.log(papers);
 			return papers;
 		} catch (err) {
 			console.error(err);
@@ -33,7 +32,6 @@ const paperRouter = createTRPCRouter({
 						paper_id: input.paperId
 					}
 				});
-				console.log(paper);
 				console.log('-----------------------------------------------');
 				return paper;
 			} catch (err) {

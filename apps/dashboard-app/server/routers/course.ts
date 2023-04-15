@@ -23,15 +23,12 @@ const courseRouter = createTRPCRouter({
 		)
 		.query(async ({ input, ctx }) => {
 			try {
-				const course = await ctx.prisma.course.findFirstOrThrow({
+				return await ctx.prisma.course.findFirstOrThrow({
 					where: {
 						user_id: ctx.auth.userId,
 						course_id: input.id
 					}
 				});
-				console.log(course);
-				console.log('-----------------------------------------------');
-				return course;
 			} catch (err) {
 				console.error(err);
 				throw new TRPCError({

@@ -1,13 +1,12 @@
 import React, { useMemo } from 'react';
 import { ParsedUrlQuery } from 'querystring';
 import Page from '../../../../layout/Page';
-import { Anchor, Box, Breadcrumbs, Button, Card, Group, Stack, Text, Title } from '@mantine/core';
+import { Anchor, Box, Breadcrumbs, Button, Card, Group, LoadingOverlay, Stack, Text, Title } from '@mantine/core';
 import Image from 'next/image';
 import { CHECKOUT_TYPE, PAPER_PRICE_IDS, PATHS, SUBJECT_PAPERS } from '../../../../utils/constants';
 import { GetServerSideProps, InferGetServerSidePropsType } from 'next';
 import { capitalize, genCourseOrPaperName } from '../../../../utils/functions';
 import Link from 'next/link';
-import NotFoundTitle from '../../../404';
 import { IconArrowLeft } from '@tabler/icons-react';
 import { useRouter } from 'next/router';
 import { trpc } from '../../../../utils/trpc';
@@ -31,7 +30,7 @@ export const getServerSideProps: GetServerSideProps<{ query: PageQuery }> = asyn
 
 const Papers = ({ query }: InferGetServerSidePropsType<typeof getServerSideProps>) => {
 	const router = useRouter();
-	const { data: course } = trpc.course.getSingleCourse.useQuery({id: query.course_id});
+	const { isLoading, data: course } = trpc.course.getSingleCourse.useQuery({id: query.course_id});
 	const { data : papers } = trpc.paper.getCoursePapers.useQuery({courseId: query.course_id});
 	const items = [
 		{ title: 'Courses', href: PATHS.HOME },
@@ -51,7 +50,7 @@ const Papers = ({ query }: InferGetServerSidePropsType<typeof getServerSideProps
 	}, [course]);
 
 	return !course_info ? (
-		<NotFoundTitle />
+		<LoadingOverlay visible={isLoading}/>
 	) : (
 		<Page.Container data_cy='course-page' extraClassNames='flex flex-col py-6'>
 			<Page.Body>
