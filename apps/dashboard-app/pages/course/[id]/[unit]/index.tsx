@@ -3,22 +3,26 @@ import { ParsedUrlQuery } from 'querystring';
 import Page from '../../../../layout/Page';
 import { Anchor, Box, Breadcrumbs, Button, Card, Group, Stack, Text, Title } from '@mantine/core';
 import Image from 'next/image';
-import { PAPER_PRICE_IDS, PATHS, SUBJECT_PAPERS } from '../../../../utils/constants';
+import { CHECKOUT_TYPE, PAPER_PRICE_IDS, PATHS, SUBJECT_PAPERS } from '../../../../utils/constants';
 import { GetServerSideProps, InferGetServerSidePropsType } from 'next';
-import { capitalize } from '../../../../utils/functions';
+import { capitalize, genCourseOrPaperName } from '../../../../utils/functions';
 import Link from 'next/link';
 import NotFoundTitle from '../../../404';
 import { IconArrowLeft } from '@tabler/icons-react';
 import { useRouter } from 'next/router';
+import { trpc } from '../../../../utils/trpc';
+import { ExamBoard, Subject } from '../../../../utils/types';
 
 export interface PageQuery extends ParsedUrlQuery {
-	board: string;
-	subject: string;
-	course: string;
+	board: ExamBoard;
+	subject: Subject;
+	unit: string;
+	id: string;
 }
 
 export const getServerSideProps: GetServerSideProps<{ query: PageQuery }> = async context => {
 	const query = context.query as PageQuery;
+	console.log(query)
 	return {
 		props: {
 			query
@@ -28,38 +32,41 @@ export const getServerSideProps: GetServerSideProps<{ query: PageQuery }> = asyn
 
 const Papers = ({ query }: InferGetServerSidePropsType<typeof getServerSideProps>) => {
 	const router = useRouter();
+	const { data: course } = trpc.course.getSingleCourse.useQuery({id: query.id});
+	const { data : papers } = trpc.paper.getCoursePapers.useQuery({courseId: query.id});
 	const items = [
 		{ title: 'Courses', href: PATHS.HOME },
 		{
-			title: `${capitalize(query.board)} - ${capitalize(query.subject)}`,
-			href: `${PATHS.PAPERS}/${query.subject}?board=${query.board}`
+			title: genCourseOrPaperName(query.subject, query.board),
+			href: `${PATHS.COURSE}/${query.id}?subject=${query.subject}&board=${query.board}`
 		},
-		{ title: 'Papers', href: `${PATHS.PAPERS}/${query.subject}/${query.course}?board=${query.board}`}
+		{ title: capitalize(query.unit), href: `${PATHS.COURSE}/${query.id}/${query.unit}?subject=${query.subject}&board=${query.board}`}
 	].map((item, index) => (
 		<Anchor href={item.href} key={index} weight={router.pathname === item.href ? 'bold' : 'normal'}>
 			{item.title}
 		</Anchor>
 	));
 
-	const course = useMemo(() => {
-		if (query?.subject) {
-			return SUBJECT_PAPERS[query.subject][query.board][query.course];
-		} else {
-			return null;
-		}
-	}, [query]);
+	const course_info = useMemo(() => {
+		return course ? SUBJECT_PAPERS[course.subject][course.exam_board][query.unit] : null;
+	}, [course]);
 
-	return !course ? (
+	return !course_info ? (
 		<NotFoundTitle />
 	) : (
 		<Page.Container data_cy='course-page' extraClassNames='flex flex-col py-6'>
 			<Page.Body>
 				<Breadcrumbs mb='lg'>{items}</Breadcrumbs>
 				<form method='POST' action='/api/stripe/checkout?mode=payment'>
-					<input name='price_id' id='price-id' value={PAPER_PRICE_IDS[query?.subject]} hidden />
+					<input name="type" id="type" value={CHECKOUT_TYPE.PAPER} hidden/>
+					<input name='price_id' id='price-id' value={PAPER_PRICE_IDS[query.subject]} hidden />
+					<input name="exam_board" id="exam-board" value={query.board} hidden/>
+					<input name="subject" id="subject" value={query.subject} hidden/>
+					<input name="unit" id="unit" value={query.unit} hidden/>
+					<input name="course_id" id="course-id" value={query.id} hidden/>
 					<header className='flex items-center justify-between'>
 						<Title order={2} weight={600}>
-							{capitalize(course.label)} 📚
+							{capitalize(course_info.label)} 📚
 						</Title>
 						<div className='flex'>
 							<Button leftIcon={<IconArrowLeft />} size='md' variant='outline' onClick={router.back}>
@@ -67,7 +74,7 @@ const Papers = ({ query }: InferGetServerSidePropsType<typeof getServerSideProps
 							</Button>
 						</div>
 					</header>
-					{course.modules.map((module, index) => (
+					{course_info.papers.map((module, index) => (
 						<Card shadow='sm' radius='md' my='lg' key={index}>
 							<Group grow align='center' p='xl' position='apart'>
 								<div className='flex grow items-center space-x-8'>
@@ -84,7 +91,7 @@ const Papers = ({ query }: InferGetServerSidePropsType<typeof getServerSideProps
 									</div>
 								</div>
 								<Stack align='end'>
-									<Link href={`${PATHS.VIEW_PAPER}/paper_aJ$L7TkWdG5Wv9i89`}>
+									<Link href={`${router.asPath}/${module}/papers`}>
 										<Box w={200}>
 											<Button type='button' fullWidth size='lg'>
 												<Text weight='normal'>View Paper</Text>

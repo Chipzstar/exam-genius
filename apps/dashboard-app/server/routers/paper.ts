@@ -43,6 +43,30 @@ const paperRouter = createTRPCRouter({
 					message: 'Oops, something went wrong' + err.message
 				});
 			}
+		}),
+	getCoursePapers: protectedProcedure
+		.input(
+			z.object({
+				courseId: z.string()
+			})
+		)
+		.query(async ({ input, ctx }) => {
+			try {
+				const papers = await ctx.prisma.paper.findMany({
+					where: {
+						course_id: input.courseId
+					}
+				});
+				console.log('-----------------------------------------------');
+				console.log(papers);
+				return papers;
+			} catch (err) {
+				console.error(err);
+				throw new TRPCError({
+					code: 'INTERNAL_SERVER_ERROR',
+					message: 'Oops, something went wrong' + err.message
+				});
+			}
 		})
 });
 

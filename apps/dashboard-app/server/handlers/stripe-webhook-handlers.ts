@@ -3,6 +3,9 @@ import Prisma from '@prisma/client';
 import type Stripe from 'stripe';
 import { v4 as uuidv4 } from 'uuid';
 import { nanoid } from 'nanoid';
+import { log } from 'next-axiom';
+import { CHECKOUT_TYPE } from '../../utils/constants';
+import { genCourseOrPaperName } from '../../utils/functions';
 
 // retrieves a Stripe customer id for a given user if it exists or creates a new one
 export const getOrCreateStripeCustomerIdForUser = async ({
@@ -69,6 +72,10 @@ export const handleCheckoutSessionComplete = async ({
 }) => {
 	try {
 		const session = event.data.object as Stripe.Checkout.Session;
+		console.log('-----------------------------------------------');
+		console.log(session)
+		console.log('-----------------------------------------------');
+		const checkout_type = String(session?.metadata?.type);
 		const user = await prisma.user.findUniqueOrThrow({
 			where: {
 				clerk_id: session?.metadata?.userId ?? ""
@@ -76,30 +83,55 @@ export const handleCheckoutSessionComplete = async ({
 		})
 		// uses the session id to retrieve the checkout line items
 		const line_items = await stripe.checkout.sessions.listLineItems(session.id, { limit: 5 })
-		console.log(line_items.data)
+		log.debug("line items", line_items.data)
 		for (const item of line_items.data) {
 			if (!item.price) throw new Error('No price found');
 			const price = await stripe.prices.retrieve(
 				String(item.price.id)
 			);
-			if (price?.metadata?.subject && price?.metadata?.exam_board) {
-				const subject = price.metadata.subject as Prisma.Subject;
-				const exam_board = price.metadata.exam_board as Prisma.ExamBoard;
-				const product_id = price.product;
-				const course = await prisma.course.create({
-					data: {
-						name: price?.nickname ?? "",
-						subject,
-						exam_board,
-						user_id: user.clerk_id,
-						course_id: `course_${nanoid(16)}`,
-						product_id: String(product_id) ?? null,
-						year_level: 13
-					}
-				})
-				console.log('*****************************************');
-				console.log(course)
-				console.log('*****************************************');
+			if (checkout_type === CHECKOUT_TYPE.COURSE) {
+				if (price?.metadata?.subject && price?.metadata?.exam_board) {
+					const subject = price.metadata.subject as Prisma.Subject;
+					const exam_board = price.metadata.exam_board as Prisma.ExamBoard;
+					const product_id = price.product;
+					const course = await prisma.course.create({
+						data: {
+							name: price?.nickname ?? genCourseOrPaperName(subject, exam_board),
+							subject,
+							exam_board,
+							user_id: user.clerk_id,
+							course_id: `course_${nanoid(16)}`,
+							product_id: String(product_id) ?? null,
+							year_level: 13
+						}
+					})
+					console.log('*****************************************');
+					console.log("NEW COURSE", course)
+					console.log('*****************************************');
+				}
+			} else {
+				if (['exam_board', 'subject', 'unit', 'course_id'].every(key => Object.keys(price?.metadata).includes(key))) {
+					const subject = price.metadata.subject as Prisma.Subject;
+					const exam_board = price.metadata.exam_board as Prisma.ExamBoard;
+					const unit_name = price.metadata.unit as string;
+					const course_id = price.metadata.course_id as string;
+					const paper = await prisma.paper.create({
+						data: {
+							name: genCourseOrPaperName(subject, exam_board, unit_name),
+							user_id: user.clerk_id,
+							subject,
+							exam_board,
+							course_id: course_id,
+							unit_name: unit_name,
+							paper_id: `paper_${nanoid(16)}`,
+							paper_code: `PM02/A2`,
+							content: ""
+						}
+					})
+					console.log('*****************************************');
+					console.log("NEW PAPER:", paper)
+					console.log('*****************************************');
+				}
 			}
 		}
 		return;

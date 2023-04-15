@@ -4,6 +4,7 @@ import Page from '../layout/Page';
 import ExamBoardCard from '../components/ExamBoardCard';
 import getStripe from '../utils/loadStripe';
 import { useLocalStorage } from '@mantine/hooks';
+import { CHECKOUT_TYPE } from '../utils/constants';
 
 getStripe(process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY).then(r => console.log('Stripe loaded', r));
 
@@ -38,6 +39,7 @@ const ExamBoard = () => {
 			</header>
 			<Page.Body extraClassNames='justify-center'>
 				<form action='/api/stripe/checkout?mode=payment' method='POST' className="pb-10">
+					<input name="type" id="type" value={CHECKOUT_TYPE.COURSE} hidden/>
 					<input name="exam_board" id="exam-board" value={board} hidden/>
 					<input name="subject" id="subject" value={subject} hidden/>
 					<Radio.Group name='board' value={board} onChange={setBoard}>

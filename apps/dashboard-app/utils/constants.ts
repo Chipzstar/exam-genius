@@ -34,6 +34,7 @@ export const PATHS = {
 	SIGNUP: '/signup',
 	LOGIN: '/login',
 	PAPERS: '/papers',
+	COURSE: '/course',
 	FORGOT_PASSWORD: 'forgot-password',
 	SETTINGS: '/settings',
 	ONBOARDING: '/onboarding',
@@ -66,36 +67,36 @@ export const SUBJECT_PAPERS: Record<
 			['pure-maths']: {
 				label: 'Pure Maths',
 				icon: '/static/images/pure-maths-icon.svg',
-				modules: ['PM1', 'PM2']
+				papers: ['PM1', 'PM2']
 			},
 			stats: {
 				label: 'Statistics & Mechanics',
 				icon: '/static/images/statistics-icon.svg',
-				modules: ['Statistics & Mechanics']
+				papers: ['Statistics & Mechanics']
 			}
 		},
 		aqa: {
 			['pure-maths']: {
 				label: 'Pure Maths',
 				icon: '/static/images/pure-maths-icon.svg',
-				modules: ['PM1', 'PM2']
+				papers: ['PM1', 'PM2']
 			},
 			stats: {
 				label: 'Statistics & Mechanics',
 				icon: '/static/images/statistics-icon.svg',
-				modules: ['Statistics & Mechanics']
+				papers: ['Statistics & Mechanics']
 			}
 		},
 		ocr: {
 			['pure-maths']: {
 				label: 'Pure Maths',
 				icon: '/static/images/pure-maths-icon.svg',
-				modules: ['PM1', 'PM2']
+				papers: ['PM1', 'PM2']
 			},
 			stats: {
 				label: 'Statistics & Mechanics',
 				icon: '/static/images/statistics-icon.svg',
-				modules: ['Statistics & Mechanics']
+				papers: ['Statistics & Mechanics']
 			}
 		}
 	},
@@ -104,51 +105,51 @@ export const SUBJECT_PAPERS: Record<
 			microeconomics: {
 				label: 'Paper 1',
 				icon: '/static/images/microeconomics-icon.svg',
-				modules: ['Microeconomics']
+				papers: ['Microeconomics']
 			},
 			macroeconomics: {
 				label: 'Paper 2',
 				icon: '/static/images/macroeconomics-icon.svg',
-				modules: ['Macroeconomics']
+				papers: ['Macroeconomics']
 			},
 			themes: {
 				label: 'Paper 3',
 				icon: '/static/images/economics-themes-icon.svg',
-				modules: ['Themes in Economics']
+				papers: ['Themes in Economics']
 			}
 		},
 		ocr: {
 			microeconomics: {
 				label: 'Paper 1',
 				icon: '/static/images/microeconomics-icon.svg',
-				modules: ['Microeconomics']
+				papers: ['Microeconomics']
 			},
 			macroeconomics: {
 				label: 'Paper 2',
 				icon: '/static/images/macroeconomics-icon.svg',
-				modules: ['Macroeconomics']
+				papers: ['Macroeconomics']
 			},
 			themes: {
 				label: 'Paper 3',
 				icon: '/static/images/economics-themes-icon.svg',
-				modules: ['Themes in Economics']
+				papers: ['Themes in Economics']
 			}
 		},
 		aqa: {
 			microeconomics: {
 				label: 'Paper 1',
 				icon: '/static/images/microeconomics-icon.svg',
-				modules: ['Microeconomics']
+				papers: ['Microeconomics']
 			},
 			macroeconomics: {
 				label: 'Paper 2',
 				icon: '/static/images/macroeconomics-icon.svg',
-				modules: ['Macroeconomics']
+				papers: ['Macroeconomics']
 			},
 			themes: {
 				label: 'Paper 3',
 				icon: '/static/images/economics-themes-icon.svg',
-				modules: ['Themes in Economics']
+				papers: ['Themes in Economics']
 			}
 		}
 	},
@@ -157,51 +158,51 @@ export const SUBJECT_PAPERS: Record<
 			paper_1: {
 				label: 'Paper 1',
                 icon: '/static/images/biology-icon.svg',
-                modules: ['Paper 1']
+                papers: ['Paper 1']
 			},
 			paper_2: {
 				label: 'Paper 2',
                 icon: '/static/images/biology-icon.svg',
-                modules: ['Paper 2']
+                papers: ['Paper 2']
 			},
 			paper_3: {
                 label: 'Paper 3',
                 icon: '/static/images/biology-icon.svg',
-                modules: ['Paper 3']
+                papers: ['Paper 3']
             }
 		},
 		ocr: {
 			paper_1: {
 				label: 'Paper 1',
 				icon: '/static/images/biology-icon.svg',
-				modules: ['Paper 1']
+				papers: ['Paper 1']
 			},
 			paper_2: {
 				label: 'Paper 2',
 				icon: '/static/images/biology-icon.svg',
-				modules: ['Paper 2']
+				papers: ['Paper 2']
 			},
 			paper_3: {
 				label: 'Paper 3',
 				icon: '/static/images/biology-icon.svg',
-				modules: ['Paper 3']
+				papers: ['Paper 3']
 			}
 		},
 		edexcel: {
 			paper_1: {
 				label: 'Paper 1',
 				icon: '/static/images/biology-icon.svg',
-				modules: ['Paper 1']
+				papers: ['Paper 1']
 			},
 			paper_2: {
 				label: 'Paper 2',
 				icon: '/static/images/biology-icon.svg',
-				modules: ['Paper 2']
+				papers: ['Paper 2']
 			},
 			paper_3: {
 				label: 'Paper 3',
 				icon: '/static/images/biology-icon.svg',
-				modules: ['Paper 3']
+				papers: ['Paper 3']
 			}
 		}
 	},
@@ -210,51 +211,51 @@ export const SUBJECT_PAPERS: Record<
 			paper_1: {
 				label: 'Paper 1',
                 icon: '/static/images/chemistry-icon.svg',
-                modules: ['Paper 1']
+                papers: ['Paper 1']
 			},
 			paper_2: {
 				label: 'Paper 2',
                 icon: '/static/images/chemistry-icon.svg',
-                modules: ['Paper 2']
+                papers: ['Paper 2']
 			},
 			paper_3: {
 				label: 'Paper 3',
                 icon: '/static/images/chemistry-icon.svg',
-                modules: ['Paper 3']
+                papers: ['Paper 3']
 			}
 		},
 		aqa: {
 			paper_1: {
 				label: 'Paper 1',
 				icon: '/static/images/chemistry-icon.svg',
-				modules: ['Paper 1']
+				papers: ['Paper 1']
 			},
 			paper_2: {
 				label: 'Paper 2',
 				icon: '/static/images/chemistry-icon.svg',
-				modules: ['Paper 2']
+				papers: ['Paper 2']
 			},
 			paper_3: {
 				label: 'Paper 3',
 				icon: '/static/images/chemistry-icon.svg',
-				modules: ['Paper 3']
+				papers: ['Paper 3']
 			}
 		},
 		ocr: {
 			paper_1: {
 				label: 'Paper 1',
 				icon: '/static/images/chemistry-icon.svg',
-				modules: ['Paper 1']
+				papers: ['Paper 1']
 			},
 			paper_2: {
 				label: 'Paper 2',
 				icon: '/static/images/chemistry-icon.svg',
-				modules: ['Paper 2']
+				papers: ['Paper 2']
 			},
 			paper_3: {
 				label: 'Paper 3',
 				icon: '/static/images/chemistry-icon.svg',
-				modules: ['Paper 3']
+				papers: ['Paper 3']
 			}
 		}
 	},
@@ -263,51 +264,51 @@ export const SUBJECT_PAPERS: Record<
 			paper_1: {
 				label: 'Paper 1',
                 icon: '/static/images/physics-icon.svg',
-				modules: ['Paper 1']
+				papers: ['Paper 1']
 			},
 			paper_2: {
 				label: 'Paper 2',
                 icon: '/static/images/physics-icon.svg',
-                modules: ['Paper 2']
+                papers: ['Paper 2']
 			},
 			paper_3: {
 				label: 'Paper 3',
                 icon: '/static/images/physics-icon.svg',
-                modules: ['Paper 3']
+                papers: ['Paper 3']
 			}
 		},
 		ocr: {
 			paper_1: {
 				label: 'Paper 1',
 				icon: '/static/images/physics-icon.svg',
-				modules: ['Paper 1']
+				papers: ['Paper 1']
 			},
 			paper_2: {
 				label: 'Paper 2',
 				icon: '/static/images/physics-icon.svg',
-				modules: ['Paper 2']
+				papers: ['Paper 2']
 			},
 			paper_3: {
 				label: 'Paper 3',
 				icon: '/static/images/physics-icon.svg',
-				modules: ['Paper 3']
+				papers: ['Paper 3']
 			}
 		},
 		edexcel: {
 			paper_1: {
 				label: 'Paper 1',
 				icon: '/static/images/physics-icon.svg',
-				modules: ['Paper 1']
+				papers: ['Paper 1']
 			},
 			paper_2: {
 				label: 'Paper 2',
 				icon: '/static/images/physics-icon.svg',
-				modules: ['Paper 2']
+				papers: ['Paper 2']
 			},
 			paper_3: {
 				label: 'Paper 3',
 				icon: '/static/images/physics-icon.svg',
-				modules: ['Paper 3']
+				papers: ['Paper 3']
 			}
 		}
 	},
@@ -316,36 +317,36 @@ export const SUBJECT_PAPERS: Record<
 			paper_1: {
 				label: 'Paper 1',
                 icon: '/static/images/psychology-icon.svg',
-                modules: ['Introductory Topics in Psychology']
+                papers: ['Introductory Topics in Psychology']
 			},
 			paper_2: {
 				label: 'Paper 2',
                 icon: '/static/images/psychology-icon.svg',
-				modules: ['Psychology in Context']
+				papers: ['Psychology in Context']
 			}
 		},
 		aqa: {
 			paper_1: {
 				label: 'Paper 1',
 				icon: '/static/images/psychology-icon.svg',
-				modules: ['Introductory Topics in Psychology']
+				papers: ['Introductory Topics in Psychology']
 			},
 			paper_2: {
 				label: 'Paper 2',
 				icon: '/static/images/psychology-icon.svg',
-				modules: ['Psychology in Context']
+				papers: ['Psychology in Context']
 			}
 		},
 		ocr: {
 			paper_1: {
 				label: 'Paper 1',
 				icon: '/static/images/psychology-icon.svg',
-				modules: ['Introductory Topics in Psychology']
+				papers: ['Introductory Topics in Psychology']
 			},
 			paper_2: {
 				label: 'Paper 2',
 				icon: '/static/images/psychology-icon.svg',
-				modules: ['Psychology in Context']
+				papers: ['Psychology in Context']
 			}
 		}
 	}
@@ -386,11 +387,14 @@ export const SUBJECT_STRIPE_IDS = {
 
 export const PAPER_PRICE_IDS = {
 	maths: 'price_1MvNNdJOIoW2WbjczSvv3fBH',
-	physics: 'price_1MvNQdJOIoW2WbjczSvv3fBH',
-	chemistry: 'price_1MvNQdJOIoW2WbjczSvv3fBH',
-	biology: 'price_1MvNQdJOIoW2WbjczSvv3fBH',
-	economics: 'price_1MvNQdJOIoW2WbjczSvv3fBH',
-	psychology: 'price_1MvNQdJOIoW2WbjczSvv3fBH'
+	biology: 'price_1MvNOjJOIoW2WbjcbYDUUaOB',
+	physics: 'price_1MvO29JOIoW2WbjcNntTUGiK',
+	chemistry: 'price_1MvO1OJOIoW2WbjcMeRew6KK',
+	economics: 'price_1MvfMiJOIoW2WbjcGygjhICM',
+	psychology: 'price_1MvfNLJOIoW2Wbjc5Y7iJV3p'
 };
 
-// export type PRICE_ID = SUBJECT_PRICE_IDS[keyof SUBJECT_PRICE_IDS]
+export enum CHECKOUT_TYPE {
+	COURSE="course",
+	PAPER="paper"
+}

@@ -1,5 +1,6 @@
 import { createTRPCRouter, protectedProcedure } from '../trpc';
 import { TRPCError } from '@trpc/server';
+import { z } from 'zod';
 
 const courseRouter = createTRPCRouter({
 	getCourses: protectedProcedure.query(async ({ ctx }) => {
@@ -13,7 +14,32 @@ const courseRouter = createTRPCRouter({
 			console.error(err.message);
 			throw new TRPCError({ code: 'INTERNAL_SERVER_ERROR', message: err.message });
 		}
-	})
+	}),
+	getSingleCourse: protectedProcedure
+		.input(
+			z.object({
+				id: z.string()
+			})
+		)
+		.query(async ({ input, ctx }) => {
+			try {
+				const course = await ctx.prisma.course.findFirstOrThrow({
+					where: {
+						user_id: ctx.auth.userId,
+						course_id: input.id
+					}
+				});
+				console.log(course);
+				console.log('-----------------------------------------------');
+				return course;
+			} catch (err) {
+				console.error(err);
+				throw new TRPCError({
+					code: 'INTERNAL_SERVER_ERROR',
+					message: 'Oops, something went wrong' + err.message
+				});
+			}
+		})
 });
 
 export default courseRouter;

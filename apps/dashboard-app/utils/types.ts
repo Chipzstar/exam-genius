@@ -71,5 +71,5 @@ export type ExamBoard = "edexcel" | "aqa" | "ocr"
 export type CourseInfo = {
   label: string;
   icon: string;
-  modules: string[];
+  papers: string[];
 }

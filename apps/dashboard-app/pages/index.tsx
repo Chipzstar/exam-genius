@@ -36,7 +36,7 @@ export function Home() {
 								</Group>
 								<Group position='right'>
 									<Link
-										href={`${PATHS.PAPERS}/${course.subject}?board=${course.exam_board}`}
+										href={`${PATHS.COURSE}/${course.course_id}?subject=${course.subject}&board=${course.exam_board}`}
 										passHref
 									>
 										<Button size='lg'>
