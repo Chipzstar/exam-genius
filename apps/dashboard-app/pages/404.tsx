@@ -10,15 +10,13 @@ const useStyles = createStyles(theme => ({
 		fontSize: rem(220),
 		lineHeight: 1,
 		marginBottom: `calc(${theme.spacing.xl} * 1.5)`,
-		color: theme.colorScheme === 'dark' ? theme.colors.dark[4] : theme.colors.gray[2],
-
+		color: theme.colors.brand[5],
 		[theme.fn.smallerThan('sm')]: {
 			fontSize: rem(120)
 		}
 	},
-
 	title: {
-		fontFamily: `Greycliff CF, ${theme.fontFamily}`,
+		fontFamily: `${theme.fontFamily}`,
 		textAlign: 'center',
 		fontWeight: 900,
 		fontSize: rem(38),

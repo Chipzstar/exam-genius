@@ -5,7 +5,8 @@ import { v4 as uuidv4 } from 'uuid';
 import { nanoid } from 'nanoid';
 import { log } from 'next-axiom';
 import { CHECKOUT_TYPE } from '../../utils/constants';
-import { genCourseOrPaperName } from '../../utils/functions';
+import { capitalize, genCourseOrPaperName } from '../../utils/functions';
+import axios from 'axios';
 
 // retrieves a Stripe customer id for a given user if it exists or creates a new one
 export const getOrCreateStripeCustomerIdForUser = async ({
@@ -131,6 +132,15 @@ export const handleCheckoutSessionComplete = async ({
 					console.log('*****************************************');
 					console.log("NEW PAPER:", paper)
 					console.log('*****************************************');
+					// call the API endpoint for generating a predicted paper
+					const baseUrl = process.env.VERCEL_URL ? 'https://' + process.env.VERCEL_URL : 'http://localhost:4200'
+					await axios.post(`${baseUrl}/api/openai/generate`, {
+						subject: capitalize(subject),
+						exam_board: capitalize(exam_board),
+						course: unit_name,
+						num_questions: 16,
+						num_marks: 100
+					})
 				}
 			}
 		}

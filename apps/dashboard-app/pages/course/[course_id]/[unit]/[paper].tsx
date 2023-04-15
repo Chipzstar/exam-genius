@@ -5,7 +5,6 @@ import {
 	createStyles,
 	getStylesRef,
 	LoadingOverlay,
-	Pagination,
 	ScrollArea,
 	Space,
 	Stack,
@@ -43,21 +42,24 @@ const useStyles = createStyles(() => ({
 	controls: {
 		ref: getStylesRef('controls'),
 		transition: 'opacity 150ms ease',
-		opacity: 0,
+		opacity: 0
 	},
 	root: {
 		'&:hover': {
 			[`& .${getStylesRef('controls')}`]: {
-				opacity: 1,
-			},
-		},
-	},
+				opacity: 1
+			}
+		}
+	}
 }));
 
 const Paper = ({ query }) => {
 	const { classes } = useStyles();
 	const router = useRouter();
-	const { isLoading, data: papers } = trpc.paper.getCoursePapers.useQuery({ courseId: query.course_id }, { initialData: []});
+	const { isLoading, data: papers } = trpc.paper.getCoursePapers.useQuery(
+		{ courseId: query.course_id },
+		{ initialData: [] }
+	);
 	const { height } = useViewportSize();
 	return (
 		<Page.Container>
@@ -67,21 +69,19 @@ const Paper = ({ query }) => {
 				</Button>
 			</header>
 			<Page.Body extraClassNames='justify-center w-full'>
-				<ScrollArea.Autosize
-					mah={height - 200}
-					p='sm'
-					styles={theme => ({
-						root: {
-
-						}
-					})}
-				>
-					<Carousel mx='auto' classNames={classes}>
-						{!papers ? (
-							<LoadingOverlay visible={isLoading} />
-						) : (
-							papers.map((paper, index) => (
-								<Carousel.Slide key={index}>
+				<Carousel mx='auto' classNames={classes} controlsOffset="xl">
+					{!papers ? (
+						<LoadingOverlay visible={isLoading} />
+					) : (
+						papers.map((paper, index) => (
+							<Carousel.Slide key={index}>
+								<ScrollArea.Autosize
+									mah={height - 200}
+									p='sm'
+									styles={theme => ({
+										root: {}
+									})}
+								>
 									<Card shadow='sm' radius='md' className='w-full' p='xl' mih={height - 300}>
 										<div className='flex justify-center'>
 											<Stack justify='center' align='center'>
@@ -182,12 +182,11 @@ const Paper = ({ query }) => {
 											{parse(paper.content, { trim: true })}
 										</div>
 									</Card>
-								</Carousel.Slide>
-							))
-						)}
-					</Carousel>
-				</ScrollArea.Autosize>
-				<Pagination total={papers.length} position="center"/>
+								</ScrollArea.Autosize>
+							</Carousel.Slide>
+						))
+					)}
+				</Carousel>
 			</Page.Body>
 		</Page.Container>
 	);
