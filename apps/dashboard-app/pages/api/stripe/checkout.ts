@@ -65,8 +65,8 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 						}
 					],
 					mode: 'payment',
-					success_url: `${req.headers.origin}/?success=true`,
-					cancel_url: `${req.headers.origin}/${PATHS.PAPERS}/${subject}/${unit}/?board=${exam_board}?canceled=true`,
+					success_url: `${req.headers.origin}/${PATHS.COURSE}/${course_id}/${unit}/?subject=${subject}&board=${exam_board}?success=true`,
+					cancel_url: `${req.headers.origin}/${PATHS.COURSE}/${course_id}/${unit}/?subject=${subject}&board=${exam_board}?canceled=true`,
 					customer: customer_id,
 					metadata: {
 						type: CHECKOUT_TYPE.PAPER,
@@ -85,7 +85,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 					line_items,
 					mode,
 					success_url: `${req.headers.origin}/?success=true`,
-					cancel_url: `${req.headers.origin}/exam-board?canceled=true`,
+					cancel_url: `${req.headers.origin}/${PATHS.EXAM_BOARD}?canceled=true`,
 					customer: customer_id,
 					metadata: {
 						type: CHECKOUT_TYPE.COURSE,
