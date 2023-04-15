@@ -74,7 +74,7 @@ const Papers = ({ query }: InferGetServerSidePropsType<typeof getServerSideProps
 							</Button>
 						</div>
 					</header>
-					{course_info.papers.map((module, index) => (
+					{course_info.papers.map((paper, index) => (
 						<Card shadow='sm' radius='md' my='lg' key={index}>
 							<Group grow align='center' p='xl' position='apart'>
 								<div className='flex grow items-center space-x-8'>
@@ -86,12 +86,12 @@ const Papers = ({ query }: InferGetServerSidePropsType<typeof getServerSideProps
 									/>
 									<div className='flex flex-col'>
 										<Title order={1} size='h2' weight={500}>
-											{module}
+											{paper}
 										</Title>
 									</div>
 								</div>
 								<Stack align='end'>
-									<Link href={`${router.asPath}/${module}/papers`}>
+									<Link href={`${router.asPath}/${paper}`}>
 										<Box w={200}>
 											<Button type='button' fullWidth size='lg'>
 												<Text weight='normal'>View Paper</Text>

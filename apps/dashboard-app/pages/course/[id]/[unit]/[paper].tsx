@@ -1,10 +1,10 @@
 import { ActionIcon, Button, Card, LoadingOverlay, ScrollArea, Space, Stack, Text, Title } from '@mantine/core';
-import Page from '../../layout/Page';
+import Page from '../../../../layout/Page';
 import React from 'react';
 import { useViewportSize } from '@mantine/hooks';
 import { IconArrowLeft, IconDownload } from '@tabler/icons-react';
 import { useRouter } from 'next/router';
-import { trpc } from '../../utils/trpc';
+import { trpc } from '../../../../utils/trpc';
 import parse from 'html-react-parser';
 
 const PaperID = () => {
