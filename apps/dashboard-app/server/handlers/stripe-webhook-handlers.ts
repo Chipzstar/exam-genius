@@ -134,13 +134,16 @@ export const handleCheckoutSessionComplete = async ({
 					console.log('*****************************************');
 					// call the API endpoint for generating a predicted paper
 					const baseUrl = process.env.VERCEL_URL ? 'https://' + process.env.VERCEL_URL : 'http://localhost:4200'
-					await axios.post(`${baseUrl}/api/openai/generate`, {
+					const result = await axios.post(`${baseUrl}/api/openai/generate`, {
 						subject: capitalize(subject),
 						exam_board: capitalize(exam_board),
-						course: unit_name,
+						course: capitalize(unit_name),
 						num_questions: 16,
 						num_marks: 100
 					})
+					console.log('************************************************');
+					console.log(result.data)
+					console.log('************************************************');
 				}
 			}
 		}
