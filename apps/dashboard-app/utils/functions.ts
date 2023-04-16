@@ -3,7 +3,7 @@ import { phoneUtil, requirements } from './constants';
 import { PhoneNumberFormat as PNF } from 'google-libphonenumber';
 import bcrypt from 'bcryptjs';
 import CryptoJS from 'crypto-js';
-import { ExamBoard, Subject } from './types';
+import { ExamBoard, Subject } from '@prisma/client';
 
 export function getRndInteger(min: number, max: number, offset = 1) {
 	return Math.floor(Math.random() * (max - min + offset)) + min;

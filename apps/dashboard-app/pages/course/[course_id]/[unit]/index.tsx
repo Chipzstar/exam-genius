@@ -21,6 +21,7 @@ export interface PageQuery extends ParsedUrlQuery {
 
 export const getServerSideProps: GetServerSideProps<{ query: PageQuery }> = async context => {
 	const query = context.query as PageQuery;
+	console.log(query);
 	return {
 		props: {
 			query
@@ -30,15 +31,18 @@ export const getServerSideProps: GetServerSideProps<{ query: PageQuery }> = asyn
 
 const Papers = ({ query }: InferGetServerSidePropsType<typeof getServerSideProps>) => {
 	const router = useRouter();
-	const { isLoading, data: course } = trpc.course.getSingleCourse.useQuery({id: query.course_id});
-	const { data : papers } = trpc.paper.getCoursePapers.useQuery({courseId: query.course_id});
+	const { isLoading, data: course } = trpc.course.getSingleCourse.useQuery({ id: query.course_id });
+	const { data: papers } = trpc.paper.getCoursePapers.useQuery({ courseId: query.course_id });
 	const items = [
 		{ title: 'Courses', href: PATHS.HOME },
 		{
-			title: genCourseOrPaperName(query.subject, query.board),
+			title: genCourseOrPaperName(course?.subject ?? query.subject, course?.exam_board ?? query.board),
 			href: `${PATHS.COURSE}/${query.course_id}?subject=${query.subject}&board=${query.board}`
 		},
-		{ title: capitalize(query.unit), href: `${PATHS.COURSE}/${query.course_id}/${query.unit}?subject=${query.subject}&board=${query.board}`}
+		{
+			title: capitalize(query.unit),
+			href: `${PATHS.COURSE}/${query.course_id}/${query.unit}?subject=${query.subject}&board=${query.board}`
+		}
 	].map((item, index) => (
 		<Anchor href={item.href} key={index} weight={router.pathname === item.href ? 'bold' : 'normal'}>
 			{item.title}
@@ -50,18 +54,18 @@ const Papers = ({ query }: InferGetServerSidePropsType<typeof getServerSideProps
 	}, [course]);
 
 	return !course_info ? (
-		<LoadingOverlay visible={isLoading}/>
+		<LoadingOverlay visible={isLoading} />
 	) : (
 		<Page.Container data_cy='course-page' extraClassNames='flex flex-col py-6'>
 			<Page.Body>
 				<Breadcrumbs mb='lg'>{items}</Breadcrumbs>
 				<form method='POST' action='/api/stripe/checkout?mode=payment'>
-					<input name="type" id="type" value={CHECKOUT_TYPE.PAPER} hidden/>
+					<input name='type' id='type' value={CHECKOUT_TYPE.PAPER} hidden />
 					<input name='price_id' id='price-id' value={PAPER_PRICE_IDS[query.subject]} hidden />
-					<input name="exam_board" id="exam-board" value={query.board} hidden/>
-					<input name="subject" id="subject" value={query.subject} hidden/>
-					<input name="unit" id="unit" value={query.unit} hidden/>
-					<input name="course_id" id="course-id" value={query.course_id} hidden/>
+					<input name='exam_board' id='exam-board' value={course?.exam_board} hidden />
+					<input name='subject' id='subject' value={course?.subject} hidden />
+					<input name='unit' id='unit' value={query.unit} hidden />
+					<input name='course_id' id='course-id' value={query.course_id} hidden />
 					<header className='flex items-center justify-between'>
 						<Title order={2} weight={600}>
 							{capitalize(course_info.label)} 📚
@@ -89,7 +93,8 @@ const Papers = ({ query }: InferGetServerSidePropsType<typeof getServerSideProps
 									</div>
 								</div>
 								<Stack align='end'>
-									<Link href={`${PATHS.COURSE}/${query.course_id}/${query.unit}/${paper}?subject=${query.subject}&board=${query.board}`}>
+									<Link
+										href={`${PATHS.COURSE}/${query.course_id}/${query.unit}/${paper}?subject=${query.subject}&board=${query.board}`}>
 										<Box w={200}>
 											<Button type='button' fullWidth size='lg'>
 												<Text weight='normal'>View Papers</Text>

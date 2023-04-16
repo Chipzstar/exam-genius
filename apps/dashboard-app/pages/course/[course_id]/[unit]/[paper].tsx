@@ -23,6 +23,8 @@ import { ParsedUrlQuery } from 'querystring';
 import { Carousel } from '@mantine/carousel';
 
 export interface PageQuery extends ParsedUrlQuery {
+	subject: string;
+	board: string;
 	course_id: string;
 	unit: string;
 	paper: string;

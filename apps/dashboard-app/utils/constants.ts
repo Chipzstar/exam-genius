@@ -2,6 +2,7 @@ import { PhoneNumberUtil } from 'google-libphonenumber';
 import * as process from 'process';
 import { CourseInfo, ExamBoard, Subject } from './types';
 
+export const PORT = process.env.PORT || String(4200);
 export const DOMAIN_URL =
 	process.env.DOPPLER_ENVIRONMENT === 'dev'
 		? `http://localhost:${process.env.PORT}`

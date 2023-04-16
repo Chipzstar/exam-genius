@@ -4,8 +4,8 @@ import type Stripe from 'stripe';
 import { v4 as uuidv4 } from 'uuid';
 import { nanoid } from 'nanoid';
 import { log } from 'next-axiom';
-import { CHECKOUT_TYPE } from '../../utils/constants';
-import { capitalize, genCourseOrPaperName } from '../../utils/functions';
+import { CHECKOUT_TYPE, PORT } from '../../utils/constants';
+import { capitalize, genCourseOrPaperName, sanitize } from '../../utils/functions';
 import axios from 'axios';
 
 // retrieves a Stripe customer id for a given user if it exists or creates a new one
@@ -74,7 +74,7 @@ export const handleCheckoutSessionComplete = async ({
 	try {
 		const session = event.data.object as Stripe.Checkout.Session;
 		console.log('-----------------------------------------------');
-		console.log(session?.metadata)
+		console.table(session?.metadata)
 		console.log('-----------------------------------------------');
 		const checkout_type = String(session?.metadata?.type);
 		const user = await prisma.user.findUniqueOrThrow({
@@ -111,14 +111,17 @@ export const handleCheckoutSessionComplete = async ({
 					console.log('*****************************************');
 				}
 			} else {
-				console.log('-----------------------------------------------');
 				// @ts-ignore
-				if (session && ['exam_board', 'subject', 'unit', 'course_id'].every(key => Object.keys(session?.metadata).includes(key))) {
-					const subject = price.metadata.subject as Prisma.Subject;
-					const exam_board = price.metadata.exam_board as Prisma.ExamBoard;
-					const unit_name = price.metadata.unit as string;
-					const course_id = price.metadata.course_id as string;
-					const paper = await prisma.paper.create({
+				const validKeys = ['exam_board', 'subject', 'unit', 'course_id'].every(key => Object.keys(session?.metadata).includes(key))
+				console.log(validKeys)
+				if (session?.metadata && validKeys) {
+					const subject = session.metadata.subject as Prisma.Subject;
+					const exam_board = session.metadata.exam_board as Prisma.ExamBoard;
+					const unit_name = session.metadata.unit as string;
+					const course_id = session.metadata.course_id as string;
+					console.log('************************************************');
+					console.table({subject, exam_board, unit_name, course_id})
+					let paper = await prisma.paper.create({
 						data: {
 							name: genCourseOrPaperName(subject, exam_board, unit_name),
 							user_id: user.clerk_id,
@@ -135,17 +138,39 @@ export const handleCheckoutSessionComplete = async ({
 					console.log("NEW PAPER:", paper)
 					console.log('*****************************************');
 					// call the API endpoint for generating a predicted paper
-					const baseUrl = process.env.VERCEL_URL ? 'https://' + process.env.VERCEL_URL : 'http://localhost:4200'
-					const result = await axios.post(`${baseUrl}/api/openai/generate`, {
+					const baseUrl = process.env.VERCEL_URL ? 'https://' + process.env.VERCEL_URL : `http://localhost:${PORT}`
+					axios.post(`${baseUrl}/api/openai/generate`, {
 						subject: capitalize(subject),
 						exam_board: capitalize(exam_board),
-						course: capitalize(unit_name),
+						course: capitalize(sanitize(unit_name)),
 						num_questions: 16,
 						num_marks: 100
+					}).then(({data}) => {
+						console.log('-----------------------------------------------');
+						console.log(data)
+						console.log('-----------------------------------------------');
+						const content : string = data.result
+						const sanitizedContent = content.replace(/\\n\s+|\\n/g, '')
+						console.log(sanitizedContent)
+						prisma.paper.update({
+							where: {
+								paper_id: paper.paper_id
+							},
+							data: {
+                                content: sanitizedContent
+                            }
+						}).then((paper ) => {
+							console.log('=======================================');
+							console.log(paper)
+							console.log('=======================================');
+						}).catch(err => {
+							console.log('************************************************');
+							console.error(err)
+							console.log('************************************************');
+						})
+					}).catch(err => {
+						console.error(err)
 					})
-					console.log('************************************************');
-					console.log(result.data)
-					console.log('************************************************');
 				}
 			}
 		}
