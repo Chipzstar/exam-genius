@@ -7,7 +7,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 	await runMiddleware(req, res, cors);
 	if (req.method === 'POST') {
 		try {
-			const { subject, exam_board, course, num_questions, num_marks } = req.body;
+			const { subject, exam_board, course, num_questions, num_marks, paper_name } = req.body;
 			const completion = await openai.createChatCompletion({
 				model: 'gpt-3.5-turbo',
 				messages: [
@@ -18,10 +18,10 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 					{
 						role: 'user',
 						content:
-							`Please generate a new sample past paper for the upcoming A-level ${exam_board} ${subject} ${course} exam in June` +
-							`The questions generated should be based on A-level ${exam_board} ${subject} ${course} past paper questions from the years 2018 to 2022.` +
+							`Please generate a new sample past paper for the upcoming A-level ${exam_board} ${subject} ${course} ${paper_name} exam in June` +
+							`The questions generated should be based on A-level ${exam_board} ${subject} ${paper_name} past paper questions from the years 2018 to 2022.` +
 							`The past paper should have ${num_questions} questions. The total mark for this paper is ${num_marks}. Questions should all be relevant to the ` +
-							`${exam_board} ${course} specification. For each question, please format it using HTML markup. For example, "'1. Simplify: \n' +
+							`${exam_board} ${subject} ${course} specification. For each question, please format it using HTML markup. For example, "'1. Simplify: \n' +
       'a) (2 + sqrt(3)) (2 - sqrt(3))\n' +
       'b) (2 + sqrt(2))(2 - sqrt(2))\n' +
       'c) (1 + i)^5\n' +

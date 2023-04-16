@@ -22,6 +22,7 @@ import { GetServerSideProps } from 'next';
 import { ParsedUrlQuery } from 'querystring';
 import { Carousel } from '@mantine/carousel';
 import CustomLoader from '../../../../components/CustomLoader';
+import { PATHS } from '../../../../utils/constants';
 
 export interface PageQuery extends ParsedUrlQuery {
 	subject: string;
@@ -67,13 +68,18 @@ const Paper = ({ query }) => {
 	const router = useRouter();
 	const { isLoading, data: papers } = trpc.paper.getCoursePapers.useQuery(
 		{ courseId: query.course_id },
-		{ initialData: [], refetchInterval: 5000, }
+		{ initialData: [], refetchInterval: 3000, }
 	);
 	const { height } = useViewportSize();
 	return (
 		<Page.Container>
 			<header className='jusitfy-end flex items-center p-6'>
-				<Button leftIcon={<IconArrowLeft />} size='md' variant='outline' onClick={router.back}>
+				<Button
+					leftIcon={<IconArrowLeft />}
+					size='md'
+					variant='outline'
+					onClick={() => router.replace(`${PATHS.COURSE}/${query.course_id}/${query.unit}?subject=${query.subject}&board=${query.board}`)}
+				>
 					Back
 				</Button>
 			</header>

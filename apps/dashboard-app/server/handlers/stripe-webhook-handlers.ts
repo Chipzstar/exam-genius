@@ -155,7 +155,6 @@ export const handleCheckoutSessionComplete = async ({
 						console.log('-----------------------------------------------');
 						const content : string = data.result
 						const sanitizedContent = content.replace(/\\n\s+|\\n/g, '')
-						console.log(sanitizedContent)
 						prisma.paper.update({
 							where: {
 								paper_id: paper.paper_id

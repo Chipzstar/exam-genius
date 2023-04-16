@@ -30,8 +30,10 @@ export function genCourseOrPaperName(
 			break;
 		case 'edexcel':
 			exam_board = capitalize(board);
+			break;
 		default:
 			exam_board = board;
+			break;
 	}
 	if (paper) {
 		return `${exam_board} ${capitalize(subject)} - ${capitalize(paper)}`;

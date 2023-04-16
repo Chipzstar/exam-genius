@@ -48,11 +48,11 @@ const Course = ({ query }: InferGetServerSidePropsType<typeof getServerSideProps
 				<header className='flex items-center justify-between'>
 					<div>
 						<Title order={2} weight={600}>
-							{capitalize(course.exam_board)} {capitalize(course.subject)} 📚
+							{course.exam_board.toUpperCase()} {capitalize(course.subject)} 📚
 						</Title>
 					</div>
 					<div className='flex'>
-						<Button leftIcon={<IconArrowLeft />} size='md' variant='outline' onClick={router.back}>
+						<Button leftIcon={<IconArrowLeft />} size='md' variant='outline' onClick={() => router.replace(PATHS.HOME)}>
 							Back
 						</Button>
 					</div>
@@ -64,11 +64,11 @@ const Course = ({ query }: InferGetServerSidePropsType<typeof getServerSideProps
 								<div className="flex items-center grow space-x-6">
 									<Image src={unit.icon} width={100} height={100} alt='maths-icon' />
 									<div className='flex flex-col space-y-4'>
-										<Title order={1} size='h2' weight={500}>
+										<Title order={1} size='h2' weight={600}>
 											{unit.label}
 										</Title>
 										{unit.papers.map((paper, index) => (
-											<Text key={index} size='xl' weight={700}>
+											<Text key={index} size='xl' weight={500}>
 												{paper.name}
 											</Text>
 										))}

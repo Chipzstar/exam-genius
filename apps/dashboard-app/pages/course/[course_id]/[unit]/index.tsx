@@ -1,4 +1,4 @@
-import React, { useCallback, useMemo } from 'react';
+import React, { useCallback, useEffect, useMemo } from 'react';
 import { ParsedUrlQuery } from 'querystring';
 import Page from '../../../../layout/Page';
 import {
@@ -24,6 +24,7 @@ import { useRouter } from 'next/router';
 import { trpc } from '../../../../utils/trpc';
 import { ExamBoard, PaperInfo, Subject } from '../../../../utils/types';
 import { useViewportSize } from '@mantine/hooks';
+import { TRPCError } from '@trpc/server';
 
 export interface PageQuery extends ParsedUrlQuery {
 	board: ExamBoard;
@@ -34,7 +35,6 @@ export interface PageQuery extends ParsedUrlQuery {
 
 export const getServerSideProps: GetServerSideProps<{ query: PageQuery }> = async context => {
 	const query = context.query as PageQuery;
-	console.log(query);
 	return {
 		props: {
 			query
@@ -48,6 +48,7 @@ const Papers = ({ query }: InferGetServerSidePropsType<typeof getServerSideProps
 	const { isLoading, data: course } = trpc.course.getSingleCourse.useQuery({ id: query.course_id });
 	const { data: papers } = trpc.paper.getCoursePapers.useQuery({ courseId: query.course_id });
 	const { mutateAsync: createCheckoutSession } = trpc.stripe.createCheckoutSession.useMutation();
+	const { mutateAsync: createPastPaper } = trpc.paper.createPaper.useMutation();
 	const items = [
 		{ title: 'Courses', href: PATHS.HOME },
 		{
@@ -67,6 +68,28 @@ const Papers = ({ query }: InferGetServerSidePropsType<typeof getServerSideProps
 	const course_info = useMemo(() => {
 		return course ? SUBJECT_PAPERS[course.subject][course.exam_board][query.unit] : null;
 	}, [course]);
+
+	const generatePaper = useCallback(async (paper: PaperInfo) => {
+		try {
+			if (papers && papers.length) {
+				await openCheckoutSession(paper)
+			} else {
+				await createPastPaper({
+					paper_name: paper.name,
+					course_id: query.course_id,
+                    subject: query.subject,
+					exam_board: query.board,
+                    unit_name: query.unit,
+					num_questions: paper.num_questions,
+					num_marks: paper.marks
+				})
+				void router.push(`${PATHS.COURSE}/${query.course_id}/${query.unit}/${paper.href}?subject=${query.subject}&board=${query.board}`)
+			}
+		} catch (err) {
+			console.error(err);
+			throw new TRPCError({code: "INTERNAL_SERVER_ERROR", message: err.message});
+		}
+	}, [query, papers])
 
 	const openCheckoutSession = useCallback(
 		async (paper: PaperInfo) => {
@@ -89,6 +112,8 @@ const Papers = ({ query }: InferGetServerSidePropsType<typeof getServerSideProps
 		[course]
 	);
 
+	useEffect(() => {console.log(papers)}, [papers]);
+
 	return !course_info ? (
 		<LoadingOverlay visible={isLoading} />
 	) : (
@@ -107,7 +132,7 @@ const Papers = ({ query }: InferGetServerSidePropsType<typeof getServerSideProps
 							{course_info.label} 📚
 						</Title>
 						<div className='flex'>
-							<Button leftIcon={<IconArrowLeft />} size='md' variant='outline' onClick={router.back}>
+							<Button leftIcon={<IconArrowLeft />} size='md' variant='outline' onClick={() => router.replace(`${PATHS.COURSE}/${query.course_id}?subject=${query.subject}&board=${query.board}`)}>
 								Back
 							</Button>
 						</div>
@@ -144,7 +169,7 @@ const Papers = ({ query }: InferGetServerSidePropsType<typeof getServerSideProps
 												type='button'
 												fullWidth
 												size='lg'
-												onClick={() => openCheckoutSession(paper)}
+												onClick={() => generatePaper(paper)}
 											>
 												<Text weight='normal'>Generate New</Text>
 											</Button>
