@@ -139,6 +139,7 @@ export const handleCheckoutSessionComplete = async ({
 					})
 					console.log('*****************************************');
 					console.log("NEW PAPER:", paper)
+					log.debug("new paper", paper)
 					console.log('*****************************************');
 					// call the API endpoint for generating a predicted paper
 					const baseUrl = process.env.VERCEL_URL ? 'https://' + process.env.VERCEL_URL : `http://localhost:${PORT}`
@@ -150,9 +151,6 @@ export const handleCheckoutSessionComplete = async ({
 						num_questions: num_questions,
 						num_marks: num_marks
 					}).then(({data}) => {
-						console.log('-----------------------------------------------');
-						console.log(data)
-						console.log('-----------------------------------------------');
 						const content : string = data.result
 						const sanitizedContent = content.replace(/\\n\s+|\\n/g, '')
 						prisma.paper.update({
@@ -165,14 +163,17 @@ export const handleCheckoutSessionComplete = async ({
 						}).then((paper ) => {
 							console.log('=======================================');
 							console.log(paper)
+							log.debug("updated paper:", paper)
 							console.log('=======================================');
 						}).catch(err => {
 							console.log('************************************************');
 							console.error(err)
+							log.error(err)
 							console.log('************************************************');
 						})
 					}).catch(err => {
 						console.error(err)
+						log.error(err)
 					})
 				}
 			}

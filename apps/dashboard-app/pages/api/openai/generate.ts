@@ -1,4 +1,5 @@
 import { NextApiRequest, NextApiResponse } from 'next';
+import { log } from 'next-axiom';
 import { openai } from '../../../server/openai';
 import { cors, runMiddleware } from '../cors';
 
@@ -34,6 +35,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 			});
 			console.log('-----------------------------------------------');
 			console.log(completion.data.choices[0]);
+			log.debug('openai completion', completion.data.choices[0]);
 			console.log('-----------------------------------------------');
 			return res.status(200).json({ result: completion.data.choices[0].message.content });
 		} catch (error) {
