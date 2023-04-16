@@ -53,157 +53,338 @@ export const PATHS = {
 
 export const AUTH_ROUTES = [PATHS.LOGIN, PATHS.SIGNUP, PATHS.FORGOT_PASSWORD];
 
-export const SUBJECT_PAPERS: Record<
-	Subject,
-	Record<
-		ExamBoard,
-		Record<
-			string,
-			CourseInfo
-		>
-	>
-> = {
+export const SUBJECT_PAPERS: Record<Subject, Record<ExamBoard, Record<string, CourseInfo>>> = {
 	maths: {
 		edexcel: {
 			['pure-maths']: {
 				label: 'Pure Maths',
 				icon: '/static/images/pure-maths-icon.svg',
-				papers: ['PM1', 'PM2']
+				papers: [
+					{
+						href: 'PM1',
+						name: 'Pure Maths 1',
+						num_questions: 16,
+						marks: 100
+					},
+					{
+						href: 'PM2',
+						name: 'Pure Maths 2',
+						num_questions: 16,
+						marks: 100
+					}
+				]
 			},
-			stats: {
+			['stats-and-mechanics']: {
 				label: 'Statistics & Mechanics',
 				icon: '/static/images/statistics-icon.svg',
-				papers: ['Statistics & Mechanics']
+				papers: [
+					{
+						href: 'statistics',
+						name: 'Statistics',
+						num_questions: 5,
+						marks: 30
+					},
+					{
+						href: 'mechanics',
+						name: 'Mechanics',
+						num_questions: 5,
+						marks: 50
+					}
+				]
 			}
 		},
 		aqa: {
-			['pure-maths']: {
-				label: 'Pure Maths',
-				icon: '/static/images/pure-maths-icon.svg',
-				papers: ['PM1', 'PM2']
+			['paper-1']: {
+				label: 'Paper 1',
+				icon: '/static/images/maths-icon.svg',
+				papers: [
+					{
+						href: 'paper-1',
+						name: 'Paper 1',
+						num_questions: 15,
+						marks: 100
+					}
+				]
 			},
-			stats: {
-				label: 'Statistics & Mechanics',
+			['paper-2']: {
+				label: 'Paper 2',
 				icon: '/static/images/statistics-icon.svg',
-				papers: ['Statistics & Mechanics']
+				papers: [
+					{
+						href: 'paper-2',
+						name: 'Paper 2',
+						num_questions: 19,
+						marks: 100
+					}
+				]
+			},
+			['paper-3']: {
+				label: 'Paper 3',
+				icon: '/static/images/statistics-icon.svg',
+				papers: [
+					{
+						href: 'paper-3',
+						name: 'Paper 3',
+						num_questions: 18,
+						marks: 100
+					}
+				]
 			}
 		},
 		ocr: {
-			['pure-maths']: {
-				label: 'Pure Maths',
-				icon: '/static/images/pure-maths-icon.svg',
-				papers: ['PM1', 'PM2']
+			['maths-a']: {
+				label: 'Mathematics - A',
+				icon: '/static/images/maths-icon.svg',
+				papers: [
+					{
+						href: 'pure-maths',
+						name: 'Pure Maths',
+						num_questions: 12,
+						marks: 100
+					},
+					{
+						href: 'pure-maths-stats',
+						name: 'Pure Maths and Statistics',
+						num_questions: 14,
+						marks: 100
+					},
+					{
+						href: 'pure-maths-mechanics',
+						name: 'Pure Maths and Mechanics',
+						num_questions: 14,
+						marks: 100
+					}
+				]
 			},
-			stats: {
-				label: 'Statistics & Mechanics',
-				icon: '/static/images/statistics-icon.svg',
-				papers: ['Statistics & Mechanics']
+			['maths-b']: {
+				label: 'Mathematics - B (MEI)',
+				icon: '/static/images/maths-icon.svg',
+				papers: [
+					{
+						href: 'pure-maths-mechanics',
+						name: 'Pure Maths and Mechanics',
+						num_questions: 13,
+						marks: 100
+					},
+					{
+						href: 'pure-maths-stats',
+						name: 'Pure Maths and Statistics',
+						num_questions: 16,
+						marks: 100
+					},
+					{
+						href: 'pure-maths-comprehension',
+						name: 'Pure Maths and Comprehension',
+						num_questions: 15,
+						marks: 75
+					}
+				]
 			}
 		}
 	},
 	economics: {
 		edexcel: {
-			microeconomics: {
-				label: 'Paper 1',
-				icon: '/static/images/microeconomics-icon.svg',
-				papers: ['Microeconomics']
+			['economics-a']: {
+				label: 'Economics - A',
+				icon: '/static/images/economics-icon.svg',
+				papers: [{
+					href: 'paper-1',
+					name: 'Paper 1: Markets and Business Behaviour',
+                    num_questions: 8,
+                    marks: 100
+				}, {
+					href: 'paper-2',
+					name: 'Paper 2: The National and Global Economy',
+					num_questions: 8,
+					marks: 100
+				}, {
+					href: 'paper-3',
+					name: 'Paper 3: Microeconomics and Macroeconomics',
+					num_questions: 2,
+					marks: 100
+				}]
 			},
-			macroeconomics: {
-				label: 'Paper 2',
-				icon: '/static/images/macroeconomics-icon.svg',
-				papers: ['Macroeconomics']
-			},
-			themes: {
-				label: 'Paper 3',
-				icon: '/static/images/economics-themes-icon.svg',
-				papers: ['Themes in Economics']
+			['economics-b']: {
+				label: 'Economics - B',
+				icon: '/static/images/economics-icon.svg',
+				papers: [{
+					href: 'paper-1',
+					name: 'Paper 1: Markets and how they work',
+					num_questions: 3,
+					marks: 100
+				}, {
+					href: 'paper-2',
+					name: 'Paper 2: Competing in the global economy',
+					num_questions: 3,
+					marks: 100
+				}, {
+					href: 'paper-3',
+					name: 'Paper 3: The economic environment and business',
+					num_questions: 2,
+					marks: 100
+				}]
 			}
 		},
 		ocr: {
 			microeconomics: {
 				label: 'Paper 1',
 				icon: '/static/images/microeconomics-icon.svg',
-				papers: ['Microeconomics']
+				papers: [{
+					href: 'paper-1',
+					name: 'Microeconomics',
+					num_questions: 5,
+                    marks: 80
+				}]
 			},
 			macroeconomics: {
 				label: 'Paper 2',
 				icon: '/static/images/macroeconomics-icon.svg',
-				papers: ['Macroeconomics']
+				papers: [{
+					href: 'paper-2',
+					name: 'Macroeconomics',
+					num_questions: 5,
+					marks: 80
+				}]
 			},
 			themes: {
 				label: 'Paper 3',
 				icon: '/static/images/economics-themes-icon.svg',
-				papers: ['Themes in Economics']
+				papers: [{
+					href: 'paper-3',
+					name: 'Themes in Economics',
+					num_questions: 37,
+					marks: 80,
+				}]
 			}
 		},
 		aqa: {
-			microeconomics: {
+			['markets-and-market-failure']: {
 				label: 'Paper 1',
-				icon: '/static/images/microeconomics-icon.svg',
-				papers: ['Microeconomics']
+				icon: '/static/images/economics-icon.svg',
+				papers: [{
+					href: 'paper-1',
+					name: 'Paper 1: Markets and Market Failure',
+                    num_questions: 14,
+                    marks: 80
+				}]
 			},
-			macroeconomics: {
+			['national-and-international-economy']: {
 				label: 'Paper 2',
-				icon: '/static/images/macroeconomics-icon.svg',
-				papers: ['Macroeconomics']
+				icon: '/static/images/economics-icon.svg',
+				papers: [{
+					href: 'paper-2',
+					name: 'Paper 2: National and International Economics',
+					num_questions: 14,
+					marks: 80
+				}]
 			},
-			themes: {
+			['economic-principles-and-issues']: {
 				label: 'Paper 3',
-				icon: '/static/images/economics-themes-icon.svg',
-				papers: ['Themes in Economics']
+				icon: '/static/images/economics-icon.svg',
+				papers: [{
+					href: 'paper-3',
+					name: 'Paper 3: Economic Principles and Issues',
+					num_questions: 33,
+					marks: 80
+				}]
 			}
 		}
 	},
 	biology: {
-		aqa: {
+		edexcel: {
 			paper_1: {
 				label: 'Paper 1',
-                icon: '/static/images/biology-icon.svg',
-                papers: ['Paper 1']
+				icon: '/static/images/biology-icon.svg',
+				papers: [{
+					href: 'paper-1',
+					name: 'Paper 1: The Natural Environment and Species Survival',
+					num_questions: 10,
+					marks: 100
+				}]
 			},
 			paper_2: {
 				label: 'Paper 2',
-                icon: '/static/images/biology-icon.svg',
-                papers: ['Paper 2']
+				icon: '/static/images/biology-icon.svg',
+				papers: [{
+					href: 'paper-2',
+					name: 'Paper 2: Energy, Exercise and Coordination',
+					num_questions: 10,
+					marks: 100
+				}]
 			},
 			paper_3: {
-                label: 'Paper 3',
-                icon: '/static/images/biology-icon.svg',
-                papers: ['Paper 3']
-            }
+				label: 'Paper 3',
+				icon: '/static/images/biology-icon.svg',
+				papers: [{
+					href: 'paper-3',
+					name: 'Paper 3: General and Practical Applications in Biology',
+					num_questions: 8,
+					marks: 100
+				}]
+			}
 		},
 		ocr: {
 			paper_1: {
 				label: 'Paper 1',
 				icon: '/static/images/biology-icon.svg',
-				papers: ['Paper 1']
+				papers: [{
+					href: 'paper-1',
+					name: 'Paper 1: Biological processes',
+					num_questions: 21,
+                    marks: 100
+				}]
 			},
 			paper_2: {
 				label: 'Paper 2',
 				icon: '/static/images/biology-icon.svg',
-				papers: ['Paper 2']
+				papers: [{
+					href: 'paper-2',
+					name: 'Paper 2: Biological diversity',
+					num_questions: 21,
+					marks: 100
+				}]
 			},
 			paper_3: {
 				label: 'Paper 3',
 				icon: '/static/images/biology-icon.svg',
-				papers: ['Paper 3']
+				papers: [{
+					href: 'paper-3',
+					name: 'Paper 3: Unified biology',
+					num_questions: 5,
+					marks: 70
+				}]
 			}
 		},
-		edexcel: {
+		aqa: {
 			paper_1: {
 				label: 'Paper 1',
 				icon: '/static/images/biology-icon.svg',
-				papers: ['Paper 1']
+				papers: [{
+					href: 'paper-1',
+					name: 'Paper 1',
+					num_questions: 10,
+					marks: 91
+				}]
 			},
 			paper_2: {
 				label: 'Paper 2',
 				icon: '/static/images/biology-icon.svg',
-				papers: ['Paper 2']
+				papers: [{
+					href: 'paper-2',
+					name: 'Paper 2',
+					num_questions: 10,
+					marks: 91
+				}]
 			},
 			paper_3: {
 				label: 'Paper 3',
 				icon: '/static/images/biology-icon.svg',
-				papers: ['Paper 3']
+				papers: [{
+					href: 'paper-3',
+					name: 'Paper 3',
+					num_questions: 7,
+					marks: 78
+				}]
 			}
 		}
 	},
@@ -211,52 +392,97 @@ export const SUBJECT_PAPERS: Record<
 		edexcel: {
 			paper_1: {
 				label: 'Paper 1',
-                icon: '/static/images/chemistry-icon.svg',
-                papers: ['Paper 1']
+				icon: '/static/images/chemistry-icon.svg',
+				papers: [{
+					href: 'paper-1',
+                    name: 'Paper 1: Advanced Inorganic and Physical Chemistry',
+					num_questions: 9,
+					marks: 90
+				}]
 			},
 			paper_2: {
 				label: 'Paper 2',
-                icon: '/static/images/chemistry-icon.svg',
-                papers: ['Paper 2']
+				icon: '/static/images/chemistry-icon.svg',
+				papers: [{
+					href: 'paper-2',
+					name: 'Paper 2: Advanced Organic and Physical Chemistry',
+					num_questions: 12,
+					marks: 90
+				}]
 			},
 			paper_3: {
 				label: 'Paper 3',
-                icon: '/static/images/chemistry-icon.svg',
-                papers: ['Paper 3']
+				icon: '/static/images/chemistry-icon.svg',
+				papers: [{
+					href: 'paper-3',
+					name: 'Paper 3: General and Practical Principles in Chemistry',
+					num_questions: 9,
+					marks: 120
+				}]
 			}
 		},
 		aqa: {
 			paper_1: {
 				label: 'Paper 1',
 				icon: '/static/images/chemistry-icon.svg',
-				papers: ['Paper 1']
+				papers: [{
+					href: 'paper-1',
+					name: 'Paper 1: Advanced Inorganic and Physical Chemistry',
+					num_questions: 11,
+					marks: 105
+				}]
 			},
 			paper_2: {
 				label: 'Paper 2',
 				icon: '/static/images/chemistry-icon.svg',
-				papers: ['Paper 2']
+				papers: [{
+					href: 'paper-2',
+					name: 'Paper 2: Advanced Organic and Physical Chemistry',
+					num_questions: 10,
+					marks: 105
+				}]
 			},
 			paper_3: {
 				label: 'Paper 3',
 				icon: '/static/images/chemistry-icon.svg',
-				papers: ['Paper 3']
+				papers: [{
+					href: 'paper-3',
+					name: 'Paper 3',
+					num_questions: 6,
+					marks: 90
+				}]
 			}
 		},
 		ocr: {
 			paper_1: {
 				label: 'Paper 1',
 				icon: '/static/images/chemistry-icon.svg',
-				papers: ['Paper 1']
+				papers: [{
+					href: 'paper-1',
+					name: 'Paper 1: Periodic table, elements and physical chemistry',
+					num_questions: 22,
+					marks: 100
+				}]
 			},
 			paper_2: {
 				label: 'Paper 2',
 				icon: '/static/images/chemistry-icon.svg',
-				papers: ['Paper 2']
+				papers: [{
+					href: 'paper-2',
+					name: 'Paper 2: Synthesis and analytical techniques',
+					num_questions: 21,
+					marks: 100
+				}]
 			},
 			paper_3: {
 				label: 'Paper 3',
 				icon: '/static/images/chemistry-icon.svg',
-				papers: ['Paper 3']
+				papers: [{
+					href: 'paper-3',
+					name: 'Paper 3: Unified chemistry',
+					num_questions: 5,
+					marks: 70
+				}]
 			}
 		}
 	},
@@ -264,90 +490,225 @@ export const SUBJECT_PAPERS: Record<
 		aqa: {
 			paper_1: {
 				label: 'Paper 1',
-                icon: '/static/images/physics-icon.svg',
-				papers: ['Paper 1']
+				icon: '/static/images/physics-icon.svg',
+				papers: [{
+					href: 'paper-1',
+                    name: 'Paper 1',
+                    num_questions: 30,
+					marks: 85
+				}]
 			},
 			paper_2: {
 				label: 'Paper 2',
-                icon: '/static/images/physics-icon.svg',
-                papers: ['Paper 2']
+				icon: '/static/images/physics-icon.svg',
+				papers: [{
+					href: 'paper-2',
+					name: 'Paper 2',
+					num_questions: 31,
+					marks: 85
+				}]
 			},
-			paper_3: {
-				label: 'Paper 3',
-                icon: '/static/images/physics-icon.svg',
-                papers: ['Paper 3']
+			paper_3A: {
+				label: 'Paper 3A',
+				icon: '/static/images/physics-icon.svg',
+				papers: [{
+					href: 'paper-3A',
+					name: 'Paper 3A',
+					num_questions: 30,
+					marks: 85
+				}]
+			},
+			paper_3B: {
+				label: 'Paper 3B',
+				icon: '/static/images/physics-icon.svg',
+				papers: [{
+					href: 'paper-3B',
+					name: 'Paper 3B Option A (Astrophysics)',
+					num_questions: 3,
+					marks: 45
+				}, {
+					href: 'paper-3B',
+					name: 'Paper 3 Option B (Medical Physics)',
+					num_questions: 5,
+					marks: 35
+				}, {
+					href: 'paper-3B',
+					name: 'Paper 3 Option C (Engineering Physics)',
+					num_questions: 5,
+					marks: 35
+				}, {
+					href: 'paper-3B',
+					name: 'Paper 3 Option D (Turing Points in Physics)',
+					num_questions: 4,
+					marks: 35
+				}, {
+					href: 'paper-3B',
+					name: 'Paper 3 Option E (Electronics)',
+					num_questions: 5,
+					marks: 35
+				}]
 			}
 		},
 		ocr: {
 			paper_1: {
 				label: 'Paper 1',
 				icon: '/static/images/physics-icon.svg',
-				papers: ['Paper 1']
+				papers: [{
+					href: 'paper-1',
+					name: 'Paper 1',
+					num_questions: 24,
+					marks: 100
+				}]
 			},
 			paper_2: {
 				label: 'Paper 2',
 				icon: '/static/images/physics-icon.svg',
-				papers: ['Paper 2']
+				papers: [{
+					href: 'paper-2',
+					name: 'Paper 2',
+					num_questions: 25,
+					marks: 100
+				}]
 			},
 			paper_3: {
 				label: 'Paper 3',
 				icon: '/static/images/physics-icon.svg',
-				papers: ['Paper 3']
+				papers: [{
+					href: 'paper-3',
+					name: 'Paper 3',
+					num_questions: 6,
+					marks: 70
+				}]
 			}
 		},
 		edexcel: {
 			paper_1: {
 				label: 'Paper 1',
 				icon: '/static/images/physics-icon.svg',
-				papers: ['Paper 1']
+				papers: [{
+					href: 'paper-1',
+					name: 'Paper 1',
+					num_questions: 17,
+					marks: 90
+				}]
 			},
 			paper_2: {
 				label: 'Paper 2',
 				icon: '/static/images/physics-icon.svg',
-				papers: ['Paper 2']
+				papers: [{
+					href: 'paper-2',
+					name: 'Paper 2',
+					num_questions: 20,
+					marks: 90
+				}]
 			},
 			paper_3: {
 				label: 'Paper 3',
 				icon: '/static/images/physics-icon.svg',
-				papers: ['Paper 3']
+				papers: [{
+					href: 'paper-3',
+					name: 'Paper 3',
+					num_questions: 13,
+					marks: 120
+				}]
 			}
 		}
 	},
 	psychology: {
 		edexcel: {
-			paper_1: {
-				label: 'Paper 1',
-                icon: '/static/images/psychology-icon.svg',
-                papers: ['Introductory Topics in Psychology']
+			['foundations-in-psychology']: {
+				label: 'Unit 1',
+				icon: '/static/images/psychology-icon.svg',
+				papers: [{
+					href: 'paper-1',
+					name: 'Unit 1: Foundations in Psychology',
+                    num_questions: 13,
+					marks: 90
+				}]
 			},
-			paper_2: {
-				label: 'Paper 2',
-                icon: '/static/images/psychology-icon.svg',
-				papers: ['Psychology in Context']
+			['applications-of-psychology']: {
+				label: 'Unit 2',
+				icon: '/static/images/psychology-icon.svg',
+				papers: [{
+					href: 'paper-2',
+					name: 'Unit 2: Applications of Psychology',
+					num_questions: 18,
+					marks: 90
+				}]
+			},
+			['psychological-skills']: {
+				label: 'Unit 3',
+				icon: '/static/images/psychology-icon.svg',
+				papers: [{
+					href: 'paper-3',
+					name: 'Unit 3: Psychological Skills',
+					num_questions: 6,
+					marks: 80
+				}]
 			}
 		},
 		aqa: {
-			paper_1: {
+			['introductory-topics-in-psychology']: {
 				label: 'Paper 1',
 				icon: '/static/images/psychology-icon.svg',
-				papers: ['Introductory Topics in Psychology']
+				papers: [{
+					href: 'paper-1',
+					name: 'Paper 1: Introductory Topics in Psychology',
+					num_questions: 18,
+                    marks: 96
+				}]
 			},
-			paper_2: {
+			['psychology-in-context']: {
 				label: 'Paper 2',
 				icon: '/static/images/psychology-icon.svg',
-				papers: ['Psychology in Context']
+				papers: [{
+					href: 'paper-2',
+					name: 'Paper 2: Psychology in Context',
+					num_questions: 25,
+                    marks: 96
+				}]
+			},
+			['issues-and-options-in-psychology']: {
+				label: 'Paper 3',
+				icon: '/static/images/psychology-icon.svg',
+				papers: [{
+					href: 'paper-3',
+					name: 'Paper 3: Issues and options in Psychology',
+					num_questions: 39,
+                    marks: 96
+				}]
 			}
 		},
 		ocr: {
-			paper_1: {
+			['research-methods']: {
 				label: 'Paper 1',
 				icon: '/static/images/psychology-icon.svg',
-				papers: ['Introductory Topics in Psychology']
+				papers: [{
+					href: 'paper-1',
+					name: 'Research Methods',
+					num_questions: 31,
+					marks: 90
+				}]
 			},
-			paper_2: {
+			['psychological-themes']: {
 				label: 'Paper 2',
 				icon: '/static/images/psychology-icon.svg',
-				papers: ['Psychology in Context']
+				papers: [{
+					href: 'paper-2',
+					name: 'Psychological themes through Core Studies ',
+					num_questions: 12,
+					marks: 105
+				}]
+			},
+			['applied-psychology']: {
+				label: 'Paper 3',
+				icon: '/static/images/psychology-icon.svg',
+				papers: [{
+					href: 'paper-3',
+					name: 'Applied Psychology',
+					num_questions: 8,
+					marks: 105
+				}]
 			}
 		}
 	}
@@ -396,6 +757,6 @@ export const PAPER_PRICE_IDS = {
 };
 
 export enum CHECKOUT_TYPE {
-	COURSE="course",
-	PAPER="paper"
+	COURSE = 'course',
+	PAPER = 'paper'
 }

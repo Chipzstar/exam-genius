@@ -1,16 +1,29 @@
-import React, { useMemo } from 'react';
+import React, { useCallback, useMemo } from 'react';
 import { ParsedUrlQuery } from 'querystring';
 import Page from '../../../../layout/Page';
-import { Anchor, Box, Breadcrumbs, Button, Card, Group, LoadingOverlay, Stack, Text, Title } from '@mantine/core';
+import {
+	Anchor,
+	Box,
+	Breadcrumbs,
+	Button,
+	Card,
+	Group,
+	LoadingOverlay,
+	ScrollArea,
+	Stack,
+	Text,
+	Title
+} from '@mantine/core';
 import Image from 'next/image';
 import { CHECKOUT_TYPE, PAPER_PRICE_IDS, PATHS, SUBJECT_PAPERS } from '../../../../utils/constants';
 import { GetServerSideProps, InferGetServerSidePropsType } from 'next';
-import { capitalize, genCourseOrPaperName } from '../../../../utils/functions';
+import { capitalize, genCourseOrPaperName, sanitize } from '../../../../utils/functions';
 import Link from 'next/link';
 import { IconArrowLeft } from '@tabler/icons-react';
 import { useRouter } from 'next/router';
 import { trpc } from '../../../../utils/trpc';
-import { ExamBoard, Subject } from '../../../../utils/types';
+import { ExamBoard, PaperInfo, Subject } from '../../../../utils/types';
+import { useViewportSize } from '@mantine/hooks';
 
 export interface PageQuery extends ParsedUrlQuery {
 	board: ExamBoard;
@@ -31,8 +44,10 @@ export const getServerSideProps: GetServerSideProps<{ query: PageQuery }> = asyn
 
 const Papers = ({ query }: InferGetServerSidePropsType<typeof getServerSideProps>) => {
 	const router = useRouter();
+	const { height } = useViewportSize();
 	const { isLoading, data: course } = trpc.course.getSingleCourse.useQuery({ id: query.course_id });
 	const { data: papers } = trpc.paper.getCoursePapers.useQuery({ courseId: query.course_id });
+	const { mutateAsync: createCheckoutSession } = trpc.stripe.createCheckoutSession.useMutation();
 	const items = [
 		{ title: 'Courses', href: PATHS.HOME },
 		{
@@ -40,7 +55,7 @@ const Papers = ({ query }: InferGetServerSidePropsType<typeof getServerSideProps
 			href: `${PATHS.COURSE}/${query.course_id}?subject=${query.subject}&board=${query.board}`
 		},
 		{
-			title: capitalize(query.unit),
+			title: capitalize(sanitize(query.unit)),
 			href: `${PATHS.COURSE}/${query.course_id}/${query.unit}?subject=${query.subject}&board=${query.board}`
 		}
 	].map((item, index) => (
@@ -52,6 +67,27 @@ const Papers = ({ query }: InferGetServerSidePropsType<typeof getServerSideProps
 	const course_info = useMemo(() => {
 		return course ? SUBJECT_PAPERS[course.subject][course.exam_board][query.unit] : null;
 	}, [course]);
+
+	const openCheckoutSession = useCallback(
+		async (paper: PaperInfo) => {
+			const { checkout_url } = await createCheckoutSession({
+				type: CHECKOUT_TYPE.PAPER,
+				price_id: PAPER_PRICE_IDS[query.subject],
+				subject: course?.subject ?? query.subject,
+				exam_board: course?.exam_board ?? query.board,
+				course_id: query.course_id,
+				unit: query.unit,
+				paper_href: paper.href,
+				paper_name: paper.name,
+				num_questions: paper.num_questions,
+				marks: paper.marks
+			});
+			if (checkout_url) {
+				void router.push(checkout_url);
+			}
+		},
+		[course]
+	);
 
 	return !course_info ? (
 		<LoadingOverlay visible={isLoading} />
@@ -68,7 +104,7 @@ const Papers = ({ query }: InferGetServerSidePropsType<typeof getServerSideProps
 					<input name='course_id' id='course-id' value={query.course_id} hidden />
 					<header className='flex items-center justify-between'>
 						<Title order={2} weight={600}>
-							{capitalize(course_info.label)} 📚
+							{course_info.label} 📚
 						</Title>
 						<div className='flex'>
 							<Button leftIcon={<IconArrowLeft />} size='md' variant='outline' onClick={router.back}>
@@ -76,40 +112,48 @@ const Papers = ({ query }: InferGetServerSidePropsType<typeof getServerSideProps
 							</Button>
 						</div>
 					</header>
-					{course_info.papers.map((paper, index) => (
-						<Card shadow='sm' radius='md' my='lg' key={index}>
-							<Group grow align='center' p='xl' position='apart'>
-								<div className='flex grow items-center space-x-8'>
-									<Image
-										src='/static/images/example-paper.svg'
-										width={125}
-										height={160}
-										alt='example-paper'
-									/>
-									<div className='flex flex-col'>
-										<Title order={1} size='h2' weight={500}>
-											{paper}
-										</Title>
+					<ScrollArea.Autosize mah={height - 150} mt="lg">
+						{course_info.papers.map((paper, index) => (
+							<Card shadow='sm' radius='md' mb='lg' key={index}>
+								<Group grow align='center' p='xl' position='apart'>
+									<div className='flex grow items-center space-x-8'>
+										<Image
+											src='/static/images/example-paper.svg'
+											width={125}
+											height={160}
+											alt='example-paper'
+										/>
+										<div className='flex flex-col'>
+											<Title order={1} size='h2' weight={500}>
+												{paper.name}
+											</Title>
+										</div>
 									</div>
-								</div>
-								<Stack align='end'>
-									<Link
-										href={`${PATHS.COURSE}/${query.course_id}/${query.unit}/${paper}?subject=${query.subject}&board=${query.board}`}>
+									<Stack align='end'>
+										<Link
+											href={`${PATHS.COURSE}/${query.course_id}/${query.unit}/${paper.href}?subject=${query.subject}&board=${query.board}`}
+										>
+											<Box w={200}>
+												<Button type='button' fullWidth size='lg'>
+													<Text weight='normal'>View Papers</Text>
+												</Button>
+											</Box>
+										</Link>
 										<Box w={200}>
-											<Button type='button' fullWidth size='lg'>
-												<Text weight='normal'>View Papers</Text>
+											<Button
+												type='button'
+												fullWidth
+												size='lg'
+												onClick={() => openCheckoutSession(paper)}
+											>
+												<Text weight='normal'>Generate New</Text>
 											</Button>
 										</Box>
-									</Link>
-									<Box w={200}>
-										<Button type='submit' fullWidth size='lg'>
-											<Text weight='normal'>Generate New</Text>
-										</Button>
-									</Box>
-								</Stack>
-							</Group>
-						</Card>
-					))}
+									</Stack>
+								</Group>
+							</Card>
+						))}
+					</ScrollArea.Autosize>
 				</form>
 			</Page.Body>
 		</Page.Container>

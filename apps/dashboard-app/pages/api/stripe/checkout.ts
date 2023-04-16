@@ -5,39 +5,9 @@ import { getOrCreateStripeCustomerIdForUser } from '../../../server/handlers/str
 import { getAuth } from '@clerk/nextjs/server';
 import { prisma } from '../../../server/prisma';
 import { log } from 'next-axiom';
-import Stripe from 'stripe';
 import { CHECKOUT_TYPE, PAPER_PRICE_IDS, PATHS, SUBJECT_STRIPE_IDS } from '../../../utils/constants';
+import { validateLineItems } from '../../../server/handlers';
 
-export const validateLineItems = async (
-	price_id: string
-): Promise<{
-	line_items: Stripe.Checkout.SessionCreateParams.LineItem[];
-	mode: Stripe.Checkout.SessionCreateParams.Mode;
-}> => {
-	try {
-		const mode: Stripe.Checkout.SessionCreateParams.Mode = 'payment';
-		const line_items: Stripe.Checkout.SessionCreateParams.LineItem[] = [];
-		/*// check if the user is already subscribed to a plan
-		// if not subscribed add, the Genius Plan product to the checkout
-		if (user.stripe_subscription_status !== 'active') {
-			line_items.push({
-				// Provide the exact Price ID (for example, pr_1234) of the product you want to sell
-				price: 'price_1MvmiEJOIoW2Wbjc8fdJPWer',
-				quantity: 1
-			});
-			// set mode of the checkout session to "subscription
-			mode = 'subscription';
-		}*/
-		line_items.push({
-			price: price_id,
-			quantity: 1
-		});
-		return { line_items, mode };
-	} catch (err) {
-		console.error(err);
-		throw err;
-	}
-};
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
 	// Run the middleware
 	await runMiddleware(req, res, cors);
@@ -55,8 +25,8 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 			});
 			if (!customer_id) throw new Error('Could not create customer');
 			if (type === CHECKOUT_TYPE.PAPER) {
-				const price_id = PAPER_PRICE_IDS[subject]
-				console.log(price_id)
+				const price_id = PAPER_PRICE_IDS[subject];
+				console.log(price_id);
 				const session = await stripe.checkout.sessions.create({
 					line_items: [
 						{
@@ -73,13 +43,13 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 						userId: auth.userId,
 						exam_board: exam_board,
 						subject: subject,
-                        unit: unit,
+						unit: unit,
 						course_id: course_id
 					}
 				});
 				if (session.url) res.redirect(303, session.url);
 			} else {
-				const price_id = SUBJECT_STRIPE_IDS[subject][exam_board]
+				const price_id = SUBJECT_STRIPE_IDS[subject][exam_board];
 				const { line_items, mode } = await validateLineItems(price_id);
 				const session = await stripe.checkout.sessions.create({
 					line_items,

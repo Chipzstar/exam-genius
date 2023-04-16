@@ -68,8 +68,15 @@ export type Subject = "maths" | "biology" | "chemistry" | "physics" | "economics
 
 export type ExamBoard = "edexcel" | "aqa" | "ocr"
 
+export interface PaperInfo {
+	href: string;
+	name: string;
+	num_questions: number;
+	marks: number;
+}
+
 export type CourseInfo = {
   label: string;
   icon: string;
-  papers: string[];
+  papers: PaperInfo[];
 }

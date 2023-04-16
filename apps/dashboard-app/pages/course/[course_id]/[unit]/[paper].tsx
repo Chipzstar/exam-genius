@@ -21,6 +21,7 @@ import parse from 'html-react-parser';
 import { GetServerSideProps } from 'next';
 import { ParsedUrlQuery } from 'querystring';
 import { Carousel } from '@mantine/carousel';
+import CustomLoader from '../../../../components/CustomLoader';
 
 export interface PageQuery extends ParsedUrlQuery {
 	subject: string;
@@ -55,12 +56,18 @@ const useStyles = createStyles(() => ({
 	}
 }));
 
+const NoPapers = () => (
+	<div className="h-full flex justify-center items-center">
+		<Title order={1}>You have no papers for this course</Title>
+	</div>
+)
+
 const Paper = ({ query }) => {
 	const { classes } = useStyles();
 	const router = useRouter();
 	const { isLoading, data: papers } = trpc.paper.getCoursePapers.useQuery(
 		{ courseId: query.course_id },
-		{ initialData: [] }
+		{ initialData: [], refetchInterval: 5000, }
 	);
 	const { height } = useViewportSize();
 	return (
@@ -71,11 +78,11 @@ const Paper = ({ query }) => {
 				</Button>
 			</header>
 			<Page.Body extraClassNames='justify-center w-full'>
-				<Carousel mx='auto' classNames={classes} controlsOffset="xl">
-					{!papers ? (
-						<LoadingOverlay visible={isLoading} />
-					) : (
-						papers.map((paper, index) => (
+				{!papers ? (
+					<LoadingOverlay visible={isLoading} />
+				) : !papers.length ? <NoPapers/> : (
+					<Carousel mx='auto' classNames={classes} controlsOffset='xl'>
+						{papers.map((paper, index) => (
 							<Carousel.Slide key={index}>
 								<ScrollArea.Autosize
 									mah={height - 200}
@@ -181,14 +188,14 @@ const Paper = ({ query }) => {
 									<li>The values of x and y if A has the form [x y 0; 0 x y; 0 0 z].</li>
 								</ol>
 							</ol>*/}
-											{parse(paper.content, { trim: true })}
+											{paper.content ? parse(paper.content, { trim: true }) : <CustomLoader text="Generating Paper"/>}
 										</div>
 									</Card>
 								</ScrollArea.Autosize>
 							</Carousel.Slide>
-						))
-					)}
-				</Carousel>
+						))}
+					</Carousel>
+				)}
 			</Page.Body>
 		</Page.Container>
 	);

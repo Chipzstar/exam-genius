@@ -112,25 +112,28 @@ export const handleCheckoutSessionComplete = async ({
 				}
 			} else {
 				// @ts-ignore
-				const validKeys = ['exam_board', 'subject', 'unit', 'course_id'].every(key => Object.keys(session?.metadata).includes(key))
+				const validKeys = ['exam_board', 'subject', 'unit', 'course_id', 'paper_name', 'num_questions', 'num_marks'].every(key => Object.keys(session?.metadata).includes(key))
 				console.log(validKeys)
 				if (session?.metadata && validKeys) {
 					const subject = session.metadata.subject as Prisma.Subject;
 					const exam_board = session.metadata.exam_board as Prisma.ExamBoard;
 					const unit_name = session.metadata.unit as string;
 					const course_id = session.metadata.course_id as string;
+					const paper_name = session.metadata.paper_name as string;
+					const num_questions = session.metadata.num_questions as string;
+					const num_marks = session.metadata.num_marks as string;
 					console.log('************************************************');
 					console.table({subject, exam_board, unit_name, course_id})
 					let paper = await prisma.paper.create({
 						data: {
-							name: genCourseOrPaperName(subject, exam_board, unit_name),
+							name: paper_name,
 							user_id: user.clerk_id,
 							subject,
 							exam_board,
 							course_id: course_id,
 							unit_name: unit_name,
 							paper_id: `paper_${nanoid(16)}`,
-							paper_code: `PM02/A2`,
+							paper_code: "",
 							content: ""
 						}
 					})
@@ -143,8 +146,9 @@ export const handleCheckoutSessionComplete = async ({
 						subject: capitalize(subject),
 						exam_board: capitalize(exam_board),
 						course: capitalize(sanitize(unit_name)),
-						num_questions: 16,
-						num_marks: 100
+						paper_name: paper_name,
+						num_questions: num_questions,
+						num_marks: num_marks
 					}).then(({data}) => {
 						console.log('-----------------------------------------------');
 						console.log(data)
