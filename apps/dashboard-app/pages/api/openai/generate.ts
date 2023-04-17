@@ -9,6 +9,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 	if (req.method === 'POST') {
 		try {
 			const { subject, exam_board, course, num_questions, num_marks, paper_name } = req.body;
+			log.debug('Request:', req.body);
 			const completion = await openai.createChatCompletion({
 				model: 'gpt-3.5-turbo',
 				messages: [
