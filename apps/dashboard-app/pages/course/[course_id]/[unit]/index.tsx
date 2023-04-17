@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useMemo } from 'react';
+import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import { ParsedUrlQuery } from 'querystring';
 import Page from '../../../../layout/Page';
 import {
@@ -43,6 +43,7 @@ export const getServerSideProps: GetServerSideProps<{ query: PageQuery }> = asyn
 };
 
 const Papers = ({ query }: InferGetServerSidePropsType<typeof getServerSideProps>) => {
+	const [loading, setLoading] = useState(false);
 	const router = useRouter();
 	const { height } = useViewportSize();
 	const { isLoading, data: course } = trpc.course.getSingleCourse.useQuery({ id: query.course_id });
@@ -70,9 +71,11 @@ const Papers = ({ query }: InferGetServerSidePropsType<typeof getServerSideProps
 	}, [course]);
 
 	const generatePaper = useCallback(async (paper: PaperInfo) => {
+		setLoading(true);
 		try {
 			if (papers && papers.length) {
 				await openCheckoutSession(paper)
+				setLoading(false);
 			} else {
 				await createPastPaper({
 					paper_name: paper.name,
@@ -83,6 +86,7 @@ const Papers = ({ query }: InferGetServerSidePropsType<typeof getServerSideProps
 					num_questions: paper.num_questions,
 					num_marks: paper.marks
 				})
+				setLoading(false);
 				void router.push(`${PATHS.COURSE}/${query.course_id}/${query.unit}/${paper.href}?subject=${query.subject}&board=${query.board}`)
 			}
 		} catch (err) {
@@ -170,6 +174,7 @@ const Papers = ({ query }: InferGetServerSidePropsType<typeof getServerSideProps
 												fullWidth
 												size='lg'
 												onClick={() => generatePaper(paper)}
+												loading={loading}
 											>
 												<Text weight='normal'>Generate New</Text>
 											</Button>
