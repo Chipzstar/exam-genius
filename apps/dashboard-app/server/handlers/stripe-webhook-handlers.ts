@@ -1,13 +1,11 @@
 import type { PrismaClient } from '@prisma/client';
 import Prisma from '@prisma/client';
 import type Stripe from 'stripe';
-import { nanoid } from 'nanoid';
 import { log } from 'next-axiom';
 import { CHECKOUT_TYPE, PORT } from '../../utils/constants';
 import { capitalize, genCourseOrPaperName, genID, sanitize } from '../../utils/functions';
 import axios from 'axios';
 
-// retrieves a Stripe customer id for a given user if it exists or creates a new one
 export const getOrCreateStripeCustomerIdForUser = async ({
 	stripe,
 	prisma,
@@ -88,9 +86,9 @@ export const handleCheckoutSessionComplete = async ({
 			if (!item.price) throw new Error('No price found');
 			const price = await stripe.prices.retrieve(String(item.price.id));
 			if (checkout_type === CHECKOUT_TYPE.COURSE) {
-				if (price?.metadata?.subject && price?.metadata?.exam_board) {
-					const subject = price.metadata.subject as Prisma.Subject;
-					const exam_board = price.metadata.exam_board as Prisma.ExamBoard;
+				if (session?.metadata?.subject && session?.metadata?.exam_board) {
+					const subject = session.metadata.subject as Prisma.Subject;
+					const exam_board = session.metadata.exam_board as Prisma.ExamBoard;
 					const product_id = price.product;
 					const course = await prisma.course.create({
 						data: {
@@ -98,7 +96,7 @@ export const handleCheckoutSessionComplete = async ({
 							subject,
 							exam_board,
 							user_id: user.clerk_id,
-							course_id: `course_${nanoid(16)}`,
+							course_id: genID("course"),
 							product_id: String(product_id) ?? null,
 							year_level: 13
 						}

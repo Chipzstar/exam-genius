@@ -1,8 +1,9 @@
 import React from 'react';
-import { DEFAULT_THEME, Text } from '@mantine/core';
+import { DEFAULT_THEME, Stack, Text } from '@mantine/core';
 
 export interface LoadingOverlayProps {
 	text: string;
+	subText?: string;
 }
 
 export function CustomLoader(props: LoadingOverlayProps) {
@@ -18,7 +19,10 @@ export function CustomLoader(props: LoadingOverlayProps) {
 					</g>
 				</g>
 			</svg>
-			<Text align="center">{props.text}</Text>
+			<Stack justify="center" align="center">
+				<Text align="center">{props.text}</Text>
+				{props.subText && <Text align="center" size="sm">{props.subText}</Text>}
+			</Stack>
 		</div>
 	);
 }

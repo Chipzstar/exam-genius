@@ -853,12 +853,12 @@ export const SUBJECT_STRIPE_IDS = {
 };
 
 export const PAPER_PRICE_IDS = {
-	maths: 'price_1MvNNdJOIoW2WbjczSvv3fBH',
-	biology: 'price_1MvNOjJOIoW2WbjcbYDUUaOB',
-	physics: 'price_1MvO29JOIoW2WbjcNntTUGiK',
-	chemistry: 'price_1MvO1OJOIoW2WbjcMeRew6KK',
-	economics: 'price_1MvfMiJOIoW2WbjcGygjhICM',
-	psychology: 'price_1MvfNLJOIoW2Wbjc5Y7iJV3p'
+	maths: 'price_1MxroJJOIoW2WbjckX3TbQBd',
+	biology: 'price_1MxrnlJOIoW2WbjckpR2Dx5Q',
+	physics: 'price_1MxrmCJOIoW2Wbjcghct8T7v',
+	chemistry: 'price_1MxrmuJOIoW2WbjcDNBnwNTu',
+	economics: 'price_1Mxrl5JOIoW2WbjcfsLPQyqt',
+	psychology: 'price_1Mxrk8JOIoW2WbjcOScXVDUC'
 };
 
 export enum CHECKOUT_TYPE {

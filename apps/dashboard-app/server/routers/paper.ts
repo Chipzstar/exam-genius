@@ -1,9 +1,8 @@
 import { createTRPCRouter, protectedProcedure } from '../trpc';
 import { TRPCError } from '@trpc/server';
 import { z } from 'zod';
-import { nanoid } from 'nanoid';
 import axios from 'axios';
-import { capitalize, sanitize } from '../../utils/functions';
+import { capitalize, genID, sanitize } from '../../utils/functions';
 import { PORT } from '../../utils/constants';
 import { log } from 'next-axiom';
 
@@ -116,7 +115,7 @@ const paperRouter = createTRPCRouter({
 						exam_board: input.exam_board,
 						course_id: input.course_id,
 						unit_name: input.unit_name,
-						paper_id: `paper_${nanoid(16)}`,
+						paper_id: genID('paper'),
 						paper_code: input.paper_code,
 						content: ''
 					}

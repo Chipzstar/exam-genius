@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useMemo, useState } from 'react';
+import React, { useCallback, useMemo, useState } from 'react';
 import { ParsedUrlQuery } from 'querystring';
 import Page from '../../../../layout/Page';
 import {
@@ -17,14 +17,15 @@ import {
 import Image from 'next/image';
 import { CHECKOUT_TYPE, PAPER_PRICE_IDS, PATHS, SUBJECT_PAPERS } from '../../../../utils/constants';
 import { GetServerSideProps, InferGetServerSidePropsType } from 'next';
-import { capitalize, genCourseOrPaperName, sanitize } from '../../../../utils/functions';
+import { capitalize, genCourseOrPaperName, notifyError, sanitize } from '../../../../utils/functions';
 import Link from 'next/link';
-import { IconArrowLeft } from '@tabler/icons-react';
+import { IconArrowLeft, IconX } from '@tabler/icons-react';
 import { useRouter } from 'next/router';
 import { trpc } from '../../../../utils/trpc';
 import { ExamBoard, PaperInfo, Subject } from '../../../../utils/types';
 import { useViewportSize } from '@mantine/hooks';
 import { TRPCError } from '@trpc/server';
+import CustomLoader from '../../../../components/CustomLoader';
 
 export interface PageQuery extends ParsedUrlQuery {
 	board: ExamBoard;
@@ -43,6 +44,7 @@ export const getServerSideProps: GetServerSideProps<{ query: PageQuery }> = asyn
 };
 
 const Papers = ({ query }: InferGetServerSidePropsType<typeof getServerSideProps>) => {
+	const [generating, setGenerating] = useState<boolean>(false);
 	const [loading, setLoading] = useState<number | null>(null);
 	const router = useRouter();
 	const { height } = useViewportSize();
@@ -82,6 +84,7 @@ const Papers = ({ query }: InferGetServerSidePropsType<typeof getServerSideProps
 					await openCheckoutSession(paper);
 					setLoading(null);
 				} else {
+					setGenerating(true);
 					await createPastPaper({
 						paper_name: paper.name,
 						paper_code: paper.code,
@@ -93,12 +96,16 @@ const Papers = ({ query }: InferGetServerSidePropsType<typeof getServerSideProps
 						num_marks: paper.marks
 					});
 					setLoading(null);
-					void router.push(
-						`${PATHS.COURSE}/${query.course_id}/${query.unit}/${paper.href}?subject=${query.subject}&board=${query.board}&code=${paper.code}`
-					);
+					void router
+						.push(
+							`${PATHS.COURSE}/${query.course_id}/${query.unit}/${paper.href}?subject=${query.subject}&board=${query.board}&code=${paper.code}`
+						)
+						.then(() => setGenerating(false));
 				}
 			} catch (err) {
 				console.error(err);
+				setGenerating(false)
+				notifyError("generate-paper-failed", err.message, <IconX size={20}/>);
 				throw new TRPCError({ code: 'INTERNAL_SERVER_ERROR', message: err.message });
 			}
 		},
@@ -127,12 +134,15 @@ const Papers = ({ query }: InferGetServerSidePropsType<typeof getServerSideProps
 		[course]
 	);
 
-	useEffect(() => {
-		console.log(course_papers);
-	}, [course_papers]);
-
 	return !course_info ? (
 		<LoadingOverlay visible={isLoading} />
+	) : generating ? (
+		<div className='h-full flex items-center justify-center'>
+			<CustomLoader
+				text='Generating Paper'
+				subText='Approx waiting time is 20 to 60 seconds. Go grab a coffee while we get your paper ready '
+			/>
+		</div>
 	) : (
 		<Page.Container data_cy='course-page' extraClassNames='flex flex-col py-6'>
 			<Page.Body>
