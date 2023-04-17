@@ -136,7 +136,7 @@ const Papers = ({ query }: InferGetServerSidePropsType<typeof getServerSideProps
 
 	return !course_info ? (
 		<LoadingOverlay visible={isLoading} />
-	) : !generating ? (
+	) : generating ? (
 		<div className='h-full flex items-center justify-center'>
 			<CustomLoader
 				text='Generating Paper'
