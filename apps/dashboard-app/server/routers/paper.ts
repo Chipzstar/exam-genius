@@ -103,45 +103,38 @@ const paperRouter = createTRPCRouter({
 				const baseUrl = process.env.VERCEL_URL
 					? 'https://' + process.env.VERCEL_URL
 					: `http://localhost:${PORT}`;
-				axios
-					.post(`${baseUrl}/api/openai/generate`, {
-						subject: capitalize(input.subject),
-						exam_board: capitalize(input.exam_board),
-						course: capitalize(sanitize(input.unit_name)),
-						paper_name: input.paper_name,
-						num_questions: input.num_questions,
-						num_marks: input.num_marks
+				const { data } = await axios.post(`${baseUrl}/api/openai/generate`, {
+					subject: capitalize(input.subject),
+					exam_board: capitalize(input.exam_board),
+					course: capitalize(sanitize(input.unit_name)),
+					paper_name: input.paper_name,
+					num_questions: input.num_questions,
+					num_marks: input.num_marks
+				});
+				const content: string = data.result;
+				const sanitizedContent = content.replace(/\\n\s+|\\n/g, '');
+				log.info('openai response');
+				log.info(content);
+				ctx.prisma.paper
+					.update({
+						where: {
+							paper_id: paper.paper_id
+						},
+						data: {
+							content: sanitizedContent
+						}
 					})
-					.then(({ data }) => {
-						const content: string = data.result;
-						const sanitizedContent = content.replace(/\\n\s+|\\n/g, '');
-						log.info('openai response');
-						log.info(content);
-						ctx.prisma.paper
-							.update({
-								where: {
-									paper_id: paper.paper_id
-								},
-								data: {
-									content: sanitizedContent
-								}
-							})
-							.then(paper => {
-								console.log('=======================================');
-								console.log(paper);
-								log.debug('updated paper', paper);
-								console.log('=======================================');
-							})
-							.catch(err => {
-								console.log('************************************************');
-								console.error(err);
-								log.error(err);
-								console.log('************************************************');
-							});
+					.then(paper => {
+						console.log('=======================================');
+						console.log(paper);
+						log.debug('updated paper', paper);
+						console.log('=======================================');
 					})
 					.catch(err => {
+						console.log('************************************************');
 						console.error(err);
 						log.error(err);
+						console.log('************************************************');
 					});
 				return paper;
 			} catch (err) {
