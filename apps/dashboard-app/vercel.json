@@ -1,11 +1,7 @@
 {
   "functions": {
-    "api/openai/generate.ts": {
-      "memory": 1024,
-      "maxDuration": 30
-    },
-    "api/*.ts": {
-      "memory": 1024,
+    "pages/api/openai/generate.ts": {
+      "memory": 3008,
       "maxDuration": 30
     }
   }
