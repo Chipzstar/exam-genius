@@ -1,11 +1,10 @@
 import type { PrismaClient } from '@prisma/client';
 import Prisma from '@prisma/client';
 import type Stripe from 'stripe';
-import { v4 as uuidv4 } from 'uuid';
 import { nanoid } from 'nanoid';
 import { log } from 'next-axiom';
 import { CHECKOUT_TYPE, PORT } from '../../utils/constants';
-import { capitalize, genCourseOrPaperName, sanitize } from '../../utils/functions';
+import { capitalize, genCourseOrPaperName, genID, sanitize } from '../../utils/functions';
 import axios from 'axios';
 
 // retrieves a Stripe customer id for a given user if it exists or creates a new one
@@ -124,20 +123,20 @@ export const handleCheckoutSessionComplete = async ({
 					const unit_name = session.metadata.unit as string;
 					const course_id = session.metadata.course_id as string;
 					const paper_name = session.metadata.paper_name as string;
+					const paper_code = session.metadata.paper_code as string;
 					const num_questions = session.metadata.num_questions as string;
 					const num_marks = session.metadata.num_marks as string;
 					console.log('************************************************');
-					console.table({ subject, exam_board, unit_name, course_id });
 					let paper = await prisma.paper.create({
 						data: {
 							name: paper_name,
 							user_id: user.clerk_id,
 							subject,
 							exam_board,
-							course_id: course_id,
-							unit_name: unit_name,
-							paper_id: `paper_${nanoid(16)}`,
-							paper_code: '',
+							course_id,
+							unit_name,
+							paper_id: genID("paper"),
+							paper_code,
 							content: ''
 						}
 					});
@@ -227,7 +226,7 @@ export const handleInvoicePaid = async ({
 						subject,
 						exam_board,
 						user_id: user.clerk_id,
-						course_id: `course_${uuidv4()}`,
+						course_id: genID("course"),
 						product_id: String(product_id) ?? null,
 						year_level: 13
 					}

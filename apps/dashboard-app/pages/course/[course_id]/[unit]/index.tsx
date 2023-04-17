@@ -43,11 +43,14 @@ export const getServerSideProps: GetServerSideProps<{ query: PageQuery }> = asyn
 };
 
 const Papers = ({ query }: InferGetServerSidePropsType<typeof getServerSideProps>) => {
-	const [loading, setLoading] = useState(false);
+	const [loading, setLoading] = useState<number | null>(null);
 	const router = useRouter();
 	const { height } = useViewportSize();
 	const { isLoading, data: course } = trpc.course.getSingleCourse.useQuery({ id: query.course_id });
-	const { data: papers } = trpc.paper.getCoursePapers.useQuery({ courseId: query.course_id });
+	const { data: course_papers } = trpc.paper.getPapersByCourse.useQuery(
+		{ courseId: query.course_id },
+		{ initialData: [] }
+	);
 	const { mutateAsync: createCheckoutSession } = trpc.stripe.createCheckoutSession.useMutation();
 	const { mutateAsync: createPastPaper } = trpc.paper.createPaper.useMutation();
 	const items = [
@@ -70,30 +73,37 @@ const Papers = ({ query }: InferGetServerSidePropsType<typeof getServerSideProps
 		return course ? SUBJECT_PAPERS[course.subject][course.exam_board][query.unit] : null;
 	}, [course]);
 
-	const generatePaper = useCallback(async (paper: PaperInfo) => {
-		setLoading(true);
-		try {
-			if (papers && papers.length) {
-				await openCheckoutSession(paper)
-				setLoading(false);
-			} else {
-				await createPastPaper({
-					paper_name: paper.name,
-					course_id: query.course_id,
-                    subject: query.subject,
-					exam_board: query.board,
-                    unit_name: query.unit,
-					num_questions: paper.num_questions,
-					num_marks: paper.marks
-				})
-				setLoading(false);
-				void router.push(`${PATHS.COURSE}/${query.course_id}/${query.unit}/${paper.href}?subject=${query.subject}&board=${query.board}`)
+	const generatePaper = useCallback(
+		async (paper: PaperInfo) => {
+			try {
+				// check if the user owns any existing papers with the same paper_code
+				const num_papers = course_papers.filter(p => p.paper_code === paper.code).length;
+				if (num_papers > 0) {
+					await openCheckoutSession(paper);
+					setLoading(null);
+				} else {
+					await createPastPaper({
+						paper_name: paper.name,
+						paper_code: paper.code,
+						course_id: query.course_id,
+						subject: query.subject,
+						exam_board: query.board,
+						unit_name: query.unit,
+						num_questions: paper.num_questions,
+						num_marks: paper.marks
+					});
+					setLoading(null);
+					void router.push(
+						`${PATHS.COURSE}/${query.course_id}/${query.unit}/${paper.href}?subject=${query.subject}&board=${query.board}&code=${paper.code}`
+					);
+				}
+			} catch (err) {
+				console.error(err);
+				throw new TRPCError({ code: 'INTERNAL_SERVER_ERROR', message: err.message });
 			}
-		} catch (err) {
-			console.error(err);
-			throw new TRPCError({code: "INTERNAL_SERVER_ERROR", message: err.message});
-		}
-	}, [query, papers])
+		},
+		[query, course_papers]
+	);
 
 	const openCheckoutSession = useCallback(
 		async (paper: PaperInfo) => {
@@ -106,6 +116,7 @@ const Papers = ({ query }: InferGetServerSidePropsType<typeof getServerSideProps
 				unit: query.unit,
 				paper_href: paper.href,
 				paper_name: paper.name,
+				paper_code: paper.code,
 				num_questions: paper.num_questions,
 				marks: paper.marks
 			});
@@ -116,7 +127,9 @@ const Papers = ({ query }: InferGetServerSidePropsType<typeof getServerSideProps
 		[course]
 	);
 
-	useEffect(() => {console.log(papers)}, [papers]);
+	useEffect(() => {
+		console.log(course_papers);
+	}, [course_papers]);
 
 	return !course_info ? (
 		<LoadingOverlay visible={isLoading} />
@@ -136,12 +149,21 @@ const Papers = ({ query }: InferGetServerSidePropsType<typeof getServerSideProps
 							{course_info.label} 📚
 						</Title>
 						<div className='flex'>
-							<Button leftIcon={<IconArrowLeft />} size='md' variant='outline' onClick={() => router.replace(`${PATHS.COURSE}/${query.course_id}?subject=${query.subject}&board=${query.board}`)}>
+							<Button
+								leftIcon={<IconArrowLeft />}
+								size='md'
+								variant='outline'
+								onClick={() =>
+									router.replace(
+										`${PATHS.COURSE}/${query.course_id}?subject=${query.subject}&board=${query.board}`
+									)
+								}
+							>
 								Back
 							</Button>
 						</div>
 					</header>
-					<ScrollArea.Autosize mah={height - 150} mt="lg">
+					<ScrollArea.Autosize mah={height - 150} mt='lg'>
 						{course_info.papers.map((paper, index) => (
 							<Card shadow='sm' radius='md' mb='lg' key={index}>
 								<Group grow align='center' p='xl' position='apart'>
@@ -160,7 +182,7 @@ const Papers = ({ query }: InferGetServerSidePropsType<typeof getServerSideProps
 									</div>
 									<Stack align='end'>
 										<Link
-											href={`${PATHS.COURSE}/${query.course_id}/${query.unit}/${paper.href}?subject=${query.subject}&board=${query.board}`}
+											href={`${PATHS.COURSE}/${query.course_id}/${query.unit}/${paper.href}?subject=${query.subject}&board=${query.board}&code=${paper.code}`}
 										>
 											<Box w={200}>
 												<Button type='button' fullWidth size='lg'>
@@ -173,8 +195,11 @@ const Papers = ({ query }: InferGetServerSidePropsType<typeof getServerSideProps
 												type='button'
 												fullWidth
 												size='lg'
-												onClick={() => generatePaper(paper)}
-												loading={loading}
+												onClick={() => {
+													setLoading(index);
+													generatePaper(paper);
+												}}
+												loading={loading === index}
 											>
 												<Text weight='normal'>Generate New</Text>
 											</Button>

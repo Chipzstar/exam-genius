@@ -45,7 +45,31 @@ const paperRouter = createTRPCRouter({
 				});
 			}
 		}),
-	getCoursePapers: protectedProcedure
+	getPapersByCode: protectedProcedure
+		.input(
+			z.object({
+				courseId: z.string(),
+				code: z.string()
+			})
+		)
+		.query(async ({ input, ctx }) => {
+			try {
+				const papers = await ctx.prisma.paper.findMany({
+					where: {
+						course_id: input.courseId,
+						paper_code: input.code
+					}
+				});
+				return papers;
+			} catch (err) {
+				console.error(err);
+				throw new TRPCError({
+					code: 'INTERNAL_SERVER_ERROR',
+					message: 'Oops, something went wrong' + err.message
+				});
+			}
+		}),
+	getPapersByCourse: protectedProcedure
 		.input(
 			z.object({
 				courseId: z.string()
@@ -55,6 +79,7 @@ const paperRouter = createTRPCRouter({
 			try {
 				const papers = await ctx.prisma.paper.findMany({
 					where: {
+						user_id: ctx.auth.userId,
 						course_id: input.courseId
 					}
 				});
@@ -72,6 +97,7 @@ const paperRouter = createTRPCRouter({
 			z.object({
 				exam_board: z.enum(['ocr', 'aqa', 'edexcel']),
 				subject: z.enum(['maths', 'physics', 'chemistry', 'biology', 'economics', 'psychology']),
+				paper_code: z.string(),
 				paper_name: z.string(),
 				course_id: z.string(),
 				unit_name: z.string(),
@@ -91,7 +117,7 @@ const paperRouter = createTRPCRouter({
 						course_id: input.course_id,
 						unit_name: input.unit_name,
 						paper_id: `paper_${nanoid(16)}`,
-						paper_code: '',
+						paper_code: input.paper_code,
 						content: ''
 					}
 				});

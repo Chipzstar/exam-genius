@@ -4,6 +4,13 @@ import { PhoneNumberFormat as PNF } from 'google-libphonenumber';
 import bcrypt from 'bcryptjs';
 import CryptoJS from 'crypto-js';
 import { ExamBoard, Subject } from '@prisma/client';
+import { customAlphabet } from 'nanoid';
+
+const nanoid = customAlphabet('1234567890abcdefghiklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ', 16)
+
+export function genID(prefix: string, size=16) : string {
+	return `${prefix}_${nanoid(size)}`
+}
 
 export function getRndInteger(min: number, max: number, offset = 1) {
 	return Math.floor(Math.random() * (max - min + offset)) + min;

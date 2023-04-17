@@ -28,6 +28,7 @@ export interface PageQuery extends ParsedUrlQuery {
 	subject: string;
 	board: string;
 	course_id: string;
+	code: string;
 	unit: string;
 	paper: string;
 }
@@ -66,8 +67,8 @@ const NoPapers = () => (
 const Paper = ({ query }) => {
 	const { classes } = useStyles();
 	const router = useRouter();
-	const { isLoading, data: papers } = trpc.paper.getCoursePapers.useQuery(
-		{ courseId: query.course_id },
+	const { isLoading, data: papers } = trpc.paper.getPapersByCode.useQuery(
+		{ courseId: query.course_id, code: query.code },
 		{ initialData: [], refetchInterval: 3000, }
 	);
 	const { height } = useViewportSize();
