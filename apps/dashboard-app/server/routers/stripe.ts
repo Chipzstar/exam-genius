@@ -22,6 +22,7 @@ const paperSchema = z.object({
 	subject: z.enum(["maths", "physics", "chemistry", "biology", "economics", "psychology"]),
 	paper_href: z.string(),
 	paper_name: z.string(),
+	paper_code: z.string(),
 	unit: z.string(),
 	num_questions: z.number(),
 	marks: z.number()
@@ -34,7 +35,7 @@ const stripeRouter = createTRPCRouter({
 			let session;
 			const { stripe, auth, prisma, req, res } = ctx;
 			console.log(auth);
-			const { type, exam_board, subject, unit, course_id, num_questions, marks, paper_href, paper_name } = input;
+			const { type, exam_board, subject, unit, course_id, num_questions, marks, paper_href, paper_name, paper_code } = input;
 			try {
 				const auth = getAuth(req);
 				if (!auth?.userId) throw new Error('Not authenticated');
@@ -55,7 +56,7 @@ const stripeRouter = createTRPCRouter({
 							}
 						],
 						mode: 'payment',
-						success_url: `${req.headers.origin}/${PATHS.COURSE}/${course_id}/${unit}/${paper_href}/?subject=${subject}&board=${exam_board}&success=true`,
+						success_url: `${req.headers.origin}/${PATHS.COURSE}/${course_id}/${unit}/${paper_href}/?subject=${subject}&board=${exam_board}&code=${paper_code}&success=true`,
 						cancel_url: `${req.headers.origin}/${PATHS.COURSE}/${course_id}/${unit}/?subject=${subject}&board=${exam_board}&canceled=true`,
 						customer: customer_id,
 						metadata: {
@@ -66,6 +67,7 @@ const stripeRouter = createTRPCRouter({
 							unit: unit,
 							course_id: course_id,
 							paper_name: paper_name,
+							paper_code: paper_code,
 							num_questions: num_questions,
                             num_marks: marks
 						}

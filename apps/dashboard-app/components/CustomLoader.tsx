@@ -1,13 +1,14 @@
 import React from 'react';
-import { DEFAULT_THEME, Text } from '@mantine/core';
+import { DEFAULT_THEME, Stack, Text } from '@mantine/core';
 
 export interface LoadingOverlayProps {
 	text: string;
+	subText?: string;
 }
 
 export function CustomLoader(props: LoadingOverlayProps) {
 	return (
-		<div className="flex flex-col justify-center items-center space-y-1">
+		<div className="flex flex-col justify-center items-center space-y-2">
 			<svg width='54' height='54' viewBox='0 0 38 38' xmlns='http://www.w3.org/2000/svg' stroke={DEFAULT_THEME.colors.blue[6]}>
 				<g fill='none' fillRule='evenodd'>
 					<g transform='translate(1 1)' strokeWidth='2'>
@@ -18,7 +19,10 @@ export function CustomLoader(props: LoadingOverlayProps) {
 					</g>
 				</g>
 			</svg>
-			<Text align="center">{props.text}</Text>
+			<Stack justify="center" align="center">
+				<Text align="center" size="xl" weight={600}>{props.text}</Text>
+				{props.subText && <Text align="center" size="sm">{props.subText}</Text>}
+			</Stack>
 		</div>
 	);
 }

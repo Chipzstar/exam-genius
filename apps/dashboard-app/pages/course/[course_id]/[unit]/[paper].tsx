@@ -28,6 +28,7 @@ export interface PageQuery extends ParsedUrlQuery {
 	subject: string;
 	board: string;
 	course_id: string;
+	code: string;
 	unit: string;
 	paper: string;
 }
@@ -58,17 +59,17 @@ const useStyles = createStyles(() => ({
 }));
 
 const NoPapers = () => (
-	<div className="h-full flex justify-center items-center">
+	<div className='flex h-full items-center justify-center'>
 		<Title order={1}>You have no papers for this course</Title>
 	</div>
-)
+);
 
 const Paper = ({ query }) => {
 	const { classes } = useStyles();
 	const router = useRouter();
-	const { isLoading, data: papers } = trpc.paper.getCoursePapers.useQuery(
-		{ courseId: query.course_id },
-		{ initialData: [], refetchInterval: 3000, }
+	const { isLoading, data: papers } = trpc.paper.getPapersByCode.useQuery(
+		{ courseId: query.course_id, code: query.code },
+		{ initialData: [], refetchInterval: 3000 }
 	);
 	const { height } = useViewportSize();
 	return (
@@ -78,7 +79,11 @@ const Paper = ({ query }) => {
 					leftIcon={<IconArrowLeft />}
 					size='md'
 					variant='outline'
-					onClick={() => router.replace(`${PATHS.COURSE}/${query.course_id}/${query.unit}?subject=${query.subject}&board=${query.board}`)}
+					onClick={() =>
+						router.replace(
+							`${PATHS.COURSE}/${query.course_id}/${query.unit}?subject=${query.subject}&board=${query.board}`
+						)
+					}
 				>
 					Back
 				</Button>
@@ -86,7 +91,9 @@ const Paper = ({ query }) => {
 			<Page.Body extraClassNames='justify-center w-full'>
 				{!papers ? (
 					<LoadingOverlay visible={isLoading} />
-				) : !papers.length ? <NoPapers/> : (
+				) : !papers.length ? (
+					<NoPapers />
+				) : (
 					<Carousel mx='auto' classNames={classes} controlsOffset='xl'>
 						{papers.map((paper, index) => (
 							<Carousel.Slide key={index}>
@@ -194,7 +201,14 @@ const Paper = ({ query }) => {
 									<li>The values of x and y if A has the form [x y 0; 0 x y; 0 0 z].</li>
 								</ol>
 							</ol>*/}
-											{paper.content ? parse(paper.content, { trim: true }) : <CustomLoader text="Generating Paper"/>}
+											{paper.content ? (
+												parse(paper.content, { trim: true })
+											) : (
+												<CustomLoader
+													text='Generating Paper'
+													subText='Approx waiting time is 20 to 60 seconds. Go grab a coffee while we get your paper ready '
+												/>
+											)}
 										</div>
 									</Card>
 								</ScrollArea.Autosize>

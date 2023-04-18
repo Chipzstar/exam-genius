@@ -70,6 +70,7 @@ export type ExamBoard = "edexcel" | "aqa" | "ocr"
 
 export interface PaperInfo {
 	href: string;
+	code: string;
 	name: string;
 	num_questions: number;
 	marks: number;
