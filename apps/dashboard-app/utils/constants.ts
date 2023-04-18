@@ -821,44 +821,44 @@ export const SUBJECT_PAPERS: Record<Subject, Record<ExamBoard, Record<string, Co
 
 export const SUBJECT_STRIPE_IDS = {
 	maths: {
-		edexcel: process.env.EDEXCEL_MATHS_COURSE_PRICE_ID,
-		aqa: process.env.AQA_MATHS_COURSE_PRICE_ID,
-		ocr: process.env.OCR_MATHS_COURSE_PRICE_ID
+		edexcel: String(process.env.EDEXCEL_MATHS_COURSE_PRICE_ID),
+		aqa: String(process.env.AQA_MATHS_COURSE_PRICE_ID),
+		ocr: String(process.env.OCR_MATHS_COURSE_PRICE_ID)
 	},
 	physics: {
-		edexcel: process.env.EDEXCEL_PHYSICS_COURSE_PRICE_ID,
-		aqa: process.env.AQA_PHYSICS_COURSE_PRICE_ID,
-		ocr: process.env.OCR_PHYSICS_COURSE_PRICE_ID
+		edexcel: String(process.env.EDEXCEL_PHYSICS_COURSE_PRICE_ID),
+		aqa: String(process.env.AQA_PHYSICS_COURSE_PRICE_ID),
+		ocr: String(process.env.OCR_PHYSICS_COURSE_PRICE_ID)
 	},
 	chemistry: {
-		edexcel: process.env.EDEXCEL_CHEMISTRY_COURSE_PRICE_ID,
-		aqa: process.env.AQA_CHEMISTRY_COURSE_PRICE_ID,
-		ocr: process.env.OCR_CHEMISTRY_COURSE_PRICE_ID
+		edexcel: String(process.env.EDEXCEL_CHEMISTRY_COURSE_PRICE_ID),
+		aqa: String(process.env.AQA_CHEMISTRY_COURSE_PRICE_ID),
+		ocr: String(process.env.OCR_CHEMISTRY_COURSE_PRICE_ID)
 	},
 	biology: {
-		edexcel: process.env.EDEXCEL_BIOLOGY_COURSE_PRICE_ID,
-		aqa: process.env.AQA_BIOLOGY_COURSE_PRICE_ID,
-		ocr: process.env.OCR_BIOLOGY_COURSE_PRICE_ID
+		edexcel: String(process.env.EDEXCEL_BIOLOGY_COURSE_PRICE_ID),
+		aqa: String(process.env.AQA_BIOLOGY_COURSE_PRICE_ID),
+		ocr: String(process.env.OCR_BIOLOGY_COURSE_PRICE_ID)
 	},
 	economics: {
-		edexcel: process.env.EDEXCEL_ECONOMICS_COURSE_PRICE_ID,
-		aqa: process.env.AQA_ECONOMICS_COURSE_PRICE_ID,
-		ocr: process.env.OCR_ECONOMICS_COURSE_PRICE_ID
+		edexcel: String(process.env.EDEXCEL_ECONOMICS_COURSE_PRICE_ID),
+		aqa: String(process.env.AQA_ECONOMICS_COURSE_PRICE_ID),
+		ocr: String(process.env.OCR_ECONOMICS_COURSE_PRICE_ID)
 	},
 	psychology: {
-		edexcel: process.env.EDEXCEL_PSYCHOLOGY_COURSE_PRICE_ID,
-		aqa: process.env.AQA_PSYCHOLOGY_COURSE_PRICE_ID,
-		ocr: process.env.OCR_PSYCHOLOGY_COURSE_PRICE_ID
+		edexcel: String(process.env.EDEXCEL_PSYCHOLOGY_COURSE_PRICE_ID),
+		aqa: String(process.env.AQA_PSYCHOLOGY_COURSE_PRICE_ID),
+		ocr: String(process.env.OCR_PSYCHOLOGY_COURSE_PRICE_ID)
 	}
 };
 
-export const PAPER_PRICE_IDS = {
-	maths: process.env.MATHS_PAPER_PRICE_ID,
-	biology: process.env.BIOLOGY_PAPER_PRICE_ID,
-	physics: process.env.PHYSICS_PAPER_PRICE_ID,
-	chemistry: process.env.CHEMISTRY_PAPER_PRICE_ID,
-	economics: process.env.ECONOMICS_PAPER_PRICE_ID,
-	psychology: process.env.PSYCHOLOGY_PAPER_PRICE_ID
+export const PAPER_PRICE_IDS: Record<Subject, string> = {
+	maths: String(process.env.MATHS_PAPER_PRICE_ID),
+	biology: String(process.env.BIOLOGY_PAPER_PRICE_ID),
+	physics: String(process.env.PHYSICS_PAPER_PRICE_ID),
+	chemistry: String(process.env.CHEMISTRY_PAPER_PRICE_ID),
+	economics: String(process.env.ECONOMICS_PAPER_PRICE_ID),
+	psychology: String(process.env.PSYCHOLOGY_PAPER_PRICE_ID)
 };
 
 export enum CHECKOUT_TYPE {

@@ -125,7 +125,7 @@ export const handleCheckoutSessionComplete = async ({
 					const num_questions = session.metadata.num_questions as string;
 					const num_marks = session.metadata.num_marks as string;
 					console.log('************************************************');
-					let paper = await prisma.paper.create({
+					const paper = await prisma.paper.create({
 						data: {
 							name: paper_name,
 							user_id: user.clerk_id,

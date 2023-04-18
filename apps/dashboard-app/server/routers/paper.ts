@@ -107,7 +107,7 @@ const paperRouter = createTRPCRouter({
 		.mutation(async ({ input, ctx }) => {
 			try {
 				const user_id = ctx.auth.userId;
-				let paper = await ctx.prisma.paper.create({
+				const paper = await ctx.prisma.paper.create({
 					data: {
 						name: input.paper_name,
 						user_id,

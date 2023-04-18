@@ -39,7 +39,12 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 			console.log(completion.data.choices[0]);
 			log.debug('openai completion', completion.data.choices[0]);
 			console.log('-----------------------------------------------');
-			return res.status(200).json({ result: completion.data.choices[0].message.content });
+			if (completion?.data?.choices[0]?.message?.content) {
+				return res.status(200).json({ result: completion.data.choices[0].message.content });
+			}
+			throw new Error(
+				'There was an error generating this predicted past paper. We will generate a new one for you shortly.'
+			);
 		} catch (error) {
 			if (error.response?.data) {
 				console.log(error.response?.data);
