@@ -31,7 +31,7 @@ const Reviews = () => {
 			<div className='flex flex-col space-y-4 px-6 md:px-0'>
 				<Carousel
 					px={mobileScreen ? 'lg' : 0}
-					maw={width}
+					maw={width - 50}
 					height={200}
 					slideSize='40%'
 					breakpoints={[
@@ -55,7 +55,7 @@ const Reviews = () => {
 				</Carousel>
 				<Carousel
 					px={mobileScreen ? 'lg' : 0}
-					maw={mobileScreen ? width : width - 20}
+					maw={width - 50}
 					height={200}
 					slideSize='40%'
 					breakpoints={[

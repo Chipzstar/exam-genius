@@ -13,7 +13,7 @@ export const Pricing = () => {
 					<Image src='/static/images/swoosh.svg' alt='swoosh-underline' height={10} width={200} />
 					<p
 						className='text-center text-sm text-gray-500 text-black sm:text-base lg:text-lg'
-						style={{ width: '600px' }}
+						style={{ width: mobileScreen ? undefined : '600px' }}
 					>
 						Our AI technology is continuously learning, so you will always receive the most accurate
 						predicted exam papers.

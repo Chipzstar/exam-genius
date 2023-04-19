@@ -2,7 +2,7 @@ import React, { useCallback, useEffect, useState } from 'react';
 import { Button, Image, Text } from '@mantine/core';
 import { IconPlayerPlay } from '@tabler/icons-react';
 import SneakPeakSlideshow from '../modals/SneakPeakSlideshow';
-import { useMediaQuery } from '@mantine/hooks';
+import { useMediaQuery, useViewportSize } from '@mantine/hooks';
 import { Carousel, Embla } from '@mantine/carousel';
 
 const images = [
@@ -52,6 +52,7 @@ const images = [
 
 const SneakPeak = () => {
 	const [sneak, showSneakPeak] = useState(false);
+	const { width } = useViewportSize();
 	const mobileScreen = useMediaQuery('(max-width: 30em)');
 	const [embla, setEmbla] = useState<Embla | null>(null);
 
@@ -120,8 +121,8 @@ const SneakPeak = () => {
 				<span className='flex justify-center text-center'>Trusted by our students at</span>
 				{mobileScreen ? (
 					<Carousel
-						withIndicators
 						height={200}
+						maw={width - 20}
 						slideSize='100%'
 						slideGap='md'
 						loop

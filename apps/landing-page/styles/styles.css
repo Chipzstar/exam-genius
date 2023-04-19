@@ -14,6 +14,6 @@
     border: 4px solid pink;
 }
 
-/** {
+* {
     border: red solid 1px !important
-}*/
+}
