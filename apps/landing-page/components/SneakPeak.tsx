@@ -145,7 +145,7 @@ const SneakPeak = () => {
 					) : (
 						<>
 							{images.map((image, index) => (
-								<Image src={image.path} alt={image.alt} width={image.width} height={image.height} />
+								<Image key={index} src={image.path} alt={image.alt} width={image.width} height={image.height} />
 							))}
 						</>
 					)}
