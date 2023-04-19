@@ -12,7 +12,7 @@ export const Pricing = () => {
 					<p className='text-2xl font-medium sm:text-4xl md:text-5xl lg:text-6xl'>Simple pricing</p>
 					<Image src='/static/images/swoosh.svg' alt='swoosh-underline' height={10} width={200} />
 					<p
-						className='text-center text-sm text-gray-500 text-black sm:text-base lg:text-lg'
+						className='px-4 text-center text-sm text-gray-500 text-black sm:text-base md:px-0 lg:text-lg'
 						style={{ width: mobileScreen ? undefined : '600px' }}
 					>
 						Our AI technology is continuously learning, so you will always receive the most accurate
@@ -21,7 +21,7 @@ export const Pricing = () => {
 				</div>
 				<div
 					className='flex flex-col items-center gap-2 py-5 md:border-2 md:border-black'
-					style={{ width: '400px' }}
+					style={{ width: mobileScreen ? undefined : 400 }}
 				>
 					<p className='font-bold text-blue-700'>Most Popular</p>
 					<p className='text-2xl font-normal'>Genius Plan</p>

@@ -121,7 +121,6 @@ const SneakPeak = () => {
 				<span className='flex justify-center text-center'>Trusted by our students at</span>
 				{mobileScreen ? (
 					<Carousel
-						height={200}
 						maw={width - 20}
 						slideSize='100%'
 						slideGap='md'
