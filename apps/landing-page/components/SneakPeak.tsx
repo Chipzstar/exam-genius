@@ -1,9 +1,10 @@
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { Button, Image, Text } from '@mantine/core';
 import { IconPlayerPlay } from '@tabler/icons-react';
 import SneakPeakSlideshow from '../modals/SneakPeakSlideshow';
 import { useMediaQuery, useViewportSize } from '@mantine/hooks';
 import { Carousel, Embla } from '@mantine/carousel';
+import Autoplay from 'embla-carousel-autoplay';
 
 const images = [
 	{
@@ -55,6 +56,7 @@ const SneakPeak = () => {
 	const { width } = useViewportSize();
 	const mobileScreen = useMediaQuery('(max-width: 30em)');
 	const [embla, setEmbla] = useState<Embla | null>(null);
+	const autoplay = useRef(Autoplay({ delay: 2500 }));
 
 	const [prevBtnEnabled, setPrevBtnEnabled] = useState(false);
 	const [nextBtnEnabled, setNextBtnEnabled] = useState(false);
@@ -121,12 +123,17 @@ const SneakPeak = () => {
 				<span className='flex justify-center text-center'>Trusted by our students at</span>
 				{mobileScreen ? (
 					<Carousel
+						dragFree
 						maw={width - 20}
+						getEmblaApi={setEmbla}
+						withControls={false}
 						slideSize='100%'
+						align='center'
 						slideGap='md'
 						loop
-						align='center'
-						slidesToScroll={3}
+						plugins={[autoplay.current]}
+						onMouseEnter={autoplay.current.stop}
+						onMouseLeave={autoplay.current.reset}
 					>
 						{images.map((image, index) => (
 							<Carousel.Slide key={index}>

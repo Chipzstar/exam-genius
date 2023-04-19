@@ -1,7 +1,9 @@
 import React from 'react';
 import { Button, Image } from '@mantine/core';
+import { useMediaQuery } from '@mantine/hooks';
 
 export const Hero = () => {
+	const mobileScreen = useMediaQuery('(max-width: 30em)');
 	return (
 		<div className='flex md:mt-10 md:py-10'>
 			<div className='flex grid grid-cols-1 items-center justify-center gap-20 md:grid-cols-2'>
@@ -10,9 +12,14 @@ export const Hero = () => {
 					<p className='text-4xl font-medium sm:text-4xl md:text-5xl lg:text-6xl'>
 						<span className='inline-block leading-tight'>
 							Ace your A-level exams
-							<div className='flex inline-flex flex-col'>
+							<div className='flex inline-flex flex-col items-center'>
 								<span className='px-3'> with AI.</span>{' '}
-								<Image src='/static/images/swoosh.svg' alt='swoosh-underline' height={10} width={200} />
+								<Image
+									src='/static/images/swoosh.svg'
+									alt='swoosh-underline'
+									height={10}
+									width={mobileScreen ? 100 : 200}
+								/>
 							</div>
 						</span>
 					</p>
