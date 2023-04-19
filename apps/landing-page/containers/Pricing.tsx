@@ -4,7 +4,7 @@ import Image from 'next/image';
 
 export const Pricing = () => {
 	return (
-		<div className='container flex min-h-screen items-center justify-center py-10'>
+		<div id='pricing' className='flex min-h-screen items-center justify-center py-10'>
 			<div className='flex flex-col items-center justify-center space-y-10'>
 				<div className='flex flex-col items-center gap-10'>
 					<p className='text-2xl font-medium sm:text-4xl md:text-5xl lg:text-6xl'>Simple pricing</p>

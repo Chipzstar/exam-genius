@@ -5,7 +5,7 @@ import { IconPlayerPlay } from '@tabler/icons-react';
 
 const SneakPeak = () => {
 	return (
-		<div className='container flex h-screen flex-col items-center justify-center py-10 md:gap-y-20'>
+		<div id="how-it-works" className='flex h-screen flex-col items-center justify-center py-10 md:gap-y-20'>
 			<p className='text-center text-4xl font-medium sm:text-4xl md:text-5xl lg:text-6xl'>
 				<span className='inline-block leading-normal'>
 					📚 Study smarter with ExamGenius’ AI

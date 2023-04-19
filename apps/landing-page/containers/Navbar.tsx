@@ -2,22 +2,23 @@ import React from 'react';
 import { Button, Text } from '@mantine/core';
 import Image from 'next/image';
 import Link from 'next/link';
+import { Link as ScrollLink } from 'react-scroll';
 
 const Navbar = () => {
 	return (
-		<div className='container mx-auto'>
+		<div className='mx-auto'>
 			<div className='flex items-center justify-between py-5'>
 				<Link href='/'>
 					<Image src='/static/images/logo.svg' alt='logo' width={200} height={40} />
 				</Link>
 				<div className='flex items-center gap-10'>
-					<p>Student reviews</p>
+					<ScrollLink to="reviews">Student reviews</ScrollLink>
 
-					<p>How it works</p>
+					<ScrollLink to="how-it-works">How it works</ScrollLink>
 
-					<p>Pricing</p>
+					<ScrollLink to="pricing">Pricing</ScrollLink>
 
-					<p>FAQ</p>
+					<ScrollLink to="faq">FAQ</ScrollLink>
 				</div>
 				<div className='flex items-center gap-3'>
 					<Button size='md' variant='white'>

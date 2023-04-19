@@ -4,7 +4,7 @@ import Image from 'next/image';
 
 export const Hero = () => {
 	return (
-		<div className='container mt-10 flex py-10'>
+		<div className='mt-10 flex py-10'>
 			<div className='flex grid grid-cols-1 items-center justify-center gap-20 md:grid-cols-2'>
 				<div className='flex flex-col gap-10 md:col-span-1'>
 					<p className='text-primary text-base font-medium'>Do you want to achieve A*/A?</p>
