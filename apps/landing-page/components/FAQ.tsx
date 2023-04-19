@@ -2,9 +2,11 @@ import React, { useState } from 'react';
 import { Accordion } from '@mantine/core';
 import { IconPlus } from '@tabler/icons-react';
 import Image from 'next/image';
+import { useMediaQuery } from '@mantine/hooks';
 
 export const FAQ = () => {
 	const [value, setValue] = useState<string | null>(null);
+	const mobileScreen = useMediaQuery('(max-width: 30em)');
 	return (
 		<div id='faq' className='flex min-h-screen items-center justify-center py-10'>
 			<div className='flex flex-col items-center justify-center space-y-10'>
@@ -26,7 +28,7 @@ export const FAQ = () => {
 							}
 						}
 					}}
-					style={{ width: 800 }}
+					style={{ width: mobileScreen ? undefined : 800 }}
 				>
 					<Accordion.Item value='item1'>
 						<Accordion.Control>Which exam boards do you cover?</Accordion.Control>

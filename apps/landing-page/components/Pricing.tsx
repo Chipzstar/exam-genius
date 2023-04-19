@@ -1,8 +1,10 @@
 import React from 'react';
 import { Button } from '@mantine/core';
 import Image from 'next/image';
+import { useMediaQuery } from '@mantine/hooks';
 
 export const Pricing = () => {
+	const mobileScreen = useMediaQuery('(max-width: 30em)');
 	return (
 		<div id='pricing' className='flex min-h-screen items-center justify-center py-10'>
 			<div className='flex flex-col items-center justify-center space-y-10'>
@@ -17,7 +19,10 @@ export const Pricing = () => {
 						predicted exam papers.
 					</p>
 				</div>
-				<div className='flex flex-col items-center gap-2 border-2 border-black py-5' style={{ width: '400px' }}>
+				<div
+					className='flex flex-col items-center gap-2 py-5 md:border-2 md:border-black'
+					style={{ width: '400px' }}
+				>
 					<p className='font-bold text-blue-700'>Most Popular</p>
 					<p className='text-2xl font-normal'>Genius Plan</p>
 					<p className='text-center' style={{ width: '250px' }}>
@@ -38,14 +43,16 @@ export const Pricing = () => {
 					<Button
 						mt='lg'
 						styles={{
-							root: {
-								width: '350px',
-								height: '90px',
-								fontSize: '30px'
-							}
+							root: mobileScreen
+								? undefined
+								: {
+										width: '350px',
+										height: '90px',
+										fontSize: '30px'
+								  }
 						}}
 						radius='xs'
-						size='l'
+						size='xl'
 					>
 						Start Now
 					</Button>

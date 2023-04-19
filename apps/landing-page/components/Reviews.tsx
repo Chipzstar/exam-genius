@@ -1,14 +1,13 @@
 import React from 'react';
 import Image from 'next/image';
 import { Carousel } from '@mantine/carousel';
-import { useMantineTheme } from '@mantine/core';
 import { reviews } from '../utils/constants';
 import ReviewCard from './ReviewCard';
-import { useViewportSize } from '@mantine/hooks';
+import { useMediaQuery, useViewportSize } from '@mantine/hooks';
 
 const Reviews = () => {
 	const { width } = useViewportSize();
-	const theme = useMantineTheme();
+	const mobileScreen = useMediaQuery('(max-width: 30em)');
 	const slides1 = reviews.slice(0, 3).map((review, index) => (
 		<Carousel.Slide key={index}>
 			<ReviewCard {...review} />
@@ -29,18 +28,19 @@ const Reviews = () => {
 					</div>
 				</span>
 			</p>
-			<div className='flex flex-col space-y-4'>
+			<div className='flex flex-col space-y-4 px-6 md:px-0'>
 				<Carousel
+					px={mobileScreen ? 'lg' : 0}
 					maw={width}
 					height={200}
-					slideSize='66.666666%'
+					slideSize='40%'
 					breakpoints={[
-						{ maxWidth: 'md', slideSize: '66.66666%' },
-						{ maxWidth: 'sm', slideSize: '100%', slideGap: 0 }
+						{ maxWidth: 'md', slideSize: '40%' },
+						{ maxWidth: 'sm', slideSize: '100%', slideGap: 'sm' }
 					]}
 					slideGap='md'
 					loop
-					align='center'
+					align='start'
 					styles={{
 						control: {
 							'&[data-inactive]': {
@@ -49,15 +49,17 @@ const Reviews = () => {
 							}
 						}
 					}}
+					slidesToScroll={1}
 				>
 					{slides1}
 				</Carousel>
 				<Carousel
-					maw={width}
+					px={mobileScreen ? 'lg' : 0}
+					maw={mobileScreen ? width : width - 20}
 					height={200}
-					slideSize='66.666666%'
+					slideSize='40%'
 					breakpoints={[
-						{ maxWidth: 'md', slideSize: '66.66666%' },
+						{ maxWidth: 'md', slideSize: '40%' },
 						{ maxWidth: 'sm', slideSize: '100%', slideGap: 0 }
 					]}
 					slideGap='md'
@@ -71,6 +73,7 @@ const Reviews = () => {
 							}
 						}
 					}}
+					slidesToScroll={1}
 				>
 					{slides2}
 				</Carousel>

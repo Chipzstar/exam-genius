@@ -1,14 +1,96 @@
-import React, { useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { Button, Image, Text } from '@mantine/core';
 import { IconPlayerPlay } from '@tabler/icons-react';
 import SneakPeakSlideshow from '../modals/SneakPeakSlideshow';
+import { useMediaQuery } from '@mantine/hooks';
+import { Carousel, Embla } from '@mantine/carousel';
+
+const images = [
+	{
+		path: '/static/images/oxford.svg',
+		alt: 'Oxford',
+		width: 198,
+		height: 60
+	},
+	{
+		path: '/static/images/cambridge.svg',
+		alt: 'Cambridge',
+		width: 154,
+		height: 80
+	},
+	{
+		path: '/static/images/imperial.svg',
+		alt: 'Imperial',
+		width: 196,
+		height: 48
+	},
+	{
+		path: '/static/images/UCL.svg',
+		alt: 'UCL',
+		width: 176,
+		height: 66
+	},
+	{
+		path: '/static/images/KCL.svg',
+		alt: 'Kings College',
+		width: 125,
+		height: 66
+	},
+	{
+		path: '/static/images/manchester.svg',
+		alt: 'Manchester',
+		width: 100,
+		height: 66
+	},
+	{
+		path: '/static/images/warwick.svg',
+		alt: 'Warwick',
+		width: 99,
+		height: 66
+	}
+];
 
 const SneakPeak = () => {
 	const [sneak, showSneakPeak] = useState(false);
+	const mobileScreen = useMediaQuery('(max-width: 30em)');
+	const [embla, setEmbla] = useState<Embla | null>(null);
+
+	const [prevBtnEnabled, setPrevBtnEnabled] = useState(false);
+	const [nextBtnEnabled, setNextBtnEnabled] = useState(false);
+	const [scrollProgress, setScrollProgress] = useState(0);
+
+	const onSelect = useCallback(() => {
+		if (!embla) return;
+		setPrevBtnEnabled(embla.canScrollPrev());
+		setNextBtnEnabled(embla.canScrollNext());
+	}, [embla]);
+
+	const onScroll = useCallback(() => {
+		if (!embla) return;
+		const progress = Math.max(0, Math.min(1, embla.scrollProgress()));
+		setScrollProgress(progress * 100);
+	}, [embla, setScrollProgress]);
+
+	useEffect(() => {
+		if (!embla) return;
+		onSelect();
+		onScroll();
+		embla.on("select", onSelect);
+		embla.on("scroll", onScroll);
+
+		// Start scrolling slowly
+		const engine = embla.internalEngine();
+		engine.scrollBody.useSpeed(0.02);
+		engine.scrollTo.index(embla.scrollSnapList().length - 1, 1);
+	}, [embla, onSelect, onScroll]);
+
 	return (
-		<div id='how-it-works' className='flex h-screen flex-col items-center justify-center py-10 md:gap-y-20'>
+		<div
+			id='how-it-works'
+			className='flex min-h-screen flex-col items-center justify-center gap-y-8 py-10 md:gap-y-20'
+		>
 			<SneakPeakSlideshow opened={sneak} onClose={() => showSneakPeak(false)} />
-			<p className='text-center text-4xl font-medium sm:text-4xl md:text-5xl lg:text-6xl'>
+			<p className='text-center text-2xl font-medium sm:text-3xl md:text-5xl lg:text-6xl'>
 				<span className='inline-block leading-normal'>
 					📚 Study smarter with ExamGenius’ AI
 					<div className='flex inline-flex shrink flex-col items-center pl-4'>
@@ -17,7 +99,7 @@ const SneakPeak = () => {
 					</div>
 				</span>
 			</p>
-			<div style={{ width: 800 }} className='text-center text-xl'>
+			<div style={{ width: mobileScreen ? '100%' : 800 }} className='text-center md:text-xl'>
 				<span>
 					Our AI has read exam papers for the previous 10 years and uses this data to predict which questions
 					are likely to come up in this years papers with <br />
@@ -26,7 +108,7 @@ const SneakPeak = () => {
 			</div>
 			<div>
 				<Button
-					size='xl'
+					size={mobileScreen ? 'md' : 'xl'}
 					variant='outline'
 					leftIcon={<IconPlayerPlay stroke={1.5} />}
 					onClick={() => showSneakPeak(true)}
@@ -36,15 +118,33 @@ const SneakPeak = () => {
 			</div>
 			<div className='flex-col space-y-8'>
 				<span className='flex justify-center text-center'>Trusted by our students at</span>
-				<div className='flex items-center justify-around space-x-6'>
-					<Image src='/static/images/oxford.svg' alt='oxford' width={198} height={60} />
-					<Image src='/static/images/cambridge.svg' alt='cambridge' width={154} height={80} />
-					<Image src='/static/images/imperial.svg' alt='imperial-college' width={196} height={48} />
-					<Image src='/static/images/UCL.svg' alt='ucl' width={176} height={66} />
-					<Image src='/static/images/KCL.svg' alt='kings-college' width={125} height={66} />
-					<Image src='/static/images/manchester.svg' alt='manchester' width={100} height={66} />
-					<Image src='/static/images/warwick.svg' alt='warwick' width={99} height={66} />
-				</div>
+				{mobileScreen ? (
+					<Carousel
+						withIndicators
+						height={200}
+						slideSize='100%'
+						slideGap='md'
+						loop
+						align='center'
+						slidesToScroll={3}
+					>
+						{images.map((image, index) => (
+							<Carousel.Slide key={index}>
+								<Image src={image.path} alt={image.alt} width={image.width} height={image.height} />
+							</Carousel.Slide>
+						))}
+					</Carousel>
+				) : (
+					<div className='flex items-center justify-around space-x-6'>
+						<Image src='/static/images/oxford.svg' alt='oxford' width={198} height={60} />
+						<Image src='/static/images/cambridge.svg' alt='cambridge' width={154} height={80} />
+						<Image src='/static/images/imperial.svg' alt='imperial-college' width={196} height={48} />
+						<Image src='/static/images/UCL.svg' alt='ucl' width={176} height={66} />
+						<Image src='/static/images/KCL.svg' alt='kings-college' width={125} height={66} />
+						<Image src='/static/images/manchester.svg' alt='manchester' width={100} height={66} />
+						<Image src='/static/images/warwick.svg' alt='warwick' width={99} height={66} />
+					</div>
+				)}
 			</div>
 		</div>
 	);

@@ -4,7 +4,7 @@ import { IconArrowBigLeft, IconBulb, IconMoodSmile } from '@tabler/icons-react';
 
 export const Body = () => {
 	return (
-		<div className='flex h-screen items-center py-10'>
+		<div className='flex min-h-screen items-center py-10'>
 			<div className='flex grid grid-cols-1 items-center justify-center gap-20 md:grid-cols-7'>
 				<div className='flex flex-col space-y-12 md:col-span-4'>
 					<p className='text-4xl font-medium sm:text-4xl md:text-5xl lg:text-6xl'>

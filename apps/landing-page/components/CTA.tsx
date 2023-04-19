@@ -1,7 +1,9 @@
 import React from 'react';
 import { Button } from '@mantine/core';
+import { useMediaQuery } from '@mantine/hooks';
 
 export const CTA = () => {
+	const mobileScreen = useMediaQuery('(max-width: 30em)');
 	return (
 		<div className='flex flex-col items-center justify-center gap-10 py-20'>
 			<p className='text-primary text-xl font-medium'>
@@ -9,7 +11,7 @@ export const CTA = () => {
 			</p>
 			<span
 				className='text-center font-semibold leading-loose sm:text-4xl md:text-5xl lg:text-6xl'
-				style={{ width: 700, lineHeight: '85px' }}
+				style={{ width: mobileScreen ? undefined : 700, lineHeight: mobileScreen ? undefined : '85px' }}
 			>
 				Get your AI-generated predicted A-level exam papers now.
 			</span>
