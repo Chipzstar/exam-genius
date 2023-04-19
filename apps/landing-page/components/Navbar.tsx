@@ -12,26 +12,27 @@ const Navbar = () => {
 					<Image src='/static/images/logo.svg' alt='logo' width={200} height={40} />
 				</Link>
 				<div className='flex items-center gap-10'>
-					<ScrollLink role='button' to='reviews'>
-						Student reviews
-					</ScrollLink>
+					<div role='button'>
+						<ScrollLink to='reviews'>Student reviews</ScrollLink>
+					</div>
+					<div role='button'>
+						<ScrollLink to='how-it-works'>How it works</ScrollLink>
+					</div>
 
-					<ScrollLink role='button' to='how-it-works'>
-						How it works
-					</ScrollLink>
+					<div role='button'>
+						<ScrollLink to='pricing'>Pricing</ScrollLink>
+					</div>
 
-					<ScrollLink role='button' to='pricing'>
-						Pricing
-					</ScrollLink>
-
-					<ScrollLink role='button' to='faq'>
-						FAQ
-					</ScrollLink>
+					<div role='button'>
+						<ScrollLink to='faq'>FAQ</ScrollLink>
+					</div>
 				</div>
 				<div className='flex items-center gap-3'>
-					<Button size='md' variant='white'>
-						<Text weight='normal'>Login</Text>
-					</Button>
+					<a target='_blank' href='https://app.exam-genius.com' rel='noopener noreferrer'>
+						<Button size='md' variant='white'>
+							<Text weight='normal'>Login</Text>
+						</Button>
+					</a>
 					<Button
 						size='md'
 						styles={theme => ({

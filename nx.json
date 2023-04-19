@@ -47,7 +47,8 @@
 		"@nrwl/react": {
 			"application": {
 				"babel": true
-			}
+			},
+			"library": {}
 		},
 		"@nrwl/next": {
 			"application": {

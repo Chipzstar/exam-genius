@@ -3,7 +3,7 @@ import { ParsedUrlQuery } from 'querystring';
 import Page from '../../../layout/Page';
 import { Button, Card, Group, LoadingOverlay, ScrollArea, Text, Title } from '@mantine/core';
 import Image from 'next/image';
-import { PATHS, SUBJECT_PAPERS } from '../../../utils/constants';
+import { PATHS } from '../../../utils/constants';
 import { GetServerSideProps, InferGetServerSidePropsType } from 'next';
 import { capitalize } from '../../../utils/functions';
 import Link from 'next/link';
@@ -11,11 +11,11 @@ import { IconArrowLeft } from '@tabler/icons-react';
 import { useRouter } from 'next/router';
 import { trpc } from '../../../utils/trpc';
 import { useViewportSize } from '@mantine/hooks';
+import { SUBJECT_PAPERS } from '@exam-genius/util-shared';
 
 export interface PageQuery extends ParsedUrlQuery {
 	course_id: string;
 }
-
 export const getServerSideProps: GetServerSideProps<{ query: PageQuery }> = async context => {
 	const query = context.query as PageQuery;
 	console.log(query);
@@ -25,7 +25,6 @@ export const getServerSideProps: GetServerSideProps<{ query: PageQuery }> = asyn
 		}
 	};
 };
-
 const Course = ({ query }: InferGetServerSidePropsType<typeof getServerSideProps>) => {
 	const { height } = useViewportSize();
 	const router = useRouter();

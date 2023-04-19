@@ -5,7 +5,7 @@ export const CTA = () => {
 	return (
 		<div className='flex flex-col items-center justify-center gap-10 py-20'>
 			<p className='text-primary text-xl font-medium'>
-				Exam season is just around the corner, don't wait until it's too late!
+				{"Exam season is just around the corner, don't wait until it's too late!"}
 			</p>
 			<span
 				className='text-center font-semibold leading-loose sm:text-4xl md:text-5xl lg:text-6xl'

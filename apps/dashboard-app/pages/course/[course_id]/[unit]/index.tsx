@@ -15,17 +15,17 @@ import {
 	Title
 } from '@mantine/core';
 import Image from 'next/image';
-import { CHECKOUT_TYPE, PAPER_PRICE_IDS, PATHS, SUBJECT_PAPERS } from '../../../../utils/constants';
+import { CHECKOUT_TYPE, PAPER_PRICE_IDS, PATHS } from '../../../../utils/constants';
 import { GetServerSideProps, InferGetServerSidePropsType } from 'next';
 import { capitalize, genCourseOrPaperName, notifyError, sanitize } from '../../../../utils/functions';
 import Link from 'next/link';
 import { IconArrowLeft, IconX } from '@tabler/icons-react';
 import { useRouter } from 'next/router';
 import { trpc } from '../../../../utils/trpc';
-import { ExamBoard, PaperInfo, Subject } from '../../../../utils/types';
 import { useViewportSize } from '@mantine/hooks';
 import { TRPCError } from '@trpc/server';
 import CustomLoader from '../../../../components/CustomLoader';
+import { ExamBoard, PaperInfo, Subject, SUBJECT_PAPERS } from '@exam-genius/util-shared';
 
 export interface PageQuery extends ParsedUrlQuery {
 	board: ExamBoard;

@@ -1,3 +1,5 @@
+export const DEFAULT_HEADER_HEIGHT = 75
+
 export interface Review {
 	author: string;
 	age: number;

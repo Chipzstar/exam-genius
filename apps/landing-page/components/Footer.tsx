@@ -1,21 +1,21 @@
 import React from 'react';
+import { Image } from '@mantine/core';
+import Link from 'next/link';
 
 export const Footer = () => {
 	return (
-		<footer className='bg-white dark:bg-gray-900'>
+		<footer className='bg-gray-900'>
 			<div className='mx-auto w-full max-w-screen-xl p-4 py-6 lg:py-8'>
 				<div className='md:flex md:justify-between'>
 					<div className='mb-6 md:mb-0'>
-						<a href='https://flowbite.com/' className='flex items-center'>
-							<img src='/static/images/logo2.svg' className='mr-3 h-8' alt='FlowBite Logo' />
-						</a>
+						<Link href='/' className='flex items-center'>
+							<Image src='/static/images/logo2.svg' className='mr-3' height={45} alt='ExamGenius Logo' />
+						</Link>
 					</div>
 					<div className='grid grid-cols-2 gap-8 sm:grid-cols-3 sm:gap-6'>
 						<div>
-							<h2 className='mb-6 text-sm font-semibold uppercase text-gray-900 dark:text-white'>
-								Courses
-							</h2>
-							<ul className='font-medium text-gray-600 dark:text-gray-400'>
+							<h2 className='mb-6 text-sm font-semibold uppercase text-white'>Courses</h2>
+							<ul className='m-0 list-none p-0 font-medium text-gray-400'>
 								<li>
 									<a href='https://flowbite.com/' className='hover:underline'>
 										A-Level Maths
@@ -49,10 +49,8 @@ export const Footer = () => {
 							</ul>
 						</div>
 						<div>
-							<h2 className='mb-6 text-sm font-semibold uppercase text-gray-900 dark:text-white'>
-								Follow us
-							</h2>
-							<ul className='font-medium text-gray-600 dark:text-gray-400'>
+							<h2 className='mb-6 text-sm font-semibold uppercase text-white '>Follow us</h2>
+							<ul className='m-0 list-none p-0 font-medium text-gray-400'>
 								<li className='mb-4'>
 									<a href='https://github.com/themesberg/flowbite' className='hover:underline '>
 										Tiktok
@@ -66,10 +64,8 @@ export const Footer = () => {
 							</ul>
 						</div>
 						<div>
-							<h2 className='mb-6 text-sm font-semibold uppercase text-gray-900 dark:text-white'>
-								Legal
-							</h2>
-							<ul className='font-medium text-gray-600 dark:text-gray-400'>
+							<h2 className='mb-6 text-sm font-semibold uppercase text-white'>Legal</h2>
+							<ul className='m-0 list-none p-0 font-medium text-gray-400'>
 								<li className='mb-4'>
 									<a href='#' className='hover:underline'>
 										Privacy Policy

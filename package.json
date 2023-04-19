@@ -6,6 +6,7 @@
     "nx:serve:dashboard": "doppler run -c loc -p exam-genius -- nx serve dashboard-app",
     "nx:serve:dashboard:debug": "set NODE_OPTIONS='--inspect' && nx serve dashboard-app",
     "nx:lint:dashboard": "nx lint dashboard-app",
+    "nx:lint:landing": "nx lint landing-page",
     "nx:build:dashboard": "nx build dashboard-app --skip-nx-cache",
     "nx:build:dashboard:prod": "npx prisma generate && nx build dashboard-app --prod --skip-nx-cache",
     "nx:serve:dashboard:prod:local": "nx serve dashboard-app --prod",

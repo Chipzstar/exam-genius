@@ -30,7 +30,7 @@ export const Pricing = () => {
 					<p className='text-center text-sm' style={{ width: '300px' }}>
 						Limited time offer! Get 60% off when you sign up today
 					</p>
-					<ul className='list-disc items-center' style={{ width: '250px' }}>
+					<ul className='list-disc items-center' style={{ width: '300px' }}>
 						<li>Full access to all predicted exam papers for one A-level subject</li>
 						<li>Generate unlimited potential exam papers for one subjects, with predicted answers.</li>
 						<li>Instant 24/7 support</li>

@@ -1,12 +1,12 @@
 import React from 'react';
-import Navbar from '../containers/Navbar';
-import Pricing from '../containers/Pricing';
-import Hero from '../containers/Hero';
-import Body from '../containers/Body';
-import FAQ from '../containers/FAQ';
-import CTA from '../containers/CTA';
-import Footer from '../containers/Footer';
-import Reviews from '../containers/Reviews';
+import Navbar from '../components/Navbar';
+import Pricing from '../components/Pricing';
+import Hero from '../components/Hero';
+import Body from '../components/Body';
+import FAQ from '../components/FAQ';
+import CTA from '../components/CTA';
+import Footer from '../components/Footer';
+import Reviews from '../components/Reviews';
 import SneakPeak from '../containers/SneakPeak';
 
 const Index = () => {

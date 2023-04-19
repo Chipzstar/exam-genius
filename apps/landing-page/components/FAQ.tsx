@@ -87,7 +87,7 @@ export const FAQ = () => {
 					</Accordion.Item>
 					<Accordion.Item value='item10'>
 						<Accordion.Control>
-							What happens if I'm not satisfied with the predicted exam papers?
+							{"What happens if I'm not satisfied with the predicted exam papers?"}
 						</Accordion.Control>
 						<Accordion.Panel>
 							You can contact us at hello@examgenius.co.uk and we will see how we can help

@@ -1,11 +1,13 @@
-import React from 'react';
-import Image from 'next/image';
-import { Button, Text } from '@mantine/core';
+import React, { useState } from 'react';
+import { Button, Image, Text } from '@mantine/core';
 import { IconPlayerPlay } from '@tabler/icons-react';
+import SneakPeakSlideshow from '../modals/SneakPeakSlideshow';
 
 const SneakPeak = () => {
+	const [sneak, showSneakPeak] = useState(false);
 	return (
-		<div id="how-it-works" className='flex h-screen flex-col items-center justify-center py-10 md:gap-y-20'>
+		<div id='how-it-works' className='flex h-screen flex-col items-center justify-center py-10 md:gap-y-20'>
+			<SneakPeakSlideshow opened={sneak} onClose={() => showSneakPeak(false)} />
 			<p className='text-center text-4xl font-medium sm:text-4xl md:text-5xl lg:text-6xl'>
 				<span className='inline-block leading-normal'>
 					📚 Study smarter with ExamGenius’ AI
@@ -23,7 +25,12 @@ const SneakPeak = () => {
 				</span>
 			</div>
 			<div>
-				<Button size='xl' variant='outline' leftIcon={<IconPlayerPlay stroke={1.5} />}>
+				<Button
+					size='xl'
+					variant='outline'
+					leftIcon={<IconPlayerPlay stroke={1.5} />}
+					onClick={() => showSneakPeak(true)}
+				>
 					<Text>See example questions</Text>
 				</Button>
 			</div>

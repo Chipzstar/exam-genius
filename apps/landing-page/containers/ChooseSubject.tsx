@@ -1,30 +1,18 @@
-import { Group, Radio, SimpleGrid, Title } from '@mantine/core';
-import React, { useEffect } from 'react';
+import React from 'react';
+import { Box, Button, Group, Radio, SimpleGrid, Title } from '@mantine/core';
 import Page from '../layout/Page';
 import { SubjectCard } from '@exam-genius/ui-shared';
-import { PATHS } from '../utils/constants';
-import { useLocalStorage } from '@mantine/hooks';
-import LinkButton from '../components/LinkButton';
 
-const ChooseSubject = () => {
-	const [subject, setSubject] = useLocalStorage<string>({
-		key: 'subject',
-		defaultValue: ''
-	});
-
-	useEffect(() => {
-		setSubject('');
-	}, []);
-
+const ChooseSubject = ({ next, disabled, onChange }) => {
 	return (
-		<Page.Container extraClassNames='bg-white'>
-			<header className='py-6'>
+		<Page.Container classNames='flex flex-col pb-2 h-full'>
+			<header className='pb-6'>
 				<Title align='center' order={2} size='h1' color='brand' weight={600}>
 					Choose your Subjects
 				</Title>
 			</header>
-			<Page.Body extraClassNames='justify-between py-8'>
-				<Radio.Group name='subject' onChange={value => setSubject(value)}>
+			<Page.Body extraClassNames='justify-between py-4'>
+				<Radio.Group name='subject' onChange={onChange}>
 					<SimpleGrid cols={3}>
 						<SubjectCard subject='Maths' src='/static/images/maths-icon.svg' />
 						<SubjectCard subject='Biology' src='/static/images/biology-icon.svg' />
@@ -35,7 +23,11 @@ const ChooseSubject = () => {
 					</SimpleGrid>
 				</Radio.Group>
 				<Group position='right' pt='lg'>
-					<LinkButton href={PATHS.EXAM_BOARD} disabled={!subject} width={140} size='xl' text='Next' />
+					<Box w={140}>
+						<Button fullWidth onClick={next} disabled={disabled} size='xl'>
+							Next
+						</Button>
+					</Box>
 				</Group>
 			</Page.Body>
 		</Page.Container>

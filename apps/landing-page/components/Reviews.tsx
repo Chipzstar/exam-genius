@@ -3,7 +3,7 @@ import Image from 'next/image';
 import { Carousel } from '@mantine/carousel';
 import { useMantineTheme } from '@mantine/core';
 import { reviews } from '../utils/constants';
-import ReviewCard from '../components/ReviewCard';
+import ReviewCard from './ReviewCard';
 import { useViewportSize } from '@mantine/hooks';
 
 const Reviews = () => {
@@ -20,7 +20,7 @@ const Reviews = () => {
 		</Carousel.Slide>
 	));
 	return (
-		<div id="reviews" className='flex h-screen flex-col items-center justify-center gap-y-20 py-10'>
+		<div id='reviews' className='flex h-screen flex-col items-center justify-center gap-y-20 py-10'>
 			<p className='text-4xl font-medium sm:text-4xl md:text-5xl lg:text-6xl'>
 				<span className='inline-block leading-normal'>
 					<div className='flex inline-flex shrink flex-col items-center pl-4'>
