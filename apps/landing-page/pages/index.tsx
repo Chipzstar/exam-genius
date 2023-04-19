@@ -11,7 +11,7 @@ import SneakPeak from '../containers/SneakPeak';
 
 const Index = () => {
 	return (
-		<div>
+		<div className='w-full'>
 			<div className='px-5 pt-5 md:px-16'>
 				<Navbar />
 				<Hero />

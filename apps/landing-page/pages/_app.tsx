@@ -48,7 +48,6 @@ const poppins = localFont({
 
 const appendCache = createEmotionCache({ key: 'mantine', prepend: false });
 function CustomApp({ Component, pageProps }: AppProps) {
-
 	return (
 		<>
 			<Head>

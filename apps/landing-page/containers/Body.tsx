@@ -1,7 +1,6 @@
 import React from 'react';
-import { List, ThemeIcon } from '@mantine/core';
+import { Image, List, ThemeIcon } from '@mantine/core';
 import { IconArrowBigLeft, IconBulb, IconMoodSmile } from '@tabler/icons-react';
-import Image from 'next/image';
 
 export const Body = () => {
 	return (
@@ -55,7 +54,7 @@ export const Body = () => {
 					</List>
 				</div>
 				<div className='md:col-span-3'>
-					<Image src='/static/images/body.svg' alt='' width={700} height={466} />
+					<Image src='/static/images/body.svg' alt='' width='100%' height='100%' />
 				</div>
 			</div>
 		</div>

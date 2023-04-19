@@ -1,6 +1,5 @@
 import React from 'react';
-import { Button } from '@mantine/core';
-import Image from 'next/image';
+import { Button, Image } from '@mantine/core';
 
 export const Hero = () => {
 	return (
@@ -41,7 +40,7 @@ export const Hero = () => {
 					<p className='text-grey-500 text-xs'>One-time payment. No subscription.</p>
 				</div>
 				<div className='md:col-span-1'>
-					<Image src='/static/images/hero.svg' alt='' width={700} height={438} />
+					<Image src='/static/images/hero.svg' alt='' width='100%' height='100%' />
 				</div>
 			</div>
 		</div>
