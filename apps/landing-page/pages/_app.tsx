@@ -1,10 +1,10 @@
 import { AppProps } from 'next/app';
-import '../styles/globals.css';
 import Head from 'next/head';
 import Favicon from '../components/Favicon';
 import React from 'react';
 import { createEmotionCache, MantineProvider } from '@mantine/core';
 import localFont from '@next/font/local';
+import '../styles/globals.css';
 
 const poppins = localFont({
 	src: [
