@@ -1,0 +1,55 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@import url("https://fonts.googleapis.com/css2?family=Poppins&display=swap");
+@import './styles.css';
+
+html {
+    -webkit-text-size-adjust: 100%;
+    line-height: 1.5;
+    tab-size: 4;
+    scroll-behavior: smooth;
+}
+body {
+    line-height: inherit;
+    margin: 0;
+}
+h1,
+h2,
+p,
+pre {
+    margin: 0;
+}
+*,
+::before,
+::after {
+    box-sizing: border-box;
+    border-width: 0;
+    border-style: solid;
+    border-color: currentColor;
+}
+h1,
+h2 {
+    font-size: inherit;
+    font-weight: inherit;
+}
+a {
+    color: inherit;
+    text-decoration: inherit;
+}
+svg {
+    display: block;
+    vertical-align: middle;
+    shape-rendering: auto;
+    text-rendering: optimizeLegibility;
+}
+
+.shadow {
+    box-shadow: 0 0 #0000, 0 0 #0000, 0 10px 15px -3px rgba(0, 0, 0, 0.1),
+    0 4px 6px -2px rgba(0, 0, 0, 0.05);
+}
+.rounded {
+    border-radius: 1.5rem;
+}
+

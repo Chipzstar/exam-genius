@@ -120,7 +120,8 @@ function CustomApp({ Component, pageProps }: AppProps) {
 								'@font-face': {
 									fontFamily: 'Poppins',
 									src: `url("/static/fonts/Poppins/Poppins-Regular.ttf") format("truetype")`,
-									fontWeight: "normal"								}
+									fontWeight: "normal"
+								}
 							}
 						]}
 					/>
