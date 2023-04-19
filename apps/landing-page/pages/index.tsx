@@ -7,7 +7,7 @@ import FAQ from '../components/FAQ';
 import CTA from '../components/CTA';
 import Footer from '../components/Footer';
 import Reviews from '../components/Reviews';
-import SneakPeak from '../containers/SneakPeak';
+import SneakPeak from '../components/SneakPeak';
 
 const Index = () => {
 	return (

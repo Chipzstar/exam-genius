@@ -19,7 +19,7 @@ const ReviewCard = ({ author, review, year, age, image }: Review) => {
 					<Avatar src={image} alt='Posi' />
 					<div className='flex flex-col'>
 						<div className='flex'>
-							<span className='text-lg font-medium'>{author}, </span>
+							<span className='text-lg font-medium'>{author}, &nbsp;</span>
 							<span className='text-lg font-medium'>{age}</span>
 						</div>
 

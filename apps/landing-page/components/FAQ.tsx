@@ -6,7 +6,7 @@ import Image from 'next/image';
 export const FAQ = () => {
 	const [value, setValue] = useState<string | null>(null);
 	return (
-		<div id='faq' className='mx-auto py-10'>
+		<div id='faq' className='flex min-h-screen items-center justify-center py-10'>
 			<div className='flex flex-col items-center justify-center space-y-10'>
 				<div className='flex flex-col items-center gap-3'>
 					<p className='text-2xl font-medium sm:text-4xl md:text-5xl lg:text-6xl'>FAQ</p>
