@@ -1,10 +1,9 @@
-import React, { useCallback, useEffect, useRef, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { Button, Image, Text } from '@mantine/core';
 import { IconPlayerPlay } from '@tabler/icons-react';
 import SneakPeakSlideshow from '../modals/SneakPeakSlideshow';
 import { useMediaQuery, useViewportSize } from '@mantine/hooks';
 import { Carousel, Embla } from '@mantine/carousel';
-import Autoplay from 'embla-carousel-autoplay';
 
 const images = [
 	{
@@ -56,7 +55,7 @@ const SneakPeak = () => {
 	const { width } = useViewportSize();
 	const mobileScreen = useMediaQuery('(max-width: 30em)');
 	const [embla, setEmbla] = useState<Embla | null>(null);
-	const autoplay = useRef(Autoplay({ delay: 2500 }));
+	// const autoplay = useRef(Autoplay({delay: 0, stopOnMouseEnter: true}));
 
 	const [prevBtnEnabled, setPrevBtnEnabled] = useState(false);
 	const [nextBtnEnabled, setNextBtnEnabled] = useState(false);
@@ -78,13 +77,15 @@ const SneakPeak = () => {
 		if (!embla) return;
 		onSelect();
 		onScroll();
-		embla.on("select", onSelect);
-		embla.on("scroll", onScroll);
+		embla.on('select', onSelect);
+		embla.on('scroll', onScroll);
 
 		// Start scrolling slowly
 		const engine = embla.internalEngine();
-		engine.scrollBody.useSpeed(0.02);
-		engine.scrollTo.index(embla.scrollSnapList().length - 1, 1);
+		engine.scrollBody.useSpeed(0.15);
+		setInterval(() => {
+			engine.scrollTo.index(embla.scrollSnapList().length - 1, -1);
+		}, 1000)
 	}, [embla, onSelect, onScroll]);
 
 	return (
@@ -121,37 +122,36 @@ const SneakPeak = () => {
 			</div>
 			<div className='flex-col space-y-8'>
 				<span className='flex justify-center text-center'>Trusted by our students at</span>
-				{mobileScreen ? (
-					<Carousel
-						dragFree
-						maw={width - 20}
-						getEmblaApi={setEmbla}
-						withControls={false}
-						slideSize='100%'
-						align='center'
-						slideGap='md'
-						loop
-						plugins={[autoplay.current]}
-						onMouseEnter={autoplay.current.stop}
-						onMouseLeave={autoplay.current.reset}
-					>
-						{images.map((image, index) => (
-							<Carousel.Slide key={index}>
+				<div className='flex items-center justify-around space-x-6'>
+					{mobileScreen ? (
+						<Carousel
+							dragFree
+							maw={width - 20}
+							getEmblaApi={setEmbla}
+							withControls={false}
+							slideSize='50%'
+							align='start'
+							slideGap='md'
+							loop
+							/*plugins={[autoplay.current]}
+							onMouseEnter={autoplay.current.stop}
+							onMouseLeave={autoplay.current.reset}*/
+							slidesToScroll={1}
+						>
+							{images.map((image, index) => (
+								<Carousel.Slide key={index}>
+									<Image src={image.path} alt={image.alt} width={image.width} height={image.height} />
+								</Carousel.Slide>
+							))}
+						</Carousel>
+					) : (
+						<>
+							{images.map((image, index) => (
 								<Image src={image.path} alt={image.alt} width={image.width} height={image.height} />
-							</Carousel.Slide>
-						))}
-					</Carousel>
-				) : (
-					<div className='flex items-center justify-around space-x-6'>
-						<Image src='/static/images/oxford.svg' alt='oxford' width={198} height={60} />
-						<Image src='/static/images/cambridge.svg' alt='cambridge' width={154} height={80} />
-						<Image src='/static/images/imperial.svg' alt='imperial-college' width={196} height={48} />
-						<Image src='/static/images/UCL.svg' alt='ucl' width={176} height={66} />
-						<Image src='/static/images/KCL.svg' alt='kings-college' width={125} height={66} />
-						<Image src='/static/images/manchester.svg' alt='manchester' width={100} height={66} />
-						<Image src='/static/images/warwick.svg' alt='warwick' width={99} height={66} />
-					</div>
-				)}
+							))}
+						</>
+					)}
+				</div>
 			</div>
 		</div>
 	);
