@@ -82,10 +82,8 @@ const SneakPeak = () => {
 
 		// Start scrolling slowly
 		const engine = embla.internalEngine();
-		engine.scrollBody.useSpeed(0.15);
-		setInterval(() => {
-			engine.scrollTo.index(embla.scrollSnapList().length - 1, -1);
-		}, 1000)
+		engine.scrollBody.useSpeed(0.2);
+		engine.scrollTo.index(embla.scrollSnapList().length - 1, -1);
 	}, [embla, onSelect, onScroll]);
 
 	return (

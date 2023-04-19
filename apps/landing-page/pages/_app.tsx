@@ -5,6 +5,7 @@ import React from 'react';
 import { createEmotionCache, MantineProvider } from '@mantine/core';
 import localFont from '@next/font/local';
 import '../styles/globals.css';
+import PlausibleProvider from 'next-plausible';
 
 const poppins = localFont({
 	src: [
@@ -49,7 +50,7 @@ const poppins = localFont({
 const appendCache = createEmotionCache({ key: 'mantine', prepend: false });
 function CustomApp({ Component, pageProps }: AppProps) {
 	return (
-		<>
+		<PlausibleProvider domain="exam-genius.com">
 			<Head>
 				<Favicon />
 				<title>Exam Genius</title>
@@ -101,7 +102,7 @@ function CustomApp({ Component, pageProps }: AppProps) {
 					<Component {...pageProps} />
 				</main>
 			</MantineProvider>
-		</>
+		</PlausibleProvider>
 	);
 }
 
