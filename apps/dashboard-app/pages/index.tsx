@@ -4,11 +4,13 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { PATHS } from '../utils/constants';
 import { trpc } from '../utils/trpc';
-import { useViewportSize } from '@mantine/hooks';
+import { useMediaQuery, useViewportSize } from '@mantine/hooks';
 
 export function Home() {
 	const { height } = useViewportSize();
 	const { data: courses, isLoading } = trpc.course.getCourses.useQuery(undefined, { initialData: [] });
+	const largeScreen = useMediaQuery('(min-width: 60em)');
+	const mobileScreen = useMediaQuery('(max-width: 30em)');
 
 	return (
 		<Page.Container data_cy='homepage' extraClassNames='flex flex-col py-6 overflow-y-hidden'>
@@ -22,32 +24,32 @@ export function Home() {
 					) : (
 						courses.map((course, index) => (
 							<Card key={index} shadow='sm' radius='md' mb='lg'>
-								<Group grow align='center' p='xl' position='apart'>
-									<Group>
+								<div className='flex grow flex-col items-center justify-center space-y-3 p-8 sm:flex-row sm:items-center sm:justify-between sm:space-y-0'>
+									<div className='flex flex-col items-center justify-center sm:flex-row sm:space-x-4'>
 										<Image
 											src={`/static/images/${course.subject}-icon.svg`}
-											width={100}
-											height={100}
+											width={mobileScreen ? 75 : 100}
+											height={mobileScreen ? 75 : 100}
 											alt='maths-icon'
 										/>
-										<div className='flex flex-col space-y-2'>
-											<Title order={2}>{course.name}</Title>
-											<Text size='xl' weight={500}>
+										<div className='flex flex-col items-center space-y-2 sm:items-start'>
+											<Title order={mobileScreen ? 3 : 2}>{course.name}</Title>
+											<Text size={mobileScreen ? 'md' : 'xl'} weight={500}>
 												Year {course.year_level}
 											</Text>
 										</div>
-									</Group>
+									</div>
 									<Group position='right'>
 										<Link
 											href={`${PATHS.COURSE}/${course.course_id}?subject=${course.subject}&board=${course.exam_board}`}
 											passHref
 										>
-											<Button size='lg'>
+											<Button size={mobileScreen ? 'md' : 'lg'}>
 												<Text weight='normal'>{'Continue →'}</Text>
 											</Button>
 										</Link>
 									</Group>
-								</Group>
+								</div>
 							</Card>
 						))
 					)}

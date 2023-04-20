@@ -4,7 +4,8 @@ import { IconLicense, IconLogout, IconUser } from '@tabler/icons-react';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
 import { DEFAULT_HEADER_HEIGHT, PATHS } from '../utils/constants';
-import { useClerk, useSession } from '@clerk/nextjs';
+import { useClerk } from '@clerk/nextjs';
+import { useViewportSize } from '@mantine/hooks';
 
 const useStyles = createStyles((theme, _params) => {
 	return {
@@ -71,10 +72,10 @@ const useStyles = createStyles((theme, _params) => {
 	};
 });
 
-const Sidebar = () => {
+const Sidebar = ({opened, setOpened}) => {
+	const { width } = useViewportSize();
 	const router = useRouter();
 	const { signOut } = useClerk();
-	const { session } = useSession();
 
 	const tabs = {
 		general: [
@@ -113,7 +114,7 @@ const Sidebar = () => {
 	));
 
 	return (
-		<Navbar width={{ base: 250 }} p='xs'>
+		<Navbar hiddenBreakpoint="sm" hidden={!opened} width={{ base: width, md: 250 }} p='xs'>
 			<Navbar.Section className={classes.header}>
 				<Group spacing='sm' role='button' onClick={() => router.push(PATHS.HOME)}>
 					<Image src='/static/images/logo-blue.svg' width={40} height={35} alt='' />
