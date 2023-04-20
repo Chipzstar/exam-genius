@@ -1,11 +1,37 @@
-import React from 'react';
+import React, { useState } from 'react';
 import Page from '../layout/Page';
 import { Button, Card, Group, Text, Title } from '@mantine/core';
 import Image from 'next/image';
+import CustomLoader from '../components/CustomLoader';
+import { CourseInfo, SNEAK_PEAK_QUESTION_ANSWERS } from '@exam-genius/shared/utils';
+import { UseFormReturnType } from '@mantine/form';
+import { FormValues } from '../utils/types';
 
-const ChoosePaper = ({ course, next, prev }) => {
+interface Props {
+	course: [string, CourseInfo][];
+	next: () => void;
+	prev: () => void;
+	form: UseFormReturnType<FormValues>;
+}
+
+const ChoosePaper = ({ course, next, prev, form } : Props) => {
+	const [loading, setLoading] = useState(false);
+
+	const handleSubmit = (unit_name: string) => {
+		setLoading(true);
+		form.setFieldValue("paper", unit_name)
+		const question_answers = SNEAK_PEAK_QUESTION_ANSWERS[form.values.subject]
+		console.log(question_answers)
+		form.setFieldValue("sneak_peak_questions", question_answers)
+		setTimeout(() => {
+			setLoading(false);
+			next();
+		}, 2500)
+	}
+
 	return (
 		<Page.Container classNames='h-full flex flex-col pb-2'>
+			<CustomLoader opened={loading} onClose={() => setLoading(false)} text={"Generating your AI-Powered Predicted Papers..."}/>
 			<header className="flex flex-col items-center space-y-6">
 				<Title align='center' order={2} size='h1' color='brand' weight={600}>
 					Choose a paper
@@ -30,7 +56,7 @@ const ChoosePaper = ({ course, next, prev }) => {
 								</div>
 							</div>
 							<div className='shrink grow-0 flex-end justify-end right-0'>
-								<Button size='lg'>
+								<Button type="button" size='lg' onClick={() => handleSubmit(unit_name)}>
 									<Text weight='normal'>{'Get Papers'}</Text>
 								</Button>
 							</div>

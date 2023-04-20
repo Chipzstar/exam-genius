@@ -50,7 +50,7 @@ const images = [
 	}
 ];
 
-const SneakPeak = () => {
+const HowItWorks = () => {
 	const [sneak, showSneakPeak] = useState(false);
 	const { width } = useViewportSize();
 	const mobileScreen = useMediaQuery('(max-width: 30em)');
@@ -155,4 +155,4 @@ const SneakPeak = () => {
 	);
 };
 
-export default SneakPeak;
+export default HowItWorks;

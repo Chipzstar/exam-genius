@@ -7,7 +7,7 @@ import FAQ from '../components/FAQ';
 import CTA from '../components/CTA';
 import Footer from '../components/Footer';
 import Reviews from '../components/Reviews';
-import SneakPeak from '../components/SneakPeak';
+import HowItWorks from '../components/HowItWorks';
 
 const Index = () => {
 	return (
@@ -16,7 +16,7 @@ const Index = () => {
 				<Navbar />
 				<Hero />
 				<Reviews />
-				<SneakPeak />
+				<HowItWorks />
 				<Body />
 				<Pricing />
 				<FAQ />

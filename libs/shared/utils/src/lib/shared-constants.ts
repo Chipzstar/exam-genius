@@ -869,3 +869,94 @@ export const SUBJECT_PAPERS: Record<Subject, Record<ExamBoard, Record<string, Co
 		}
 	}
 };
+
+export const SNEAK_PEAK_QUESTION_ANSWERS = {
+	['maths']: [
+		{
+			question: 'What is Pythagoras Theorem?',
+			answer: 'It states that the square of the length of the hypotenuse (the side opposite the right angle) is equal to the sum of the squares of the lengths of the other two sides. In mathematical notation, this can be expressed as: x^2 = a^2 + b^2.',
+			chance: 91
+		},
+		{
+			question: 'What is a differential equation?',
+			answer:
+				"F(x, y, y', y'', ...) = 0\n" +
+				'Where "y" is the unknown function of "x", "y\'" represents its first derivative with respect to "x", "y\'\'" represents its second derivative, and so on. The function "F" is typically a combination of these variables and their derivatives. c^2 = a^2 + b^2',
+			chance: 86
+		}
+	],
+	['psychology']: [
+		{
+			question:
+				'To what extent can correlational research establish cause and effect relationships between variables?',
+			answer: 'Correlational research is a useful tool in psychology as it allows researchers to identify relationships between variables. However, it is important to note that correlational research does not establish cause and effect relationships between variables. This is because correlational research measures the degree to which variables are related to each other, but it does not manipulate variables. Therefore, it is possible that other factors may be responsible for the observed relationship between variables. To establish cause and effect relationships between variables, experimental research is required, as it allows researchers to manipulate variables and control extraneous variables. In conclusion, correlational research is a valuable method for identifying relationships between variables, but it cannot establish cause and effect relationships',
+			chance: 89
+		},
+		{
+			question:
+				'Discuss the ethical considerations that researchers need to take into account when conducting research with human participants.',
+			answer: 'Ethical considerations are an important aspect of psychological research, particularly when conducting research with human participants. Researchers must ensure that their studies do not harm participants physically or psychologically, and that participants are fully informed about the nature of the research and their rights as participants. Informed consent is an essential requirement of ethical research, and researchers must obtain written consent from participants before they can take part in the study. Additionally, researchers must ensure that the data they collect is kept confidential and anonymous, and that participants are free to withdraw from the study at any time without penalty. Researchers must also consider issues of deception, and if necessary, debrief participants after the study to ensure that they understand the true nature of the research. In conclusion, ethical considerations are essential in psychological research, and researchers must ensure that they are always mindful of the ethical implications of their work when conducting research with human participants.',
+			chance: 90
+		}
+	],
+	['biology']: [
+		{
+			question: 'Discuss the role of enzymes in biological systems and explain how enzyme activity is regulated.',
+			answer: 'Enzymes are biological catalysts that speed up the rate of chemical reactions in living organisms. They are usually proteins and have a unique three-dimensional shape that allows them to catalyze specific reactions. Enzymes play a critical role in many biological processes, including digestion, metabolism, and DNA replication.',
+			chance: 92
+		},
+		{
+			question: ' Explain the process of mitosis and its importance in cell division',
+			answer:
+				'Mitosis is the process of cell division that results in two identical daughter cells, each with the same number of chromosomes as the parent cell. It is divided into four stages: prophase, metaphase, anaphase, and telophase.\n' +
+				'\n' +
+				'During prophase, the chromatin in the nucleus condenses into visible chromosomes, each consisting of two identical sister chromatids joined at a centromere. The spindle fibers also begin to form, attaching to the chromosomes at the kinetochore.',
+			chance: 85
+		}
+	],
+	['chemistry']: [
+		{
+			question:
+				'Discuss the factors that affect the rate of a chemical reaction, and explain how they influence the rate.',
+			answer:
+				'The rate of a chemical reaction is affected by several factors, including temperature, concentration, surface area, and the presence of a catalyst.\n' +
+				'\n' +
+				'Temperature: Increasing the temperature increases the kinetic energy of the reactant particles, causing them to collide more frequently and with greater energy, leading to an increase in the rate of the reaction. Surface area: Increasing the surface area of a solid reactant increases the number of exposed particles, leading to more frequent collisions and a higher reaction rate.',
+			chance: 79
+		},
+		{
+			question: 'Discuss the properties and uses of polymers, with reference to specific examples',
+			answer:
+				'Polymers are large molecules made up of repeating units called monomers. They can be natural or synthetic and have a wide range of properties and uses.\n' +
+				'\n' +
+				'Some properties of polymers include their high molecular weight, low density, flexibility, and resistance to degradation. These properties make them useful in a variety of applications, such as packaging, textiles, and construction materials.',
+			chance: 82
+		}
+	],
+	physics: [
+		{
+			question: 'Explain the concept of electric potential and its relationship to electric field strength.',
+			answer:
+				'Electric potential is the amount of work required per unit charge to move a positive test charge from infinity to a specific point in an electric field. It is often measured in volts (V) and is denoted by the symbol V. The electric potential at a point in an electric field is determined by the electric field strength at that point and the distance of the point from the source charge. The relationship between electric potential and electric field strength is given by the equation:\n' +
+				'\n' +
+				'V = -Ed' +
+				'\n' +
+				'where V is the electric potential, E is the electric field strength, and d is the distance between the point and the source charge.'
+		},
+		{
+			question: 'Discuss the principles of wave-particle duality and its implications in modern physics.',
+			answer: 'Wave-particle duality is the concept that particles can exhibit both wave-like and particle-like behavior. This principle was first observed in the early 20th century during experiments involving the behavior of electrons and other subatomic particles. According to wave-particle duality, subatomic particles can exhibit wave-like properties, such as interference and diffraction, as well as particle-like properties, such as having a definite position and momentum. The behavior of subatomic particles is described by the wave function, which gives the probability of finding the particle at a particular point in space.'
+		}
+	],
+	economics: [
+		{
+			question:
+				'Use demand and supply analysis to explain how the equilibrium price and quantity of a good will change when there is an increase in production costs.',
+			answer: 'When there is an increase in production costs, the supply curve shifts to the left. This is because producers will need to charge a higher price in order to cover their increased costs. As a result, the equilibrium price will increase, and the equilibrium quantity will decrease. This is shown graphically as a leftward shift in the supply curve, and a movement along the demand curve to a higher price and lower quantity. The new equilibrium will have a higher price and a lower quantity than the original equilibrium.'
+		},
+		{
+			question: 'Using the concept of price elasticity of demand, explain why the demand for cigarettes is likely to be more elastic in the long run than in the short run.',
+			answer: 'The demand for cigarettes is likely to be more elastic in the long run than in the short run because in the short run, consumers have fewer options and are less able to adjust their behavior in response to changes in price. In the short run, smokers may be addicted to cigarettes or have a habit of smoking that is difficult to break, which makes them less responsive to changes in price. However, in the long run, consumers have more time to adjust their behavior, such as by quitting smoking or switching to a cheaper brand. As a result, the demand for cigarettes is likely to be more elastic in the long run, meaning that a change in price will have a larger effect on the quantity demanded. This is because consumers have more time to respond to changes in price and are more able to find substitutes for cigarettes.'
+		}
+	]
+};

@@ -1,18 +1,22 @@
 import React, { useEffect, useState } from 'react';
-import { Code, Modal, Stepper } from '@mantine/core';
+import { Modal, Stepper } from '@mantine/core';
 import { useForm } from '@mantine/form';
 import ChooseSubject from '../containers/ChooseSubject';
 import ChooseExamBoard from '../containers/ChooseExamBoard';
 import ChoosePaper from '../containers/ChoosePaper';
 import { SUBJECT_PAPERS } from '@exam-genius/shared/utils';
+import { FormValues } from '../utils/types';
+import SneakPeak from '../containers/SneakPeak';
 
 const SneakPeakSlideshow = ({ opened, onClose }) => {
 	const [active, setActive] = useState(0);
-	const form = useForm({
+	const form = useForm<FormValues>({
 		initialValues: {
 			subject: '',
 			examBoard: '',
-			course: []
+			course: [],
+			paper: '',
+			sneak_peak_questions: []
 		}
 	});
 
@@ -25,10 +29,6 @@ const SneakPeakSlideshow = ({ opened, onClose }) => {
 				console.log('Failed to parse stored value');
 			}
 		}
-	}, []);
-
-	useEffect(() => {
-		form.reset();
 	}, []);
 
 	useEffect(() => {
@@ -50,7 +50,17 @@ const SneakPeakSlideshow = ({ opened, onClose }) => {
 
 	const prevStep = () => setActive(current => (current > 0 ? current - 1 : current));
 	return (
-		<Modal opened={opened} onClose={onClose} centered fullScreen closeOnClickOutside closeOnEscape>
+		<Modal
+			opened={opened}
+			onClose={() => {
+				onClose();
+				setTimeout(() => setActive(0), 500);
+			}}
+			centered
+			fullScreen
+			closeOnClickOutside
+			closeOnEscape
+		>
 			<Stepper
 				active={active}
 				breakpoint='sm'
@@ -83,13 +93,10 @@ const SneakPeakSlideshow = ({ opened, onClose }) => {
 				</Stepper.Step>
 
 				<Stepper.Step label='Final step' description='Social media'>
-					<ChoosePaper next={nextStep} prev={prevStep} course={form.values.course} />
+					<ChoosePaper next={nextStep} prev={prevStep} course={form.values.course} form={form} />
 				</Stepper.Step>
 				<Stepper.Completed>
-					Completed! Form values:
-					<Code block mt='xl'>
-						{JSON.stringify(form.values, null, 2)}
-					</Code>
+					<SneakPeak prev={prevStep} sneak_peak_questions={form.values.sneak_peak_questions} />
 				</Stepper.Completed>
 			</Stepper>
 		</Modal>

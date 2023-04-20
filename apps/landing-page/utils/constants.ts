@@ -3,52 +3,52 @@ export const DEFAULT_HEADER_HEIGHT = 75
 export interface Review {
 	author: string;
 	age: number;
-	year: number;
+	subject: string;
 	image: string | null;
 	review: string;
 }
 
 export const reviews: Review[] = [
 	{
+		author: 'Rachel',
+		age: 17,
+		subject: 'Physics',
+		image: '/static/images/posi.svg',
+		review: 'ExamGenius test papers were incredibly elaborate as they covered a range of difficulties throughout the paper which helped me prepare for my examinations as i find doing past papers and exam questions are a really resourceful way to revise for my physics A level.'
+	},
+	{
 		author: 'Posi',
 		age: 17,
-		year: 12,
-		image: '/static/images/posi.svg',
-		review: 'I was skeptical at first, but ExamGenius exceeded my expectations. The predicted papers were spot on and helped me identify my weak areas and focus my studies.'
-	},
-	{
-		author: 'Sarah',
-		age: 18,
-		year: 13,
+		subject: 'Maths',
 		image: '/static/images/sarah.svg',
-		review: 'Their predicted papers and detailed answers helped me feel confident and well-prepared for my A-level exams. Thanks to ExamGenius, I was able to achieve the grades I needed to get into my dream university.'
+		review: 'The exam papers are realistic and well structured. I realised that it not only looks at the trends in past maths papers, but also looks at what hasn’t come up. This makes me very confident & prepared for all A level exams and tests.'
 	},
 	{
-		author: 'Emily',
-        age: 18,
-        year: 13,
+		author: 'Arehone',
+        age: 17,
+        subject: 'Biology',
 		image: '/static/images/emily.svg',
-        review: 'Using ExamGenius was a no-brainer for me. The convenience of having all the predicted papers in one place, along with the detailed answers and explanations, made studying for my exams much easier and less stressful.'
+        review: 'ExamGenius strengthened my biology knowledge by filling gaps, including cell cycle and mitosis, using subject-specific terminology. Its wide range of questions boosted my confidence, leading to my academic success.Without it I wouldn’t have been able to achieve the grades that I have today'
 	},
 	{
 		author: 'Ruby',
         age: 17,
-        year: 12,
-		image: null,
-        review: 'ExamGenius made it easy for me to prepare with their AI-generated predicted exam papers. Thanks to ExamGenius, I was able to gain confidence and achieve the results I wanted.',
-	},
-	{
-		author: 'Alex',
-        age: 18,
-        year: 13,
-		image: '/static/images/alex.svg',
-        review: 'As someone who struggles with test anxiety, ExamGenius was a lifesaver for me. The predicted papers gave me the confidence I needed to walk into my exams feeling prepared and ready to succeed.'
-	},
-	{
-		author: 'Maria',
-        age: 18,
-        year: 13,
+        subject: 'Psychology',
 		image: '/static/images/maria.svg',
-        review: 'ExamGenius was the best investment I made during my A-level studies. The predicted papers were incredibly accurate, and the detailed explanations helped me understand where I was going wrong. '
+        review: 'ExamGenius improved my understanding of psychology topics I struggled with, including approaches and social influences. Its AI-generated exam questions replicate exam style and language, aiding my practice and familiarity with exam format.',
+	},
+	{
+		author: 'Arehone',
+        age: 17,
+        subject: 'Chemistry',
+		image: '/static/images/emily.svg',
+        review: 'ExamGenius helped me understand A-level Chemistry, including organic chemistry and enthalpy change, by breaking down complex topics and providing exam-style questions to solidify my understanding. Improved my grade from C to A in year 13.'
+	},
+	{
+		author: 'Ruby',
+        age: 17,
+        subject: 'Economics',
+		image: '/static/images/maria.svg',
+        review: 'EExamGenius improved my confidence in economics by providing exam-style questions and aiding my identification of key words.It has allowed me to answer questions without having to spend endless hours looking for economics questions as they are all in one place.'
 	}
 ];

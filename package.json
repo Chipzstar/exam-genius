@@ -69,6 +69,7 @@
 		"react": "18.2.0",
 		"react-dom": "18.2.0",
 		"react-loader-spinner": "^5.3.4",
+		"react-lottie": "^1.2.3",
 		"react-scroll": "^1.8.9",
 		"stripe": "^12.0.0",
 		"superjson": "^1.12.2",
