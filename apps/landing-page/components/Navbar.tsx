@@ -100,6 +100,7 @@ const Navbar = () => {
 						variant='gradient'
 						radius='lg'
 						gradient={{ from: '#6B81FA', to: '#2742F5', deg: 180 }}
+						onClick={() => showSneakPeak(true)}
 					>
 						<Text weight='normal'>Start Now</Text>
 					</Button>
