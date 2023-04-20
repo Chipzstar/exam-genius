@@ -17,24 +17,22 @@ export const CTA = () => {
 			>
 				Get your AI-generated predicted A-level exam papers now.
 			</span>
-			<a target='_blank' href='https://app.exam-genius.com' rel='noopener noreferrer'>
-				<Button
-					variant='gradient'
-					gradient={{ from: '#6B81FA', to: '#2742F5', deg: 180 }}
-					radius='lg'
-					styles={theme => ({
-						root: {
-							width: '250px',
-							height: '60px'
-						}
-					})}
-					size='xl'
-					uppercase
-					onClick={() => showSneakPeak(true)}
-				>
-					Start Now
-				</Button>
-			</a>
+			<Button
+				variant='gradient'
+				gradient={{ from: '#6B81FA', to: '#2742F5', deg: 180 }}
+				radius='lg'
+				styles={theme => ({
+					root: {
+						width: '250px',
+						height: '60px'
+					}
+				})}
+				size='xl'
+				uppercase
+				onClick={() => showSneakPeak(true)}
+			>
+				Start Now
+			</Button>
 		</div>
 	);
 };

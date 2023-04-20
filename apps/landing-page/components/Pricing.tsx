@@ -1,10 +1,12 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { Button } from '@mantine/core';
 import Image from 'next/image';
 import { useMediaQuery } from '@mantine/hooks';
+import { SneakPeakContext } from '../context/SneakPeakContext';
 
 export const Pricing = () => {
 	const mobileScreen = useMediaQuery('(max-width: 30em)');
+	const [sneak, showSneakPeak] = useContext(SneakPeakContext);
 	return (
 		<div id='pricing' className='flex min-h-screen items-center justify-center py-10'>
 			<div className='flex flex-col items-center justify-center space-y-10'>
@@ -53,6 +55,7 @@ export const Pricing = () => {
 						}}
 						radius='xs'
 						size='xl'
+						onClick={() => showSneakPeak(true)}
 					>
 						Start Now
 					</Button>
