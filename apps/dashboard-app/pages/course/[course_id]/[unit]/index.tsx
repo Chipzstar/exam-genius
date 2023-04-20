@@ -26,6 +26,7 @@ import { useViewportSize } from '@mantine/hooks';
 import { TRPCError } from '@trpc/server';
 import CustomLoader from '../../../../components/CustomLoader';
 import { ExamBoard, PaperInfo, Subject, SUBJECT_PAPERS } from '@exam-genius/shared/utils';
+import NotFound404 from '../../../404';
 
 export interface PageQuery extends ParsedUrlQuery {
 	board: ExamBoard;
@@ -104,8 +105,8 @@ const Papers = ({ query }: InferGetServerSidePropsType<typeof getServerSideProps
 				}
 			} catch (err) {
 				console.error(err);
-				setGenerating(false)
-				notifyError("generate-paper-failed", err.message, <IconX size={20}/>);
+				setGenerating(false);
+				notifyError('generate-paper-failed', err.message, <IconX size={20} />);
 				throw new TRPCError({ code: 'INTERNAL_SERVER_ERROR', message: err.message });
 			}
 		},
@@ -134,10 +135,12 @@ const Papers = ({ query }: InferGetServerSidePropsType<typeof getServerSideProps
 		[course]
 	);
 
-	return !course_info ? (
+	return isLoading ? (
 		<LoadingOverlay visible={isLoading} />
+	) : !course_info ? (
+		<NotFound404 />
 	) : generating ? (
-		<div className='h-full flex items-center justify-center'>
+		<div className='flex h-full items-center justify-center'>
 			<CustomLoader
 				text='Generating Paper'
 				subText='Approx waiting time is 20 to 60 seconds. Go grab a coffee while we get your paper ready '

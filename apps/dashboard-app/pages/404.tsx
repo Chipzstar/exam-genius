@@ -34,7 +34,7 @@ const useStyles = createStyles(theme => ({
 	}
 }));
 
-function NotFoundTitle() {
+function NotFound404() {
 	const { classes } = useStyles();
 
 	return (
@@ -56,4 +56,4 @@ function NotFoundTitle() {
 	);
 }
 
-export default NotFoundTitle;
+export default NotFound404;

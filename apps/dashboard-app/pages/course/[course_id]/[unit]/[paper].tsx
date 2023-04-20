@@ -122,7 +122,7 @@ const Paper = ({ query }: InferGetServerSidePropsType<typeof getServerSideProps>
 	const { mutateAsync: checkPaperGenerated } = trpc.paper.checkPaperGenerated.useMutation();
 	const { mutate: regeneratePaper, isLoading: regenLoading } = trpc.paper.regeneratePaper.useMutation();
 	const { height } = useViewportSize();
-	const { start, clear } = useTimeout(([data]: RegeneratePayload[]) => {
+	const { start } = useTimeout(([data]: RegeneratePayload[]) => {
 		checkPaperGenerated({ id: data.id }).then(isGenerated => {
 			if (!isGenerated) setRegenerateData(prev => data);
 		});
