@@ -1,15 +1,14 @@
-import React, { useState } from 'react';
+import React, { useContext } from 'react';
 import { Button, Image } from '@mantine/core';
 import { useMediaQuery } from '@mantine/hooks';
-import SneakPeakSlideshow from '../modals/SneakPeakSlideshow';
+import { SneakPeakContext } from '../context/SneakPeakContext';
 
 export const Hero = () => {
 	const mobileScreen = useMediaQuery('(max-width: 30em)');
-	const [sneak, showSneakPeak] = useState(false);
+	const [sneak, showSneakPeak] = useContext(SneakPeakContext);
 
 	return (
 		<div className='flex md:mt-10 md:py-10'>
-			<SneakPeakSlideshow opened={sneak} onClose={() => showSneakPeak(false)} />
 			<div className='flex grid grid-cols-1 items-center justify-center gap-20 md:grid-cols-2'>
 				<div className='flex flex-col gap-10 md:col-span-1'>
 					<p className='text-primary text-base font-medium'>Do you want to achieve A*/A?</p>

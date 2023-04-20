@@ -1,9 +1,10 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { Box, Burger, Button, createStyles, Divider, Drawer, Group, rem, ScrollArea, Text } from '@mantine/core';
 import Image from 'next/image';
 import Link from 'next/link';
 import { Link as ScrollLink } from 'react-scroll';
 import { useDisclosure } from '@mantine/hooks';
+import { SneakPeakContext } from '../context/SneakPeakContext';
 
 const useStyles = createStyles(theme => ({
 	link: {
@@ -51,6 +52,7 @@ const useStyles = createStyles(theme => ({
 const Navbar = () => {
 	const [drawerOpened, { toggle: toggleDrawer, close: closeDrawer }] = useDisclosure(false);
 	const { classes, theme } = useStyles();
+	const [sneak, showSneakPeak] = useContext(SneakPeakContext);
 	return (
 		<Box h={105}>
 			<nav className='flex flex-wrap items-center justify-between py-5'>
@@ -138,11 +140,14 @@ const Navbar = () => {
 					<Divider my='sm' color={theme.colorScheme === 'dark' ? 'dark.5' : 'gray.1'} />
 					<Group position='center' grow pb='xl' px='md'>
 						<a target='_blank' href='https://app.exam-genius.com' rel='noopener noreferrer'>
-							<Button fullWidth variant='default'>Log in</Button>
+							<Button fullWidth variant='default'>
+								Log in
+							</Button>
 						</a>
-						<a target='_blank' href='https://app.exam-genius.com/onboarding' rel='noopener noreferrer'>
-							<Button fullWidth>Sign up</Button>
-						</a>
+						<Button fullWidth onClick={() => {
+							closeDrawer();
+							showSneakPeak(true)
+						}}>Start Now</Button>
 					</Group>
 				</ScrollArea>
 			</Drawer>

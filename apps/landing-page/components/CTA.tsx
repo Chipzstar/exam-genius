@@ -1,8 +1,10 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { Button } from '@mantine/core';
 import { useMediaQuery } from '@mantine/hooks';
+import { SneakPeakContext } from '../context/SneakPeakContext';
 
 export const CTA = () => {
+	const [sneak, showSneakPeak] = useContext(SneakPeakContext);
 	const mobileScreen = useMediaQuery('(max-width: 30em)');
 	return (
 		<div className='flex flex-col items-center justify-center gap-10 py-20'>
@@ -28,6 +30,7 @@ export const CTA = () => {
 					})}
 					size='xl'
 					uppercase
+					onClick={() => showSneakPeak(true)}
 				>
 					Start Now
 				</Button>

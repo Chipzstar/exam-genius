@@ -1,11 +1,12 @@
 import { AppProps } from 'next/app';
 import Head from 'next/head';
 import Favicon from '../components/Favicon';
-import React from 'react';
+import React, { useState } from 'react';
 import { createEmotionCache, MantineProvider } from '@mantine/core';
 import localFont from '@next/font/local';
 import '../styles/globals.css';
 import PlausibleProvider from 'next-plausible';
+import { SneakPeakContext } from '../context/SneakPeakContext';
 
 const poppins = localFont({
 	src: [
@@ -48,9 +49,11 @@ const poppins = localFont({
 });
 
 const appendCache = createEmotionCache({ key: 'mantine', prepend: false });
+
 function CustomApp({ Component, pageProps }: AppProps) {
+	const [sneak, showSneakPeak] = useState(false);
 	return (
-		<PlausibleProvider domain="exam-genius.com">
+		<PlausibleProvider domain='exam-genius.com'>
 			<Head>
 				<Favicon />
 				<title>Exam Genius</title>
@@ -98,9 +101,11 @@ function CustomApp({ Component, pageProps }: AppProps) {
 					}
 				}}
 			>
-				<main className={`${poppins.variable} font-sans`}>
-					<Component {...pageProps} />
-				</main>
+				<SneakPeakContext.Provider value={[sneak, showSneakPeak]}>
+					<main className={`${poppins.variable} font-sans`}>
+						<Component {...pageProps} />
+					</main>
+				</SneakPeakContext.Provider>
 			</MantineProvider>
 		</PlausibleProvider>
 	);

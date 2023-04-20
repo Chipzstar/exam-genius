@@ -1,9 +1,9 @@
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useCallback, useContext, useEffect, useState } from 'react';
 import { Button, Image, Text } from '@mantine/core';
 import { IconPlayerPlay } from '@tabler/icons-react';
-import SneakPeakSlideshow from '../modals/SneakPeakSlideshow';
 import { useMediaQuery, useViewportSize } from '@mantine/hooks';
 import { Carousel, Embla } from '@mantine/carousel';
+import { SneakPeakContext } from '../context/SneakPeakContext';
 
 const images = [
 	{
@@ -51,7 +51,7 @@ const images = [
 ];
 
 const HowItWorks = () => {
-	const [sneak, showSneakPeak] = useState(false);
+	const [sneak, showSneakPeak] = useContext(SneakPeakContext);
 	const { width } = useViewportSize();
 	const mobileScreen = useMediaQuery('(max-width: 30em)');
 	const [embla, setEmbla] = useState<Embla | null>(null);
@@ -91,7 +91,6 @@ const HowItWorks = () => {
 			id='how-it-works'
 			className='flex min-h-screen flex-col items-center justify-center gap-y-8 py-10 md:gap-y-20'
 		>
-			<SneakPeakSlideshow opened={sneak} onClose={() => showSneakPeak(false)} />
 			<p className='text-center text-2xl font-medium sm:text-3xl md:text-5xl lg:text-6xl'>
 				<span className='inline-block leading-normal'>
 					📚 Study smarter with ExamGenius’ AI

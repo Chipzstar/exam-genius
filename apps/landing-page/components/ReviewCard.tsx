@@ -2,7 +2,7 @@ import React from 'react';
 import { Avatar, Paper, Stack, Text } from '@mantine/core';
 import { Review } from '../utils/constants';
 
-const ReviewCard = ({ author, review, year, age, image }: Review) => {
+const ReviewCard = ({ author, review, subject, age, image }: Review) => {
 	return (
 		<Paper
 			shadow='md'
@@ -23,7 +23,7 @@ const ReviewCard = ({ author, review, year, age, image }: Review) => {
 							<span className='text-lg font-medium'>{age}</span>
 						</div>
 
-						<span>Year {year}</span>
+						<span>Subject: {subject}</span>
 					</div>
 				</div>
 				<Text>{review}</Text>
