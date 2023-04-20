@@ -1,7 +1,7 @@
 import { Group, Radio, SimpleGrid, Title } from '@mantine/core';
 import React, { useEffect } from 'react';
 import Page from '../layout/Page';
-import { SubjectCard } from '@exam-genius/ui-shared';
+import { SubjectCard } from '@exam-genius/shared/ui';
 import { PATHS } from '../utils/constants';
 import { useLocalStorage } from '@mantine/hooks';
 import LinkButton from '../components/LinkButton';

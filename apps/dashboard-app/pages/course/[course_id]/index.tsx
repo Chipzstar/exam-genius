@@ -11,7 +11,7 @@ import { IconArrowLeft } from '@tabler/icons-react';
 import { useRouter } from 'next/router';
 import { trpc } from '../../../utils/trpc';
 import { useViewportSize } from '@mantine/hooks';
-import { SUBJECT_PAPERS } from '@exam-genius/util-shared';
+import { SUBJECT_PAPERS } from '@exam-genius/shared/utils';
 
 export interface PageQuery extends ParsedUrlQuery {
 	course_id: string;

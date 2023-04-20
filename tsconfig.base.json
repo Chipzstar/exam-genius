@@ -15,8 +15,8 @@
 		"skipDefaultLibCheck": true,
 		"baseUrl": ".",
 		"paths": {
-			"@exam-genius/ui-shared": ["libs/ui-shared/src/index.ts"],
-			"@exam-genius/util-shared": ["libs/util-shared/src/index.ts"]
+			"@exam-genius/shared/ui": ["libs/shared/ui/src/index.ts"],
+			"@exam-genius/shared/utils": ["libs/shared/utils/src/index.ts"]
 		}
 	},
 	"exclude": ["node_modules", "tmp"]

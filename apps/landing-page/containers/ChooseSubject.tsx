@@ -1,7 +1,7 @@
 import React from 'react';
 import { Box, Button, Group, Radio, SimpleGrid, Title } from '@mantine/core';
 import Page from '../layout/Page';
-import { SubjectCard } from '@exam-genius/ui-shared';
+import { SubjectCard } from '@exam-genius/shared/ui';
 
 const ChooseSubject = ({ next, disabled, onChange }) => {
 	return (
@@ -13,7 +13,7 @@ const ChooseSubject = ({ next, disabled, onChange }) => {
 			</header>
 			<Page.Body extraClassNames='justify-between py-4'>
 				<Radio.Group name='subject' onChange={onChange}>
-					<SimpleGrid cols={3}>
+					<SimpleGrid cols={3} breakpoints={[{ maxWidth: '36rem', cols: 1, spacing: 'sm' }]}>
 						<SubjectCard subject='Maths' src='/static/images/maths-icon.svg' />
 						<SubjectCard subject='Biology' src='/static/images/biology-icon.svg' />
 						<SubjectCard subject='Chemistry' src='/static/images/chemistry-icon.svg' />

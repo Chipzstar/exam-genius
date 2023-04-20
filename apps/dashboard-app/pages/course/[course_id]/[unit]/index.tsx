@@ -25,7 +25,7 @@ import { trpc } from '../../../../utils/trpc';
 import { useViewportSize } from '@mantine/hooks';
 import { TRPCError } from '@trpc/server';
 import CustomLoader from '../../../../components/CustomLoader';
-import { ExamBoard, PaperInfo, Subject, SUBJECT_PAPERS } from '@exam-genius/util-shared';
+import { ExamBoard, PaperInfo, Subject, SUBJECT_PAPERS } from '@exam-genius/shared/utils';
 
 export interface PageQuery extends ParsedUrlQuery {
 	board: ExamBoard;

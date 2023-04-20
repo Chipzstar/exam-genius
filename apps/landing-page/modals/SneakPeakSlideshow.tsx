@@ -4,7 +4,7 @@ import { useForm } from '@mantine/form';
 import ChooseSubject from '../containers/ChooseSubject';
 import ChooseExamBoard from '../containers/ChooseExamBoard';
 import ChoosePaper from '../containers/ChoosePaper';
-import { SUBJECT_PAPERS } from '@exam-genius/util-shared';
+import { SUBJECT_PAPERS } from '@exam-genius/shared/utils';
 
 const SneakPeakSlideshow = ({ opened, onClose }) => {
 	const [active, setActive] = useState(0);

@@ -7,12 +7,12 @@ const { withPlausibleProxy } = require('next-plausible');
 /**
  * @type {import('@nrwl/next/plugins/with-nx').WithNxOptions}
  **/
-const nextConfig = {
+const nextConfig = withPlausibleProxy()({
 	nx: {
 		// Set this to true if you would like to use SVGR
 		// See: https://github.com/gregberge/svgr
 		svgr: false
 	}
-};
+});
 
-module.exports = withPlausibleProxy()(withNx(nextConfig));
+module.exports = withNx(nextConfig);

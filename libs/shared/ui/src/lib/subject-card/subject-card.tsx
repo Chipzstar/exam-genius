@@ -1,8 +1,7 @@
-/* eslint-disable-next-line */
 import { Card, Group, Radio, Stack, Text } from '@mantine/core';
 import Image from 'next/image';
-import React from 'react';
 
+/* eslint-disable-next-line */
 export interface SubjectCardProps {
 	subject: string;
 	src: string;

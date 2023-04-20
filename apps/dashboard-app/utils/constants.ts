@@ -1,6 +1,6 @@
 import { PhoneNumberUtil } from 'google-libphonenumber';
 import * as process from 'process';
-import { Subject } from '@exam-genius/util-shared';
+import { Subject } from '@exam-genius/shared/utils';
 
 export const PORT = process.env.PORT || String(4200);
 export const DOMAIN_URL =

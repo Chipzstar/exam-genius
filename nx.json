@@ -48,7 +48,9 @@
 			"application": {
 				"babel": true
 			},
-			"library": {}
+			"library": {
+				"unitTestRunner": "jest"
+			}
 		},
 		"@nrwl/next": {
 			"application": {

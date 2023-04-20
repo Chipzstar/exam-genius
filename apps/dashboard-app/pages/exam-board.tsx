@@ -1,7 +1,7 @@
 import React from 'react';
 import { Box, Button, Radio, SimpleGrid, Text, Title } from '@mantine/core';
 import Page from '../layout/Page';
-import ExamBoardCard from '../components/ExamBoardCard';
+import { ExamBoardCard } from '@exam-genius/shared/ui';
 import getStripe from '../utils/loadStripe';
 import { useLocalStorage } from '@mantine/hooks';
 import { CHECKOUT_TYPE } from '../utils/constants';
