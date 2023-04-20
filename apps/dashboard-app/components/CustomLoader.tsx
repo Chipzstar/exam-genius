@@ -4,6 +4,7 @@ import { DEFAULT_THEME, Stack, Text } from '@mantine/core';
 export interface LoadingOverlayProps {
 	text: string;
 	subText?: string;
+	children: JSX.Element | JSX.Element[];
 }
 
 export function CustomLoader(props: LoadingOverlayProps) {
@@ -23,6 +24,7 @@ export function CustomLoader(props: LoadingOverlayProps) {
 				<Text align="center" size="xl" weight={600}>{props.text}</Text>
 				{props.subText && <Text align="center" size="sm">{props.subText}</Text>}
 			</Stack>
+			{props.children}
 		</div>
 	);
 }

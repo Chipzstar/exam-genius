@@ -107,7 +107,7 @@ const paperRouter = createTRPCRouter({
 		.mutation(async ({ input, ctx }) => {
 			try {
 				const user_id = ctx.auth.userId;
-				const paper_id = genID('paper')
+				const paper_id = genID('paper');
 				const paper = await ctx.prisma.paper.create({
 					data: {
 						name: input.paper_name,
@@ -122,7 +122,11 @@ const paperRouter = createTRPCRouter({
 						status: 'pending'
 					}
 				});
-				if (!paper) throw new TRPCError({code: "BAD_REQUEST", message: "Failed to create paper with id: " + paper_id});
+				if (!paper)
+					throw new TRPCError({
+						code: 'BAD_REQUEST',
+						message: 'Failed to create paper with id: ' + paper_id
+					});
 				console.log('*****************************************');
 				console.log('NEW PAPER:', paper);
 				log.debug('new paper', paper);
@@ -131,33 +135,42 @@ const paperRouter = createTRPCRouter({
 				const baseUrl = process.env.VERCEL_URL
 					? 'https://' + process.env.VERCEL_URL
 					: `http://localhost:${PORT}`;
-				const { data } = await axios.post(`${baseUrl}/api/openai/generate`, {
-					subject: capitalize(input.subject),
-					exam_board: capitalize(input.exam_board),
-					course: capitalize(sanitize(input.unit_name)),
-					paper_name: input.paper_name,
-					num_questions: input.num_questions,
-					num_marks: input.num_marks
-				});
-				const content: string = data.result;
-				const sanitizedContent = content.replace(/\\n\s+|\\n/g, '');
-				log.info('openai response');
-				log.info(content);
-				ctx.prisma.paper
-					.update({
-						where: {
-							paper_id: paper.paper_id
-						},
-						data: {
-							content: sanitizedContent,
-							status: 'success'
-						}
+				axios
+					.post(`${baseUrl}/api/openai/generate`, {
+						subject: capitalize(input.subject),
+						exam_board: capitalize(input.exam_board),
+						course: capitalize(sanitize(input.unit_name)),
+						paper_name: input.paper_name,
+						num_questions: input.num_questions,
+						num_marks: input.num_marks
 					})
-					.then(paper => {
-						console.log('=======================================');
-						console.log(paper);
-						log.debug('updated paper', paper);
-						console.log('=======================================');
+					.then(({ data }) => {
+						const content: string = data.result;
+						const sanitizedContent = content.replace(/\\n\s+|\\n/g, '');
+						log.info('openai response');
+						log.info(content);
+						ctx.prisma.paper
+							.update({
+								where: {
+									paper_id: paper.paper_id
+								},
+								data: {
+									content: sanitizedContent,
+									status: 'success'
+								}
+							})
+							.then(paper => {
+								console.log('=======================================');
+								console.log(paper);
+								log.debug('updated paper', paper);
+								console.log('=======================================');
+							})
+							.catch(err => {
+								console.log('************************************************');
+								console.error(err);
+								log.error(err);
+								console.log('************************************************');
+							});
 					})
 					.catch(err => {
 						console.log('************************************************');
@@ -170,9 +183,9 @@ const paperRouter = createTRPCRouter({
 				console.error(err);
 				log.error(err);
 				throw new TRPCError({
-                    code: 'INTERNAL_SERVER_ERROR',
-                    message: 'Oops, something went wrong' + err.message
-                });
+					code: 'INTERNAL_SERVER_ERROR',
+					message: 'Oops, something went wrong' + err.message
+				});
 			}
 		}),
 	checkPaperGenerated: protectedProcedure
@@ -189,7 +202,7 @@ const paperRouter = createTRPCRouter({
 					}
 				});
 				console.log('-----------------------------------------------');
-				console.log(paper)
+				console.log(paper);
 				console.log('-----------------------------------------------');
 				if (paper.status === 'success' || paper.content) return true;
 				else {
@@ -204,6 +217,79 @@ const paperRouter = createTRPCRouter({
 					});
 					return false;
 				}
+			} catch (err) {
+				console.error(err);
+				throw new TRPCError({
+					code: 'INTERNAL_SERVER_ERROR',
+					message: 'Oops, something went wrong' + err.message
+				});
+			}
+		}),
+	regeneratePaper: protectedProcedure
+		.input(
+			z.object({
+				id: z.string(),
+				num_questions: z.number(),
+				num_marks: z.number()
+			})
+		)
+		.mutation(async ({ input, ctx }) => {
+			try {
+				const paper = await ctx.prisma.paper.findUniqueOrThrow({
+					where: {
+						paper_id: input.id
+					}
+				});
+				if (paper.status === 'success')
+					throw new TRPCError({ code: 'CLIENT_CLOSED_REQUEST', message: 'Paper has already been generated' });
+				// call the API endpoint for generating a predicted paper
+				const baseUrl = process.env.VERCEL_URL
+					? 'https://' + process.env.VERCEL_URL
+					: `http://localhost:${PORT}`;
+				axios
+					.post(`${baseUrl}/api/openai/generate`, {
+						subject: capitalize(paper.subject),
+						exam_board: capitalize(paper.exam_board),
+						course: capitalize(sanitize(paper.unit_name)),
+						paper_name: paper.name,
+						num_questions: input.num_questions,
+						num_marks: input.num_marks
+					})
+					.then(({ data }) => {
+						const content: string = data.result;
+						const sanitizedContent = content.replace(/\\n\s+|\\n/g, '');
+						log.info('openai response');
+						log.info(content);
+						ctx.prisma.paper
+							.update({
+								where: {
+									paper_id: paper.paper_id
+								},
+								data: {
+									content: sanitizedContent,
+									status: 'success'
+								}
+							})
+							.then(paper => {
+								console.log('=======================================');
+								console.log(paper);
+								log.debug('updated paper', paper);
+								console.log('=======================================');
+							})
+							.catch(err => {
+								console.log('************************************************');
+								console.error(err);
+								log.error(err);
+								console.log('************************************************');
+							});
+					})
+					.catch(err => {
+						console.log('************************************************');
+						console.error(err);
+						log.error(err);
+						console.log('************************************************');
+					});
+				return paper;
 			} catch (err) {
 				console.error(err);
 				throw new TRPCError({
