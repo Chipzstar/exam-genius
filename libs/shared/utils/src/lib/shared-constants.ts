@@ -889,13 +889,13 @@ export const SNEAK_PEAK_QUESTION_ANSWERS = {
 		{
 			question:
 				'To what extent can correlational research establish cause and effect relationships between variables?',
-			answer: 'Correlational research is a useful tool in psychology as it allows researchers to identify relationships between variables. However, it is important to note that correlational research does not establish cause and effect relationships between variables. This is because correlational research measures the degree to which variables are related to each other, but it does not manipulate variables. Therefore, it is possible that other factors may be responsible for the observed relationship between variables. To establish cause and effect relationships between variables, experimental research is required, as it allows researchers to manipulate variables and control extraneous variables. In conclusion, correlational research is a valuable method for identifying relationships between variables, but it cannot establish cause and effect relationships',
+			answer: 'Correlational research is a useful tool in psychology as it allows researchers to identify relationships between variables. However, it is important to note that correlational research does not establish cause and effect relationships between variables. This is because correlational research measures the degree to which variables are related to each other, but it does not manipulate variables. Therefore, it is possible that other factors may be responsible for the observed relationship between variables.',
 			chance: 89
 		},
 		{
 			question:
 				'Discuss the ethical considerations that researchers need to take into account when conducting research with human participants.',
-			answer: 'Ethical considerations are an important aspect of psychological research, particularly when conducting research with human participants. Researchers must ensure that their studies do not harm participants physically or psychologically, and that participants are fully informed about the nature of the research and their rights as participants. Informed consent is an essential requirement of ethical research, and researchers must obtain written consent from participants before they can take part in the study. Additionally, researchers must ensure that the data they collect is kept confidential and anonymous, and that participants are free to withdraw from the study at any time without penalty. Researchers must also consider issues of deception, and if necessary, debrief participants after the study to ensure that they understand the true nature of the research. In conclusion, ethical considerations are essential in psychological research, and researchers must ensure that they are always mindful of the ethical implications of their work when conducting research with human participants.',
+			answer: 'Ethical considerations are an important aspect of psychological research, particularly when conducting research with human participants. Researchers must ensure that their studies do not harm participants physically or psychologically, and that participants are fully informed about the nature of the research and their rights as participants. Informed consent is an essential requirement of ethical research, and researchers must obtain written consent from participants before they can take part in the study. ',
 			chance: 90
 		}
 	],
@@ -941,22 +941,26 @@ export const SNEAK_PEAK_QUESTION_ANSWERS = {
 				'\n' +
 				'V = -Ed' +
 				'\n' +
-				'where V is the electric potential, E is the electric field strength, and d is the distance between the point and the source charge.'
+				'where V is the electric potential, E is the electric field strength, and d is the distance between the point and the source charge.',
+			chance: 92
 		},
 		{
 			question: 'Discuss the principles of wave-particle duality and its implications in modern physics.',
-			answer: 'Wave-particle duality is the concept that particles can exhibit both wave-like and particle-like behavior. This principle was first observed in the early 20th century during experiments involving the behavior of electrons and other subatomic particles. According to wave-particle duality, subatomic particles can exhibit wave-like properties, such as interference and diffraction, as well as particle-like properties, such as having a definite position and momentum. The behavior of subatomic particles is described by the wave function, which gives the probability of finding the particle at a particular point in space.'
+			answer: 'Wave-particle duality is the concept that particles can exhibit both wave-like and particle-like behavior. This principle was first observed in the early 20th century during experiments involving the behavior of electrons and other subatomic particles. According to wave-particle duality, subatomic particles can exhibit wave-like properties, such as interference and diffraction, as well as particle-like properties, such as having a definite position and momentum. The behavior of subatomic particles is described by the wave function, which gives the probability of finding the particle at a particular point in space.',
+			chance: 89
 		}
 	],
 	economics: [
 		{
 			question:
 				'Use demand and supply analysis to explain how the equilibrium price and quantity of a good will change when there is an increase in production costs.',
-			answer: 'When there is an increase in production costs, the supply curve shifts to the left. This is because producers will need to charge a higher price in order to cover their increased costs. As a result, the equilibrium price will increase, and the equilibrium quantity will decrease. This is shown graphically as a leftward shift in the supply curve, and a movement along the demand curve to a higher price and lower quantity. The new equilibrium will have a higher price and a lower quantity than the original equilibrium.'
+			answer: 'When there is an increase in production costs, the supply curve shifts to the left. This is because producers will need to charge a higher price in order to cover their increased costs. As a result, the equilibrium price will increase, and the equilibrium quantity will decrease. This is shown graphically as a leftward shift in the supply curve, and a movement along the demand curve to a higher price and lower quantity. The new equilibrium will have a higher price and a lower quantity than the original equilibrium.',
+			chance: 86
 		},
 		{
 			question: 'Using the concept of price elasticity of demand, explain why the demand for cigarettes is likely to be more elastic in the long run than in the short run.',
-			answer: 'The demand for cigarettes is likely to be more elastic in the long run than in the short run because in the short run, consumers have fewer options and are less able to adjust their behavior in response to changes in price. In the short run, smokers may be addicted to cigarettes or have a habit of smoking that is difficult to break, which makes them less responsive to changes in price. However, in the long run, consumers have more time to adjust their behavior, such as by quitting smoking or switching to a cheaper brand. As a result, the demand for cigarettes is likely to be more elastic in the long run, meaning that a change in price will have a larger effect on the quantity demanded. This is because consumers have more time to respond to changes in price and are more able to find substitutes for cigarettes.'
+			answer: 'The demand for cigarettes is likely to be more elastic in the long run than in the short run because in the short run, consumers have fewer options and are less able to adjust their behavior in response to changes in price. In the short run, smokers may be addicted to cigarettes or have a habit of smoking that is difficult to break, which makes them less responsive to changes in price. However, in the long run, consumers have more time to adjust their behavior, such as by quitting smoking or switching to a cheaper brand. As a result, the demand for cigarettes is likely to be more elastic in the long run, meaning that a change in price will have a larger effect on the quantity demanded.',
+			chance: 94
 		}
 	]
 };

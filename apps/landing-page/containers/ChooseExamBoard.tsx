@@ -23,18 +23,7 @@ const ChooseExamBoard = ({ next, prev, disabled, value, onChange }) => {
 						</SimpleGrid>
 					</Radio.Group>
 					<Group position='right' pt='xl'>
-						<Box
-							w={140}
-							sx={
-								mobileScreen
-									? undefined
-									: {
-											position: 'absolute',
-											right: 20,
-											bottom: 20
-									  }
-							}
-						>
+						<Box w={140}>
 							<Button fullWidth size='xl' disabled={disabled} onClick={next}>
 								<Text>Next</Text>
 							</Button>
