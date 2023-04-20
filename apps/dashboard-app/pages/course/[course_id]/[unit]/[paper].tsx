@@ -120,10 +120,10 @@ const Paper = ({ query }: InferGetServerSidePropsType<typeof getServerSideProps>
 		{ initialData: [], refetchInterval: 3000 }
 	);
 	const { mutateAsync: checkPaperGenerated } = trpc.paper.checkPaperGenerated.useMutation();
-	const { mutate: regeneratePaper } = trpc.paper.regeneratePaper.useMutation();
+	const { mutate: regeneratePaper, isLoading: regenLoading } = trpc.paper.regeneratePaper.useMutation();
 	const { height } = useViewportSize();
 	const { start, clear } = useTimeout(([data]: RegeneratePayload[]) => {
-		checkPaperGenerated({id: data.id}).then(isGenerated => {
+		checkPaperGenerated({ id: data.id }).then(isGenerated => {
 			if (!isGenerated) setRegenerateData(prev => data);
 		});
 	}, 50000);
@@ -176,28 +176,56 @@ const Paper = ({ query }: InferGetServerSidePropsType<typeof getServerSideProps>
 										<div className='h-full px-6 py-2'>
 											{paper.content || paper.status === 'success' ? (
 												parse(paper.content, { trim: true })
-											) : (
-												<>
-													<CustomLoader
-														text='Generating Paper'
-														subText={
-															regenerateData
-																? 'After 2 minutes if no paper is generated, click “here'
-																: 'Approx waiting time is 20 to 60 seconds. Go grab a coffee while we get your paper ready'
-														}
+											) : paper.status === 'failed' ? (
+												<div className='flex flex-col items-center space-y-4'>
+													<Text align="center" size="sm" w={300}>Our AI failed to generate this paper. Click the button below to create a new one.</Text>
+													<Button
+														size='md'
+														onClick={() => {
+															const paper_info = SUBJECT_PAPERS[paper.subject][
+																paper.exam_board
+															][paper.unit_name].papers.find(
+																p => p.code === paper.paper_code
+															);
+															if (!paper_info)
+																notifyError(
+																	'invalid-paper-code',
+																	`No paper found with paper code ${paper.paper_code}. Refresh the page and try again.`,
+																	<IconX size={20} />
+																);
+															else
+																regeneratePaper({
+																	id: paper.paper_id,
+																	num_questions: paper_info.num_questions,
+																	num_marks: paper_info.marks
+																});
+														}}
+														loading={regenLoading}
 													>
-														<div className='flex flex-col items-center'>
-															{regenerateData && (
-																<Button
-																	size='md'
-																	onClick={() => regeneratePaper(regenerateData)}
-																>
-																	Regenerate
-																</Button>
-															)}
-														</div>
-													</CustomLoader>
-												</>
+														Regenerate
+													</Button>
+												</div>
+											) : (
+												<CustomLoader
+													text='Generating Paper'
+													subText={
+														regenerateData
+															? 'After 2 minutes if no paper is generated, click “here'
+															: 'Approx waiting time is 20 to 60 seconds. Go grab a coffee while we get your paper ready'
+													}
+												>
+													<div className='flex flex-col items-center'>
+														{regenerateData && (
+															<Button
+																size='md'
+																onClick={() => regeneratePaper(regenerateData)}
+																loading={regenLoading}
+															>
+																Regenerate
+															</Button>
+														)}
+													</div>
+												</CustomLoader>
 											)}
 										</div>
 									</Card>

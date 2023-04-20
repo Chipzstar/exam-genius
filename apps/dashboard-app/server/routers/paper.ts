@@ -235,9 +235,12 @@ const paperRouter = createTRPCRouter({
 		)
 		.mutation(async ({ input, ctx }) => {
 			try {
-				const paper = await ctx.prisma.paper.findUniqueOrThrow({
+				const paper = await ctx.prisma.paper.update({
 					where: {
 						paper_id: input.id
+					},
+					data: {
+						status: 'pending'
 					}
 				});
 				if (paper.status === 'success')
