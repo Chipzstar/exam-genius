@@ -873,15 +873,29 @@ export const SUBJECT_PAPERS: Record<Subject, Record<ExamBoard, Record<string, Co
 export const SNEAK_PEAK_QUESTION_ANSWERS = {
 	['maths']: [
 		{
-			question: 'What is Pythagoras Theorem?',
-			answer: 'It states that the square of the length of the hypotenuse (the side opposite the right angle) is equal to the sum of the squares of the lengths of the other two sides. In mathematical notation, this can be expressed as: x^2 = a^2 + b^2.',
+			question: 'Using the binomial theorem, expand (x + y)^4.',
+			answer: 'The binomial theorem states that (x + y)^n = C(n,0)x^n y^0 + C(n,1)x^(n-1) y^1 + ... + C(n,k)x^(n-k) y^k + ... + C(n,n)x^0 y^n, where C(n,k) is the binomial coefficient. Applying this to (x + y)^4 gives:\n' +
+				'(x + y)^4 = C(4,0)x^4 y^0 + C(4,1)x^3 y^1 + C(4,2)x^2 y^2 + C(4,3)x y^3 + C(4,4)x^0 y^4\n' +
+				'= x^4 + 4x^3 y + 6x^2 y^2 + 4xy^3 + y^4\n' +
+				'\n' +
+				'Therefore, (x + y)^4 expands to x^4 + 4x^3 y + 6x^2 y^2 + 4xy^3 + y^4.',
 			chance: 91
 		},
 		{
-			question: 'What is a differential equation?',
-			answer:
-				"F(x, y, y', y'', ...) = 0\n" +
-				'Where "y" is the unknown function of "x", "y\'" represents its first derivative with respect to "x", "y\'\'" represents its second derivative, and so on. The function "F" is typically a combination of these variables and their derivatives. c^2 = a^2 + b^2',
+			question: 'Solve the quadratic equation 2x^2 + 3x - 2 = 0',
+			answer: 'x = (-b ± sqrt(b^2 - 4ac)) / 2a\n' +
+				'\n' +
+				'In this case, a = 2, b = 3, and c = -2. Substituting these values into the quadratic formula gives:\n' +
+				'\n' +
+				'x = (-3 ± sqrt(3^2 - 4(2)(-2))) / 2(2)\n' +
+				'= (-3 ± sqrt(25)) / 4\n' +
+				'\n' +
+				'Simplifying, we get:\n' +
+				'\n' +
+				'x = (-3 + 5) / 4 or x = (-3 - 5) / 4\n' +
+				'= 1/2 or -2\n' +
+				'\n' +
+				'Therefore, the solutions to the quadratic equation 2x^2 + 3x - 2 = 0 are x = 1/2 and x = -2.',
 			chance: 86
 		}
 	],

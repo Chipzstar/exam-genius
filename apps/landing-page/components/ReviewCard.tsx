@@ -23,7 +23,7 @@ const ReviewCard = ({ author, review, subject, age, image }: Review) => {
 							<span className='text-lg font-medium'>{age}</span>
 						</div>
 
-						<span>Subject: {subject}</span>
+						<span>{subject}</span>
 					</div>
 				</div>
 				<Text>{review}</Text>
