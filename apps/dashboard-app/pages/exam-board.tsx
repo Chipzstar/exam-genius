@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Box, Button, Radio, SimpleGrid, Text, Title } from '@mantine/core';
 import Page from '../layout/Page';
 import { ExamBoardCard } from '@exam-genius/shared/ui';
@@ -18,16 +18,8 @@ const ExamBoard = () => {
 		defaultValue: ''
 	});
 
-	React.useEffect(() => {
+	useEffect(() => {
 		setBoard('')
-		// Check to see if this is a redirect back from Checkout
-		const query = new URLSearchParams(window.location.search);
-		if (query.get('success')) {
-			console.log('Order placed! You will receive an email confirmation.');
-		}
-		if (query.get('canceled')) {
-			console.log('Order canceled -- continue to shop around and checkout when you’re ready.');
-		}
 	}, []);
 
 	return (

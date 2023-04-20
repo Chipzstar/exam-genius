@@ -107,6 +107,7 @@ const paperRouter = createTRPCRouter({
 		.mutation(async ({ input, ctx }) => {
 			try {
 				const user_id = ctx.auth.userId;
+				const paper_id = genID('paper')
 				const paper = await ctx.prisma.paper.create({
 					data: {
 						name: input.paper_name,
@@ -115,11 +116,13 @@ const paperRouter = createTRPCRouter({
 						exam_board: input.exam_board,
 						course_id: input.course_id,
 						unit_name: input.unit_name,
-						paper_id: genID('paper'),
+						paper_id,
 						paper_code: input.paper_code,
-						content: ''
+						content: '',
+						status: 'pending'
 					}
 				});
+				if (!paper) throw new TRPCError({code: "BAD_REQUEST", message: "Failed to create paper with id: " + paper_id});
 				console.log('*****************************************');
 				console.log('NEW PAPER:', paper);
 				log.debug('new paper', paper);
@@ -146,7 +149,8 @@ const paperRouter = createTRPCRouter({
 							paper_id: paper.paper_id
 						},
 						data: {
-							content: sanitizedContent
+							content: sanitizedContent,
+							status: 'success'
 						}
 					})
 					.then(paper => {
@@ -165,6 +169,47 @@ const paperRouter = createTRPCRouter({
 			} catch (err) {
 				console.error(err);
 				log.error(err);
+				throw new TRPCError({
+                    code: 'INTERNAL_SERVER_ERROR',
+                    message: 'Oops, something went wrong' + err.message
+                });
+			}
+		}),
+	checkPaperGenerated: protectedProcedure
+		.input(
+			z.object({
+				id: z.string()
+			})
+		)
+		.mutation(async ({ input, ctx }) => {
+			try {
+				const paper = await ctx.prisma.paper.findUniqueOrThrow({
+					where: {
+						paper_id: input.id
+					}
+				});
+				console.log('-----------------------------------------------');
+				console.log(paper)
+				console.log('-----------------------------------------------');
+				if (paper.status === 'success' || paper.content) return true;
+				else {
+					// set status of paper to failed
+					await ctx.prisma.paper.update({
+						where: {
+							paper_id: input.id
+						},
+						data: {
+							status: 'failed'
+						}
+					});
+					return false;
+				}
+			} catch (err) {
+				console.error(err);
+				throw new TRPCError({
+					code: 'INTERNAL_SERVER_ERROR',
+					message: 'Oops, something went wrong' + err.message
+				});
 			}
 		})
 });

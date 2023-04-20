@@ -59,8 +59,15 @@ model Paper {
   course_id    String
   course       Course    @relation(fields: [course_id], references: [course_id], onDelete: Cascade)
   content      String    @db.Text
+  status       Status    @default(pending)
 
   @@index([user_id, course_id])
+}
+
+enum Status {
+  failed
+  pending
+  success
 }
 
 model StripeEvent {

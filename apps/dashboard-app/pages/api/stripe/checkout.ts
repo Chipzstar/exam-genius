@@ -26,7 +26,6 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 			if (!customer_id) throw new Error('Could not create customer');
 			if (type === CHECKOUT_TYPE.PAPER) {
 				const price_id = PAPER_PRICE_IDS[subject];
-				console.log(price_id);
 				const session = await stripe.checkout.sessions.create({
 					line_items: [
 						{
