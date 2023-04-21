@@ -105,7 +105,7 @@ function CustomApp({ Component, pageProps }: AppProps) {
 				<SneakPeakContext.Provider value={[sneak, showSneakPeak]}>
 					<main className={`${poppins.variable} font-sans`}>
 						<Component {...pageProps} />
-						<Analytics />
+						{process.env.NEXT_PUBLIC_VERCEL_ENV === "production" && <Analytics />}
 					</main>
 				</SneakPeakContext.Provider>
 			</MantineProvider>
