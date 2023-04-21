@@ -41,7 +41,7 @@ const Course = ({ query }: InferGetServerSidePropsType<typeof getServerSideProps
 	}, [course]);
 
 	return !course ? (
-		<LoadingOverlay visible={isLoading} />
+		<LoadingOverlay visible={isLoading} overlayOpacity={0} />
 	) : (
 		<Page.Container data_cy='subject-page' extraClassNames='flex flex-col py-6'>
 			<Page.Body>

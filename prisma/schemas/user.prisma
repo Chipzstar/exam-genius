@@ -1,6 +1,5 @@
 model User {
   id                         Int                       @id @default(autoincrement())
-  clerkId                    String                    @unique @default("")
   clerk_id                   String                    @unique @default("")
   email                      String                    @unique
   full_name                  String

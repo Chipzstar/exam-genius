@@ -7,6 +7,7 @@ import localFont from '@next/font/local';
 import '../styles/globals.css';
 import PlausibleProvider from 'next-plausible';
 import { SneakPeakContext } from '../context/SneakPeakContext';
+import { Analytics } from '@vercel/analytics/react';
 
 const poppins = localFont({
 	src: [
@@ -90,7 +91,7 @@ function CustomApp({ Component, pageProps }: AppProps) {
 					headings: { fontFamily: poppins.style.fontFamily },
 					components: {
 						Input: {
-							styles: theme => ({
+							styles: () => ({
 								input: {
 									borderColor: '#2742F5',
 									borderWidth: '1px',
@@ -104,6 +105,7 @@ function CustomApp({ Component, pageProps }: AppProps) {
 				<SneakPeakContext.Provider value={[sneak, showSneakPeak]}>
 					<main className={`${poppins.variable} font-sans`}>
 						<Component {...pageProps} />
+						<Analytics />
 					</main>
 				</SneakPeakContext.Provider>
 			</MantineProvider>
