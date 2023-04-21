@@ -1,19 +1,7 @@
 import React, { useCallback, useMemo, useState } from 'react';
 import { ParsedUrlQuery } from 'querystring';
 import Page from '../../../../layout/Page';
-import {
-	Anchor,
-	Box,
-	Breadcrumbs,
-	Button,
-	Card,
-	Group,
-	LoadingOverlay,
-	ScrollArea,
-	Stack,
-	Text,
-	Title
-} from '@mantine/core';
+import { Anchor, Box, Breadcrumbs, Button, Card, LoadingOverlay, ScrollArea, Text, Title } from '@mantine/core';
 import Image from 'next/image';
 import { CHECKOUT_TYPE, PAPER_PRICE_IDS, PATHS } from '../../../../utils/constants';
 import { GetServerSideProps, InferGetServerSidePropsType } from 'next';
@@ -22,7 +10,7 @@ import Link from 'next/link';
 import { IconArrowLeft, IconX } from '@tabler/icons-react';
 import { useRouter } from 'next/router';
 import { trpc } from '../../../../utils/trpc';
-import { useViewportSize } from '@mantine/hooks';
+import { useMediaQuery, useViewportSize } from '@mantine/hooks';
 import { TRPCError } from '@trpc/server';
 import CustomLoader from '../../../../components/CustomLoader';
 import { ExamBoard, PaperInfo, Subject, SUBJECT_PAPERS } from '@exam-genius/shared/utils';
@@ -49,6 +37,7 @@ const Papers = ({ query }: InferGetServerSidePropsType<typeof getServerSideProps
 	const [loading, setLoading] = useState<number | null>(null);
 	const router = useRouter();
 	const { height } = useViewportSize();
+	const mobileScreen = useMediaQuery('(max-width: 30em)');
 	const { isLoading, data: course } = trpc.course.getSingleCourse.useQuery({ id: query.course_id });
 	const { data: course_papers } = trpc.paper.getPapersByCourse.useQuery(
 		{ courseId: query.course_id },
@@ -149,7 +138,7 @@ const Papers = ({ query }: InferGetServerSidePropsType<typeof getServerSideProps
 	) : (
 		<Page.Container data_cy='course-page' extraClassNames='flex flex-col py-6'>
 			<Page.Body>
-				<Breadcrumbs mb='lg'>{items}</Breadcrumbs>
+				{!mobileScreen && <Breadcrumbs mb='lg'>{items}</Breadcrumbs>}
 				<form method='POST' action='/api/stripe/checkout?mode=payment'>
 					<input name='type' id='type' value={CHECKOUT_TYPE.PAPER} hidden />
 					<input name='price_id' id='price-id' value={PAPER_PRICE_IDS[query.subject]} hidden />
@@ -164,7 +153,7 @@ const Papers = ({ query }: InferGetServerSidePropsType<typeof getServerSideProps
 						<div className='flex'>
 							<Button
 								leftIcon={<IconArrowLeft />}
-								size='md'
+								size={mobileScreen ? 'sm' : 'md'}
 								variant='outline'
 								onClick={() =>
 									router.replace(
@@ -179,12 +168,12 @@ const Papers = ({ query }: InferGetServerSidePropsType<typeof getServerSideProps
 					<ScrollArea.Autosize mah={height - 150} mt='lg'>
 						{course_info.papers.map((paper, index) => (
 							<Card shadow='sm' radius='md' mb='lg' key={index}>
-								<Group grow align='center' p='xl' position='apart'>
+								<div className="flex flex-col items-center sm:flex-row sm:justify-between sm:items-center p-3 sm:p-8 space-y-4 sm:space-y-0">
 									<div className='flex grow items-center space-x-8'>
 										<Image
 											src='/static/images/example-paper.svg'
-											width={125}
-											height={160}
+											width={mobileScreen ? 100 : 125}
+											height={mobileScreen ? 128 : 160}
 											alt='example-paper'
 										/>
 										<div className='flex flex-col'>
@@ -193,21 +182,21 @@ const Papers = ({ query }: InferGetServerSidePropsType<typeof getServerSideProps
 											</Title>
 										</div>
 									</div>
-									<Stack align='end'>
+									<div className='flex grow flex-row items-center sm:flex-col sm:items-end justify-between sm:justify-center space-x-6 sm:space-x-0 w-full'>
 										<Link
 											href={`${PATHS.COURSE}/${query.course_id}/${query.unit}/${paper.href}?subject=${query.subject}&board=${query.board}&code=${paper.code}`}
 										>
-											<Box w={200}>
-												<Button type='button' fullWidth size='lg'>
+											<Box w={mobileScreen ? 150 : 200}>
+												<Button type='button' fullWidth size={mobileScreen ? 'sm' : 'lg'}>
 													<Text weight='normal'>View Papers</Text>
 												</Button>
 											</Box>
 										</Link>
-										<Box w={200}>
+										<Box w={mobileScreen ? 150 : 200}>
 											<Button
 												type='button'
 												fullWidth
-												size='lg'
+												size={mobileScreen ? 'sm' : 'lg'}
 												onClick={() => {
 													setLoading(index);
 													generatePaper(paper);
@@ -217,8 +206,8 @@ const Papers = ({ query }: InferGetServerSidePropsType<typeof getServerSideProps
 												<Text weight='normal'>Generate New</Text>
 											</Button>
 										</Box>
-									</Stack>
-								</Group>
+									</div>
+								</div>
 							</Card>
 						))}
 					</ScrollArea.Autosize>
