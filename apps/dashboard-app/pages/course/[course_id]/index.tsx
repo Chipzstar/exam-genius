@@ -1,7 +1,7 @@
 import React, { useMemo } from 'react';
 import { ParsedUrlQuery } from 'querystring';
 import Page from '../../../layout/Page';
-import { Button, Card, Group, LoadingOverlay, ScrollArea, Text, Title } from '@mantine/core';
+import { Button, Card, LoadingOverlay, ScrollArea, Text, Title } from '@mantine/core';
 import Image from 'next/image';
 import { PATHS } from '../../../utils/constants';
 import { GetServerSideProps, InferGetServerSidePropsType } from 'next';
@@ -45,7 +45,7 @@ const Course = ({ query }: InferGetServerSidePropsType<typeof getServerSideProps
 	) : (
 		<Page.Container data_cy='subject-page' extraClassNames='flex flex-col py-6'>
 			<Page.Body>
-				<header className='flex items-center justify-between'>
+				<header className='flex items-center justify-between mb-6 sm:mb-0'>
 					<div>
 						<Title order={2} weight={600}>
 							{course.exam_board.toUpperCase()} {capitalize(course.subject)} 📚
@@ -59,31 +59,31 @@ const Course = ({ query }: InferGetServerSidePropsType<typeof getServerSideProps
 				</header>
 				<ScrollArea.Autosize mah={height - 100}>
 					{course_info.map(([unit_name, unit]) => (
-						<Card shadow='sm' radius='md' my='lg' key={unit_name}>
-							<Group align='center' p='xl' position='apart'>
-								<div className="flex items-center grow space-x-6">
+						<Card shadow='sm' radius='md' mb='lg' key={unit_name}>
+							<div className="flex flex-col sm:flex-row sm:items-center sm:justify-between p-4 sm:p-6">
+								<div className='flex flex-col grow items-center sm:flex-row space-y-4 sm:space-y-0 sm:space-x-6'>
 									<Image src={unit.icon} width={100} height={100} alt='maths-icon' />
 									<div className='flex flex-col space-y-4'>
-										<Title order={1} size='h2' weight={600}>
+										<Title order={1} size={mobileScreen ? 'h4' : 'h2'} weight={600}>
 											{unit.label}
 										</Title>
 										{unit.papers.map((paper, index) => (
-											<Text key={index} size='xl' weight={500}>
+											<Text key={index} size={mobileScreen ? 'md' : 'xl'} weight={500}>
 												{paper.name}
 											</Text>
 										))}
 									</div>
 								</div>
-								<div className="shrink grow-0 flex-end justify-end right-0">
+								<div className="flex flex-row grow-0 flex-end justify-center sm:justify-end right-0 pt-4 sm:pt-0">
 									<Link
 										href={`${PATHS.COURSE}/${course.course_id}/${unit_name}?subject=${query.subject}&board=${query.board}`}
 									>
-										<Button size='lg'>
+										<Button size={mobileScreen ? 'sm' : 'lg'}>
 											<Text weight='normal'>{'Get Papers'}</Text>
 										</Button>
 									</Link>
 								</div>
-							</Group>
+							</div>
 						</Card>
 					))}
 				</ScrollArea.Autosize>

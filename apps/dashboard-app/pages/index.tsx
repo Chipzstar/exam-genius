@@ -25,8 +25,8 @@ export function Home() {
 					) : (
 						courses.map((course, index) => (
 							<Card key={index} shadow='sm' radius='md' mb='lg'>
-								<div className='flex grow flex-col items-center justify-center space-y-3 p-8 sm:flex-row sm:items-center sm:justify-between sm:space-y-0'>
-									<div className='flex flex-col items-center justify-center sm:flex-row sm:space-x-4'>
+								<div className='flex grow flex-col items-center justify-center space-y-3 p-4 sm:flex-row sm:items-center sm:justify-between sm:space-y-0 sm:p-6'>
+									<div className='flex flex-col items-center justify-center space-y-4 sm:flex-row sm:space-y-0 sm:space-x-4'>
 										<Image
 											src={`/static/images/${course.subject}-icon.svg`}
 											width={mobileScreen ? 75 : 100}
