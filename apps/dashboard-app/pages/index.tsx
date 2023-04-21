@@ -1,5 +1,5 @@
 import Page from '../layout/Page';
-import { Button, Card, Divider, Group, LoadingOverlay, ScrollArea, Text, Title } from '@mantine/core';
+import { Box, Button, Card, Divider, Group, LoadingOverlay, ScrollArea, Text, Title } from '@mantine/core';
 import Image from 'next/image';
 import Link from 'next/link';
 import { PATHS } from '../utils/constants';
@@ -9,7 +9,6 @@ import { useMediaQuery, useViewportSize } from '@mantine/hooks';
 export function Home() {
 	const { height } = useViewportSize();
 	const { data: courses, isLoading } = trpc.course.getCourses.useQuery(undefined, { initialData: [] });
-	const largeScreen = useMediaQuery('(min-width: 60em)');
 	const mobileScreen = useMediaQuery('(max-width: 30em)');
 
 	return (
@@ -19,8 +18,10 @@ export function Home() {
 					Courses 📚
 				</Title>
 				<ScrollArea.Autosize mah={height - 200}>
-					{isLoading ? (
-						<LoadingOverlay visible={isLoading} />
+					{!courses || isLoading ? (
+						<Box h={height - 200}>
+							<LoadingOverlay visible={isLoading} overlayOpacity={0} />
+						</Box>
 					) : (
 						courses.map((course, index) => (
 							<Card key={index} shadow='sm' radius='md' mb='lg'>

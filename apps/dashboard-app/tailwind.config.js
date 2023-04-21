@@ -17,7 +17,8 @@ module.exports = {
 				sans: ['var(--font-poppins)', ...fontFamily.sans],
 			},
 			colors: {
-				'primary': {
+				transparent: 'transparent',
+				primary: {
 					DEFAULT: '#2742F5',
 					50: '#D6DCFD',
 					100: '#C3CAFC',

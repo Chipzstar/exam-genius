@@ -16,7 +16,7 @@ const Page = ({ children }) => {
 const Container = ({
 	children,
 	header = undefined,
-	classNames = 'h-screen flex flex-col pb-2 bg-accent',
+	classNames = 'h-full sm:h-screen flex flex-col pb-2 bg-accent',
 	extraClassNames = '',
 	data_cy = undefined
 }: PageContainerProps) => {

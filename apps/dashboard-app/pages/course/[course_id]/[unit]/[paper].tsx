@@ -12,7 +12,7 @@ import {
 } from '@mantine/core';
 import Page from '../../../../layout/Page';
 import React, { useCallback, useState } from 'react';
-import { useTimeout, useViewportSize } from '@mantine/hooks';
+import { useMediaQuery, useTimeout, useViewportSize } from '@mantine/hooks';
 import { IconArrowLeft, IconX } from '@tabler/icons-react';
 import { useRouter } from 'next/router';
 import { trpc } from '../../../../utils/trpc';
@@ -57,6 +57,8 @@ const useStyles = createStyles(() => ({
 		opacity: 0
 	},
 	root: {
+		width: '100%',
+		height: '100%',
 		'&:hover': {
 			[`& .${getStylesRef('controls')}`]: {
 				opacity: 1
@@ -127,13 +129,14 @@ const Paper = ({ query }: InferGetServerSidePropsType<typeof getServerSideProps>
 			if (!isGenerated) setRegenerateData(prev => data);
 		});
 	}, 50000);
+	const mobileScreen = useMediaQuery('(max-width: 30em)');
 
 	return (
-		<Page.Container>
+		<Page.Container extraClassNames="overflow-y-hidden">
 			<header className='jusitfy-end flex items-center p-6'>
 				<Button
 					leftIcon={<IconArrowLeft />}
-					size='md'
+					size={mobileScreen ? 'sm' : 'md'}
 					variant='outline'
 					onClick={() =>
 						router.replace(
@@ -144,7 +147,7 @@ const Paper = ({ query }: InferGetServerSidePropsType<typeof getServerSideProps>
 					Back
 				</Button>
 			</header>
-			<Page.Body extraClassNames='justify-center w-full'>
+			<Page.Body extraClassNames='px-2 sm:px-6 sm:justify-center w-full '>
 				{isLoading ? (
 					<LoadingOverlay visible={isLoading} overlayBlur={2} />
 				) : !papers.length ? (
@@ -154,13 +157,13 @@ const Paper = ({ query }: InferGetServerSidePropsType<typeof getServerSideProps>
 						{papers.map((paper, index) => (
 							<Carousel.Slide key={index}>
 								<ScrollArea.Autosize
-									mah={height - 200}
+									mah={mobileScreen ? height - 150 : height - 100}
 									p='sm'
 									styles={theme => ({
 										root: {}
 									})}
 								>
-									<Card shadow='sm' radius='md' className='w-full' p='xl' mih={height - 300}>
+									<Card shadow='sm' radius='md' className='w-full' p='xl'>
 										<div className='flex justify-center'>
 											<Stack justify='center' align='center'>
 												<Title color='brand'>ExamGenius</Title>
