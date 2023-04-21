@@ -140,7 +140,7 @@ const Papers = ({ query }: InferGetServerSidePropsType<typeof getServerSideProps
 			<Page.Body>
 				{!mobileScreen && <Breadcrumbs mb='lg'>{items}</Breadcrumbs>}
 				<header className='flex items-center justify-between'>
-					<Title order={2} weight={600}>
+					<Title order={mobileScreen ? 3 : 2} weight={600}>
 						{course_info.label} 📚
 					</Title>
 					<div className='flex'>

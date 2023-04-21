@@ -168,7 +168,7 @@ const Paper = ({ query }: InferGetServerSidePropsType<typeof getServerSideProps>
 											<Stack justify='center' align='center'>
 												<Title color='brand'>ExamGenius</Title>
 												{paper.name && (
-													<Text size={30} weight={600}>
+													<Text size={mobileScreen ? "xl" : 30} weight={600}>
 														{paper.name}
 													</Text>
 												)}

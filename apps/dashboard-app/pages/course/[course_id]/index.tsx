@@ -47,12 +47,12 @@ const Course = ({ query }: InferGetServerSidePropsType<typeof getServerSideProps
 			<Page.Body>
 				<header className='flex items-center justify-between mb-6 sm:mb-0'>
 					<div>
-						<Title order={2} weight={600}>
+						<Title order={mobileScreen ? 3 : 2} weight={600}>
 							{course.exam_board.toUpperCase()} {capitalize(course.subject)} 📚
 						</Title>
 					</div>
 					<div className='flex'>
-						<Button leftIcon={<IconArrowLeft />} size='md' variant='outline' onClick={() => router.replace(PATHS.HOME)}>
+						<Button leftIcon={<IconArrowLeft />} size={mobileScreen ? 'sm' : 'md'} variant='outline' onClick={() => router.replace(PATHS.HOME)}>
 							Back
 						</Button>
 					</div>
