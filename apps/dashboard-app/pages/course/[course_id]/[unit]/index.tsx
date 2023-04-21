@@ -1,7 +1,7 @@
 import React, { useCallback, useMemo, useState } from 'react';
 import { ParsedUrlQuery } from 'querystring';
 import Page from '../../../../layout/Page';
-import { Anchor, Box, Breadcrumbs, Button, Card, LoadingOverlay, ScrollArea, Text, Title } from '@mantine/core';
+import { Anchor, Breadcrumbs, Button, Card, LoadingOverlay, ScrollArea, Text, Title } from '@mantine/core';
 import Image from 'next/image';
 import { CHECKOUT_TYPE, PAPER_PRICE_IDS, PATHS } from '../../../../utils/constants';
 import { GetServerSideProps, InferGetServerSidePropsType } from 'next';
@@ -139,79 +139,71 @@ const Papers = ({ query }: InferGetServerSidePropsType<typeof getServerSideProps
 		<Page.Container data_cy='course-page' extraClassNames='flex flex-col py-6'>
 			<Page.Body>
 				{!mobileScreen && <Breadcrumbs mb='lg'>{items}</Breadcrumbs>}
-				<form method='POST' action='/api/stripe/checkout?mode=payment'>
-					<input name='type' id='type' value={CHECKOUT_TYPE.PAPER} hidden />
-					<input name='price_id' id='price-id' value={PAPER_PRICE_IDS[query.subject]} hidden />
-					<input name='exam_board' id='exam-board' value={course?.exam_board} hidden />
-					<input name='subject' id='subject' value={course?.subject} hidden />
-					<input name='unit' id='unit' value={query.unit} hidden />
-					<input name='course_id' id='course-id' value={query.course_id} hidden />
-					<header className='flex items-center justify-between'>
-						<Title order={2} weight={600}>
-							{course_info.label} 📚
-						</Title>
-						<div className='flex'>
-							<Button
-								leftIcon={<IconArrowLeft />}
-								size={mobileScreen ? 'sm' : 'md'}
-								variant='outline'
-								onClick={() =>
-									router.replace(
-										`${PATHS.COURSE}/${query.course_id}?subject=${query.subject}&board=${query.board}`
-									)
-								}
-							>
-								Back
-							</Button>
-						</div>
-					</header>
-					<ScrollArea.Autosize mah={height - 150} mt='lg'>
-						{course_info.papers.map((paper, index) => (
-							<Card shadow='sm' radius='md' mb='lg' key={index}>
-								<div className="flex flex-col items-center sm:flex-row sm:justify-between sm:items-center p-3 sm:p-8 space-y-4 sm:space-y-0">
-									<div className='flex grow items-center space-x-8'>
-										<Image
-											src='/static/images/example-paper.svg'
-											width={mobileScreen ? 100 : 125}
-											height={mobileScreen ? 128 : 160}
-											alt='example-paper'
-										/>
-										<div className='flex flex-col'>
-											<Title order={1} size='h2' weight={500}>
-												{paper.name}
-											</Title>
-										</div>
-									</div>
-									<div className='flex grow flex-row items-center sm:flex-col sm:items-end justify-between sm:justify-center space-x-6 sm:space-x-0 w-full'>
-										<Link
-											href={`${PATHS.COURSE}/${query.course_id}/${query.unit}/${paper.href}?subject=${query.subject}&board=${query.board}&code=${paper.code}`}
-										>
-											<Box w={mobileScreen ? 150 : 200}>
-												<Button type='button' fullWidth size={mobileScreen ? 'sm' : 'lg'}>
-													<Text weight='normal'>View Papers</Text>
-												</Button>
-											</Box>
-										</Link>
-										<Box w={mobileScreen ? 150 : 200}>
-											<Button
-												type='button'
-												fullWidth
-												size={mobileScreen ? 'sm' : 'lg'}
-												onClick={() => {
-													setLoading(index);
-													generatePaper(paper);
-												}}
-												loading={loading === index}
-											>
-												<Text weight='normal'>Generate New</Text>
-											</Button>
-										</Box>
+				<header className='flex items-center justify-between'>
+					<Title order={2} weight={600}>
+						{course_info.label} 📚
+					</Title>
+					<div className='flex'>
+						<Button
+							leftIcon={<IconArrowLeft />}
+							size={mobileScreen ? 'sm' : 'md'}
+							variant='outline'
+							onClick={() =>
+								router.replace(
+									`${PATHS.COURSE}/${query.course_id}?subject=${query.subject}&board=${query.board}`
+								)
+							}
+						>
+							Back
+						</Button>
+					</div>
+				</header>
+				<ScrollArea.Autosize mah={height - 150} mt='lg'>
+					{course_info.papers.map((paper, index) => (
+						<Card shadow='sm' radius='md' mb='lg' key={index}>
+							<div className='flex flex-col items-center space-y-4 p-3 sm:flex-row sm:items-center sm:justify-between sm:space-y-0 sm:p-8'>
+								<div className='flex grow items-center space-x-8'>
+									<Image
+										src='/static/images/example-paper.svg'
+										width={mobileScreen ? 100 : 125}
+										height={mobileScreen ? 128 : 160}
+										alt='example-paper'
+									/>
+									<div className='flex flex-col'>
+										<Title order={1} size={mobileScreen ? 'h4' : 'h2'} weight={500}>
+											{paper.name}
+										</Title>
 									</div>
 								</div>
-							</Card>
-						))}
-					</ScrollArea.Autosize>
-				</form>
+								<div className='flex grow flex-row items-center justify-between space-x-6 sm:flex-col sm:items-end sm:justify-center sm:space-y-4 sm:space-x-0'>
+									<Link
+										href={`${PATHS.COURSE}/${query.course_id}/${query.unit}/${paper.href}?subject=${query.subject}&board=${query.board}&code=${paper.code}`}
+									>
+										<Button
+											type='button'
+											w={mobileScreen ? 120 : 200}
+											size={mobileScreen ? 'xs' : 'lg'}
+										>
+											<Text weight='normal'>View Papers</Text>
+										</Button>
+									</Link>
+									<Button
+										type='button'
+										w={mobileScreen ? 120 : 200}
+										size={mobileScreen ? 'xs' : 'lg'}
+										onClick={() => {
+											setLoading(index);
+											generatePaper(paper);
+										}}
+										loading={loading === index}
+									>
+										<Text weight='normal'>Generate New</Text>
+									</Button>
+								</div>
+							</div>
+						</Card>
+					))}
+				</ScrollArea.Autosize>
 			</Page.Body>
 		</Page.Container>
 	);

@@ -10,7 +10,7 @@ import Link from 'next/link';
 import { IconArrowLeft } from '@tabler/icons-react';
 import { useRouter } from 'next/router';
 import { trpc } from '../../../utils/trpc';
-import { useViewportSize } from '@mantine/hooks';
+import { useMediaQuery, useViewportSize } from '@mantine/hooks';
 import { SUBJECT_PAPERS } from '@exam-genius/shared/utils';
 
 export interface PageQuery extends ParsedUrlQuery {
@@ -29,6 +29,7 @@ const Course = ({ query }: InferGetServerSidePropsType<typeof getServerSideProps
 	const { height } = useViewportSize();
 	const router = useRouter();
 	const { isLoading, data: course } = trpc.course.getSingleCourse.useQuery({ id: query.course_id });
+	const mobileScreen = useMediaQuery('(max-width: 30em)');
 
 	const course_info = useMemo(() => {
 		if (course) {
