@@ -8,6 +8,7 @@ import '../styles/globals.css';
 import PlausibleProvider from 'next-plausible';
 import { SneakPeakContext } from '../context/SneakPeakContext';
 import { Analytics } from '@vercel/analytics/react';
+import Script from 'next/script';
 
 const poppins = localFont({
 	src: [
@@ -58,8 +59,28 @@ function CustomApp({ Component, pageProps }: AppProps) {
 			<Head>
 				<Favicon />
 				<title>Exam Genius</title>
+				<meta name='title' content='Exam Genius' />
 				<meta name='description' content='' />
 				<meta name='keywords' content='' />
+				<Script
+					type='text/javascript'
+					src='/static/script.js'
+					onLoad={() => {
+						console.log('Script has loaded');
+					}}
+				/>
+				{/* Open Graph / Facebook -->*/}
+				<meta property='og:type' content='website' />
+				<meta property='og:url' content='https://www.exam-genius.com/' />
+				<meta property='og:title' content='Exam Genius' />
+				<meta property='og:description' content='' />
+				<meta property='og:image' content='' />
+				{/* <!-- Twitter --> */}
+				<meta property='twitter:card' content='summary_large_image' />
+				<meta property='twitter:url' content='https://www.exam-genius.com/' />
+				<meta property='twitter:title' content='Exam Genius' />
+				<meta property='twitter:description' content='' />
+				<meta property='twitter:image' content='' />
 				<meta httpEquiv='content-language' content='en-GB' />
 				<meta name='viewport' content='minimum-scale=1, initial-scale=1, width=device-width' />
 			</Head>
@@ -105,7 +126,7 @@ function CustomApp({ Component, pageProps }: AppProps) {
 				<SneakPeakContext.Provider value={[sneak, showSneakPeak]}>
 					<main className={`${poppins.variable} font-sans`}>
 						<Component {...pageProps} />
-						{process.env.NEXT_PUBLIC_VERCEL_ENV === "production" && <Analytics />}
+						<Analytics mode='production' />
 					</main>
 				</SneakPeakContext.Provider>
 			</MantineProvider>
