@@ -117,7 +117,7 @@ const Sidebar = ({opened, setOpened}) => {
 	));
 
 	return (
-		<Navbar hiddenBreakpoint="sm" hidden={!opened} width={{ base: width, md: 250 }} p='xs'>
+		<Navbar hiddenBreakpoint="sm" hidden={!opened} width={{ base: width, sm: 250 }} p='xs'>
 			<Navbar.Section className={classes.header}>
 				<Group spacing='sm' role='button' onClick={() => router.push(PATHS.HOME)}>
 					<Image src='/static/images/logo-blue.svg' width={40} height={35} alt='' />

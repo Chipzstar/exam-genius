@@ -9,7 +9,7 @@ const Layout = ({ children }) => {
 	const router = useRouter();
 	const isLoggedIn = useMemo(() => !AUTH_ROUTES.includes(router.pathname), [router.pathname]);
 	const [opened, setOpened] = useState(false);
-	const mobileScreen = useMediaQuery('(max-width: 30em)');
+	const mobileScreen = useMediaQuery('(max-width: 48em)');
 
 	return (
 		<div className='relative flex min-h-screen font-sans'>

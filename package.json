@@ -30,6 +30,7 @@
 	"dependencies": {
 		"@clerk/clerk-sdk-node": "^4.8.2",
 		"@clerk/nextjs": "^4.14.2",
+		"@clerk/themes": "^1.6.3",
 		"@emotion/react": "^11.10.6",
 		"@emotion/server": "^11.10.0",
 		"@mantine/carousel": "^6.0.7",
@@ -52,7 +53,6 @@
 		"@trpc/react-query": "^10.19.1",
 		"@trpc/server": "^10.19.1",
 		"@vercel/analytics": "^1.0.0",
-		"add": "^2.0.6",
 		"bcryptjs": "^2.4.3",
 		"cors": "^2.8.5",
 		"crypto-js": "^4.1.1",
