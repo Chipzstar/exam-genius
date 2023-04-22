@@ -106,7 +106,10 @@ const Sidebar = ({opened, setOpened}) => {
 				[classes.linkActive]: item.isActive
 			})}
 			key={index}
-			onClick={() => !item.disabled && router.push(item.link)}
+			onClick={() => {
+				!item.disabled && router.push(item.link)
+				opened && setOpened(false)
+			}}
 		>
 			<item.icon className={classes.linkIcon} stroke={1.5} />
 			<span>{item.label}</span>

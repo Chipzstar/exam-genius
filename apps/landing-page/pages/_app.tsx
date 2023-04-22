@@ -62,25 +62,25 @@ function CustomApp({ Component, pageProps }: AppProps) {
 				<meta name='title' content='Exam Genius' />
 				<meta name='description' content='' />
 				<meta name='keywords' content='' />
-				<Script
+				{process.env.NEXT_PUBLIC_VERCEL_ENV === "production" && <Script
 					type='text/javascript'
 					src='/static/script.js'
 					onLoad={() => {
 						console.log('Script has loaded');
 					}}
-				/>
+				/>}
 				{/* Open Graph / Facebook -->*/}
 				<meta property='og:type' content='website' />
 				<meta property='og:url' content='https://www.exam-genius.com/' />
 				<meta property='og:title' content='Exam Genius' />
 				<meta property='og:description' content='' />
-				<meta property='og:image' content='' />
+				<meta property='og:image' content='/static/favicon/android-chrome-192x192.png' />
 				{/* <!-- Twitter --> */}
 				<meta property='twitter:card' content='summary_large_image' />
 				<meta property='twitter:url' content='https://www.exam-genius.com/' />
 				<meta property='twitter:title' content='Exam Genius' />
 				<meta property='twitter:description' content='' />
-				<meta property='twitter:image' content='' />
+				<meta property='twitter:image' content='/static/favicon/android-chrome-192x192.png' />
 				<meta httpEquiv='content-language' content='en-GB' />
 				<meta name='viewport' content='minimum-scale=1, initial-scale=1, width=device-width' />
 			</Head>

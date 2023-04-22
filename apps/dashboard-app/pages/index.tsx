@@ -8,7 +8,7 @@ import { useMediaQuery, useViewportSize } from '@mantine/hooks';
 
 export function Home() {
 	const { height } = useViewportSize();
-	const { data: courses, isLoading } = trpc.course.getCourses.useQuery(undefined, { initialData: [] });
+	const { data: courses, isLoading } = trpc.course.getCourses.useQuery();
 	const mobileScreen = useMediaQuery('(max-width: 30em)');
 
 	return (
