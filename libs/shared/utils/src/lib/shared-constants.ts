@@ -873,29 +873,28 @@ export const SUBJECT_PAPERS: Record<Subject, Record<ExamBoard, Record<string, Co
 export const SNEAK_PEAK_QUESTION_ANSWERS = {
 	['maths']: [
 		{
-			question: 'Using the binomial theorem, expand (x + y)^4.',
-			answer: 'The binomial theorem states that (x + y)^n = C(n,0)x^n y^0 + C(n,1)x^(n-1) y^1 + ... + C(n,k)x^(n-k) y^k + ... + C(n,n)x^0 y^n, where C(n,k) is the binomial coefficient. Applying this to (x + y)^4 gives:\n' +
-				'(x + y)^4 = C(4,0)x^4 y^0 + C(4,1)x^3 y^1 + C(4,2)x^2 y^2 + C(4,3)x y^3 + C(4,4)x^0 y^4\n' +
-				'= x^4 + 4x^3 y + 6x^2 y^2 + 4xy^3 + y^4\n' +
-				'\n' +
-				'Therefore, (x + y)^4 expands to x^4 + 4x^3 y + 6x^2 y^2 + 4xy^3 + y^4.',
+			question: "<span>Given that f(x) = x<sup>2</sup> - 1, find the values of x for which f(x+2) = f(x-2)</span>",
+			answer: "<p> f(x+2) = (x+2)<sup>2</sup> - 1 <br>\n" +
+				"&nbsp; &nbsp; &nbsp; &nbsp; = x<sup>2</sup> - 4x + 3 </p>\n" +
+				"<p> Now, we can equate the two expressions and solve for x: </p>\n" +
+				"<p> x<sup>2</sup> + 4x + 3 = x<sup>2</sup> - 4x + 3 </p>\n" +
+				"<p> Simplifying, we get: </p>\n" +
+				"<p> 8x = 0 <span>Therefore, x = 0. </span></p>",
 			chance: 91
 		},
 		{
-			question: 'Solve the quadratic equation 2x^2 + 3x - 2 = 0',
-			answer: 'x = (-b ± sqrt(b^2 - 4ac)) / 2a\n' +
-				'\n' +
-				'In this case, a = 2, b = 3, and c = -2. Substituting these values into the quadratic formula gives:\n' +
-				'\n' +
-				'x = (-3 ± sqrt(3^2 - 4(2)(-2))) / 2(2)\n' +
-				'= (-3 ± sqrt(25)) / 4\n' +
-				'\n' +
-				'Simplifying, we get:\n' +
-				'\n' +
-				'x = (-3 + 5) / 4 or x = (-3 - 5) / 4\n' +
-				'= 1/2 or -2\n' +
-				'\n' +
-				'Therefore, the solutions to the quadratic equation 2x^2 + 3x - 2 = 0 are x = 1/2 and x = -2.',
+			question: '<span>Simplify 2(cos(<i>x</i>)<sup>2</sup> - sin(<i>x</i>)<sup>2</sup>) - (cos(<i>x</i>)<sup>2</sup> +\n' +
+				'        sin(<i>x</i>)<sup>2</sup>)</span>',
+			answer: "<p> To simplify this expression, we can use the trigonometric identity: </p>\n" +
+				"<p> cos<sup>2</sup>(x) + sin<sup>2</sup>(x) = 1 </p>\n" +
+				"<p> 2(cos<sup>2</sup>(x) - sin<sup>2</sup>(x)) - (cos<sup>2</sup>(x) + sin<sup>2</sup>(x)) </p>\n" +
+				"<p> = 2cos<sup>2</sup>(x) - 2sin<sup>2</sup>(x) - cos<sup>2</sup>(x) - sin<sup>2</sup>(x) </p>\n" +
+				"<p> = cos<sup>2</sup>(x) - 2sin<sup>2</sup>(x) </p>\n" +
+				"<p> Now, we can use the identity: sin<sup>2</sup>(x) = 1 - cos<sup>2</sup>(x) </p>\n" +
+				"<p> Substituting this into the expression, we get: </p>\n" +
+				"<p> cos<sup>2</sup>(x) - 2(1 - cos<sup>2</sup>(x)) </p>\n" +
+				"<p> = cos<sup>2</sup>(x) - 2 + 2cos<sup>2</sup>(x) </p>\n" +
+				"<p> = 3cos<sup>2</sup>(x) - 2 </p>",
 			chance: 86
 		}
 	],
