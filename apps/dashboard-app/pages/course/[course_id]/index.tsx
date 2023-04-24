@@ -5,7 +5,7 @@ import { Button, Card, LoadingOverlay, ScrollArea, Text, Title } from '@mantine/
 import Image from 'next/image';
 import { PATHS } from '../../../utils/constants';
 import { GetServerSideProps, InferGetServerSidePropsType } from 'next';
-import { capitalize } from '../../../utils/functions';
+import { genCourseOrPaperName } from '../../../utils/functions';
 import Link from 'next/link';
 import { IconArrowLeft } from '@tabler/icons-react';
 import { useRouter } from 'next/router';
@@ -48,7 +48,7 @@ const Course = ({ query }: InferGetServerSidePropsType<typeof getServerSideProps
 				<header className='flex items-center justify-between mb-6'>
 					<div>
 						<Title order={mobileScreen ? 3 : 2} weight={600}>
-							{course.exam_board.toUpperCase()} {capitalize(course.subject)} 📚
+							{genCourseOrPaperName(course.subject, course.exam_board)} 📚
 						</Title>
 					</div>
 					<div className='flex'>
