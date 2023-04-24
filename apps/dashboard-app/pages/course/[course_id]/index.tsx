@@ -45,7 +45,7 @@ const Course = ({ query }: InferGetServerSidePropsType<typeof getServerSideProps
 	) : (
 		<Page.Container data_cy='subject-page' extraClassNames='flex flex-col py-6'>
 			<Page.Body>
-				<header className='flex items-center justify-between mb-6 sm:mb-0'>
+				<header className='flex items-center justify-between mb-6'>
 					<div>
 						<Title order={mobileScreen ? 3 : 2} weight={600}>
 							{course.exam_board.toUpperCase()} {capitalize(course.subject)} 📚
