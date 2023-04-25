@@ -4,6 +4,8 @@ import { Subject } from '@exam-genius/shared/utils';
 
 export const IS_DEVELOPMENT_MODE = process.env.NODE_ENV === 'development';
 export const PORT = process.env.PORT || String(4200);
+
+export const TWO_MINUTES = 1000 * 60 * 2;
 export const requirements = [
 	{ re: /[0-9]/, label: 'Includes number' },
 	{ re: /[a-z]/, label: 'Includes lowercase letter' },

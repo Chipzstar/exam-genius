@@ -21,7 +21,7 @@ import { GetServerSideProps, InferGetServerSidePropsType } from 'next';
 import { ParsedUrlQuery } from 'querystring';
 import { Carousel } from '@mantine/carousel';
 import CustomLoader from '../../../../components/CustomLoader';
-import { PATHS } from '../../../../utils/constants';
+import { PATHS, TWO_MINUTES } from '../../../../utils/constants';
 import { ExamBoard, Subject, SUBJECT_PAPERS } from '@exam-genius/shared/utils';
 import { notifyError, notifySuccess } from '../../../../utils/functions';
 import { TRPCError } from '@trpc/server';
@@ -148,7 +148,7 @@ const Paper = ({ query }: InferGetServerSidePropsType<typeof getServerSideProps>
 		checkPaperGenerated({ id: data.id }).then(isGenerated => {
 			if (!isGenerated) setRegenerateData(prev => data);
 		});
-	}, 50000);
+	}, TWO_MINUTES);
 	const mobileScreen = useMediaQuery('(max-width: 30em)');
 
 	return (
