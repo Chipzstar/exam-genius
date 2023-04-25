@@ -1,6 +1,6 @@
 import { FastifyReply, FastifyRequest } from 'fastify';
 import { log } from 'next-axiom';
-import { openai } from '../../../../../dashboard-app/server/openai';
+import { openai } from '../../utils/openai';
 import { prisma } from '../../utils/prisma';
 
 export async function generatePaper(req: FastifyRequest, reply: FastifyReply): Promise<void> {

@@ -5,6 +5,7 @@
 	"scripts": {
 		"nx:serve:backend": "nx serve backend",
         "nx:build:backend": "nx build backend",
+        "nx:build:backend:prod": "npx prisma generate && nx build backend --prod --skip-nx-cache",
         "nx:serve:backend:prod": "nx serve backend --prod",
 		"nx:serve:dashboard": "doppler run -c loc -p exam-genius -- nx serve dashboard-app",
 		"nx:serve:dashboard:debug": "set NODE_OPTIONS='--inspect' && nx serve dashboard-app",
