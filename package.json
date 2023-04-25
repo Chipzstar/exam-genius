@@ -6,7 +6,7 @@
 		"nx:serve:backend": "nx serve backend",
         "nx:build:backend": "nx build backend",
         "nx:build:backend:prod": "npx prisma generate && nx build backend --prod --skip-nx-cache",
-        "nx:serve:backend:prod": "fastify start -l info dist/apps/backend/main.js",
+        "nx:serve:backend:prod": "node dist/apps/backend/main.js",
 		"nx:serve:dashboard": "doppler run -c loc -p exam-genius -- nx serve dashboard-app",
 		"nx:serve:dashboard:debug": "set NODE_OPTIONS='--inspect' && nx serve dashboard-app",
 		"nx:lint:dashboard": "nx lint dashboard-app",
