@@ -5,16 +5,16 @@ import { Anchor, Breadcrumbs, Button, Card, LoadingOverlay, ScrollArea, Text, Ti
 import Image from 'next/image';
 import { CHECKOUT_TYPE, PAPER_PRICE_IDS, PATHS } from '../../../../utils/constants';
 import { GetServerSideProps, InferGetServerSidePropsType } from 'next';
-import { capitalize, genCourseOrPaperName, notifyError, sanitize } from '../../../../utils/functions';
+import { capitalize, genCourseOrPaperName, notifyError, notifySuccess, sanitize } from '../../../../utils/functions';
+import { IconArrowLeft, IconCheck, IconX } from '@tabler/icons-react';
 import Link from 'next/link';
-import { IconArrowLeft, IconX } from '@tabler/icons-react';
 import { useRouter } from 'next/router';
 import { trpc } from '../../../../utils/trpc';
 import { useMediaQuery, useViewportSize } from '@mantine/hooks';
-import { TRPCError } from '@trpc/server';
 import CustomLoader from '../../../../components/CustomLoader';
 import { ExamBoard, PaperInfo, Subject, SUBJECT_PAPERS } from '@exam-genius/shared/utils';
 import NotFound404 from '../../../404';
+import axios from 'axios';
 
 export interface PageQuery extends ParsedUrlQuery {
 	board: ExamBoard;
@@ -33,6 +33,7 @@ export const getServerSideProps: GetServerSideProps<{ query: PageQuery }> = asyn
 };
 
 const Papers = ({ query }: InferGetServerSidePropsType<typeof getServerSideProps>) => {
+	const [content, setContent] = useState<string>('');
 	const [generating, setGenerating] = useState<boolean>(false);
 	const [loading, setLoading] = useState<number | null>(null);
 	const router = useRouter();
@@ -75,7 +76,8 @@ const Papers = ({ query }: InferGetServerSidePropsType<typeof getServerSideProps
 					setLoading(null);
 				} else {
 					setGenerating(true);
-					await createPastPaper({
+					// create past paper in backend
+					const created_paper = await createPastPaper({
 						paper_name: paper.name,
 						paper_code: paper.code,
 						course_id: query.course_id,
@@ -85,6 +87,19 @@ const Papers = ({ query }: InferGetServerSidePropsType<typeof getServerSideProps
 						num_questions: paper.num_questions,
 						num_marks: paper.marks
 					});
+					axios.post('http://localhost:3000/server/paper/generate', {
+						paper_id: created_paper.paper_id,
+                        course_id: created_paper.course_id,
+                        subject: created_paper.subject,
+                        exam_board: created_paper.exam_board,
+                        unit_name: created_paper.unit_name,
+                        num_questions: paper.num_questions,
+                        num_marks: paper.marks
+					}).then(({data}) => {
+						notifySuccess('paper-generation-success', `${created_paper.exam_board} ${created_paper.subject} has now been generated!!`, <IconCheck size={20}/>)
+					}).catch(error => {
+						console.error(error)
+					})
 					setLoading(null);
 					void router
 						.push(
@@ -96,7 +111,6 @@ const Papers = ({ query }: InferGetServerSidePropsType<typeof getServerSideProps
 				console.error(err);
 				setGenerating(false);
 				notifyError('generate-paper-failed', err.message, <IconX size={20} />);
-				throw new TRPCError({ code: 'INTERNAL_SERVER_ERROR', message: err.message });
 			}
 		},
 		[query, course_papers]
@@ -132,7 +146,7 @@ const Papers = ({ query }: InferGetServerSidePropsType<typeof getServerSideProps
 		<div className='flex h-full items-center justify-center'>
 			<CustomLoader
 				text='Generating Paper'
-				subText='Approx waiting time is 20 to 60 seconds. Go grab a coffee while we get your paper ready '
+				subText={content}
 			/>
 		</div>
 	) : (

@@ -132,7 +132,7 @@ const paperRouter = createTRPCRouter({
 				log.debug('new paper', paper);
 				console.log('*****************************************');
 				// call the API endpoint for generating a predicted paper
-				const baseUrl = process.env.VERCEL_URL
+				/*const baseUrl = process.env.VERCEL_URL
 					? 'https://' + process.env.VERCEL_URL
 					: `http://localhost:${PORT}`;
 				axios
@@ -177,7 +177,7 @@ const paperRouter = createTRPCRouter({
 						console.error(err);
 						log.error(err);
 						console.log('************************************************');
-					});
+					});*/
 				return paper;
 			} catch (err) {
 				console.error(err);
@@ -292,6 +292,29 @@ const paperRouter = createTRPCRouter({
 						log.error(err);
 						console.log('************************************************');
 					});
+				return paper;
+			} catch (err) {
+				console.error(err);
+				throw new TRPCError({
+					code: 'INTERNAL_SERVER_ERROR',
+					message: 'Oops, something went wrong' + err.message
+				});
+			}
+		}),
+	deletePaper: protectedProcedure
+		.input(
+			z.object({
+				id: z.string()
+			})
+		)
+		.mutation(async ({ input, ctx }) => {
+			try {
+				const paper = await ctx.prisma.paper.delete({
+					where: {
+						paper_id: input.id
+					}
+				});
+				console.log(paper);
 				return paper;
 			} catch (err) {
 				console.error(err);

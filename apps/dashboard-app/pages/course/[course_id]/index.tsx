@@ -15,6 +15,8 @@ import { SUBJECT_PAPERS } from '@exam-genius/shared/utils';
 
 export interface PageQuery extends ParsedUrlQuery {
 	course_id: string;
+	subject: string;
+	board: string;
 }
 export const getServerSideProps: GetServerSideProps<{ query: PageQuery }> = async context => {
 	const query = context.query as PageQuery;

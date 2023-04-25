@@ -2,6 +2,7 @@ import { PhoneNumberUtil } from 'google-libphonenumber';
 import * as process from 'process';
 import { Subject } from '@exam-genius/shared/utils';
 
+export const IS_DEVELOPMENT_MODE = process.env.NODE_ENV === 'development';
 export const PORT = process.env.PORT || String(4200);
 export const DOMAIN_URL =
 	process.env.DOPPLER_ENVIRONMENT === 'dev'
