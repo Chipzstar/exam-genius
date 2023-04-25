@@ -87,7 +87,7 @@ const NoPapers = ({ query, start }: { query: PageQuery; start: (...callbackParam
 				num_questions: paper.num_questions,
 				num_marks: paper.marks
 			});
-			axios.post('http://localhost:3000/server/paper/generate', {
+			axios.post(`${process.env.NEXT_PUBLIC_BACKEND_HOST}/server/paper/generate`, {
 				paper_id: created_paper.paper_id,
 				course_id: created_paper.course_id,
 				subject: created_paper.subject,
