@@ -4,7 +4,7 @@ import { app } from './app/app';
 import paperRoutes from './app/modules/paper/paper.route';
 import fastifyEnv from '@fastify/env';
 
-const host = process.env.HOST ?? '0.0.0.0';
+const host = process.env.NODE_ENV === 'production' ? '0.0.0.0' : 'localhost';
 const port = process.env.PORT ? Number(process.env.PORT) : 3000;
 
 const schema = {
