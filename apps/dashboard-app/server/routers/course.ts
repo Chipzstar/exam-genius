@@ -36,6 +36,28 @@ const courseRouter = createTRPCRouter({
 					message: 'Oops, something went wrong' + err.message
 				});
 			}
+		}),
+	checkDuplicateCourse: protectedProcedure
+		.input(
+			z.object({
+				exam_board: z.enum(['ocr', 'aqa', 'edexcel']),
+				subject: z.enum(['maths', 'physics', 'chemistry', 'biology', 'economics', 'psychology'])
+			})
+		)
+		.mutation(async ({ input, ctx }) => {
+			try {
+				const courses = await ctx.prisma.course.findMany({
+					where: {
+						user_id: ctx.auth.userId,
+						exam_board: input.exam_board,
+						subject: input.subject
+					}
+				});
+				return Boolean(courses.length);
+			} catch (err) {
+				console.error(err);
+				throw new TRPCError({ code: 'INTERNAL_SERVER_ERROR', message: err.message });
+			}
 		})
 });
 

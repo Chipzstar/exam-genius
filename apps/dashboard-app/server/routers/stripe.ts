@@ -30,12 +30,12 @@ const paperSchema = z.object({
 
 const stripeRouter = createTRPCRouter({
 	createCheckoutSession: protectedProcedure
-		.input(courseSchema.merge(paperSchema))
+		.input(z.discriminatedUnion('type', [courseSchema, paperSchema]))
 		.mutation(async ({ input, ctx }) => {
 			let session;
 			const { stripe, auth, prisma, req, res } = ctx;
 			console.log(auth);
-			const { type, exam_board, subject, unit, course_id, num_questions, marks, paper_href, paper_name, paper_code } = input;
+			const { type, exam_board, subject } = input;
 			try {
 				const auth = getAuth(req);
 				if (!auth?.userId) throw new Error('Not authenticated');
@@ -56,20 +56,20 @@ const stripeRouter = createTRPCRouter({
 							}
 						],
 						mode: 'payment',
-						success_url: `${req.headers.origin}/${PATHS.COURSE}/${course_id}/${unit}/${paper_href}/?subject=${subject}&board=${exam_board}&code=${paper_code}&success=true`,
-						cancel_url: `${req.headers.origin}/${PATHS.COURSE}/${course_id}/${unit}/?subject=${subject}&board=${exam_board}&canceled=true`,
+						success_url: `${req.headers.origin}/${PATHS.COURSE}/${input?.course_id}/${input?.unit}/${input?.paper_href}/?subject=${subject}&board=${exam_board}&code=${input?.paper_code}&success=true`,
+						cancel_url: `${req.headers.origin}/${PATHS.COURSE}/${input?.course_id}/${input?.unit}/?subject=${subject}&board=${exam_board}&canceled=true`,
 						customer: customer_id,
 						metadata: {
 							type: CHECKOUT_TYPE.PAPER,
 							userId: auth.userId,
 							exam_board: exam_board,
 							subject: subject,
-							unit: unit,
-							course_id: course_id,
-							paper_name: paper_name,
-							paper_code: paper_code,
-							num_questions: num_questions,
-                            num_marks: marks
+							unit: input?.unit,
+							course_id: input?.course_id,
+							paper_name: input?.paper_name,
+							paper_code: input?.paper_code,
+							num_questions: input?.num_questions,
+                            num_marks: input?.marks
 						}
 					});
 					if (!session) {  throw new Error("Could not create checkout session");  }
@@ -85,10 +85,8 @@ const stripeRouter = createTRPCRouter({
 						metadata: {
 							type: CHECKOUT_TYPE.COURSE,
 							userId: auth.userId,
-							course_id: course_id,
 							exam_board: exam_board,
 							subject: subject,
-							unit: unit
 						}
 					});
 					if (!session) {  throw new Error("Could not create checkout session");  }
