@@ -2,8 +2,8 @@ import type { PrismaClient } from '@prisma/client';
 import Prisma from '@prisma/client';
 import type Stripe from 'stripe';
 import { log } from 'next-axiom';
-import { CHECKOUT_TYPE, PORT } from '../../utils/constants';
-import { capitalize, genCourseOrPaperName, genID, sanitize } from '../../utils/functions';
+import { CHECKOUT_TYPE } from '../../utils/constants';
+import { genCourseOrPaperName, genID } from '../../utils/functions';
 import axios from 'axios';
 
 export const getOrCreateStripeCustomerIdForUser = async ({
@@ -143,40 +143,17 @@ export const handleCheckoutSessionComplete = async ({
 					log.debug('new paper', paper);
 					console.log('*****************************************');
 					// call the API endpoint for generating a predicted paper
-					const baseUrl = process.env.VERCEL_URL
-						? 'https://' + process.env.VERCEL_URL
-						: `http://localhost:${PORT}`;
-					const { data } = await axios.post(`${baseUrl}/api/openai/generate`, {
-						subject: capitalize(subject),
-						exam_board: capitalize(exam_board),
-						course: capitalize(sanitize(unit_name)),
-						paper_name: paper_name,
+					axios.post(`${process.env.BACKEND_HOST}/server/paper/generate`, {
+						paper_id: paper.paper_id,
+						course_id: paper.course_id,
+						subject: paper.subject,
+						exam_board: paper.exam_board,
+						unit_name: paper.unit_name,
 						num_questions: num_questions,
 						num_marks: num_marks
-					});
-					const content: string = data.result;
-					const sanitizedContent = content.replace(/\\n\s+|\\n/g, '');
-					prisma.paper
-						.update({
-							where: {
-								paper_id: paper.paper_id
-							},
-							data: {
-								content: sanitizedContent
-							}
-						})
-						.then(paper => {
-							console.log('=======================================');
-							console.log(paper);
-							log.debug('updated paper:', paper);
-							console.log('=======================================');
-						})
-						.catch(err => {
-							console.log('************************************************');
-							console.error(err);
-							log.error(err);
-							console.log('************************************************');
-						});
+					}).catch(err => {
+						log.error(err)
+					})
 				}
 			}
 		}
