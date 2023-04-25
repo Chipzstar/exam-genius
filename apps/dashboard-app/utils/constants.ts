@@ -4,10 +4,6 @@ import { Subject } from '@exam-genius/shared/utils';
 
 export const IS_DEVELOPMENT_MODE = process.env.NODE_ENV === 'development';
 export const PORT = process.env.PORT || String(4200);
-export const DOMAIN_URL =
-	process.env.DOPPLER_ENVIRONMENT === 'dev'
-		? `http://localhost:${process.env.PORT}`
-		: `https://${process.env.VERCEL_URL}`;
 export const requirements = [
 	{ re: /[0-9]/, label: 'Includes number' },
 	{ re: /[a-z]/, label: 'Includes lowercase letter' },

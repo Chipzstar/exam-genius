@@ -143,6 +143,7 @@ export const handleCheckoutSessionComplete = async ({
 					log.debug('new paper', paper);
 					console.log('*****************************************');
 					// call the API endpoint for generating a predicted paper
+					console.log(process.env.BACKEND_HOST)
 					axios.post(`${process.env.BACKEND_HOST}/server/paper/generate`, {
 						paper_id: paper.paper_id,
 						course_id: paper.course_id,
