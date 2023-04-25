@@ -47,7 +47,8 @@ export const PATHS = {
 	BIOLOGY: '/papers/biology',
 	ECONOMICS: '/papers/economics',
 	PSYCHOLOGY: '/papers/psychology',
-	VIEW_PAPER: '/view-paper'
+	FAQ: '/faq'
+
 };
 
 export const AUTH_ROUTES = [PATHS.LOGIN, PATHS.SIGNUP, PATHS.FORGOT_PASSWORD];

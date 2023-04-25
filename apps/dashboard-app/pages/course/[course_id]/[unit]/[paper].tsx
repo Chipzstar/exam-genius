@@ -1,4 +1,5 @@
 import {
+	Anchor,
 	Button,
 	Card,
 	createStyles,
@@ -26,6 +27,7 @@ import { ExamBoard, Subject, SUBJECT_PAPERS } from '@exam-genius/shared/utils';
 import { notifyError, notifySuccess } from '../../../../utils/functions';
 import { TRPCError } from '@trpc/server';
 import axios from 'axios';
+import Link from 'next/link';
 
 export interface PageQuery extends ParsedUrlQuery {
 	subject: Subject;
@@ -153,7 +155,7 @@ const Paper = ({ query }: InferGetServerSidePropsType<typeof getServerSideProps>
 
 	return (
 		<Page.Container extraClassNames='overflow-y-hidden'>
-			<header className='jusitfy-end flex items-center p-6'>
+			<header className='justify-between flex items-center p-6'>
 				<Button
 					leftIcon={<IconArrowLeft />}
 					size={mobileScreen ? 'sm' : 'md'}
@@ -166,6 +168,9 @@ const Paper = ({ query }: InferGetServerSidePropsType<typeof getServerSideProps>
 				>
 					Back
 				</Button>
+				<div className="flex flex-wrap space-x-6 items-center">
+					<Text>Need Help? Visit our <Link href={PATHS.FAQ}><span className="text-primary ">FAQ page</span></Link> or contact us at  <Anchor className="font-bold" href="mailto:support@exam-genius.com" target="_blank" rel="noreferrer">support@exam-genius.com</Anchor></Text>
+				</div>
 			</header>
 			<Page.Body extraClassNames='px-2 sm:px-6 sm:justify-center w-full '>
 				{isLoading ? (
