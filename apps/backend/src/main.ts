@@ -4,7 +4,7 @@ import { app } from './app/app';
 import paperRoutes from './app/modules/paper/paper.route';
 import fastifyEnv from '@fastify/env';
 
-const host = process.env.HOST ?? 'localhost';
+const host = process.env.HOST ?? '0.0.0.0';
 const port = process.env.PORT ? Number(process.env.PORT) : 3000;
 
 const schema = {
@@ -50,6 +50,6 @@ server.listen({ port, host }, err => {
 		server.log.error(err);
 		process.exit(1);
 	} else {
-		console.log(`[ ready ] http://${host}:${port}`);
+		console.log(`[ ready ] https://${host}:${port}`);
 	}
 });
