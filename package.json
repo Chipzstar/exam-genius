@@ -35,7 +35,6 @@
 	"dependencies": {
 		"@clerk/clerk-sdk-node": "^4.8.2",
 		"@clerk/nextjs": "^4.14.2",
-		"@clerk/themes": "^1.6.3",
 		"@emotion/react": "^11.10.6",
 		"@emotion/server": "^11.10.0",
 		"@fastify/autoload": "~5.7.1",
@@ -72,7 +71,6 @@
 		"eventsource-parser": "^1.0.0",
 		"fastify": "~4.13.0",
 		"fastify-plugin": "~4.5.0",
-        "fastify-cli": "^5.7.1",
 		"google-libphonenumber": "^3.2.32",
 		"html-react-parser": "^3.0.15",
 		"ioredis": "^5.3.2",
