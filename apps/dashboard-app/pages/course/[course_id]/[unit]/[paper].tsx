@@ -24,7 +24,7 @@ import { Carousel } from '@mantine/carousel';
 import CustomLoader from '../../../../components/CustomLoader';
 import { PATHS, TWO_MINUTES } from '../../../../utils/constants';
 import { ExamBoard, Subject, SUBJECT_PAPERS } from '@exam-genius/shared/utils';
-import { notifyError, notifySuccess } from '../../../../utils/functions';
+import { capitalize, notifyError, notifySuccess } from '../../../../utils/functions';
 import { TRPCError } from '@trpc/server';
 import axios from 'axios';
 import Link from 'next/link';
@@ -89,19 +89,26 @@ const NoPapers = ({ query, start }: { query: PageQuery; start: (...callbackParam
 				num_questions: paper.num_questions,
 				num_marks: paper.marks
 			});
-			axios.post(`${process.env.NEXT_PUBLIC_BACKEND_HOST}/server/paper/generate`, {
-				paper_id: created_paper.paper_id,
-				course_id: created_paper.course_id,
-				subject: created_paper.subject,
-				exam_board: created_paper.exam_board,
-				unit_name: created_paper.unit_name,
-				num_questions: paper.num_questions,
-				num_marks: paper.marks
-			}).then(({data}) => {
-				notifySuccess('paper-generation-success', `${created_paper.exam_board} ${created_paper.subject} has now been generated!!`, <IconCheck size={20}/>)
-			}).catch(error => {
-				console.error(error)
-			})
+			axios
+				.post(`${process.env.NEXT_PUBLIC_BACKEND_HOST}/server/paper/generate`, {
+					paper_id: created_paper.paper_id,
+					course_id: created_paper.course_id,
+					subject: created_paper.subject,
+					exam_board: created_paper.exam_board,
+					unit_name: created_paper.unit_name,
+					num_questions: paper.num_questions,
+					num_marks: paper.marks
+				})
+				.then(({ data }) => {
+					notifySuccess(
+						'paper-generation-success',
+						`${capitalize(created_paper.exam_board)} ${capitalize(created_paper.subject)} paper has now been generated!!`,
+						<IconCheck size={20} />
+					);
+				})
+				.catch(error => {
+					console.error(error);
+				});
 			start({
 				id: created_paper.paper_id,
 				num_questions: paper.num_questions,
@@ -142,7 +149,7 @@ const Paper = ({ query }: InferGetServerSidePropsType<typeof getServerSideProps>
 	const { mutate: regeneratePaper, isLoading: regenLoading } = trpc.paper.regeneratePaper.useMutation();
 	const { mutateAsync: deletePaper } = trpc.paper.deletePaper.useMutation({
 		onSuccess(input) {
-			utils.paper.getPapersByCode.invalidate({ courseId: query.course_id, code: query.code })
+			utils.paper.getPapersByCode.invalidate({ courseId: query.course_id, code: query.code });
 		}
 	});
 	const { height } = useViewportSize();
@@ -155,7 +162,7 @@ const Paper = ({ query }: InferGetServerSidePropsType<typeof getServerSideProps>
 
 	return (
 		<Page.Container extraClassNames='overflow-y-hidden'>
-			<header className='justify-between flex items-center p-6'>
+			<header className='flex items-center justify-between p-6'>
 				<Button
 					leftIcon={<IconArrowLeft />}
 					size={mobileScreen ? 'sm' : 'md'}
@@ -168,8 +175,22 @@ const Paper = ({ query }: InferGetServerSidePropsType<typeof getServerSideProps>
 				>
 					Back
 				</Button>
-				<div className="flex flex-wrap space-x-6 items-center">
-					<Text>Need Help? Visit our <Link href={PATHS.FAQ}><span className="text-primary ">FAQ page</span></Link> or contact us at  <Anchor className="font-bold" href="mailto:support@exam-genius.com" target="_blank" rel="noreferrer">support@exam-genius.com</Anchor></Text>
+				<div className='flex flex-wrap items-center space-x-6'>
+					<Text>
+						Need Help? Visit our{' '}
+						<Link href={PATHS.FAQ}>
+							<span className='text-primary '>FAQ page</span>
+						</Link>{' '}
+						or contact us at{' '}
+						<Anchor
+							className='font-bold'
+							href='mailto:support@exam-genius.com'
+							target='_blank'
+							rel='noreferrer'
+						>
+							support@exam-genius.com
+						</Anchor>
+					</Text>
 				</div>
 			</header>
 			<Page.Body extraClassNames='px-2 sm:px-6 sm:justify-center w-full '>
@@ -189,18 +210,20 @@ const Paper = ({ query }: InferGetServerSidePropsType<typeof getServerSideProps>
 									})}
 								>
 									<Card shadow='sm' radius='md' className='w-full' p='xl'>
-										{!(process.env.NEXT_PUBLIC_VERCEL_ENV === "production") && <Button
-											color='red'
-											variant='outline'
-											sx={theme => ({
-												position: 'absolute',
-												right: 20,
-												top: 20
-											})}
-											onClick={() => deletePaper({id: paper.paper_id})}
-										>
-											Delete
-										</Button>}
+										{!(process.env.NEXT_PUBLIC_VERCEL_ENV === 'production') && (
+											<Button
+												color='red'
+												variant='outline'
+												sx={theme => ({
+													position: 'absolute',
+													right: 20,
+													top: 20
+												})}
+												onClick={() => deletePaper({ id: paper.paper_id })}
+											>
+												Delete
+											</Button>
+										)}
 										<div className='flex justify-center'>
 											<Stack justify='center' align='center'>
 												<Title color='brand'>ExamGenius</Title>

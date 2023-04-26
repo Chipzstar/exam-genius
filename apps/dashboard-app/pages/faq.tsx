@@ -58,7 +58,7 @@ const useStyles = createStyles(theme => ({
 						<Accordion.Item className={classes.item} value='failure'>
 							<Accordion.Control>I tried generating my paper but it keeps failing.</Accordion.Control>
 							<Accordion.Panel>
-								Please send your issue to <strong>support@email-genius.com</strong> with your login email.
+								Please send your issue to <strong>support@exam-genius.com</strong> with your login email.
 								We will do our best to resolve your issue ASAP.
 							</Accordion.Panel>
 						</Accordion.Item>
