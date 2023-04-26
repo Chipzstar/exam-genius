@@ -7,6 +7,7 @@ import { getAuth, withClerkMiddleware } from '@clerk/nextjs/server';
 const publicPaths = [
 	'/signup*',
 	'/login*',
+	'/api/panel',
 	'/api/clerk/**',
 	'/api/openai/**',
 	'/api/stripe/**',
