@@ -15,6 +15,7 @@ import CustomLoader from '../../../../components/CustomLoader';
 import { ExamBoard, PaperInfo, Subject, SUBJECT_PAPERS } from '@exam-genius/shared/utils';
 import NotFound404 from '../../../404';
 import axios from 'axios';
+import { GeneratePaperPayload } from '../../../../utils/types';
 
 export interface PageQuery extends ParsedUrlQuery {
 	board: ExamBoard;
@@ -89,13 +90,13 @@ const Papers = ({ query }: InferGetServerSidePropsType<typeof getServerSideProps
 					});
 					axios.post(`${process.env.NEXT_PUBLIC_BACKEND_HOST}/server/paper/generate`, {
 						paper_id: created_paper.paper_id,
-                        course_id: created_paper.course_id,
+						paper_name: created_paper.name,
                         subject: created_paper.subject,
                         exam_board: created_paper.exam_board,
-                        unit_name: created_paper.unit_name,
+                        course: created_paper.unit_name,
                         num_questions: paper.num_questions,
                         num_marks: paper.marks
-					}).then(({data}) => {
+					} as GeneratePaperPayload).then(({data}) => {
 						notifySuccess('paper-generation-success', `${created_paper.exam_board} ${created_paper.subject} has now been generated!!`, <IconCheck size={20}/>)
 					}).catch(error => {
 						console.error(error)

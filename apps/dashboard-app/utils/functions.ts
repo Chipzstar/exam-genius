@@ -17,7 +17,14 @@ export function getRndInteger(min: number, max: number, offset = 1) {
 }
 
 export function capitalize(str: string): string {
-	return str.charAt(0).toUpperCase() + str.slice(1).toLowerCase();
+	switch (str) {
+		case 'aqa':
+			return 'AQA'
+		case 'ocr':
+			return 'OCR'
+		default:
+			return str.charAt(0).toUpperCase() + str.slice(1).toLowerCase()
+	}
 }
 
 export function sanitize(str: string): string {

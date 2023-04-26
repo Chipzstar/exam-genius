@@ -3,8 +3,9 @@ import Prisma from '@prisma/client';
 import type Stripe from 'stripe';
 import { log } from 'next-axiom';
 import { CHECKOUT_TYPE } from '../../utils/constants';
-import { genCourseOrPaperName, genID } from '../../utils/functions';
+import { capitalize, genCourseOrPaperName, genID, sanitize } from '../../utils/functions';
 import axios from 'axios';
+import { GeneratePaperPayload } from '../../utils/types';
 
 export const getOrCreateStripeCustomerIdForUser = async ({
 	stripe,
@@ -146,13 +147,13 @@ export const handleCheckoutSessionComplete = async ({
 					console.log(process.env.BACKEND_HOST)
 					axios.post(`${process.env.BACKEND_HOST}/server/paper/generate`, {
 						paper_id: paper.paper_id,
-						course_id: paper.course_id,
-						subject: paper.subject,
-						exam_board: paper.exam_board,
-						unit_name: paper.unit_name,
+						paper_name: paper.name,
+						subject: capitalize(paper.subject),
+						exam_board: capitalize(paper.exam_board),
+						course: capitalize(sanitize(paper.unit_name)),
 						num_questions: num_questions,
 						num_marks: num_marks
-					}).catch(err => {
+					} as GeneratePaperPayload).catch(err => {
 						log.error(err)
 					})
 				}

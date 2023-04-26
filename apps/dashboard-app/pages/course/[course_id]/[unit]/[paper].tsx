@@ -24,10 +24,11 @@ import { Carousel } from '@mantine/carousel';
 import CustomLoader from '../../../../components/CustomLoader';
 import { PATHS, TWO_MINUTES } from '../../../../utils/constants';
 import { ExamBoard, Subject, SUBJECT_PAPERS } from '@exam-genius/shared/utils';
-import { capitalize, notifyError, notifySuccess } from '../../../../utils/functions';
+import { capitalize, notifyError, notifySuccess, sanitize } from '../../../../utils/functions';
 import { TRPCError } from '@trpc/server';
 import axios from 'axios';
 import Link from 'next/link';
+import { GeneratePaperPayload } from '../../../../utils/types';
 
 export interface PageQuery extends ParsedUrlQuery {
 	subject: Subject;
@@ -92,13 +93,13 @@ const NoPapers = ({ query, start }: { query: PageQuery; start: (...callbackParam
 			axios
 				.post(`${process.env.NEXT_PUBLIC_BACKEND_HOST}/server/paper/generate`, {
 					paper_id: created_paper.paper_id,
-					course_id: created_paper.course_id,
-					subject: created_paper.subject,
-					exam_board: created_paper.exam_board,
-					unit_name: created_paper.unit_name,
+					paper_name: created_paper.name,
+					course: capitalize(sanitize(created_paper.unit_name)),
+					subject: capitalize(created_paper.subject),
+					exam_board: capitalize(created_paper.exam_board),
 					num_questions: paper.num_questions,
 					num_marks: paper.marks
-				})
+				} as GeneratePaperPayload)
 				.then(({ data }) => {
 					notifySuccess(
 						'paper-generation-success',

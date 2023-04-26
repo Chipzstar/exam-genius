@@ -64,3 +64,12 @@ export interface PublicMetadata {}
 
 export interface UnsafeMetadata {}
 
+export interface GeneratePaperPayload {
+	paper_id: string;
+	paper_name: string;
+	course: string;
+	subject: string;
+	exam_board: string;
+	num_questions: number | string;
+	num_marks: number | string;
+}

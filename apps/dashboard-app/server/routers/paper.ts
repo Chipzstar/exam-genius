@@ -4,6 +4,7 @@ import { z } from 'zod';
 import axios from 'axios';
 import { capitalize, genID, sanitize } from '../../utils/functions';
 import { log } from 'next-axiom';
+import { GeneratePaperPayload } from '../../utils/types';
 
 const paperRouter = createTRPCRouter({
 	getPapers: protectedProcedure.query(async ({ ctx }) => {
@@ -254,7 +255,7 @@ const paperRouter = createTRPCRouter({
 						course: capitalize(sanitize(paper.unit_name)),
 						num_questions: input.num_questions,
 						num_marks: input.num_marks
-					}).catch(err => {
+					} as GeneratePaperPayload).catch(err => {
 						console.log('************************************************');
 						console.error(err);
 						log.error(err);
