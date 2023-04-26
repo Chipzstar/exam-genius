@@ -17,7 +17,7 @@ datasource db {
 model Course {
   id         Int       @id @unique @default(autoincrement())
   created_at DateTime  @default(now())
-  updated_at DateTime  @default(now()) @updatedAt
+  updated_at DateTime  @updatedAt
   course_id  String    @unique
   name       String
   subject    Subject
@@ -50,7 +50,7 @@ enum ExamBoard {
 model Paper {
   id           Int       @id @unique @default(autoincrement())
   created_at   DateTime  @default(now())
-  updated_at   DateTime  @default(now()) @updatedAt
+  updated_at   DateTime  @updatedAt
   paper_id     String    @unique
   paper_code   String
   paper_number Int       @default(1)

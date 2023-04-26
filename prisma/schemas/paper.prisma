@@ -1,7 +1,7 @@
 model Paper {
   id           Int       @id @unique @default(autoincrement())
   created_at   DateTime  @default(now())
-  updated_at   DateTime  @default(now()) @updatedAt
+  updated_at   DateTime  @updatedAt
   paper_id     String    @unique
   paper_code   String
   paper_number Int       @default(1)
