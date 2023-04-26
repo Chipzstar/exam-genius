@@ -8,7 +8,7 @@ import { customAlphabet } from 'nanoid';
 
 const nanoid = customAlphabet('1234567890abcdefghiklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ', 16)
 
-export function genID(prefix: string, size=16) : string {
+export function genID(prefix: string, size=27) : string {
 	return `${prefix}_${nanoid(size)}`
 }
 
