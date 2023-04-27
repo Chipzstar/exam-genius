@@ -33,7 +33,7 @@ const Reviews = () => {
 					px={mobileScreen ? 'lg' : 0}
 					maw={width - 50}
 					height={200}
-					slideSize='40%'
+					slideSize='50%'
 					breakpoints={[
 						{ maxWidth: 'md', slideSize: '40%' },
 						{ maxWidth: 'sm', slideSize: '100%', slideGap: 'sm' }
@@ -57,7 +57,7 @@ const Reviews = () => {
 					px={mobileScreen ? 'lg' : 0}
 					maw={width - 50}
 					height={200}
-					slideSize='40%'
+					slideSize='50%'
 					breakpoints={[
 						{ maxWidth: 'md', slideSize: '40%' },
 						{ maxWidth: 'sm', slideSize: '100%', slideGap: 0 }

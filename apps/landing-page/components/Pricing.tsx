@@ -38,9 +38,9 @@ export const Pricing = () => {
 						Limited time offer! Get 60% off when you sign up today
 					</p>
 					<ul className='list-disc items-center' style={{ width: '300px' }}>
-						<li>Full access to all predicted exam papers for one A-level subject</li>
-						<li>Generate unlimited potential exam papers for one subjects, with predicted answers.</li>
-						<li>Instant 24/7 support</li>
+						<li>Full access to all predicted exam papers per <strong>subject</strong> and <strong>exam board</strong>.</li>
+						<li>Generate one set of papers per subject with predicted answers and probability scores.</li>
+						<li>24/7 support</li>
 					</ul>
 					<Button
 						mt='lg'
