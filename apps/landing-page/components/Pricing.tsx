@@ -22,23 +22,21 @@ export const Pricing = () => {
 					</p>
 				</div>
 				<div
-					className='flex flex-col items-center gap-2 py-5 md:border-2 md:border-black'
+					className='flex flex-col items-center gap-2 space-y-7 py-5 md:border-2 md:border-black'
 					style={{ width: mobileScreen ? undefined : 400 }}
 				>
-					<p className='font-bold text-blue-700'>Most Popular</p>
-					<p className='text-2xl font-normal'>Genius Plan</p>
-					<p className='text-center' style={{ width: '250px' }}>
-						Full access to multiple subjects until <strong>31st July 2023</strong>
-					</p>
-					<p className='text-xl'>
-						<s>£15</s>
-					</p>
+					<div className='flex flex-col items-center space-y-4'>
+						<p className='text-2xl font-normal'>Genius Plan</p>
+						<p className='text-center' style={{ width: '250px' }}>
+							Available until <strong>31st July 2023</strong>
+						</p>
+					</div>
 					<p className='text-4xl'>£5</p>
-					<p className='text-center text-sm' style={{ width: '300px' }}>
-						Limited time offer! Get 60% off when you sign up today
-					</p>
 					<ul className='list-disc items-center' style={{ width: '300px' }}>
-						<li>Full access to all predicted exam papers per <strong>subject</strong> and <strong>exam board</strong>.</li>
+						<li>
+							Full access to all predicted exam papers per <strong>subject</strong> and{' '}
+							<strong>exam board</strong>.
+						</li>
 						<li>Generate one set of papers per subject with predicted answers and probability scores.</li>
 						<li>24/7 support</li>
 					</ul>
