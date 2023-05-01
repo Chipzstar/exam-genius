@@ -52,7 +52,7 @@ export const FAQ = () => {
 					</Accordion.Item>
 					<Accordion.Item value='item5'>
 						<Accordion.Control>Are the mark-schemes for each paper generated too?</Accordion.Control>
-						<Accordion.Panel>We predicted past papers are generated. We plan to generated mark schemes also in the future</Accordion.Panel>
+						<Accordion.Panel>Only predicted past-paper questions are generated. We plan to generate mark schemes in the future</Accordion.Panel>
 					</Accordion.Item>
 					<Accordion.Item value='item6'>
 						<Accordion.Control>What is the refund policy?</Accordion.Control>
