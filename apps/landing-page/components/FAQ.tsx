@@ -51,25 +51,29 @@ export const FAQ = () => {
 						<Accordion.Panel>We train the AI every week on new information</Accordion.Panel>
 					</Accordion.Item>
 					<Accordion.Item value='item5'>
+						<Accordion.Control>Are the mark-schemes for each paper generated too?</Accordion.Control>
+						<Accordion.Panel>We predicted past papers are generated. We plan to generated mark schemes also in the future</Accordion.Panel>
+					</Accordion.Item>
+					<Accordion.Item value='item6'>
 						<Accordion.Control>What is the refund policy?</Accordion.Control>
 						<Accordion.Panel>
 							If a paper you pay for does not generate, we will offer you a refund
 						</Accordion.Panel>
 					</Accordion.Item>
-					<Accordion.Item value='item6'>
+					<Accordion.Item value='item7'>
 						<Accordion.Control>Can I use ExamGenius for all my A-level subjects?</Accordion.Control>
 						<Accordion.Panel>
 							We support Maths, Physics, Biology, Chemistry, Economics and Psychology
 						</Accordion.Panel>
 					</Accordion.Item>
-					<Accordion.Item value='item7'>
+					<Accordion.Item value='item8'>
 						<Accordion.Control>How are the predicted exam papers generated?</Accordion.Control>
 						<Accordion.Panel>
 							Our friendly AI has been quietly teaching its self all the style and patterns from past
 							papers. Based on its learnings, it is able to predict the exam papers
 						</Accordion.Panel>
 					</Accordion.Item>
-					<Accordion.Item value='item8'>
+					<Accordion.Item value='item9'>
 						<Accordion.Control>
 							Will the predicted exam papers be the same as the actual exam papers?
 						</Accordion.Control>
@@ -78,7 +82,7 @@ export const FAQ = () => {
 							the predicted papers being the same as the actual exam papers coming up
 						</Accordion.Panel>
 					</Accordion.Item>
-					<Accordion.Item value='item9'>
+					<Accordion.Item value='item10'>
 						<Accordion.Control>
 							Is there a limit to the number of predicted exam papers I can access?
 						</Accordion.Control>
@@ -87,7 +91,7 @@ export const FAQ = () => {
 							access to more, you would have to pay
 						</Accordion.Panel>
 					</Accordion.Item>
-					<Accordion.Item value='item10'>
+					<Accordion.Item value='item11'>
 						<Accordion.Control>
 							{"What happens if I'm not satisfied with the predicted exam papers?"}
 						</Accordion.Control>
