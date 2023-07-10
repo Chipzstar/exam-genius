@@ -45,10 +45,10 @@ export const updateUser = async ({ event, prisma }: { event: ClerkEvent; prisma:
 		log.info('-----------------------------------------------');
 		return user;
 	} catch (err) {
-	    console.error(err)
+		console.error(err);
 		throw err;
 	}
-}
+};
 
 export const deleteUser = async ({ event, prisma }: { event: ClerkEvent; prisma: PrismaClient }) => {
 	try {

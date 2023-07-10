@@ -67,7 +67,7 @@ const useStyles = createStyles(theme => ({
 							<Accordion.Control>How can I reset my password?</Accordion.Control>
 							<Accordion.Panel>
 								Navigate to the login page. Enter you email. Before entering your password you should see a
-								"Forgot Password" link. Click the link and proceed as follows
+								{"Forgot Password"} link. Click the link and proceed as follows
 							</Accordion.Panel>
 						</Accordion.Item>
 

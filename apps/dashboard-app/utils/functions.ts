@@ -1,6 +1,6 @@
 import { showNotification } from '@mantine/notifications';
-import { phoneUtil, requirements } from './constants';
-import { PhoneNumberFormat as PNF } from 'google-libphonenumber';
+import parsePhoneNumber from 'libphonenumber-js';
+import { requirements } from './constants';
 import bcrypt from 'bcryptjs';
 import CryptoJS from 'crypto-js';
 import { ExamBoard, Subject } from '@prisma/client';
@@ -95,9 +95,9 @@ export function getStrength(password: string) {
 }
 
 export function getE164Number(phoneNumber: string) {
-	const phone = phoneUtil.parseAndKeepRawInput(phoneNumber, 'GB');
-	if (phoneUtil.getRegionCodeForNumber(phone) === 'GB') {
-		const E164Number = phoneUtil.format(phone, PNF.E164);
+	const phone = parsePhoneNumber(phoneNumber, 'GB');
+	if (phone && phone.getPossibleCountries().includes('GB')) {
+		const E164Number = phone.format("E.164");
 		console.log('E164Number:', E164Number);
 		return E164Number;
 	}
