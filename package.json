@@ -22,15 +22,14 @@
 		"prisma:studio": "npx prisma studio",
 		"prisma:push": "npx prisma db push",
 		"prisma:pull": "npx prisma db pull",
-		"create-env-file:backend": "doppler secrets download --no-file --format env > ./apps/backend/.env -p exam-genius -c loc",
 		"create-env-file:dashboard": "doppler secrets download --no-file --format env > ./apps/dashboard-app/.env -p exam-genius -c loc",
 		"webhookthing": "npx webhookthing@latest",
 		"stripe-local-webhook": "stripe listen --forward-to localhost:4200/api/stripe/webhook"
 	},
 	"private": true,
 	"dependencies": {
-		"@clerk/clerk-sdk-node": "^4.8.2",
-		"@clerk/nextjs": "^4.14.2",
+		"@clerk/clerk-sdk-node": "^4.10.15",
+		"@clerk/nextjs": "^4.21.14",
 		"@emotion/react": "^11.10.6",
 		"@emotion/server": "^11.10.0",
 		"@mantine/carousel": "^6.0.7",

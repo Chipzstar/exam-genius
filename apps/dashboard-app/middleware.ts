@@ -1,39 +1,36 @@
 // middleware.ts
-import type { NextRequest } from 'next/server';
 import { NextResponse } from 'next/server';
-import { getAuth, withClerkMiddleware } from '@clerk/nextjs/server';
+import { authMiddleware } from '@clerk/nextjs/server';
+import { PATHS } from './utils/constants';
 
 // Set the paths that don't require the user to be signed in
-const publicPaths = [
-	'/signup*',
-	'/login*',
+const publicRoutes = [
+	'/signup',
+	'/login',
 	'/api/panel',
-	'/api/clerk/**',
-	'/api/openai/**',
-	'/api/stripe/**',
-	'/api/trpc/auth.**'
+	'/api/:clerk*',
+	'/api/:openai*',
+	'/api/:stripe*'
 ];
 
-const isPublic = (path: string) => {
+/*const isPublic = (path: string) => {
 	return publicPaths.find(x => path.match(new RegExp(`^${x}$`.replace('*$', '($|/)'))));
-};
+};*/
 
-export default withClerkMiddleware((request: NextRequest) => {
-	if (isPublic(request.nextUrl.pathname)) {
-		// console.log("PUBLIC: ", request.nextUrl.pathname);
-		return NextResponse.next();
-	}
-	console.log("PRIVATE: ", request.nextUrl.pathname);
-	// if the user is not signed in redirect them to the sign-in page.
-	const { userId } = getAuth(request);
-	console.log("userId: " , userId)
-	if (!userId) {
-		// redirect the users to /pages/sign-in/[[...index]].ts
-		const signInUrl = new URL('/login', request.url);
-		signInUrl.searchParams.set('redirect_url', request.url);
-		return NextResponse.redirect(signInUrl);
-	}
-	return NextResponse.next();
+export default authMiddleware({
+	debug: process.env.NODE_ENV === 'development',
+	afterAuth(auth, req, evt) {
+		// handle users who aren't authenticated
+		console.log('Is Public Route:', auth.isPublicRoute);
+		if (!auth.userId && !auth.isPublicRoute) {
+			const signInUrl = new URL(PATHS.LOGIN, req.url);
+			console.log('Redirecting to LOGIN PAGE');
+			return NextResponse.redirect(signInUrl);
+		} else {
+			console.log("Current User: ", auth.userId)
+		}
+	},
+	publicRoutes
 });
 
 export const config = {
@@ -47,5 +44,5 @@ export const config = {
 	 * - public folder
 	 * - public folder
 	 */
-	matcher: ['/(.*?trpc.*?|(?!static|.*\\..*|_next|favicon.ico).*)']
+	matcher: ['/((?!.*\\..*|_next).*)', '/', '/(api|trpc)(.*)']
 };
