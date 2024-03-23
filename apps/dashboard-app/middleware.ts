@@ -21,13 +21,10 @@ export default authMiddleware({
 	debug: false,
 	afterAuth(auth, req, evt) {
 		// handle users who aren't authenticated
-		console.log('Is Public Route:', auth.isPublicRoute);
 		if (!auth.userId && !auth.isPublicRoute) {
 			const signInUrl = new URL(PATHS.LOGIN, req.url);
 			console.log('Redirecting to LOGIN PAGE');
 			return NextResponse.redirect(signInUrl);
-		} else {
-			console.log("Current User: ", auth.userId)
 		}
 	},
 	publicRoutes

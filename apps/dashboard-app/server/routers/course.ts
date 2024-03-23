@@ -11,7 +11,7 @@ const courseRouter = createTRPCRouter({
 				}
 			});
 		} catch (err) {
-			console.error(err.message);
+			console.error(err);
 			throw new TRPCError({ code: 'INTERNAL_SERVER_ERROR', message: err.message });
 		}
 	}),
