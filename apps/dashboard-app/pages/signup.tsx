@@ -68,22 +68,23 @@ export function Signup() {
 			if (values.phone) values.phone = getE164Number(values.phone);
 			try {
 				// @ts-ignore
-				const result = await signUp.create({
-					emailAddress: values.email,
-					password: values.password
-				});
-				// @ts-ignore
-				// Prepare the verification process for the email address.
-				// This method will send a one-time code to the email address supplied to the current sign-up.
-				await signUp.prepareEmailAddressVerification();
-				showCodeForm(true);
-				setLoading(false);
-				notifySuccess(
-					'email-verification',
-					'We have sent you an email with a verification code. Please check your inbox.',
-					<IconCheck size={20} />
-				);
-			} catch (err) {
+                await signUp.create({
+                    emailAddress: values.email,
+                    password: values.password
+                });
+                // @ts-ignore
+                // Prepare the verification process for the email address.
+                // This method will send a one-time code to the email address supplied to the current sign-up.
+                await signUp.prepareEmailAddressVerification();
+                showCodeForm(true);
+                setLoading(false);
+                notifySuccess(
+                    'email-verification',
+                    'We have sent you an email with a verification code. Please check your inbox.',
+                    <IconCheck size={20} />
+                );
+            }
+            catch (err) {
 				setLoading(false);
 				notifyError('signup-failure', err?.error?.message ?? err.message, <IconX size={20} />);
 			}

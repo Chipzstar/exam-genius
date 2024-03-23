@@ -3,7 +3,6 @@ import * as trpcNext from '@trpc/server/adapters/next';
 import { getAuth } from '@clerk/nextjs/server';
 import type { SignedInAuthObject, SignedOutAuthObject } from '@clerk/backend';
 import { prisma } from './prisma';
-import { redis } from './redis';
 import stripe from './stripe';
 import { NextApiRequest, NextApiResponse } from 'next';
 
@@ -17,7 +16,6 @@ export const createContextInner = async ({ auth, res, req }: AuthContext) => {
 	return {
 		auth,
 		prisma,
-		redis,
 		stripe,
 		req,
         res

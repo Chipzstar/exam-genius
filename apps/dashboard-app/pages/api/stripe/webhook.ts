@@ -36,11 +36,14 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 			// Handle the event
 			switch (event.type) {
 				case 'invoice.payment_succeeded':
-					await handleInvoicePaid({
+                    console.log('************************************************');
+                    console.log("handling invoice.payment_succeeded");
+                    console.log('************************************************');
+					/*await handleInvoicePaid({
 						stripe,
 						event,
 						prisma
-					});
+					});*/
 					break;
 				case 'checkout.session.completed':
 					await handleCheckoutSessionComplete({
@@ -78,26 +81,28 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 					console.log(`Unhandled event type ${event.type}`);
 			}
 			// record the event in the database
-			await prisma.stripeEvent.create({
-				data: {
-					id: event.id,
-					type: event.type,
-					object: event.object,
-					api_version: event.api_version,
-					account: event.account,
-					created: new Date(event.created * 1000), // convert to milliseconds
-					data: {
-						object: event.data.object,
-						previous_attributes: event.data.previous_attributes,
-					},
-					livemode: event.livemode,
-					pending_webhooks: event.pending_webhooks,
-					request: {
-						id: event.request?.id,
-						idempotency_key: event.request?.idempotency_key,
-					},
-				},
-			});
+            if (process.env.NODE_ENV === 'production') {
+                await prisma.stripeEvent.create({
+                    data: {
+                        id: event.id,
+                        type: event.type,
+                        object: event.object,
+                        api_version: event.api_version,
+                        account: event.account,
+                        created: new Date(event.created * 1000), // convert to milliseconds
+                        data: {
+                            object: event.data.object,
+                            previous_attributes: event.data.previous_attributes,
+                        },
+                        livemode: event.livemode,
+                        pending_webhooks: event.pending_webhooks,
+                        request: {
+                            id: event.request?.id,
+                            idempotency_key: event.request?.idempotency_key,
+                        },
+                    },
+                });
+            }
 			// Return a 200 response to acknowledge receipt of the event
 			return res.status(200).json({ received: true, message: 'Event processed successfully' });
 		} catch (err) {

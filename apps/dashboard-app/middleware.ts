@@ -18,7 +18,7 @@ const publicRoutes = [
 };*/
 
 export default authMiddleware({
-	debug: process.env.NODE_ENV === 'development',
+	debug: false,
 	afterAuth(auth, req, evt) {
 		// handle users who aren't authenticated
 		console.log('Is Public Route:', auth.isPublicRoute);

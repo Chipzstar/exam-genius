@@ -36,7 +36,7 @@ export function genCourseOrPaperName(
 	board: ExamBoard,
 	paper: string | null=null
 ) : string {
-	let exam_board;
+	let exam_board: string;
 	switch (board) {
 		case 'ocr':
 		case 'aqa':
