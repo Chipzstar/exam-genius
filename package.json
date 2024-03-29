@@ -3,7 +3,9 @@
 	"version": "0.0.0",
 	"license": "MIT",
 	"scripts": {
-		"nx:serve:dashboard": "doppler run -c loc -p exam-genius -- nx serve dashboard-app",
+        "nx:serve:dashboard": "nx serve dashboard-app",
+		"nx:serve:dashboard:doppler": "doppler run -c loc -p exam-genius -- nx serve dashboard-app",
+        "ngrok": "ngrok http --domain=present-shepherd-shining.ngrok-free.app 4200 --config=./bin/ngrok.yml",
 		"nx:serve:dashboard:debug": "set NODE_OPTIONS='--inspect' && nx serve dashboard-app",
 		"nx:lint:dashboard": "nx lint dashboard-app",
 		"nx:lint:landing": "nx lint landing-page",
@@ -24,7 +26,8 @@
 		"prisma:pull": "npx prisma db pull",
 		"create-env-file:dashboard": "doppler secrets download --no-file --format env > ./apps/dashboard-app/.env -p exam-genius -c loc",
 		"webhookthing": "npx webhookthing@latest",
-		"stripe-local-webhook": "stripe listen --forward-to localhost:4200/api/stripe/webhook"
+		"stripe-local-webhook": "stripe listen --forward-to localhost:4200/api/stripe/webhook",
+        "dopper:sync-env": "doppler secrets download --no-file --format env > .env.doppler"
 	},
 	"private": true,
 	"dependencies": {
