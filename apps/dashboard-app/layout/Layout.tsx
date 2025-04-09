@@ -3,6 +3,7 @@ import { AppShell, Burger, Header, MediaQuery } from '@mantine/core';
 import Sidebar from './Sidebar';
 import { useMediaQuery } from '@mantine/hooks';
 import { useAuth } from '@clerk/nextjs';
+import ChatwootWidget from '~/components/Chatwoot';
 
 const Layout = ({ children }) => {
     const { isSignedIn } = useAuth();
@@ -35,6 +36,7 @@ const Layout = ({ children }) => {
                 }
             >
                 {children}
+                {isSignedIn && <ChatwootWidget  />}
             </AppShell>
         </div>
     );
