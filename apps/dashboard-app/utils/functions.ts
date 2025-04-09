@@ -1,5 +1,5 @@
 import { showNotification } from '@mantine/notifications';
-import parsePhoneNumber from 'libphonenumber-js';
+// import parsePhoneNumber from 'libphonenumber-js';
 import { requirements } from './constants';
 import bcrypt from 'bcryptjs';
 import CryptoJS from 'crypto-js';
@@ -94,7 +94,7 @@ export function getStrength(password: string) {
 	return Math.max(100 - (100 / (requirements.length + 1)) * multiplier, 10);
 }
 
-export function getE164Number(phoneNumber: string) {
+/*export function getE164Number(phoneNumber: string) {
 	const phone = parsePhoneNumber(phoneNumber, 'GB');
 	if (phone && phone.getPossibleCountries().includes('GB')) {
 		const E164Number = phone.format("E.164");
@@ -102,7 +102,7 @@ export function getE164Number(phoneNumber: string) {
 		return E164Number;
 	}
 	return phoneNumber;
-}
+}*/
 
 export function notifySuccess(id: string, message: string, icon: JSX.Element) {
 	showNotification({

@@ -5,11 +5,10 @@
 	"projectType": "application",
 	"targets": {
 		"build": {
-			"executor": "@nrwl/next:build",
+			"executor": "@nx/next:build",
 			"outputs": ["{options.outputPath}"],
 			"defaultConfiguration": "production",
 			"options": {
-				"root": "apps/landing-page",
 				"outputPath": "dist/apps/landing-page"
 			},
 			"configurations": {
@@ -20,12 +19,12 @@
 			}
 		},
 		"serve": {
-			"executor": "@nrwl/next:server",
+			"executor": "@nx/next:server",
 			"defaultConfiguration": "development",
 			"options": {
 				"buildTarget": "landing-page:build",
 				"dev": true,
-                "port": 4201
+				"port": 4201
 			},
 			"configurations": {
 				"development": {
@@ -39,31 +38,21 @@
 			}
 		},
 		"export": {
-			"executor": "@nrwl/next:export",
+			"executor": "@nx/next:export",
 			"options": {
 				"buildTarget": "landing-page:build:production"
 			}
 		},
 		"test": {
-			"executor": "@nrwl/jest:jest",
+			"executor": "@nx/jest:jest",
 			"outputs": ["{workspaceRoot}/coverage/{projectRoot}"],
 			"options": {
-				"jestConfig": "apps/landing-page/jest.config.ts",
-				"passWithNoTests": true
-			},
-			"configurations": {
-				"ci": {
-					"ci": true,
-					"codeCoverage": true
-				}
+				"jestConfig": "apps/landing-page/jest.config.ts"
 			}
 		},
 		"lint": {
-			"executor": "@nrwl/linter:eslint",
-			"outputs": ["{options.outputFile}"],
-			"options": {
-				"lintFilePatterns": ["apps/landing-page/**/*.{ts,tsx,js,jsx}"]
-			}
+			"executor": "@nx/eslint:lint",
+			"outputs": ["{options.outputFile}"]
 		}
 	},
 	"tags": []

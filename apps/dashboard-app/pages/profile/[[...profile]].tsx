@@ -1,5 +1,5 @@
 import React from 'react';
-import Page from '../layout/Page';
+import Page from '../../layout/Page';
 import { UserProfile } from '@clerk/nextjs';
 import { ScrollArea } from '@mantine/core';
 import { useMediaQuery, useViewportSize } from '@mantine/hooks';

@@ -1,20 +1,17 @@
-const { createGlobPatternsForDependencies } = require('@nrwl/react/tailwind');
+const { createGlobPatternsForDependencies } = require('@nx/react/tailwind');
 const { join } = require('path');
-const { fontFamily } = require('tailwindcss/defaultTheme')
+const { fontFamily } = require('tailwindcss/defaultTheme');
 
 /** @type {import('tailwindcss').Config} */
 module.exports = {
 	content: [
-		join(
-			__dirname,
-			'{src,pages,components,modals,layout}/**/*!(*.stories|*.spec).{ts,tsx,html}'
-		),
-		...createGlobPatternsForDependencies(__dirname),
+		join(__dirname, '{src,pages,components,modals,layout}/**/*!(*.stories|*.spec).{ts,tsx,html}'),
+		...createGlobPatternsForDependencies(__dirname)
 	],
 	theme: {
 		extend: {
 			fontFamily: {
-				sans: ['var(--font-poppins)', ...fontFamily.sans],
+				sans: ['var(--font-poppins)', ...fontFamily.sans]
 			},
 			colors: {
 				transparent: 'transparent',
@@ -47,7 +44,7 @@ module.exports = {
 					950: '#6C6C6C'
 				}
 			}
-		},
+		}
 	},
-	plugins: [],
+	plugins: []
 };

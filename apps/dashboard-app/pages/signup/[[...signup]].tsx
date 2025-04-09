@@ -1,8 +1,8 @@
 import React, { useCallback, useState } from 'react';
 import { useRouter } from 'next/router';
 import { useForm, zodResolver } from '@mantine/form';
-import { PATHS } from '../utils/constants';
-import { getE164Number, getStrength, notifyError, notifySuccess } from '../utils/functions';
+import { PATHS } from '../../utils/constants';
+import { getStrength, notifyError, notifySuccess } from '../../utils/functions';
 import { IconCheck, IconX } from '@tabler/icons-react';
 import { z } from 'zod';
 import { SignUp, useSignUp } from '@clerk/nextjs';
@@ -10,7 +10,7 @@ import { SignUp, useSignUp } from '@clerk/nextjs';
 export function Signup() {
 	const [loading, setLoading] = useState(false);
 	const [code_form, showCodeForm] = useState(false);
-	const { signUp, setActive, setSession } = useSignUp();
+	const { signUp, setActive } = useSignUp();
 	const SignupSchema = z.object({
 		full_name: z.string().nullable(),
 		email: z.string().email({ message: 'Invalid email' }).max(50),
@@ -48,8 +48,6 @@ export function Signup() {
 				});
 				// @ts-ignore
 				await setActive({ session: result.createdSessionId });
-				// @ts-ignore
-				await setSession(result.createdSessionId);
 				showCodeForm(false);
 				setLoading(false);
 				notifySuccess('verification-success', 'Verification successful!', <IconCheck size={20} />);
@@ -62,7 +60,7 @@ export function Signup() {
 		[router]
 	);
 
-	const handleSubmit = useCallback(
+	/*const handleSubmit = useCallback(
 		async values => {
 			setLoading(true);
 			if (values.phone) values.phone = getE164Number(values.phone);
@@ -90,12 +88,12 @@ export function Signup() {
 			}
 		},
 		[router, signUp, setActive]
-	);
+	);*/
 
 	return (
 		<div className='h-screen w-full overflow-x-hidden bg-white px-5 pt-5'>
 			<div className='h-full flex justify-center items-center'>
-				<SignUp path='/signup' routing='hash' signInUrl='/login' />
+				<SignUp signInUrl='/login' />
 			</div>
 		</div>
 	);

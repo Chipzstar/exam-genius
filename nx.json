@@ -1,31 +1,34 @@
 {
 	"$schema": "./node_modules/nx/schemas/nx-schema.json",
-	"npmScope": "exam-genius",
 	"affected": {
 		"defaultBase": "master"
-	},
-	"tasksRunnerOptions": {
-		"default": {
-			"runner": "@nrwl/nx-cloud",
-			"options": {
-				"cacheableOperations": ["build", "lint", "test", "e2e"],
-				"accessToken": "NmZiZGI2OGItNWQ5Yy00YjkyLWI2ZjUtYzkwMjNiYzEwYjRifHJlYWQtd3JpdGU="
-			}
-		}
 	},
 	"targetDefaults": {
 		"build": {
 			"dependsOn": ["^build"],
-			"inputs": ["production", "^production"]
-		},
-		"test": {
-			"inputs": ["default", "^production", "{workspaceRoot}/jest.preset.js"]
+			"inputs": ["production", "^production"],
+			"cache": true
 		},
 		"e2e": {
-			"inputs": ["default", "^production"]
+			"inputs": ["default", "^production"],
+			"cache": true
 		},
-		"lint": {
-			"inputs": ["default", "{workspaceRoot}/.eslintrc.json", "{workspaceRoot}/.eslintignore"]
+		"@nx/jest:jest": {
+			"inputs": ["default", "^production", "{workspaceRoot}/jest.preset.js"],
+			"cache": true,
+			"options": {
+				"passWithNoTests": true
+			},
+			"configurations": {
+				"ci": {
+					"ci": true,
+					"codeCoverage": true
+				}
+			}
+		},
+		"@nx/eslint:lint": {
+			"inputs": ["default", "{workspaceRoot}/.eslintrc.json", "{workspaceRoot}/.eslintignore"],
+			"cache": true
 		}
 	},
 	"namedInputs": {
@@ -35,7 +38,8 @@
 			"!{projectRoot}/**/?(*.)+(spec|test).[jt]s?(x)?(.snap)",
 			"!{projectRoot}/tsconfig.spec.json",
 			"!{projectRoot}/jest.config.[jt]s",
-			"!{projectRoot}/.eslintrc.json"
+			"!{projectRoot}/.eslintrc.json",
+			"!{projectRoot}/src/test-setup.[jt]s"
 		],
 		"sharedGlobals": ["{workspaceRoot}/babel.config.json"]
 	},
@@ -44,7 +48,7 @@
 		"libsDir": "libs"
 	},
 	"generators": {
-		"@nrwl/react": {
+		"@nx/react": {
 			"application": {
 				"babel": true
 			},
@@ -52,11 +56,12 @@
 				"unitTestRunner": "jest"
 			}
 		},
-		"@nrwl/next": {
+		"@nx/next": {
 			"application": {
 				"style": "css",
 				"linter": "eslint"
 			}
 		}
-	}
+	},
+	"nxCloudAccessToken": "NmZiZGI2OGItNWQ5Yy00YjkyLWI2ZjUtYzkwMjNiYzEwYjRifHJlYWQtd3JpdGU="
 }

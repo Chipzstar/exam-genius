@@ -3,7 +3,7 @@ import Head from 'next/head';
 import Favicon from '../components/Favicon';
 import React, { useState } from 'react';
 import { createEmotionCache, MantineProvider } from '@mantine/core';
-import localFont from '@next/font/local';
+import localFont from 'next/font/local';
 import '../styles/globals.css';
 import PlausibleProvider from 'next-plausible';
 import { SneakPeakContext } from '../context/SneakPeakContext';

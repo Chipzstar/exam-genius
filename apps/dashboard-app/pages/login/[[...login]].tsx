@@ -1,10 +1,10 @@
 import React, { useCallback, useEffect, useState } from 'react';
-import { notifyError } from '../utils/functions';
+import { notifyError } from '../../utils/functions';
 import { useRouter } from 'next/router';
 import { useForm } from '@mantine/form';
 import { IconX } from '@tabler/icons-react';
 import { SignIn, useSignIn } from '@clerk/nextjs';
-import { LoginUser } from '../utils/types';
+import { LoginUser } from '../../utils/types';
 
 const Login = () => {
 	const [loading, setLoading] = useState(false);
@@ -65,7 +65,7 @@ const Login = () => {
 		<div className='h-screen w-full overflow-x-hidden bg-white p-5'>
 			<form data-cy='login-form' onSubmit={form.onSubmit(handleSignIn)} className='flex h-full w-full flex-col'>
 				<div className='flex h-full justify-center items-center'>
-					<SignIn path='/login' routing='hash' signUpUrl='/signup' />
+					<SignIn signUpUrl='/signup' />
 				</div>
 			</form>
 		</div>
