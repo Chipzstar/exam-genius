@@ -12,7 +12,7 @@ const ChatwootWidget: React.FC<Props> = ({ token = 'BApecBTbBSMMxfBex5PvEtT1' }:
     const { user } = useUser();
 
     useEffect(() => {
-        if (user && window.$chatwoot) {
+        if (user && (window as any).$chatwoot) {
             (window as any).$chatwoot.setUser(user.id, {
                 name: user.fullName, // Name of the user
                 avatar_url: user.imageUrl, // Avatar URL
@@ -36,11 +36,11 @@ const ChatwootWidget: React.FC<Props> = ({ token = 'BApecBTbBSMMxfBex5PvEtT1' }:
             var BASE_URL = 'https://app.chatwoot.com';
             var g = d.createElement(t),
                 s = d.getElementsByTagName(t)[0];
-            g.src = BASE_URL + '/packs/js/sdk.js';
-            g.defer = true;
-            g.async = true;
-            s.parentNode.insertBefore(g, s);
-            g.onload = function () {
+            (g as any).src = BASE_URL + '/packs/js/sdk.js';
+            (g as any).defer = true;
+            (g as any).async = true;
+            (s as any).parentNode.insertBefore(g, s);
+            (g as any).onload = function () {
                 (window as any).chatwootSDK.run({
                     websiteToken: token,
                     baseUrl: BASE_URL
