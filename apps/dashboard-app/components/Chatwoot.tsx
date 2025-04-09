@@ -25,8 +25,7 @@ const ChatwootWidget: React.FC<Props> = ({ token = 'BApecBTbBSMMxfBex5PvEtT1' }:
     useEffect(() => {
         // Add Chatwoot Settings
         (window as any).chatwootSettings = {
-            hideMessageBubble: true,
-            position: 'right', // This can be left or right
+            position: 'left', // This can be left or right
             locale: 'en', // Language to be set
             type: 'standard', // [standard, expanded_bubble]
             launcherTitle: 'Send us your feedback!'
