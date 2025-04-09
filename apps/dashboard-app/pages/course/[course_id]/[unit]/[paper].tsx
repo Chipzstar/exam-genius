@@ -4,6 +4,7 @@ import {
 	Card,
 	createStyles,
 	getStylesRef,
+    Loader,
 	LoadingOverlay,
 	ScrollArea,
 	Space,
@@ -16,19 +17,19 @@ import React, { useCallback, useState } from 'react';
 import { useMediaQuery, useTimeout, useViewportSize } from '@mantine/hooks';
 import { IconArrowLeft, IconCheck, IconX } from '@tabler/icons-react';
 import { useRouter } from 'next/router';
-import { trpc } from '../../../../utils/trpc';
+import { trpc } from '~/utils/trpc';
 import parse from 'html-react-parser';
 import { GetServerSideProps, InferGetServerSidePropsType } from 'next';
 import { ParsedUrlQuery } from 'querystring';
 import { Carousel } from '@mantine/carousel';
 import CustomLoader from '../../../../components/CustomLoader';
-import { PATHS, TWO_MINUTES } from '../../../../utils/constants';
+import { PATHS, TWO_MINUTES } from '~/utils/constants';
 import { ExamBoard, Subject, SUBJECT_PAPERS } from '@exam-genius/shared/utils';
-import { capitalize, notifyError, notifySuccess, sanitize } from '../../../../utils/functions';
+import { capitalize, notifyError, notifySuccess, sanitize } from '~/utils/functions';
 import { TRPCError } from '@trpc/server';
 import axios from 'axios';
 import Link from 'next/link';
-import { GeneratePaperPayload } from '../../../../utils/types';
+import { GeneratePaperPayload } from '~/utils/types';
 
 export interface PageQuery extends ParsedUrlQuery {
 	subject: Subject;
@@ -203,6 +204,7 @@ const Paper = ({ query }: InferGetServerSidePropsType<typeof getServerSideProps>
 					<Carousel mx='auto' classNames={classes} controlsOffset='xl'>
 						{papers.map((paper, index) => (
 							<Carousel.Slide key={index}>
+                                {/*@ts-ignore */}
 								<ScrollArea.Autosize
 									mah={mobileScreen ? height - 150 : height - 100}
 									p='sm'

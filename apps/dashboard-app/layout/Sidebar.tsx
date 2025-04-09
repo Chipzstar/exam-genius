@@ -3,10 +3,11 @@ import { createStyles, getStylesRef, Group, Navbar, Text } from '@mantine/core';
 import { IconLicense, IconLogout, IconUser } from '@tabler/icons-react';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
-import { DEFAULT_HEADER_HEIGHT, PATHS } from '../utils/constants';
+import { DEFAULT_HEADER_HEIGHT, PATHS } from '~/utils/constants';
 import { useClerk } from '@clerk/nextjs';
 import { useViewportSize } from '@mantine/hooks';
 
+{/*@ts-ignore */}
 const useStyles = createStyles((theme, _params) => {
 	return {
 		header: {

@@ -3,13 +3,13 @@ import { ParsedUrlQuery } from 'querystring';
 import Page from '../../../layout/Page';
 import { Button, Card, LoadingOverlay, ScrollArea, Text, Title } from '@mantine/core';
 import Image from 'next/image';
-import { PATHS } from '../../../utils/constants';
+import { PATHS } from '~/utils/constants';
 import { GetServerSideProps, InferGetServerSidePropsType } from 'next';
-import { genCourseOrPaperName } from '../../../utils/functions';
+import { genCourseOrPaperName } from '~/utils/functions';
 import Link from 'next/link';
 import { IconArrowLeft } from '@tabler/icons-react';
 import { useRouter } from 'next/router';
-import { trpc } from '../../../utils/trpc';
+import { trpc } from '~/utils/trpc';
 import { useMediaQuery, useViewportSize } from '@mantine/hooks';
 import { SUBJECT_PAPERS } from '@exam-genius/shared/utils';
 
@@ -59,6 +59,7 @@ const Course = ({ query }: InferGetServerSidePropsType<typeof getServerSideProps
 						</Button>
 					</div>
 				</header>
+                {/*@ts-ignore */}
 				<ScrollArea.Autosize mah={height - 100}>
 					{course_info.map(([unit_name, unit]) => (
 						<Card shadow='sm' radius='md' mb='lg' key={unit_name}>

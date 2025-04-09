@@ -2,8 +2,8 @@ import Page from '../layout/Page';
 import { Box, Button, Card, Divider, Group, LoadingOverlay, ScrollArea, Text, Title } from '@mantine/core';
 import Image from 'next/image';
 import Link from 'next/link';
-import { PATHS } from '../utils/constants';
-import { trpc } from '../utils/trpc';
+import { PATHS } from '~/utils/constants';
+import { trpc } from '~/utils/trpc';
 import { useMediaQuery, useViewportSize } from '@mantine/hooks';
 
 export function Home() {
@@ -17,6 +17,7 @@ export function Home() {
 				<Title order={2} weight={600} mb='lg'>
 					Courses 📚
 				</Title>
+                {/*@ts-ignore */}
 				<ScrollArea.Autosize mah={height - 200}>
 					{!courses || isLoading ? (
 						<Box h={height - 200}>

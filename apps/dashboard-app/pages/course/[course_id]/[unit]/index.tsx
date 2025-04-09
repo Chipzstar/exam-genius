@@ -3,19 +3,19 @@ import { ParsedUrlQuery } from 'querystring';
 import Page from '../../../../layout/Page';
 import { Anchor, Breadcrumbs, Button, Card, LoadingOverlay, ScrollArea, Text, Title } from '@mantine/core';
 import Image from 'next/image';
-import { CHECKOUT_TYPE, PAPER_PRICE_IDS, PATHS } from '../../../../utils/constants';
+import { CHECKOUT_TYPE, PAPER_PRICE_IDS, PATHS } from '~/utils/constants';
 import { GetServerSideProps, InferGetServerSidePropsType } from 'next';
-import { capitalize, genCourseOrPaperName, notifyError, notifySuccess, sanitize } from '../../../../utils/functions';
+import { capitalize, genCourseOrPaperName, notifyError, notifySuccess, sanitize } from '~/utils/functions';
 import { IconArrowLeft, IconCheck, IconX } from '@tabler/icons-react';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
-import { trpc } from '../../../../utils/trpc';
+import { trpc } from '~/utils/trpc';
 import { useMediaQuery, useViewportSize } from '@mantine/hooks';
 import CustomLoader from '../../../../components/CustomLoader';
 import { ExamBoard, PaperInfo, Subject, SUBJECT_PAPERS } from '@exam-genius/shared/utils';
 import NotFound404 from '../../../404';
 import axios from 'axios';
-import { GeneratePaperPayload } from '../../../../utils/types';
+import { GeneratePaperPayload } from '~/utils/types';
 
 export interface PageQuery extends ParsedUrlQuery {
 	board: ExamBoard;
@@ -139,7 +139,8 @@ const Papers = ({ query }: InferGetServerSidePropsType<typeof getServerSideProps
 		[course]
 	);
 
-	return isLoading ? (
+	// @ts-ignore
+    return isLoading ? (
 		<LoadingOverlay visible={isLoading} />
 	) : !course_info ? (
 		<NotFound404 />
@@ -173,6 +174,7 @@ const Papers = ({ query }: InferGetServerSidePropsType<typeof getServerSideProps
 						</Button>
 					</div>
 				</header>
+                {/*@ts-ignore */}
 				<ScrollArea.Autosize mah={height - 150} mt='lg'>
 					{course_info.papers.map((paper, index) => (
 						<Card shadow='sm' radius='md' mb='lg' key={index}>

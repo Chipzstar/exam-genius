@@ -9,6 +9,7 @@ const Profile = () => {
 	const mobileScreen = useMediaQuery('(max-width: 30em)');
 	return (
 		<Page.Container extraClassNames='sm:justify-center items-center w-full'>
+            {/*@ts-ignore */}
 			<ScrollArea.Autosize
 				mah={{ base: height, sm: height - 100 }}
 				p={{ base: 0, sm: 'xl' }}

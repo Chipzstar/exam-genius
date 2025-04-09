@@ -4,16 +4,16 @@ import Page from '../layout/Page';
 import { ExamBoardCard } from '@exam-genius/shared/ui';
 import getStripe from '../utils/loadStripe';
 import { useLocalStorage, useMediaQuery } from '@mantine/hooks';
-import { CHECKOUT_TYPE } from '../utils/constants';
-import { notifyError } from '../utils/functions';
+import { CHECKOUT_TYPE } from '~/utils/constants';
+import { notifyError } from '~/utils/functions';
 import { IconX } from '@tabler/icons-react';
 import { useRouter } from 'next/router';
-import { trpc } from '../utils/trpc';
-import { ExamBoard, Subject } from '@exam-genius/shared/utils';
+import { trpc } from '~/utils/trpc';
+import type { ExamBoard, Subject } from '@exam-genius/shared/utils';
 
 getStripe(process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY).then(r => console.log('Stripe loaded', r));
 
-const ExamBoard = () => {
+const ExamBoardPage = () => {
 	const mobileScreen = useMediaQuery('(max-width: 30em)');
 	const [subject, setSubject] = useLocalStorage<string>({
 		key: 'subject',
@@ -98,4 +98,4 @@ const ExamBoard = () => {
 	);
 };
 
-export default ExamBoard;
+export default ExamBoardPage;
