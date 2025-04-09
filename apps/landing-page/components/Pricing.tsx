@@ -28,7 +28,7 @@ export const Pricing = () => {
 					<div className='flex flex-col items-center space-y-4'>
 						<p className='text-2xl font-normal'>Genius Plan</p>
 						<p className='text-center' style={{ width: '250px' }}>
-							Available until <strong>31st July 2023</strong>
+							Available until <strong>31st July 2025</strong>
 						</p>
 					</div>
 					<p className='text-4xl'>£5</p>

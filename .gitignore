@@ -44,5 +44,6 @@ Thumbs.db
 .next
 .vercel
 *.env
+.env.*
 
 .vercel
