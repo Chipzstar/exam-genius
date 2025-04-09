@@ -4,7 +4,7 @@ import { validateLineItems } from '../handlers';
 import { z } from 'zod';
 import { TRPCError } from '@trpc/server';
 import { getAuth } from '@clerk/nextjs/server';
-import { log } from 'next-axiom';
+import { log } from '~/server/logtail';
 import { CHECKOUT_TYPE, PAPER_PRICE_IDS, PATHS, SUBJECT_STRIPE_IDS } from '../../utils/constants';
 
 const courseSchema = z.object({

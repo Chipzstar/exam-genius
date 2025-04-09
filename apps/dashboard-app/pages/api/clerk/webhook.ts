@@ -1,7 +1,7 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
 import { cors, runMiddleware } from '../cors';
 import { prisma } from '../../../server/prisma';
-import { log } from 'next-axiom';
+import { log } from '../../../server/logtail';
 import { buffer } from 'micro';
 import { Webhook, WebhookRequiredHeaders } from 'svix';
 import { IncomingHttpHeaders } from 'http';

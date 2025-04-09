@@ -4,7 +4,7 @@ import stripe from '../../../server/stripe';
 import { getOrCreateStripeCustomerIdForUser } from '../../../server/handlers/stripe-webhook-handlers';
 import { getAuth } from '@clerk/nextjs/server';
 import { prisma } from '../../../server/prisma';
-import { log } from 'next-axiom';
+import { log } from '~/server/logtail';
 import { CHECKOUT_TYPE, PAPER_PRICE_IDS, PATHS, SUBJECT_STRIPE_IDS } from '../../../utils/constants';
 import { validateLineItems } from '../../../server/handlers';
 

@@ -1,6 +1,6 @@
 import type { PrismaClient } from '@prisma/client';
 import { ClerkEvent } from '../../utils/types';
-import { log } from 'next-axiom';
+import { log } from '~/server/logtail';
 
 export const createNewUser = async ({ event, prisma }: { event: ClerkEvent; prisma: PrismaClient }) => {
 	try {

@@ -1,7 +1,7 @@
 import type { PrismaClient } from '@prisma/client';
 import Prisma from '@prisma/client';
 import type Stripe from 'stripe';
-import { log } from 'next-axiom';
+import { log } from '~/server/logtail';
 import { CHECKOUT_TYPE } from '../../utils/constants';
 import { capitalize, genCourseOrPaperName, genID, sanitize } from '../../utils/functions';
 import axios from 'axios';

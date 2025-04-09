@@ -3,7 +3,7 @@ import { TRPCError } from '@trpc/server';
 import { z } from 'zod';
 import axios from 'axios';
 import { capitalize, genID, sanitize } from '../../utils/functions';
-import { log } from 'next-axiom';
+import { log } from '~/server/logtail';
 import { GeneratePaperPayload } from '../../utils/types';
 
 const paperRouter = createTRPCRouter({

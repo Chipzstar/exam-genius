@@ -1,5 +1,5 @@
 import { NextApiRequest, NextApiResponse } from 'next';
-import { log } from 'next-axiom';
+import { log } from '~/server/logtail';
 import { openai } from '../../../server/openai';
 import { cors, runMiddleware } from '../cors';
 

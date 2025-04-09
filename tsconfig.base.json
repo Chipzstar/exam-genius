@@ -16,7 +16,10 @@
 		"baseUrl": ".",
 		"paths": {
 			"@exam-genius/shared/ui": ["libs/shared/ui/src/index.ts"],
-			"@exam-genius/shared/utils": ["libs/shared/utils/src/index.ts"]
+			"@exam-genius/shared/utils": ["libs/shared/utils/src/index.ts"],
+            "~/*": [
+                "./apps/dashboard-app/*"
+            ]
 		}
 	},
 	"exclude": ["node_modules", "tmp"]
