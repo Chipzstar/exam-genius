@@ -1,12 +1,12 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
 import { cors, runMiddleware } from '../cors';
 import stripe from '../../../server/stripe';
-import { getOrCreateStripeCustomerIdForUser } from '../../../server/handlers/stripe-webhook-handlers';
+import { getOrCreateStripeCustomerIdForUser } from '~/server/handlers/stripe-webhook-handlers';
 import { getAuth } from '@clerk/nextjs/server';
-import { prisma } from '../../../server/prisma';
+import { prisma } from '~/server/prisma';
 import { log } from '~/server/logtail';
-import { CHECKOUT_TYPE, PAPER_PRICE_IDS, PATHS, SUBJECT_STRIPE_IDS } from '../../../utils/constants';
-import { validateLineItems } from '../../../server/handlers';
+import { CHECKOUT_TYPE, PAPER_PRICE_IDS, PATHS, SUBJECT_STRIPE_IDS } from '~/utils/constants';
+import { validateLineItems } from '~/server/handlers';
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
 	// Run the middleware

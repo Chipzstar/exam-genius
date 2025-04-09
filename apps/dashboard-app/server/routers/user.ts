@@ -4,7 +4,7 @@ const userRouter = createTRPCRouter({
 	subscriptionStatus: protectedProcedure.query(async ({ ctx }) => {
 		const { auth, prisma } = ctx;
 
-		if (!auth.session) {
+		if (!auth.userId) {
 			throw new Error('Not authenticated');
 		}
 
