@@ -1,0 +1,201 @@
+---
+alwaysApply: false
+---
+You are an expert in TypeScript, Node.js, Next.js App Router, React, Nx, tRPC, Mantine UI v6, Prisma, Clerk Auth, Stripe, TailwindCSS, and Zod.
+
+## Code Style and Structure
+- Write concise, technical TypeScript code with accurate examples.
+- Use functional and declarative programming patterns; avoid classes unless necessary for React components.
+- Prefer iteration and modularization over code duplication.
+- Use descriptive variable names with auxiliary verbs (e.g., isLoading, hasError).
+- Structure files: exported component, subcomponents, helpers, static content, types.
+- Follow existing project patterns observed in the codebase.
+
+## Naming Conventions
+- Use lowercase with dashes for directories (e.g., components/exam-board).
+- Use kebab-case naming convention for component file names e.g. components/course-card.tsx
+- Favor named exports for utilities and components.
+- Follow Nx project naming: `dashboard-app`, `landing-page`, `shared-ui`, `shared-utils`.
+
+## TypeScript Usage
+- Use TypeScript for all code; prefer interfaces over types.
+- Avoid enums; use maps or const objects instead.
+- Use functional components with TypeScript interfaces.
+- Avoid the use of 'any' type; prefer 'unknown' when type is uncertain.
+- Leverage tRPC's type inference; avoid manually typing API responses.
+
+## Syntax and Formatting
+- Use tabs for indentation (width: 4) as defined in .prettierrc.
+- Use single quotes for strings.
+- No trailing commas.
+- 120 character line width.
+- Use the "function" keyword for pure functions.
+- Avoid unnecessary curly braces in conditionals; use concise syntax for simple statements.
+- Use declarative JSX.
+
+## Nx Monorepo
+- Always use Nx commands for building, serving, and testing (e.g., `npx nx serve dashboard-app`).
+- Respect project boundaries; import shared code using TypeScript path aliases:
+  - `@exam-genius/shared/ui` for UI components
+  - `@exam-genius/shared/utils` for utilities
+  - `~/*` for internal dashboard-app imports
+- Run `npx nx graph` to visualize dependencies before making architectural changes.
+- Use `npx nx affected --target=test` to run tests only for affected projects.
+- Never bypass Nx's caching unless explicitly needed (production builds use `--skip-nx-cache`).
+
+## Next.js App Router
+- This project uses Next.js **App Router**, NOT Pages Router.
+- Pages go in `app/` directory as `page.tsx` files, not `pages/`.
+- Use React Server Components (RSC) by default for server-side rendering.
+- Mark components with 'use client' only when necessary (interactivity, hooks, browser APIs).
+- API routes go in `app/api/` as `route.ts` files.
+- Use `next/link` for navigation and `useRouter` from `next/navigation` for programmatic routing.
+- Implement `app/layout.tsx` for global providers (Clerk, Mantine, tRPC) and HTML structure.
+- Loading states: use `loading.tsx` for route segment loading UI.
+- Error boundaries: use `error.tsx` for error handling at route segment level.
+- Use async Server Components for data fetching; avoid 'use client' for data fetching.
+
+## UI and Styling
+- Use **Mantine v6** as the primary UI component library.
+- Use TailwindCSS for utility classes and custom styling.
+- Import Mantine components from `@mantine/core`, `@mantine/hooks`, `@mantine/notifications`, etc.
+- Respect the brand color palette defined in `_app.tsx`:
+  - Primary color: 'brand' with shades from `#D6DCFD` to `#030A39`
+  - Primary shade: 5 (`#2742F5`)
+- Use Poppins font family (already configured via `next/font/local`).
+- Implement responsive design with Mantine's responsive props and TailwindCSS breakpoints.
+- Use Mantine's theme override sparingly; prefer Tailwind for custom styling.
+
+## tRPC Usage
+- Use tRPC for end-to-end typesafe APIs without code generation or runtime bloat.
+- Define procedures in routers located in `server/routers/` (user, stripe, course, paper).
+- Structure routers by domain and merge them into the centralized `appRouter`.
+- Use Zod for input validation in all procedures.
+- Export only router type definitions (`AppRouter`), never import server code on the client.
+- Use `publicProcedure` for public endpoints and `protectedProcedure` for authenticated routes.
+- Access authenticated user via `ctx.auth.userId` in protected procedures.
+- Use `superjson` as the data transformer (already configured) to preserve Date, Map, Set types.
+- Import tRPC client via `utils/trpc` on the client side.
+
+## tRPC Best Practices
+- Use meaningful procedure names that clearly indicate their purpose (e.g., getById, createCourse, updateUser).
+- Chain `.query()` for data fetching and `.mutation()` for data modification.
+- Implement middleware for cross-cutting concerns (auth, logging, rate limiting).
+- Context provides: `auth` (Clerk), `prisma`, `stripe`, `req`, `res`.
+- Keep procedures focused and single-purpose; compose complex operations from multiple procedures.
+- Use `.invalidate()` to refresh queries after mutations.
+- Leverage `.setData()` for optimistic updates with proper rollback in `onError`.
+- Handle errors using `TRPCError` with appropriate error codes (UNAUTHORIZED, BAD_REQUEST, etc.).
+
+## Prisma & Database
+- Use Prisma ORM with Neon PostgreSQL (serverless with connection pooling).
+- **CRITICAL**: Schemas are split across multiple files in `prisma/schemas/`:
+  - `base.prisma`: Database config
+  - `user.prisma`: User models
+  - `course.prisma`: Course models
+  - `paper.prisma`: Paper/exam models
+  - `StripeEvent.prisma`: Stripe webhook logging
+- **NEVER** run `prisma generate` directly; always use:
+  - `npm run prisma:generate` (merges schemas + generates client)
+  - `npm run prisma:sync` (merges schemas + generates client + pushes to DB)
+- The merged schema is output to `prisma/schema.prisma` via `prismerge`.
+- Access Prisma client via `server/prisma.ts` which uses Neon's serverless adapter.
+- Use `DATABASE_URL` (pooled) and `DATABASE_URL_UNPOOLED` (direct) from environment.
+- Always handle Prisma errors gracefully and return appropriate tRPC errors.
+
+## Clerk Authentication
+- Use Clerk for authentication throughout the application.
+- Access auth in tRPC via `ctx.auth.userId`.
+- Protected routes use `protectedProcedure` middleware which checks `ctx.auth.userId`.
+- Middleware in `middleware.ts` protects all routes except `/login`, `/signup`, and API webhooks.
+- Public routes: `/login`, `/signup`, `/api/panel`, `/api/clerk/*`, `/api/openai/*`, `/api/stripe/*`.
+- Use `@clerk/nextjs` components: `<SignIn />`, `<SignUp />`, `<UserButton />`.
+- Handle Clerk webhooks in `pages/api/clerk/` for user lifecycle events.
+
+## Stripe Integration
+- Use Stripe for payment processing.
+- Access Stripe client via `server/stripe.ts`.
+- Stripe webhook handlers located in `pages/api/stripe/`.
+- Log all Stripe webhook events to `StripeEvent` Prisma model for debugging.
+- For local development, use `npm run stripe-local-webhook` to forward webhooks.
+- Use `@stripe/stripe-js` for client-side Stripe integration.
+- Always verify webhook signatures for security.
+
+## Environment Variables
+- Use **Doppler** for secrets management (project: `exam-genius`, config: `loc`).
+- For local development with env vars: `npm run nx:serve:dashboard:doppler`.
+- Required env vars: `DATABASE_URL`, `DATABASE_URL_UNPOOLED`, Clerk keys, Stripe keys, OpenAI key.
+- Never commit `.env` files; use Doppler or `.env.local` for local overrides.
+- Access env vars via `process.env.VARIABLE_NAME`.
+
+## Testing
+- Use Jest for unit tests with `@nx/jest` executor.
+- Use Cypress for E2E tests in `*-e2e` projects.
+- Run tests via: `npx nx test <project-name>`.
+- Run E2E via: `npx nx e2e dashboard-app-e2e`.
+- Write tests alongside source code in `*.spec.ts` or `*.test.ts` files.
+- Mock external services (Stripe, OpenAI, Clerk) in tests.
+
+## API Routes
+- tRPC routes: Handled via `app/api/trpc/[trpc]/route.ts` using tRPC HTTP adapter.
+- REST API routes: Located in `app/api/` as `route.ts` files for webhooks and external integrations.
+- Route handlers use named exports: `GET`, `POST`, `PUT`, `PATCH`, `DELETE`.
+- Webhook routes: `app/api/clerk/*/route.ts`, `app/api/stripe/*/route.ts`.
+- Debug route: `app/api/panel/route.ts` (tRPC panel, development only).
+- Always validate webhook signatures for security.
+- Access request with `NextRequest` and return `NextResponse` or `Response` objects.
+- Use `cookies()` and `headers()` from `next/headers` for accessing request data in route handlers.
+
+## Performance & Best Practices
+- Default to React Server Components (RSC) for all components; only use 'use client' when necessary.
+- Minimize 'use client' usage: prefer server components for data fetching and static content.
+- Use 'use client' only for: interactive components, hooks (useState, useEffect), browser APIs, event handlers.
+- Wrap client components in Suspense with fallback for better loading states.
+- Fetch data directly in Server Components using async/await (no getServerSideProps needed).
+- Use `revalidate` export or `revalidatePath`/`revalidateTag` for ISR (Incremental Static Regeneration).
+- Optimize images: use `next/image` with proper dimensions and priority for LCP images.
+- Lazy load heavy client components with `dynamic` from `next/dynamic` with `ssr: false` when appropriate.
+- Use Mantine's built-in lazy loading for modals and notifications.
+- Minimize bundle size by importing only needed Mantine components.
+- Leverage parallel and sequential data fetching patterns in Server Components.
+- Use streaming with Suspense boundaries for progressive rendering.
+
+## Error Handling & Logging
+- Use Logtail with Winston for structured logging (configured in `server/logtail.ts`).
+- Use Sentry for error tracking (configured in `sentry.*.config.ts`).
+- Log errors in tRPC procedures before throwing `TRPCError`.
+- Return user-friendly error messages; log detailed errors server-side.
+
+## Key Conventions
+- Default git branch is `master` (not `main`).
+- Use npm (not yarn or pnpm) for package management.
+- SuperJSON serialization handles Date, Map, Set types across client-server boundaries.
+- Respect Nx project boundaries; don't import app code into libraries.
+- Always test webhooks locally before deploying (Stripe, Clerk).
+- Production builds skip Nx cache with `--skip-nx-cache` flag.
+
+## File Organization
+- **Dashboard App**: `apps/dashboard-app/`
+  - App Router: `app/` (pages, layouts, loading, error)
+  - API Routes: `app/api/` (route.ts files)
+  - tRPC Routers: `server/routers/`
+  - Components: `components/` (organize as client/server)
+  - Utils: `utils/`
+  - Styles: `styles/`
+- **Landing Page**: `apps/landing-page/`
+  - App Router: `app/` (pages, layouts, loading, error)
+- **Shared Libraries**: `libs/shared/ui/`, `libs/shared/utils/`
+- **Database**: `prisma/schemas/` (multiple schema files)
+
+## App Router Conventions
+- `page.tsx`: Route page component (default Server Component)
+- `layout.tsx`: Shared UI for route segments (wraps pages)
+- `loading.tsx`: Loading UI for route segment
+- `error.tsx`: Error UI for route segment (must be Client Component)
+- `not-found.tsx`: 404 UI for route segment
+- `route.ts`: API endpoint (route handler)
+- `template.tsx`: Re-rendered layout on navigation
+- `default.tsx`: Fallback for parallel routes
+
+Follow Next.js App Router docs for routing, data fetching, and Server Components.
+Refer to Nx documentation for monorepo best practices and task orchestration.

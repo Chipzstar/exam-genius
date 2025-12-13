@@ -1,0 +1,15 @@
+version: "2"
+# authtoken: YOUR_NGROK_AUTHTOKEN_HERE
+#
+# SETUP INSTRUCTIONS:
+# 1. Copy this file to ngrok.yml: cp bin/ngrok.yml.example bin/ngrok.yml
+# 2. Add your authtoken using one of these methods:
+#    - Run: ngrok config add-authtoken <your_token>
+#    - Set environment variable: export NGROK_AUTHTOKEN=<your_token>
+#    - Manually add authtoken line: authtoken: <your_token>
+#
+# SECURITY WARNING:
+# - Never commit your actual authtoken to version control
+# - The ngrok.yml file is gitignored to prevent accidental commits
+# - Get your authtoken from: https://dashboard.ngrok.com/get-started/your-authtoken
+
