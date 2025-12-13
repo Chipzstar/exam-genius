@@ -1,10 +1,10 @@
 import { auth } from '../auth';
 import { prisma } from '../prisma';
 import stripe from '../stripe';
-import type { AuthObject } from '@clerk/backend';
+import { getAuth } from '@clerk/nextjs/server';
 
 export interface Context {
-	auth: AuthObject;
+	auth: ReturnType<typeof getAuth>;
 	prisma: typeof prisma;
 	stripe: typeof stripe;
 }

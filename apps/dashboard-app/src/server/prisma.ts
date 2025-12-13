@@ -1,9 +1,7 @@
 import { env } from '~/env';
 import { PrismaNeon } from '@prisma/adapter-neon';
 import { PrismaClient } from '@exam-genius/shared/prisma';
-import dotenv from 'dotenv';
 
-dotenv.config()
 const connectionString = `${env.DATABASE_URL}`;
 const adapter = new PrismaNeon({ connectionString });
 

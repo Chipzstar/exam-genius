@@ -3,7 +3,7 @@ import { showNotification } from '@mantine/notifications';
 import { requirements } from './constants';
 import bcrypt from 'bcryptjs';
 import CryptoJS from 'crypto-js';
-import { ExamBoard, Subject } from '@prisma/client';
+import type { ExamBoard, Subject } from '@exam-genius/shared/prisma';
 import { customAlphabet } from 'nanoid';
 
 const nanoid = customAlphabet('1234567890abcdefghiklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ', 16)

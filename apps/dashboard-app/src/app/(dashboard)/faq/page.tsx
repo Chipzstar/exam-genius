@@ -1,39 +1,20 @@
 'use client';
 
 import React from 'react';
-import { Accordion, Button, createStyles, rem, Title } from '@mantine/core';
+import { Accordion, Button, Title } from '@mantine/core';
 import Page from '~/layout/Page';
 import { IconArrowLeft } from '@tabler/icons-react';
 import { useMediaQuery } from '@mantine/hooks';
 import { useRouter } from 'next/navigation';
 
-const useStyles = createStyles(theme => ({
-	wrapper: {
-		paddingTop: `calc(${theme.spacing.xl} * 2)`,
-		paddingBottom: `calc(${theme.spacing.xl} * 2)`,
-		minHeight: 650
-	},
-
-	title: {
-		marginBottom: `calc(${theme.spacing.xl} * 1.5)`
-	},
-
-	item: {
-		borderRadius: theme.radius.md,
-		marginBottom: theme.spacing.lg,
-		border: `${rem(1)} solid ${theme.colorScheme === 'dark' ? theme.colors.dark[4] : theme.colors.gray[3]}`
-	}
-}));
-
 export default function FAQPage() {
-	const { classes } = useStyles();
 	const router = useRouter();
 	const mobileScreen = useMediaQuery('(max-width: 30em)');
 	return (
 		<Page.Container>
 			<header className='flex items-center justify-between p-6'>
 				<Button
-					leftIcon={<IconArrowLeft />}
+					leftSection={<IconArrowLeft />}
 					size={mobileScreen ? 'sm' : 'md'}
 					variant='outline'
 					onClick={() => router.back()}
@@ -42,12 +23,22 @@ export default function FAQPage() {
 				</Button>
 			</header>
 			<Page.Body extraClassNames='justify-center items-center'>
-				<Title align='center' className={classes.title}>
+				<Title order={2} mb={{ base: 'md', sm: 'xl' }}>
 					Frequently Asked Questions
 				</Title>
 
-				<Accordion variant='separated' w={{ base: '100%', sm: 700 }}>
-					<Accordion.Item className={classes.item} value='pricing'>
+				<Accordion 
+					variant='separated' 
+					w={{ base: '100%', sm: 700 }}
+					styles={{
+						item: {
+							borderRadius: 'var(--mantine-radius-md)',
+							marginBottom: 'var(--mantine-spacing-lg)',
+							border: '1px solid var(--mantine-color-gray-3)'
+						}
+					}}
+				>
+					<Accordion.Item value='pricing'>
 						<Accordion.Control>
 							I just generated a paper, but now I have to pay for another one?
 						</Accordion.Control>
@@ -57,7 +48,7 @@ export default function FAQPage() {
 						</Accordion.Panel>
 					</Accordion.Item>
 
-					<Accordion.Item className={classes.item} value='failure'>
+					<Accordion.Item value='failure'>
 						<Accordion.Control>I tried generating my paper but it keeps failing.</Accordion.Control>
 						<Accordion.Panel>
 							Please send your issue to <strong>support@exam-genius.com</strong> with your login email.
@@ -65,7 +56,7 @@ export default function FAQPage() {
 						</Accordion.Panel>
 					</Accordion.Item>
 
-					<Accordion.Item className={classes.item} value='reset-password'>
+					<Accordion.Item value='reset-password'>
 						<Accordion.Control>How can I reset my password?</Accordion.Control>
 						<Accordion.Panel>
 							Navigate to the login page. Enter you email. Before entering your password you should see a
@@ -73,7 +64,7 @@ export default function FAQPage() {
 						</Accordion.Panel>
 					</Accordion.Item>
 
-					<Accordion.Item className={classes.item} value='credit-card'>
+					<Accordion.Item value='credit-card'>
 						<Accordion.Control>Do you store credit card information securely?</Accordion.Control>
 						<Accordion.Panel>
 							Yes! All payment information is stored securely with high-level encryption

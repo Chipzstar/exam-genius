@@ -1,5 +1,4 @@
-import type { PrismaClient } from '@exam-genius/shared/prisma';
-import Prisma from '@prisma/client';
+import type { PrismaClient, Subject, ExamBoard } from '@exam-genius/shared/prisma';
 import type Stripe from 'stripe';
 import { log } from '~/server/logtail';
 import { CHECKOUT_TYPE } from '../../utils/constants';
@@ -88,8 +87,8 @@ export const handleCheckoutSessionComplete = async ({
 			const price = await stripe.prices.retrieve(String(item.price.id));
 			if (checkout_type === CHECKOUT_TYPE.COURSE) {
 				if (session?.metadata?.subject && session?.metadata?.exam_board) {
-					const subject = session.metadata.subject as Prisma.Subject;
-					const exam_board = session.metadata.exam_board as Prisma.ExamBoard;
+					const subject = session.metadata.subject as Subject;
+					const exam_board = session.metadata.exam_board as ExamBoard;
 					const product_id = price.product;
 					const course = await prisma.course.create({
 						data: {
@@ -117,8 +116,8 @@ export const handleCheckoutSessionComplete = async ({
 					'num_marks'
 					//@ts-ignore
 				].every(key => Object.keys(session.metadata).includes(key))) {
-					const subject = session.metadata.subject as Prisma.Subject;
-					const exam_board = session.metadata.exam_board as Prisma.ExamBoard;
+					const subject = session.metadata.subject as Subject;
+					const exam_board = session.metadata.exam_board as ExamBoard;
 					const unit_name = session.metadata.unit as string;
 					const course_id = session.metadata.course_id as string;
 					const paper_name = session.metadata.paper_name as string;
@@ -194,8 +193,8 @@ export const handleInvoicePaid = async ({
 			console.log(price);
 			console.log('-----------------------------------------');
 			if (price?.metadata?.subject && price?.metadata?.exam_board) {
-				const subject = price.metadata.subject as Prisma.Subject;
-				const exam_board = price.metadata.exam_board as Prisma.ExamBoard;
+				const subject = price.metadata.subject as Subject;
+				const exam_board = price.metadata.exam_board as ExamBoard;
 				const product_id = price.product;
 				const course = await prisma.course.create({
 					data: {

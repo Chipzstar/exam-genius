@@ -13,8 +13,9 @@ const nextConfig = {
 		// See: https://github.com/gregberge/svgr
 		svgr: false
 	},
+	transpilePackages: ["@t3-oss/env-nextjs", "@t3-oss/env-core"],
 	experimental: {
-		optimizePackageImports: ['@mantine/core', '@mantine/hooks', '@mantine/notifications', '@mantine/nprogress', '@mantine/modals', '@mantine/dates', '@mantine/form', '@mantine/carousel']
+		optimizePackageImports: ['@mantine/core', '@mantine/hooks', '@mantine/notifications', '@mantine/nprogress', '@mantine/modals', '@mantine/dates', '@mantine/form', '@mantine/carousel'],
 	}
 };
 

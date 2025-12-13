@@ -1,20 +1,16 @@
+import { verifyWebhook } from '@clerk/nextjs/webhooks';
 import { NextRequest, NextResponse } from 'next/server';
-import { prisma } from '~/server/prisma';
-import { log } from '~/server/logtail';
-import { Webhook, WebhookRequiredHeaders } from 'svix';
 import { createNewUser, deleteUser, updateUser } from '~/server/handlers/clerk-webhook-handlers';
+import { log } from '~/server/logtail';
+import { prisma } from '~/server/prisma';
 import { ClerkEvent } from '~/utils/types';
-
-const webhookSecret = String(process.env.CLERK_WEBHOOK_SECRET) || "";
 
 export async function POST(req: NextRequest) {
 	try {
 		const payload = await req.text();
 		log.info(payload);
-		const headers = Object.fromEntries(req.headers.entries()) as unknown as WebhookRequiredHeaders;
-		const wh = new Webhook(webhookSecret);
 		let event: ClerkEvent | null = null;
-		event = wh.verify(payload, headers) as ClerkEvent;
+		event = await verifyWebhook(req) as unknown as ClerkEvent;
 
 		switch (event.type) {
 			case 'user.created':
