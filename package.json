@@ -62,6 +62,7 @@
 		"@trpc/react-query": "^11.0.0-rc.566",
 		"@trpc/server": "^11.0.0-rc.566",
 		"@vercel/analytics": "^1.0.0",
+		"axios": "^1.13.2",
 		"bcryptjs": "^2.4.3",
 		"client-only": "^0.0.1",
 		"clsx": "^2.1.1",
