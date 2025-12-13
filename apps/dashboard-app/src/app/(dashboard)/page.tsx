@@ -4,26 +4,25 @@ import { Box, Button, Card, Divider, Group, LoadingOverlay, ScrollArea, Text, Ti
 import Image from 'next/image';
 import Link from 'next/link';
 import { PATHS } from '~/utils/constants';
-import { trpc } from '~/utils/trpc';
+import { api } from '~/trpc/react';
 import { useMediaQuery, useViewportSize } from '@mantine/hooks';
 import Page from '~/layout/Page';
 
 export default function HomePage() {
 	const { height } = useViewportSize();
-	const { data: courses, isLoading } = trpc.course.getCourses.useQuery();
+	const { data: courses, isLoading } = api.course.getCourses.useQuery();
 	const mobileScreen = useMediaQuery('(max-width: 30em)');
 
 	return (
 		<Page.Container data_cy='homepage' extraClassNames='flex flex-col py-6 overflow-y-hidden'>
 			<Page.Body>
-				<Title order={2} weight={600} mb='lg'>
+				<Title order={2} fw={600} mb='lg'>
 					Courses 📚
 				</Title>
-				{/*@ts-ignore */}
 				<ScrollArea.Autosize mah={height - 200}>
 					{!courses || isLoading ? (
 						<Box h={height - 200}>
-							<LoadingOverlay visible={isLoading} overlayOpacity={0} />
+							<LoadingOverlay visible={isLoading} />
 						</Box>
 					) : (
 						courses.map((course, index) => (
@@ -38,17 +37,17 @@ export default function HomePage() {
 										/>
 										<div className='flex flex-col items-center space-y-2 sm:items-start'>
 											<Title order={mobileScreen ? 3 : 2}>{course.name}</Title>
-											<Text size={mobileScreen ? 'md' : 'xl'} weight={500}>
+											<Text size={mobileScreen ? 'md' : 'xl'} fw={500}>
 												Year {course.year_level}
 											</Text>
 										</div>
 									</div>
-									<Group position='right'>
+									<Group justify='right'>
 										<Link
 											href={`${PATHS.COURSE}/${course.course_id}?subject=${course.subject}&board=${course.exam_board}`}
 										>
 											<Button size={mobileScreen ? 'md' : 'lg'}>
-												<Text weight='normal'>{'Continue →'}</Text>
+												<Text fw='normal'>{'Continue →'}</Text>
 											</Button>
 										</Link>
 									</Group>

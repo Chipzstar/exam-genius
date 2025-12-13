@@ -1,0 +1,35 @@
+.label {
+	text-align: center;
+	font-weight: 900;
+	font-size: 220px;
+	line-height: 1;
+	margin-bottom: calc(var(--mantine-spacing-xl) * 1.5);
+	color: var(--mantine-color-brand-5);
+}
+
+@media (max-width: 768px) {
+	.label {
+		font-size: 120px;
+	}
+}
+
+.title {
+	font-family: var(--mantine-font-family);
+	text-align: center;
+	font-weight: 900;
+	font-size: 38px;
+}
+
+@media (max-width: 768px) {
+	.title {
+		font-size: 32px;
+	}
+}
+
+.description {
+	max-width: 500px;
+	margin: auto;
+	margin-top: var(--mantine-spacing-xl);
+	margin-bottom: calc(var(--mantine-spacing-xl) * 1.5);
+}
+

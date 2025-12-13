@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState } from 'react';
-import { AppShell, Burger, Header, MediaQuery } from '@mantine/core';
+import { AppShell, Burger } from '@mantine/core';
 import Sidebar from '~/layout/Sidebar';
 import { useMediaQuery } from '@mantine/hooks';
 import { useAuth } from '@clerk/nextjs';
@@ -16,28 +16,40 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
 		<div className="relative flex min-h-screen font-sans">
 			<AppShell
 				padding={0}
-				navbar={isSignedIn ? <Sidebar opened={opened} setOpened={setOpened} /> : undefined}
-				navbarOffsetBreakpoint="sm"
+				navbar={isSignedIn ? {
+					width: { sm: 250 },
+					breakpoint: 'sm',
+					collapsed: { mobile: !opened }
+				} : undefined}
 				header={
-					mobileScreen ? (
-						<Header height={{ base: 50 }} p="md">
-							<div style={{ display: 'flex', alignItems: 'center', height: '100%' }}>
-								<MediaQuery largerThan="sm" styles={{ display: 'none' }}>
-									<Burger
-										opened={opened}
-										onClick={() => setOpened(o => !o)}
-										size="sm"
-										color="gray"
-										mr="xl"
-									/>
-								</MediaQuery>
-							</div>
-						</Header>
-					) : undefined
+					mobileScreen ? {
+						height: 50
+					} : undefined
 				}
 			>
-				{children}
-				{isSignedIn && <ChatwootWidget />}
+				{isSignedIn && (
+					<AppShell.Navbar>
+						<Sidebar opened={opened} setOpened={setOpened} />
+					</AppShell.Navbar>
+				)}
+				
+				{mobileScreen && (
+					<AppShell.Header p="md">
+						<div style={{ display: 'flex', alignItems: 'center', height: '100%' }}>
+							<Burger
+								opened={opened}
+								onClick={() => setOpened(o => !o)}
+								size="sm"
+								hiddenFrom="sm"
+							/>
+						</div>
+					</AppShell.Header>
+				)}
+				
+				<AppShell.Main className='w-screen'>
+					{children}
+					{isSignedIn && <ChatwootWidget />}
+				</AppShell.Main>
 			</AppShell>
 		</div>
 	);

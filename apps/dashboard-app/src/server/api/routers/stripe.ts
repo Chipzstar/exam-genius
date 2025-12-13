@@ -5,6 +5,7 @@ import { z } from 'zod';
 import { TRPCError } from '@trpc/server';
 import { log } from '~/server/logtail';
 import { CHECKOUT_TYPE, PAPER_PRICE_IDS, PATHS, SUBJECT_STRIPE_IDS } from '~/utils/constants';
+import { env } from '~/env';
 
 const courseSchema = z.object({
 	type: z.literal(CHECKOUT_TYPE.COURSE),
@@ -44,9 +45,7 @@ const stripeRouter = createTRPCRouter({
 					userId: auth.userId
 				});
 				if (!customer_id) throw new Error('Could not create customer');
-				const baseUrl = process.env.VERCEL_URL
-					? `https://${process.env.VERCEL_URL}`
-					: `http://localhost:${process.env.PORT ?? 4200}`;
+				const baseUrl = env.APP_BASE_URL;
 				if (type === CHECKOUT_TYPE.PAPER) {
 					const price_id = PAPER_PRICE_IDS[subject]
 					session = await stripe.checkout.sessions.create({

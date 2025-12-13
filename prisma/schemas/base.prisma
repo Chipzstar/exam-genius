@@ -1,10 +1,9 @@
 generator client {
-    provider        = "prisma-client-js"
-    previewFeatures = ["driverAdapters"]
+    provider    = "prisma-client"
+    output      = "../libs/shared/prisma"
+    engineType  = "client" // enable Prisma ORM without Rust
 }
 
 datasource db {
     provider  = "postgresql"
-    url       = env("DATABASE_URL")
-    directUrl = env("DATABASE_URL_UNPOOLED")
 }

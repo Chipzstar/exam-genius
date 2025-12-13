@@ -12,7 +12,7 @@ export function ExamBoardCard (props: ExamBoardCardProps) {
 			<Stack justify='center' align='center'>
 				<Image src={props.src} alt='subject-icon' width={300} height={300} />
 			</Stack>
-			<Group position='right'>
+			<Group justify='right'>
 				<Radio value={props.value} />
 			</Group>
 		</Card>

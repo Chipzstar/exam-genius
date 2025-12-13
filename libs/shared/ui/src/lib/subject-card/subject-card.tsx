@@ -13,7 +13,7 @@ export function SubjectCard(props: SubjectCardProps) {
 			<Stack justify="center" align="center">
 				<Image src={props.src} alt="subject-icon" width={150} height={150}/>
 				<Group align="center">
-					<Text size="xl" weight={600}>A-Level {props.subject}</Text>
+					<Text size="xl" fw={600}>A-Level {props.subject}</Text>
 					<Radio value={props.subject.toLowerCase()} />
 				</Group>
 			</Stack>

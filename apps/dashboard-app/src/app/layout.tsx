@@ -2,11 +2,11 @@ import type { Metadata } from 'next';
 import localFont from 'next/font/local';
 import { ClerkProvider } from '@clerk/nextjs';
 import { TRPCReactProvider } from '~/trpc/react';
-import { MantineProvider, createEmotionCache } from '@mantine/core';
+import { MantineProvider, ColorSchemeScript } from '@mantine/core';
 import { Notifications } from '@mantine/notifications';
 import '@mantine/core/styles.css';
 import '@mantine/notifications/styles.css';
-import '../styles/globals.css';
+import '../../styles/globals.css';
 import Favicon from '~/components/Favicon';
 
 const poppins = localFont({
@@ -58,8 +58,6 @@ export const metadata: Metadata = {
 	}
 };
 
-const appendCache = createEmotionCache({ key: 'mantine', prepend: false });
-
 export default function RootLayout({
 	children
 }: {
@@ -69,13 +67,12 @@ export default function RootLayout({
 		<ClerkProvider>
 			<html lang="en-GB" className={poppins.variable}>
 				<head>
+					<ColorSchemeScript defaultColorScheme="light" />
 					<Favicon />
 				</head>
 				<body className="font-sans">
 					<MantineProvider
-						emotionCache={appendCache}
-						withGlobalStyles
-						withNormalizeCSS
+						defaultColorScheme="light"
 						theme={{
 							colors: {
 								brand: [
@@ -92,20 +89,18 @@ export default function RootLayout({
 								]
 							},
 							primaryColor: 'brand',
-							primaryShade: 5,
-							colorScheme: 'light',
 							fontFamily: poppins.style.fontFamily,
 							fontFamilyMonospace: 'Monaco, Courier, monospace',
 							headings: { fontFamily: poppins.style.fontFamily },
 							components: {
 								Input: {
-									styles: theme => ({
+									styles: {
 										input: {
 											borderColor: '#2742F5',
 											borderWidth: '1px',
 											borderStyle: 'solid'
 										}
-									})
+									}
 								}
 							}
 						}}

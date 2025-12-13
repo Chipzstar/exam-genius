@@ -60,6 +60,9 @@
 			}
 		}
 	},
+	"cli": {
+		"packageManager": "pnpm"
+	},
 	"nxCloudAccessToken": "NmZiZGI2OGItNWQ5Yy00YjkyLWI2ZjUtYzkwMjNiYzEwYjRifHJlYWQtd3JpdGU=",
 	"useInferencePlugins": false,
 	"defaultBase": "master"
