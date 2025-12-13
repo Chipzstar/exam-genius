@@ -1,4 +1,4 @@
-import type { PrismaClient } from '@prisma/client';
+import type { PrismaClient } from '@exam-genius/shared/prisma';
 import { ClerkEvent } from '../../utils/types';
 import { log } from '~/server/logtail';
 

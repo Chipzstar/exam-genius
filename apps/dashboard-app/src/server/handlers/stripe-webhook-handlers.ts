@@ -1,4 +1,4 @@
-import type { PrismaClient } from '@prisma/client';
+import type { PrismaClient } from '@exam-genius/shared/prisma';
 import Prisma from '@prisma/client';
 import type Stripe from 'stripe';
 import { log } from '~/server/logtail';
