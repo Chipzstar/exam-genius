@@ -161,7 +161,7 @@ You are an expert in TypeScript, Node.js, Next.js App Router, React, Nx, tRPC, M
 - Use streaming with Suspense boundaries for progressive rendering.
 
 ## Error Handling & Logging
-- Use Logtail with Winston for structured logging (configured in `server/logtail.ts`).
+- Use Axiom (next-axiom) for structured logging and Web Vitals. In route handlers use withAxiom and req.log; in tRPC/server code use new Logger() from ~/server/logger and call await log.flush() before returning.
 - Use Sentry for error tracking (configured in `sentry.*.config.ts`).
 - Log errors in tRPC procedures before throwing `TRPCError`.
 - Return user-friendly error messages; log detailed errors server-side.

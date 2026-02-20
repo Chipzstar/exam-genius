@@ -3,7 +3,7 @@ import { getOrCreateStripeCustomerIdForUser } from '~/server/handlers/stripe-web
 import { validateLineItems } from '~/server/handlers';
 import { z } from 'zod';
 import { TRPCError } from '@trpc/server';
-import { log } from '~/server/logtail';
+import { Logger } from '~/server/logger';
 import { CHECKOUT_TYPE, PAPER_PRICE_IDS, PATHS, SUBJECT_STRIPE_IDS } from '~/utils/constants';
 import { env } from '~/env';
 
@@ -32,13 +32,13 @@ const stripeRouter = createTRPCRouter({
 	createCheckoutSession: protectedProcedure
 		.input(z.discriminatedUnion('type', [courseSchema, paperSchema]))
 		.mutation(async ({ input, ctx }) => {
+			const log = new Logger();
 			let session;
 			const { stripe, auth, prisma } = ctx;
-			console.log(auth);
 			const { type, exam_board, subject } = input;
 			try {
 				if (!auth?.userId) throw new Error('Not authenticated');
-				log.debug('Auth:', auth);
+				log.debug('Create checkout session auth', { auth });
 				const customer_id = await getOrCreateStripeCustomerIdForUser({
 					prisma,
 					stripe,
@@ -91,12 +91,14 @@ const stripeRouter = createTRPCRouter({
 					});
 					if (!session) {  throw new Error("Could not create checkout session");  }
 				}
+				await log.flush();
 				return { checkout_url: session.url };
 			} catch (err) {
-				console.error(err);
+				log.error('Create checkout session error', { error: String(err) });
+				await log.flush();
 				throw new TRPCError({
 					code: 'INTERNAL_SERVER_ERROR',
-					message: err.message ?? 'Unknown error occurred.'
+					message: (err as Error).message ?? 'Unknown error occurred.'
 				});
 			}
 		})

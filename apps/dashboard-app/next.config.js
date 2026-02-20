@@ -2,7 +2,7 @@
 
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const { withNx } = require('@nx/next/plugins/with-nx');
-const { withSentryConfig } = require('@sentry/nextjs');
+const { withAxiom } = require('next-axiom');
 
 /**
  * @type {import('@nx/next/plugins/with-nx').WithNxOptions}
@@ -19,4 +19,4 @@ const nextConfig = {
 	}
 };
 
-module.exports = withNx(nextConfig);
+module.exports = withNx(withAxiom(nextConfig));

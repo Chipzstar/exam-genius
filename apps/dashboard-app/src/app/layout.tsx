@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
 import localFont from 'next/font/local';
 import { ClerkProvider } from '@clerk/nextjs';
+import { AxiomWebVitals } from 'next-axiom';
 import { TRPCReactProvider } from '~/trpc/react';
 import { MantineProvider, ColorSchemeScript } from '@mantine/core';
 import { Notifications } from '@mantine/notifications';
@@ -71,6 +72,7 @@ export default function RootLayout({
 					<Favicon />
 				</head>
 				<body className="font-sans">
+					<AxiomWebVitals />
 					<MantineProvider
 						defaultColorScheme="light"
 						theme={{

@@ -1,4 +1,5 @@
-import { NextRequest, NextResponse } from 'next/server';
+import { NextResponse } from 'next/server';
+import { withAxiom, type AxiomRequest } from 'next-axiom';
 import Stripe from 'stripe';
 import { prisma } from '~/server/prisma';
 import {
@@ -11,11 +12,11 @@ import stripe from '~/server/stripe';
 
 const endpointSecret = String(process.env.STRIPE_WEBHOOK_SECRET);
 
-export async function POST(req: NextRequest) {
+export const POST = withAxiom(async (req: AxiomRequest) => {
 	try {
 		const body = await req.text();
 		const sig = req.headers.get('stripe-signature');
-		
+
 		if (!sig) {
 			return NextResponse.json({ error: 'No stripe-signature header found' }, { status: 400 });
 		}
@@ -24,15 +25,14 @@ export async function POST(req: NextRequest) {
 
 		switch (event.type) {
 			case 'invoice.payment_succeeded':
-				console.log('************************************************');
-				console.log("handling invoice.payment_succeeded");
-				console.log('************************************************');
+				req.log.info('Stripe webhook: invoice.payment_succeeded');
 				break;
 			case 'checkout.session.completed':
 				await handleCheckoutSessionComplete({
 					stripe,
 					event,
-					prisma
+					prisma,
+					log: req.log
 				});
 				break;
 			case 'checkout.session.expired':
@@ -44,17 +44,22 @@ export async function POST(req: NextRequest) {
 			case 'customer.subscription.created':
 				await handleSubscriptionCreatedOrUpdated({
 					event,
-					prisma
+					prisma,
+					log: req.log
 				});
 				break;
 			case 'customer.subscription.cancelled':
-				await handleSubscriptionCanceled({ event, prisma });
+				await handleSubscriptionCanceled({ event, prisma, log: req.log });
 				break;
 			case 'customer.subscription.updated':
-				await handleSubscriptionCreatedOrUpdated({ event, prisma });
+				await handleSubscriptionCreatedOrUpdated({
+					event,
+					prisma,
+					log: req.log
+				});
 				break;
 			default:
-				console.log(`Unhandled event type ${event.type}`);
+				req.log.info('Unhandled Stripe event type', { type: event.type });
 		}
 
 		if (process.env.NODE_ENV === 'production') {
@@ -82,7 +87,8 @@ export async function POST(req: NextRequest) {
 
 		return NextResponse.json({ received: true, message: 'Event processed successfully' });
 	} catch (err: any) {
+		req.log.error('Stripe webhook error', { error: err.message });
 		return NextResponse.json({ error: `Webhook Error: ${err.message}` }, { status: 400 });
 	}
-}
+});
 

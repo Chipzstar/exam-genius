@@ -1,12 +1,12 @@
-import { NextRequest, NextResponse } from 'next/server';
-import { log } from '~/server/logtail';
+import { NextResponse } from 'next/server';
+import { withAxiom, type AxiomRequest } from 'next-axiom';
 import { openai } from '~/server/openai';
 
-export async function POST(req: NextRequest) {
+export const POST = withAxiom(async (req: AxiomRequest) => {
 	try {
 		const body = await req.json();
 		const { subject, exam_board, course, num_questions, num_marks, paper_name } = body;
-		log.debug('Request:', body);
+		req.log.debug('OpenAI generate request', body);
 		const completion = await openai.createChatCompletion({
 			model: 'gpt-3.5-turbo',
 			messages: [
@@ -32,10 +32,7 @@ export async function POST(req: NextRequest) {
 				}
 			]
 		});
-		console.log('-----------------------------------------------');
-		console.log(completion.data.choices[0]);
-		log.debug('openai completion', completion.data.choices[0]);
-		console.log('-----------------------------------------------');
+		req.log.debug('OpenAI completion', completion.data.choices[0]);
 		if (completion?.data?.choices[0]?.message?.content) {
 			return NextResponse.json({ result: completion.data.choices[0].message.content });
 		}
@@ -44,13 +41,13 @@ export async function POST(req: NextRequest) {
 		);
 	} catch (error: any) {
 		if (error.response?.data) {
-			console.log(error.response?.data);
+			req.log.error('OpenAI API error', { data: error.response?.data });
 			return NextResponse.json(error.response.data, { status: error.statusCode || 500 });
 		}
-		console.error(error);
+		req.log.error('OpenAI generate error', { error: error.message });
 		return NextResponse.json({ error: 'Something went wrong', message: error.message }, { status: 500 });
 	}
-}
+});
 
 export async function OPTIONS() {
 	return new NextResponse(null, {

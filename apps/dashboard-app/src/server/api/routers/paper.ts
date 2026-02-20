@@ -3,7 +3,7 @@ import { TRPCError } from '@trpc/server';
 import { z } from 'zod';
 import axios from 'axios';
 import { capitalize, genID, sanitize } from '~/utils/functions';
-import { log } from '~/server/logtail';
+import { Logger } from '~/server/logger';
 import { GeneratePaperPayload } from '~/utils/types';
 
 const paperRouter = createTRPCRouter({
@@ -105,6 +105,7 @@ const paperRouter = createTRPCRouter({
 			})
 		)
 		.mutation(async ({ input, ctx }) => {
+			const log = new Logger();
 			try {
 				const user_id = ctx.auth.userId;
 				const paper_id = genID('paper');
@@ -127,10 +128,7 @@ const paperRouter = createTRPCRouter({
 						code: 'BAD_REQUEST',
 						message: 'Failed to create paper with id: ' + paper_id
 					});
-				console.log('*****************************************');
-				console.log('NEW PAPER:', paper);
-				log.debug('new paper', paper);
-				console.log('*****************************************');
+				log.debug('New paper created', { paper });
 				// call the API endpoint for generating a predicted paper
 				/*const baseUrl = process.env.VERCEL_URL
 					? 'https://' + process.env.VERCEL_URL
@@ -178,13 +176,14 @@ const paperRouter = createTRPCRouter({
 						log.error(err);
 						console.log('************************************************');
 					});*/
+				await log.flush();
 				return paper;
 			} catch (err) {
-				console.error(err);
-				log.error(err);
+				log.error('Create paper error', { error: String(err) });
+				await log.flush();
 				throw new TRPCError({
 					code: 'INTERNAL_SERVER_ERROR',
-					message: 'Oops, something went wrong' + err.message
+					message: 'Oops, something went wrong' + (err as Error).message
 				});
 			}
 		}),
@@ -234,6 +233,7 @@ const paperRouter = createTRPCRouter({
 			})
 		)
 		.mutation(async ({ input, ctx }) => {
+			const log = new Logger();
 			try {
 				const paper = await ctx.prisma.paper.update({
 					where: {
@@ -245,7 +245,6 @@ const paperRouter = createTRPCRouter({
 				});
 				if (paper.status === 'success')
 					throw new TRPCError({ code: 'CLIENT_CLOSED_REQUEST', message: 'Paper has already been generated' });
-				// call the API endpoint for generating a predicted paper
 				axios
 					.post(`${process.env.BACKEND_HOST}/server/paper/generate`, {
 						paper_id: paper.paper_id,
@@ -255,18 +254,19 @@ const paperRouter = createTRPCRouter({
 						course: capitalize(sanitize(paper.unit_name)),
 						num_questions: input.num_questions,
 						num_marks: input.num_marks
-					} as GeneratePaperPayload).catch(err => {
-						console.log('************************************************');
-						console.error(err);
-						log.error(err);
-						console.log('************************************************');
+					} as GeneratePaperPayload)
+					.catch(err => {
+						log.error('Regenerate paper API error', { error: String(err) });
+						void log.flush();
 					});
+				await log.flush();
 				return paper;
 			} catch (err) {
-				console.error(err);
+				log.error('Regenerate paper error', { error: String(err) });
+				await log.flush();
 				throw new TRPCError({
 					code: 'INTERNAL_SERVER_ERROR',
-					message: 'Oops, something went wrong' + err.message
+					message: 'Oops, something went wrong' + (err as Error).message
 				});
 			}
 		}),

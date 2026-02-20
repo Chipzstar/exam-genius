@@ -1,11 +1,18 @@
 import type { PrismaClient } from '@exam-genius/shared/prisma';
+import type { Logger } from 'next-axiom';
 import { ClerkEvent } from '../../utils/types';
-import { log } from '~/server/logtail';
 
-export const createNewUser = async ({ event, prisma }: { event: ClerkEvent; prisma: PrismaClient }) => {
+export const createNewUser = async ({
+	event,
+	prisma,
+	log
+}: {
+	event: ClerkEvent;
+	prisma: PrismaClient;
+	log: Logger;
+}) => {
 	try {
 		const payload = event.data;
-		// create the user
 		const user = await prisma.user.create({
 			data: {
 				clerk_id: event.data.id,
@@ -15,20 +22,25 @@ export const createNewUser = async ({ event, prisma }: { event: ClerkEvent; pris
 				lastname: payload.last_name
 			}
 		});
-		log.info('-----------------------------------------------');
-		log.debug('New user!!', user);
-		log.info('-----------------------------------------------');
+		log.info('New user created', { user });
 		return user;
 	} catch (err) {
-		console.error(err);
+		log.error('Create user error', { error: String(err) });
 		throw err;
 	}
 };
 
-export const updateUser = async ({ event, prisma }: { event: ClerkEvent; prisma: PrismaClient }) => {
+export const updateUser = async ({
+	event,
+	prisma,
+	log
+}: {
+	event: ClerkEvent;
+	prisma: PrismaClient;
+	log: Logger;
+}) => {
 	try {
 		const payload = event.data;
-		// create the user
 		const user = await prisma.user.update({
 			where: {
 				clerk_id: event.data.id
@@ -40,17 +52,23 @@ export const updateUser = async ({ event, prisma }: { event: ClerkEvent; prisma:
 				lastname: payload.last_name
 			}
 		});
-		log.info('-----------------------------------------------');
-		log.debug('Updated user!!', user);
-		log.info('-----------------------------------------------');
+		log.info('User updated', { user });
 		return user;
 	} catch (err) {
-		console.error(err);
+		log.error('Update user error', { error: String(err) });
 		throw err;
 	}
 };
 
-export const deleteUser = async ({ event, prisma }: { event: ClerkEvent; prisma: PrismaClient }) => {
+export const deleteUser = async ({
+	event,
+	prisma,
+	log
+}: {
+	event: ClerkEvent;
+	prisma: PrismaClient;
+	log: Logger;
+}) => {
 	try {
 		const payload = event.data;
 		const user = await prisma.user.delete({
@@ -59,13 +77,11 @@ export const deleteUser = async ({ event, prisma }: { event: ClerkEvent; prisma:
 			}
 		});
 		if (user) {
-			log.info('-----------------------------------------------');
-			log.debug('User deleted!!', user);
-			log.info('-----------------------------------------------');
+			log.info('User deleted', { user });
 		}
 		return;
 	} catch (err) {
-		console.error(err);
+		log.error('Delete user error', { error: String(err) });
 		throw err;
 	}
 };

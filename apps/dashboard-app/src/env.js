@@ -95,7 +95,9 @@ export const env = createEnv({
 	 * `NEXT_PUBLIC_`.
 	 */
 	client: {
+		NEXT_PUBLIC_AXIOM_DATASET: z.string().optional(),
 		NEXT_PUBLIC_AXIOM_INGEST_ENDPOINT: z.string().url().optional(),
+		NEXT_PUBLIC_AXIOM_TOKEN: z.string().optional(),
 		NEXT_PUBLIC_BACKEND_HOST: z.string().optional(),
 		NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY: z.string().min(1),
 		NEXT_PUBLIC_SENTRY_DSN: z.string().url().optional(),
@@ -194,7 +196,9 @@ export const env = createEnv({
 		APP_BASE_URL: process.env.APP_BASE_URL,
 
 		// Client
+		NEXT_PUBLIC_AXIOM_DATASET: process.env.NEXT_PUBLIC_AXIOM_DATASET,
 		NEXT_PUBLIC_AXIOM_INGEST_ENDPOINT: process.env.NEXT_PUBLIC_AXIOM_INGEST_ENDPOINT,
+		NEXT_PUBLIC_AXIOM_TOKEN: process.env.NEXT_PUBLIC_AXIOM_TOKEN,
 		NEXT_PUBLIC_BACKEND_HOST: process.env.NEXT_PUBLIC_BACKEND_HOST,
 		NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY: process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY,
 		NEXT_PUBLIC_SENTRY_DSN: process.env.NEXT_PUBLIC_SENTRY_DSN,

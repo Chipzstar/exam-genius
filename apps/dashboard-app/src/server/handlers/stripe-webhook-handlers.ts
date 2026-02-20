@@ -1,6 +1,6 @@
 import type { PrismaClient, Subject, ExamBoard } from '@exam-genius/shared/prisma';
 import type Stripe from 'stripe';
-import { log } from '~/server/logtail';
+import type { Logger } from 'next-axiom';
 import { CHECKOUT_TYPE } from '../../utils/constants';
 import { capitalize, genCourseOrPaperName, genID, sanitize } from '../../utils/functions';
 import axios from 'axios';
@@ -62,26 +62,25 @@ export const getOrCreateStripeCustomerIdForUser = async ({
 export const handleCheckoutSessionComplete = async ({
 	stripe,
 	event,
-	prisma
+	prisma,
+	log
 }: {
 	stripe: Stripe;
 	event: Stripe.Event;
 	prisma: PrismaClient;
+	log: Logger;
 }) => {
 	try {
 		const session = event.data.object as Stripe.Checkout.Session;
-		console.log('-----------------------------------------------');
-		console.table(session?.metadata);
-		console.log('-----------------------------------------------');
+		log.debug('Checkout session metadata', session?.metadata ?? {});
 		const checkout_type = String(session?.metadata?.type);
 		const user = await prisma.user.findUniqueOrThrow({
 			where: {
 				clerk_id: session?.metadata?.userId ?? ''
 			}
 		});
-		// uses the session id to retrieve the checkout line items
 		const line_items = await stripe.checkout.sessions.listLineItems(session.id, { limit: 5 });
-		log.debug('line items', line_items.data);
+		log.debug('Checkout line items', { line_items: line_items.data });
 		for (const item of line_items.data) {
 			if (!item.price) throw new Error('No price found');
 			const price = await stripe.prices.retrieve(String(item.price.id));
@@ -101,9 +100,7 @@ export const handleCheckoutSessionComplete = async ({
 							year_level: 13
 						}
 					});
-					console.log('*****************************************');
-					console.log('NEW COURSE', course);
-					console.log('*****************************************');
+					log.info('New course created', { course });
 				}
 			} else {
 				if (session?.metadata && [
@@ -124,7 +121,6 @@ export const handleCheckoutSessionComplete = async ({
 					const paper_code = session.metadata.paper_code as string;
 					const num_questions = session.metadata.num_questions as string;
 					const num_marks = session.metadata.num_marks as string;
-					console.log('************************************************');
 					const paper = await prisma.paper.create({
 						data: {
 							name: paper_name,
@@ -138,29 +134,26 @@ export const handleCheckoutSessionComplete = async ({
 							content: ''
 						}
 					});
-					console.log('*****************************************');
-					console.log('NEW PAPER:', paper);
-					log.debug('new paper', paper);
-					console.log('*****************************************');
-					// call the API endpoint for generating a predicted paper
-					console.log(process.env.BACKEND_HOST)
-					axios.post(`${process.env.BACKEND_HOST}/server/paper/generate`, {
-						paper_id: paper.paper_id,
-						paper_name: paper.name,
-						subject: capitalize(paper.subject),
-						exam_board: capitalize(paper.exam_board),
-						course: capitalize(sanitize(paper.unit_name)),
-						num_questions: num_questions,
-						num_marks: num_marks
-					} as GeneratePaperPayload).catch(err => {
-						log.error(err)
-					})
+					log.debug('New paper created', { paper });
+					axios
+						.post(`${process.env.BACKEND_HOST}/server/paper/generate`, {
+							paper_id: paper.paper_id,
+							paper_name: paper.name,
+							subject: capitalize(paper.subject),
+							exam_board: capitalize(paper.exam_board),
+							course: capitalize(sanitize(paper.unit_name)),
+							num_questions: num_questions,
+							num_marks: num_marks
+						} as GeneratePaperPayload)
+						.catch(err => {
+							log.error('Paper generate API error', { error: String(err) });
+						});
 				}
 			}
 		}
 		return;
 	} catch (err) {
-		console.error(err);
+		log.error('Handle checkout session error', { error: String(err) });
 		throw err;
 	}
 };
@@ -168,11 +161,13 @@ export const handleCheckoutSessionComplete = async ({
 export const handleInvoicePaid = async ({
 	stripe,
 	event,
-	prisma
+	prisma,
+	log
 }: {
 	stripe: Stripe;
 	event: Stripe.Event;
 	prisma: PrismaClient;
+	log?: Logger;
 }) => {
 	const invoice = event.data.object as Stripe.Invoice;
 	if (!invoice.customer) throw new Error('No stripe customer found');
@@ -221,15 +216,15 @@ export const handleInvoicePaid = async ({
 
 export const handleSubscriptionCreatedOrUpdated = async ({
 	event,
-	prisma
+	prisma,
+	log
 }: {
 	event: Stripe.Event;
 	prisma: PrismaClient;
+	log?: Logger;
 }) => {
 	const subscription = event.data.object as Stripe.Subscription;
-	console.log('-----------------------------------------');
-	console.log(subscription);
-	console.log('-----------------------------------------');
+	if (log) log.debug('Subscription created/updated', { subscriptionId: subscription.id });
 	const customer_id = subscription.customer;
 	// update user with subscription data
 	await prisma.user.update({
@@ -244,7 +239,15 @@ export const handleSubscriptionCreatedOrUpdated = async ({
 	return;
 };
 
-export const handleSubscriptionCanceled = async ({ event, prisma }: { event: Stripe.Event; prisma: PrismaClient }) => {
+export const handleSubscriptionCanceled = async ({
+	event,
+	prisma,
+	log
+}: {
+	event: Stripe.Event;
+	prisma: PrismaClient;
+	log?: Logger;
+}) => {
 	const subscription = event.data.object as Stripe.Subscription;
 	const userId = subscription.metadata.userId;
 

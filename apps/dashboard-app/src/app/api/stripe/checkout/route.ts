@@ -1,20 +1,20 @@
-import { NextRequest, NextResponse } from 'next/server';
+import { NextResponse } from 'next/server';
+import { withAxiom, type AxiomRequest } from 'next-axiom';
 import stripe from '~/server/stripe';
 import { getOrCreateStripeCustomerIdForUser } from '~/server/handlers/stripe-webhook-handlers';
 import { auth } from '~/server/auth';
 import { prisma } from '~/server/prisma';
-import { log } from '~/server/logtail';
 import { CHECKOUT_TYPE, PAPER_PRICE_IDS, PATHS, SUBJECT_STRIPE_IDS } from '~/utils/constants';
 import { validateLineItems } from '~/server/handlers';
 
-export async function POST(req: NextRequest) {
+export const POST = withAxiom(async (req: AxiomRequest) => {
 	try {
 		const authData = await auth();
 		if (!authData?.userId) {
 			return NextResponse.json({ error: 'Not authenticated' }, { status: 401 });
 		}
-		log.debug('Auth:', authData);
-		
+		req.log.debug('Stripe checkout auth', { auth: authData });
+
 		const body = await req.json();
 		const { type, exam_board, subject, unit, course_id } = body;
 
@@ -81,13 +81,13 @@ export async function POST(req: NextRequest) {
 
 		return NextResponse.json({ error: 'Could not create checkout session' }, { status: 500 });
 	} catch (error: any) {
-		console.error(error);
+		req.log.error('Stripe checkout error', { error: error.message });
 		return NextResponse.json(
 			{ error: error.message || 'Something went wrong' },
 			{ status: error.statusCode || 500 }
 		);
 	}
-}
+});
 
 export async function OPTIONS() {
 	return new NextResponse(null, {

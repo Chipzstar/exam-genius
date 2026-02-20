@@ -1,36 +1,36 @@
 import { verifyWebhook } from '@clerk/nextjs/webhooks';
-import { NextRequest, NextResponse } from 'next/server';
+import { NextResponse } from 'next/server';
+import { withAxiom, type AxiomRequest } from 'next-axiom';
 import { createNewUser, deleteUser, updateUser } from '~/server/handlers/clerk-webhook-handlers';
-import { log } from '~/server/logtail';
 import { prisma } from '~/server/prisma';
 import { ClerkEvent } from '~/utils/types';
 
-export async function POST(req: NextRequest) {
+export const POST = withAxiom(async (req: AxiomRequest) => {
 	try {
 		const payload = await req.text();
-		log.info(payload);
+		req.log.info('Clerk webhook payload', { payload });
 		let event: ClerkEvent | null = null;
-		event = await verifyWebhook(req) as unknown as ClerkEvent;
+		event = (await verifyWebhook(req)) as unknown as ClerkEvent;
 
 		switch (event.type) {
 			case 'user.created':
-				await createNewUser({event, prisma})
+				await createNewUser({ event, prisma, log: req.log });
 				break;
 			case 'user.updated':
-				await updateUser({event, prisma})
+				await updateUser({ event, prisma, log: req.log });
 				break;
 			case 'user.deleted':
-				await deleteUser({event, prisma})
+				await deleteUser({ event, prisma, log: req.log });
 				break;
 			default:
-				console.log(`Unhandled event type ${event.type}`);
+				req.log.info('Unhandled event type', { type: event.type });
 		}
 		return NextResponse.json({ received: true, message: `Webhook received!` });
 	} catch (error) {
-		console.error(error);
+		req.log.error('Clerk webhook error', { error: String(error) });
 		return NextResponse.json({ message: 'Server error!' }, { status: 500 });
 	}
-}
+});
 
 export async function OPTIONS() {
 	return new NextResponse(null, {

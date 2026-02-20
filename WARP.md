@@ -181,7 +181,7 @@ The dashboard app (`apps/dashboard-app`) is the core application with the follow
 - **Clerk**: Authentication
 - **Stripe**: Payment processing
 - **OpenAI**: AI-powered features
-- **Logtail/Winston**: Logging
+- **Axiom (next-axiom)**: Logging and Web Vitals
 - **Sentry**: Error tracking
 
 ### Landing Page App
