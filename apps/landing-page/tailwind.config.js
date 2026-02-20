@@ -1,4 +1,3 @@
-const { createGlobPatternsForDependencies } = require('@nx/react/tailwind');
 const { join } = require('path');
 const { fontFamily } = require('tailwindcss/defaultTheme');
 
@@ -6,7 +5,8 @@ const { fontFamily } = require('tailwindcss/defaultTheme');
 module.exports = {
 	content: [
 		join(__dirname, '{src,pages,components,containers,modals,layout}/**/*!(*.stories|*.spec).{ts,tsx,html}'),
-		...createGlobPatternsForDependencies(__dirname)
+		join(__dirname, '../../libs/shared/ui/src/**/*.{ts,tsx,html}'),
+		join(__dirname, '../../libs/shared/utils/src/**/*.{ts,tsx,html}')
 	],
 	theme: {
 		extend: {

@@ -52,3 +52,6 @@ Thumbs.db
 .nx/cache
 .nx/workspace-data
 .env*.local
+
+# Turborepo
+.turbo

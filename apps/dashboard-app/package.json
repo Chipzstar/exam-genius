@@ -1,0 +1,13 @@
+{
+	"name": "@exam-genius/dashboard-app",
+	"version": "0.0.0",
+	"private": true,
+	"scripts": {
+		"dev": "pnpm with-env next dev",
+		"build": "pnpm with-env next build",
+		"start": "pnpm with-env next start",
+		"lint": "pnpm with-env next lint",
+		"test": "jest",
+		"with-env": "dotenv -e ../../.env.local --"
+	}
+}
