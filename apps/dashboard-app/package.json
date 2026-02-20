@@ -4,8 +4,8 @@
 	"private": true,
 	"scripts": {
 		"dev": "pnpm with-env next dev",
-		"build": "pnpm with-env next build",
-		"start": "pnpm with-env next start",
+		"build": "next build",
+		"start": "next start",
 		"lint": "pnpm with-env next lint",
 		"test": "jest",
 		"with-env": "dotenv -e ../../.env.local --"
