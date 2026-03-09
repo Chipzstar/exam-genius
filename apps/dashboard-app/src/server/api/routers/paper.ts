@@ -128,7 +128,7 @@ const paperRouter = createTRPCRouter({
 						code: 'BAD_REQUEST',
 						message: 'Failed to create paper with id: ' + paper_id
 					});
-				log.debug('New paper created', { paper });
+				console.log('[Paper] New paper created', { paper });
 				// call the API endpoint for generating a predicted paper
 				/*const baseUrl = process.env.VERCEL_URL
 					? 'https://' + process.env.VERCEL_URL

@@ -38,7 +38,7 @@ const stripeRouter = createTRPCRouter({
 			const { type, exam_board, subject } = input;
 			try {
 				if (!auth?.userId) throw new Error('Not authenticated');
-				log.debug('Create checkout session auth', { auth });
+				console.log('[Stripe] Create checkout session auth', { auth });
 				const customer_id = await getOrCreateStripeCustomerIdForUser({
 					prisma,
 					stripe,
