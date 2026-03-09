@@ -5,7 +5,7 @@ import '@mantine/core/styles.css';
 import '@mantine/notifications/styles.css';
 import '../../styles/globals.css';
 import Favicon from '~/components/Favicon';
-import { Providers } from './providers';
+import { Providers } from './Providers';
 
 const poppins = localFont({
 	src: [
