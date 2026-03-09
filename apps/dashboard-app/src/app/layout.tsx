@@ -6,6 +6,7 @@ import '@mantine/notifications/styles.css';
 import '../../styles/globals.css';
 import Favicon from '~/components/Favicon';
 import { Providers } from './Providers';
+import { env } from '~/env';
 
 const poppins = localFont({
 	src: [
@@ -18,7 +19,7 @@ const poppins = localFont({
 			path: '../../public/static/fonts/Poppins/Poppins-Regular.ttf',
 			weight: '400',
 			style: 'normal'
-		},
+		},	
 		{
 			path: '../../public/static/fonts/Poppins/Poppins-Italic.ttf',
 			weight: '400',
@@ -58,10 +59,8 @@ export const metadata: Metadata = {
 
 function getBaseUrl() {
 	// Server-only: used when passing to client so client bundle never touches server env
-	if (process.env.VERCEL_URL) return `https://${process.env.VERCEL_URL}`;
-	if (process.env.RENDER_INTERNAL_HOSTNAME)
-		return `http://${process.env.RENDER_INTERNAL_HOSTNAME}:${process.env.PORT}`;
-	return `http://localhost:${process.env.PORT ?? 4200}`;
+	if (env.APP_BASE_URL) return env.APP_BASE_URL;
+	return `http://localhost:${env.PORT ?? 3000}`;
 }
 
 export default function RootLayout({
