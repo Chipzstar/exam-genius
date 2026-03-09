@@ -5,5 +5,9 @@
 	"scripts": {
 		"lint": "eslint .",
 		"test": "jest"
+	},
+	"dependencies": {
+		"@mantine/core": "^7.14.6",
+		"next": "^15.5"
 	}
 }

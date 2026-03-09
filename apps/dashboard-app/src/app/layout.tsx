@@ -1,14 +1,11 @@
 import type { Metadata } from 'next';
 import localFont from 'next/font/local';
-import { ClerkProvider } from '@clerk/nextjs';
-import { AxiomWebVitals } from 'next-axiom';
-import { TRPCReactProvider } from '~/trpc/react';
-import { MantineProvider, ColorSchemeScript } from '@mantine/core';
-import { Notifications } from '@mantine/notifications';
+import { ColorSchemeScript } from '@mantine/core';
 import '@mantine/core/styles.css';
 import '@mantine/notifications/styles.css';
 import '../../styles/globals.css';
 import Favicon from '~/components/Favicon';
+import { Providers } from './Providers';
 
 const poppins = localFont({
 	src: [
@@ -65,56 +62,15 @@ export default function RootLayout({
 	children: React.ReactNode;
 }) {
 	return (
-		<ClerkProvider>
-			<html lang="en-GB" className={poppins.variable}>
-				<head>
-					<ColorSchemeScript defaultColorScheme="light" />
-					<Favicon />
-				</head>
-				<body className="font-sans">
-					<AxiomWebVitals />
-					<MantineProvider
-						defaultColorScheme="light"
-						theme={{
-							colors: {
-								brand: [
-									'#D6DCFD',
-									'#C3CAFC',
-									'#9CA8FA',
-									'#7586F9',
-									'#4E64F7',
-									'#2742F5',
-									'#0A25DA',
-									'#081CA4',
-									'#05136F',
-									'#030A39'
-								]
-							},
-							primaryColor: 'brand',
-							fontFamily: poppins.style.fontFamily,
-							fontFamilyMonospace: 'Monaco, Courier, monospace',
-							headings: { fontFamily: poppins.style.fontFamily },
-							components: {
-								Input: {
-									styles: {
-										input: {
-											borderColor: '#2742F5',
-											borderWidth: '1px',
-											borderStyle: 'solid'
-										}
-									}
-								}
-							}
-						}}
-					>
-						<Notifications position="top-right" />
-						<TRPCReactProvider>
-							{children}
-						</TRPCReactProvider>
-					</MantineProvider>
-				</body>
-			</html>
-		</ClerkProvider>
+		<html lang="en-GB" className={poppins.variable}>
+			<head>
+				<ColorSchemeScript defaultColorScheme="light" />
+				<Favicon />
+			</head>
+			<body className="font-sans">
+				<Providers>{children}</Providers>
+			</body>
+		</html>
 	);
 }
 

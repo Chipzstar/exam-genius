@@ -15,8 +15,8 @@ export const Hero = () => {
 					<p className='text-4xl font-medium sm:text-4xl md:text-5xl lg:text-6xl'>
 						<span className='inline-block leading-tight'>
 							Ace your A-level exams
-							<div className='flex inline-flex flex-col items-center'>
-								<span className='px-3'> with AI.</span>{' '}
+							<div className='inline-flex flex-col items-center max-w-60'>
+								<span className=''> with AI.</span>{' '}
 								<Image
 									src='/static/images/swoosh.svg'
 									alt='swoosh-underline'
