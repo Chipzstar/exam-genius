@@ -34,7 +34,7 @@ export const getOrCreateStripeCustomerIdForUser = async ({
 		}
 
 		// create a new customer
-		console.log('[Stripe] Creating new Stripe customer', { email: user.email, name: user.full_name });
+		console.log('[Stripe] Creating new Stripe customer');
 		const customer = await stripe.customers.create({
 			email: user.email ?? undefined,
 			name: user.full_name ?? undefined,
