@@ -5,7 +5,7 @@ import '@mantine/core/styles.css';
 import '@mantine/notifications/styles.css';
 import '../../styles/globals.css';
 import Favicon from '~/components/Favicon';
-import { Providers } from './Providers';
+import { Providers } from './providers';
 
 const poppins = localFont({
 	src: [
@@ -56,11 +56,20 @@ export const metadata: Metadata = {
 	}
 };
 
+function getBaseUrl() {
+	// Server-only: used when passing to client so client bundle never touches server env
+	if (process.env.VERCEL_URL) return `https://${process.env.VERCEL_URL}`;
+	if (process.env.RENDER_INTERNAL_HOSTNAME)
+		return `http://${process.env.RENDER_INTERNAL_HOSTNAME}:${process.env.PORT}`;
+	return `http://localhost:${process.env.PORT ?? 4200}`;
+}
+
 export default function RootLayout({
 	children
 }: {
 	children: React.ReactNode;
 }) {
+	const baseUrl = getBaseUrl();
 	return (
 		<html lang="en-GB" className={poppins.variable}>
 			<head>
@@ -68,7 +77,7 @@ export default function RootLayout({
 				<Favicon />
 			</head>
 			<body className="font-sans">
-				<Providers>{children}</Providers>
+				<Providers baseUrl={baseUrl}>{children}</Providers>
 			</body>
 		</html>
 	);

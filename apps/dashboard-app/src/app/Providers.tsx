@@ -38,13 +38,19 @@ const theme = {
 	}
 } as const;
 
-export function Providers({ children }: { children: React.ReactNode }) {
+export function Providers({
+	children,
+	baseUrl = ''
+}: {
+	children: React.ReactNode;
+	baseUrl?: string;
+}) {
 	return (
 		<ClerkProvider>
 			<AxiomWebVitals />
 			<MantineProvider defaultColorScheme="light" theme={theme}>
 				<Notifications position="top-right" />
-				<TRPCReactProvider>{children}</TRPCReactProvider>
+				<TRPCReactProvider baseUrl={baseUrl}>{children}</TRPCReactProvider>
 			</MantineProvider>
 		</ClerkProvider>
 	);
