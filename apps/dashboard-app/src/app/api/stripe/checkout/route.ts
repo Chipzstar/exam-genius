@@ -4,7 +4,8 @@ import stripe from '~/server/stripe';
 import { getOrCreateStripeCustomerIdForUser } from '~/server/handlers/stripe-webhook-handlers';
 import { auth } from '~/server/auth';
 import { prisma } from '~/server/prisma';
-import { CHECKOUT_TYPE, PAPER_PRICE_IDS, PATHS, SUBJECT_STRIPE_IDS } from '~/utils/constants';
+import { CHECKOUT_TYPE, PATHS } from '~/utils/constants';
+import { PAPER_PRICE_IDS, SUBJECT_STRIPE_IDS } from '~/utils/constants.server';
 import { validateLineItems } from '~/server/handlers';
 
 export const POST = withAxiom(async (req: AxiomRequest) => {

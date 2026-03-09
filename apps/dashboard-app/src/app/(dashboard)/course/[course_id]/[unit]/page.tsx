@@ -4,7 +4,7 @@ import React, { use, useCallback, useMemo, useState } from 'react';
 import Page from '~/layout/Page';
 import { Anchor, Breadcrumbs, Button, Card, LoadingOverlay, ScrollArea, Text, Title } from '@mantine/core';
 import Image from 'next/image';
-import { CHECKOUT_TYPE, PAPER_PRICE_IDS, PATHS } from '~/utils/constants';
+import { CHECKOUT_TYPE, PATHS } from '~/utils/constants';
 import { capitalize, genCourseOrPaperName, notifyError, notifySuccess, sanitize } from '~/utils/functions';
 import { IconArrowLeft, IconCheck, IconX } from '@tabler/icons-react';
 import Link from 'next/link';
@@ -63,7 +63,6 @@ export default function PapersPage({ params }: { params: Promise<{ course_id: st
 		async (paper: PaperInfo) => {
 			const { checkout_url } = await createCheckoutSession({
 				type: CHECKOUT_TYPE.PAPER,
-				price_id: PAPER_PRICE_IDS[subject],
 				subject: course?.subject ?? subject,
 				exam_board: course?.exam_board ?? board,
 				course_id: resolvedParams.course_id,

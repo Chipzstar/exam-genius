@@ -30,10 +30,6 @@ export default function ExamBoardPage() {
 	const router = useRouter();
 	const { mutateAsync: createCheckoutSession } = api.stripe.createCheckoutSession.useMutation();
 	const { mutateAsync: checkDuplicateCourse } = api.course.checkDuplicateCourse.useMutation();
-	const [price_id, setPriceId] = useLocalStorage<string>({
-		key: 'priceId',
-		defaultValue: ''
-	})
 
 	useEffect(() => {
 		setBoard('');
@@ -51,7 +47,6 @@ export default function ExamBoardPage() {
 			}
 			const { checkout_url } = await createCheckoutSession({
 				type: CHECKOUT_TYPE.COURSE,
-				price_id: price_id,
 				subject: subject as Subject,
 				exam_board: board as ExamBoard,
 			});
