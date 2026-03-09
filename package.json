@@ -17,7 +17,7 @@
 		"lint:dashboard": "turbo run lint --filter=@exam-genius/dashboard-app",
 		"lint:landing": "turbo run lint --filter=@exam-genius/landing-page",
 		"test": "turbo run test",
-		"ngrok": "ngrok http --domain=present-shepherd-shining.ngrok-free.app 4200 --config=./bin/ngrok.yml",
+		"ngrok": "ngrok http --domain=present-shepherd-shining.ngrok-free.app 3000 --config=./bin/ngrok.yml",
 		"prisma:sync": "npx prismerge -i prismerge.json && npx prisma generate && npx prisma db push",
 		"prisma:generate": "npx prismerge -i prismerge.json && npx prisma generate",
 		"prisma:merge": "npx prismerge -i prismerge.json",
