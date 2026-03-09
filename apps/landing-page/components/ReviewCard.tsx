@@ -1,18 +1,19 @@
 import React from 'react';
-import { Paper, Stack, Text } from '@mantine/core';
+import { Paper, Stack, Text, useMantineTheme } from '@mantine/core';
 import { Review } from '../utils/constants';
 
 const ReviewCard = ({ author, review, subject, age, image }: Review) => {
+	const theme = useMantineTheme();
 	return (
 		<Paper
-			shadow='md'
-			p='xl'
-			radius='md'
-			sx={theme => ({
+			shadow="md"
+			p="xl"
+			radius="md"
+			style={{
 				borderStyle: 'solid',
 				borderWidth: 3,
 				borderColor: theme.colors.brand[5]
-			})}
+			}}
 		>
 			<Stack>
 				<div className='flex items-center space-x-4'>

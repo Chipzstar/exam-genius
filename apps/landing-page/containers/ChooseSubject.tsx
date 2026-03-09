@@ -7,13 +7,13 @@ const ChooseSubject = ({ next, disabled, onChange }) => {
 	return (
 		<Page.Container classNames='flex flex-col pb-2 h-full'>
 			<header className='pb-6'>
-				<Title align='center' order={2} size='h1' color='brand' weight={600}>
+				<Title ta="center" order={2} size="h1" c="brand.5" fw={600}>
 					Choose your Subjects
 				</Title>
 			</header>
 			<Page.Body extraClassNames='justify-between py-4'>
 				<Radio.Group name='subject' onChange={onChange}>
-					<SimpleGrid cols={3} breakpoints={[{ maxWidth: '36rem', cols: 1, spacing: 'sm' }]}>
+					<SimpleGrid cols={{ base: 1, xs: 3 }}>
 						<SubjectCard subject='Maths' src='/static/images/maths-icon.svg' />
 						<SubjectCard subject='Biology' src='/static/images/biology-icon.svg' />
 						<SubjectCard subject='Chemistry' src='/static/images/chemistry-icon.svg' />
@@ -22,7 +22,7 @@ const ChooseSubject = ({ next, disabled, onChange }) => {
 						<SubjectCard subject='Psychology' src='/static/images/psychology-icon.svg' />
 					</SimpleGrid>
 				</Radio.Group>
-				<Group position='right' pt='lg'>
+				<Group justify="flex-end" pt="lg">
 					<Box w={140}>
 						<Button fullWidth onClick={next} disabled={disabled} size='xl'>
 							Next

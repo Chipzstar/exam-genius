@@ -111,7 +111,7 @@ const HowItWorks = () => {
 				<Button
 					size={mobileScreen ? 'md' : 'xl'}
 					variant='outline'
-					leftIcon={<IconPlayerPlay stroke={1.5} />}
+					leftSection={<IconPlayerPlay stroke={1.5} />}
 					onClick={() => showSneakPeak(true)}
 				>
 					<Text>See example questions</Text>

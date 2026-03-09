@@ -24,7 +24,7 @@ export const Body = () => {
 						</span>
 					</p>
 					<List
-						spacing='lg'
+						spacing="lg"
 						size='lg'
 						center
 						icon={
