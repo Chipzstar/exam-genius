@@ -8,13 +8,8 @@ import { ClerkEvent } from '~/utils/types';
 export const POST = withAxiom(async (req: AxiomRequest) => {
 	console.log('[Clerk Webhook] POST received');
 	try {
-		const payload = await req.text();
-		console.log('[Clerk Webhook] Raw payload received', { payloadLength: payload?.length, payloadPreview: payload?.slice(0, 200) });
-		console.log('[Clerk Webhook] Payload', payload);
-
-		console.log('[Clerk Webhook] Verifying webhook signature...');
-		let event: ClerkEvent | null = null;
-		event = (await verifyWebhook(req)) as unknown as ClerkEvent;
+		// Verify first – do not read req.body before this; verifyWebhook consumes the body
+		const event = (await verifyWebhook(req)) as unknown as ClerkEvent;
 		console.log('[Clerk Webhook] Verification successful', { eventType: event?.type, eventId: (event as any)?.id });
 
 		switch (event.type) {
