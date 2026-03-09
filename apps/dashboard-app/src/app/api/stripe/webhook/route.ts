@@ -7,8 +7,9 @@ import {
 } from '~/server/handlers/stripe-webhook-handlers';
 import { prisma } from '~/server/prisma';
 import stripe from '~/server/stripe';
+import { env } from '~/env';
 
-const endpointSecret = String(process.env.STRIPE_WEBHOOK_SECRET);
+const endpointSecret = String(env.STRIPE_WEBHOOK_SECRET);
 
 export const POST = withAxiom(async (req: AxiomRequest) => {
 	try {
