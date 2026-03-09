@@ -1,13 +1,11 @@
-import { NextResponse } from 'next/server';
 import { withAxiom, type AxiomRequest } from 'next-axiom';
-import Stripe from 'stripe';
-import { prisma } from '~/server/prisma';
+import { NextResponse } from 'next/server';
 import {
 	handleCheckoutSessionComplete,
-	handleInvoicePaid,
 	handleSubscriptionCanceled,
 	handleSubscriptionCreatedOrUpdated
 } from '~/server/handlers/stripe-webhook-handlers';
+import { prisma } from '~/server/prisma';
 import stripe from '~/server/stripe';
 
 const endpointSecret = String(process.env.STRIPE_WEBHOOK_SECRET);

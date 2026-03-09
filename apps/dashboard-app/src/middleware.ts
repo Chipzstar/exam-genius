@@ -4,6 +4,7 @@ const isPublicRoute = createRouteMatcher([
 	'/login(.*)',
 	'/signup(.*)',
 	'/api/panel',
+	'/api/clerk/webhook',
 	'/api/clerk(.*)',
 	'/api/openai(.*)',
 	'/api/stripe(.*)',
