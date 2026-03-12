@@ -10,7 +10,7 @@ const SneakPeak = ({ prev, sneak_peak_questions }) => {
 	return (
 		<Page.Container classNames='h-full flex flex-col pb-2'>
 			<header className='pb-20'>
-				<Title align='center' order={1} size={mobileScreen ? 'h1' : 50} color='brand' weight={600}>
+				<Title ta="center" order={1} size={mobileScreen ? 'h1' : '2.5rem'} c="brand.5" fw={600}>
 					Your sneak peak 🎉
 				</Title>
 			</header>
@@ -18,13 +18,13 @@ const SneakPeak = ({ prev, sneak_peak_questions }) => {
 				{sneak_peak_questions.map(({ question, answer, chance }, index) => (
 					<Card shadow='sm' radius='md' my='sm' key={index} miw={mobileScreen ? undefined : width - 300}>
 						<div className='flex-col items-center'>
-							<Group align='center' p='md' position='apart'>
+							<Group align="center" p="md" justify="space-between">
 								<div className='flex grow items-center space-x-6'>
 									<div className='flex flex-col space-y-4'>
-										<Title order={1} size='h2' weight={600}>
+										<Title order={1} size="h2" fw={600}>
 											{index + 1}. {parse(question, { trim: true })}
 										</Title>
-										<Text key={index} size='md' weight={400}>
+										<Text key={index} size="md" fw={400}>
 											{parse(answer, { trim: true })}
 										</Text>
 									</div>
@@ -39,10 +39,10 @@ const SneakPeak = ({ prev, sneak_peak_questions }) => {
 						</div>
 					</Card>
 				))}
-				<Group grow position='center' pt='xl'>
+				<Group grow justify="center" pt="xl">
 					<a href='https://app.exam-genius.com/signup' className='flex-end right-0 shrink grow-0 justify-end'>
 						<Button size='lg'>
-							<Text weight='normal'>🔒 Unlock full Paper</Text>
+							<Text fw={400}>🔒 Unlock full Paper</Text>
 						</Button>
 					</a>
 				</Group>

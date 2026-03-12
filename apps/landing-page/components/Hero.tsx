@@ -15,8 +15,8 @@ export const Hero = () => {
 					<p className='text-4xl font-medium sm:text-4xl md:text-5xl lg:text-6xl'>
 						<span className='inline-block leading-tight'>
 							Ace your A-level exams
-							<div className='flex inline-flex flex-col items-center'>
-								<span className='px-3'> with AI.</span>{' '}
+							<div className='inline-flex flex-col items-center max-w-60'>
+								<span className=''> with AI.</span>{' '}
 								<Image
 									src='/static/images/swoosh.svg'
 									alt='swoosh-underline'
@@ -36,14 +36,14 @@ export const Hero = () => {
 						variant='gradient'
 						gradient={{ from: '#6B81FA', to: '#2742F5', deg: 180 }}
 						radius='lg'
-						styles={theme => ({
+						styles={() => ({
 							root: {
 								width: '250px',
 								height: '60px'
 							}
 						})}
 						size='xl'
-						uppercase
+						className='uppercase'
 						onClick={() => showSneakPeak(true)}
 					>
 						SEE EXAMPLES

@@ -33,14 +33,10 @@ const Reviews = () => {
 					px={mobileScreen ? 'lg' : 0}
 					maw={width - 50}
 					height={200}
-					slideSize='50%'
-					breakpoints={[
-						{ maxWidth: 'md', slideSize: '40%' },
-						{ maxWidth: 'sm', slideSize: '100%', slideGap: 'sm' }
-					]}
-					slideGap='md'
+					slideSize={{ base: '100%', sm: '50%', md: '40%' }}
+					slideGap="md"
 					loop
-					align='start'
+					align="start"
 					styles={{
 						control: {
 							'&[data-inactive]': {
@@ -57,14 +53,11 @@ const Reviews = () => {
 					px={mobileScreen ? 'lg' : 0}
 					maw={width - 50}
 					height={200}
-					slideSize='50%'
-					breakpoints={[
-						{ maxWidth: 'md', slideSize: '40%' },
-						{ maxWidth: 'sm', slideSize: '100%', slideGap: 0 }
-					]}
-					slideGap='md'
+					slideSize={{ base: '100%', sm: '50%', md: '40%' }}
+					slideGap="md"
 					loop
-					align='center'
+					align="center"
+					initialSlide={1}
 					styles={{
 						control: {
 							'&[data-inactive]': {

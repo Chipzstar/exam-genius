@@ -47,7 +47,7 @@ const ChatwootWidget: React.FC<Props> = ({ token = 'BApecBTbBSMMxfBex5PvEtT1' }:
                 });
             };
         })(document, 'script');
-    }, []); // An empty array means that this effect will run once when the component mounts.
+    }, [token]);
 
     return null;
 };

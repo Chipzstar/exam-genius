@@ -2,9 +2,11 @@ import React from 'react';
 import { Image } from '@mantine/core';
 import Link from 'next/link';
 import { useMediaQuery } from '@mantine/hooks';
+import { getYear } from 'date-fns';
 
 export const Footer = () => {
 	const mobileScreen = useMediaQuery('(max-width: 30em)');
+	const currentYear = getYear(new Date());
 	return (
 		<footer className='bg-gray-900'>
 			<div className='mx-auto w-full max-w-screen-xl p-4 py-6 lg:py-8'>
@@ -79,7 +81,7 @@ export const Footer = () => {
 				<hr className='my-6 border-gray-200 dark:border-gray-700 sm:mx-auto lg:my-8' />
 				<div className='sm:flex sm:items-center sm:justify-between'>
 					<span className='text-sm text-gray-500 dark:text-gray-400 sm:text-center'>
-						© 2025{' '}
+						© {currentYear}{' '}
 						<a href='https://exam-genius.com' className='hover:underline'>
 							ExamGenius™
 						</a>

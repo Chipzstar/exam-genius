@@ -1,14 +1,12 @@
 import type { Metadata } from 'next';
 import localFont from 'next/font/local';
-import { ClerkProvider } from '@clerk/nextjs';
-import { AxiomWebVitals } from 'next-axiom';
-import { TRPCReactProvider } from '~/trpc/react';
-import { MantineProvider, ColorSchemeScript } from '@mantine/core';
-import { Notifications } from '@mantine/notifications';
+import { ColorSchemeScript } from '@mantine/core';
 import '@mantine/core/styles.css';
 import '@mantine/notifications/styles.css';
 import '../../styles/globals.css';
 import Favicon from '~/components/Favicon';
+import { Providers } from './Providers';
+import { env } from '~/env';
 
 const poppins = localFont({
 	src: [
@@ -21,7 +19,7 @@ const poppins = localFont({
 			path: '../../public/static/fonts/Poppins/Poppins-Regular.ttf',
 			weight: '400',
 			style: 'normal'
-		},
+		},	
 		{
 			path: '../../public/static/fonts/Poppins/Poppins-Italic.ttf',
 			weight: '400',
@@ -59,62 +57,27 @@ export const metadata: Metadata = {
 	}
 };
 
+function getBaseUrl() {
+	// Server-only: used when passing to client so client bundle never touches server env
+	return env.APP_BASE_URL || `http://localhost:${env.PORT ?? 3000}`;
+}
+
 export default function RootLayout({
 	children
 }: {
 	children: React.ReactNode;
 }) {
+	const baseUrl = getBaseUrl();
 	return (
-		<ClerkProvider>
-			<html lang="en-GB" className={poppins.variable}>
-				<head>
-					<ColorSchemeScript defaultColorScheme="light" />
-					<Favicon />
-				</head>
-				<body className="font-sans">
-					<AxiomWebVitals />
-					<MantineProvider
-						defaultColorScheme="light"
-						theme={{
-							colors: {
-								brand: [
-									'#D6DCFD',
-									'#C3CAFC',
-									'#9CA8FA',
-									'#7586F9',
-									'#4E64F7',
-									'#2742F5',
-									'#0A25DA',
-									'#081CA4',
-									'#05136F',
-									'#030A39'
-								]
-							},
-							primaryColor: 'brand',
-							fontFamily: poppins.style.fontFamily,
-							fontFamilyMonospace: 'Monaco, Courier, monospace',
-							headings: { fontFamily: poppins.style.fontFamily },
-							components: {
-								Input: {
-									styles: {
-										input: {
-											borderColor: '#2742F5',
-											borderWidth: '1px',
-											borderStyle: 'solid'
-										}
-									}
-								}
-							}
-						}}
-					>
-						<Notifications position="top-right" />
-						<TRPCReactProvider>
-							{children}
-						</TRPCReactProvider>
-					</MantineProvider>
-				</body>
-			</html>
-		</ClerkProvider>
+		<html lang="en-GB" className={poppins.variable}>
+			<head>
+				<ColorSchemeScript defaultColorScheme="light" />
+				<Favicon />
+			</head>
+			<body className="font-sans">
+				<Providers baseUrl={baseUrl}>{children}</Providers>
+			</body>
+		</html>
 	);
 }
 

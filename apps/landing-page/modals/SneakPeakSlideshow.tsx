@@ -24,7 +24,7 @@ const SneakPeakSlideshow = ({ opened, onClose }) => {
 		const storedValue = window.localStorage.getItem('form');
 		if (storedValue) {
 			try {
-				form.setValues(JSON.parse(window.localStorage.getItem('form')));
+				form.setValues(JSON.parse(storedValue));
 			} catch (e) {
 				console.log('Failed to parse stored value');
 			}
@@ -63,7 +63,6 @@ const SneakPeakSlideshow = ({ opened, onClose }) => {
 		>
 			<Stepper
 				active={active}
-				breakpoint='sm'
 				classNames={{
 					stepBody: 'hidden',
 					stepWrapper: 'hidden',

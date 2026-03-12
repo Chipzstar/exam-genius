@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useMemo } from 'react';
+import React, { use, useMemo } from 'react';
 import Page from '~/layout/Page';
 import { Button, Card, LoadingOverlay, ScrollArea, Text, Title } from '@mantine/core';
 import Image from 'next/image';
@@ -11,24 +11,24 @@ import { IconArrowLeft } from '@tabler/icons-react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { api } from '~/trpc/react';
 import { useMediaQuery, useViewportSize } from '@mantine/hooks';
-import { SUBJECT_PAPERS } from '@exam-genius/shared/utils';
+import { type CourseInfo, SUBJECT_PAPERS } from '@exam-genius/shared/utils';
 
-export default function CoursePage({ params }: { params: { course_id: string } }) {
+export default function CoursePage({ params }: { params: Promise<{ course_id: string }> }) {
+	const resolvedParams = use(params);
 	const { height } = useViewportSize();
 	const router = useRouter();
 	const searchParams = useSearchParams();
 	const subject = searchParams.get('subject') ?? '';
 	const board = searchParams.get('board') ?? '';
-	const { isLoading, data: course } = api.course.getSingleCourse.useQuery({ id: params.course_id });
+	const { isLoading, data: course } = api.course.getSingleCourse.useQuery({ id: resolvedParams.course_id });
 	const mobileScreen = useMediaQuery('(max-width: 30em)');
 
 	const course_info = useMemo(() => {
-		if (course) {
+		if (course?.subject != null && course?.exam_board != null) {
 			const info = SUBJECT_PAPERS[course.subject][course.exam_board];
-			return Object.entries(info);
-		} else {
-			return [];
+			return Object.entries(info) as [string, CourseInfo][];
 		}
+		return [];
 	}, [course]);
 
 	if (isLoading || !course) {

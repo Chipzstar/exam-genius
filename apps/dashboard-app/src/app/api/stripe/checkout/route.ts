@@ -4,8 +4,10 @@ import stripe from '~/server/stripe';
 import { getOrCreateStripeCustomerIdForUser } from '~/server/handlers/stripe-webhook-handlers';
 import { auth } from '~/server/auth';
 import { prisma } from '~/server/prisma';
-import { CHECKOUT_TYPE, PAPER_PRICE_IDS, PATHS, SUBJECT_STRIPE_IDS } from '~/utils/constants';
+import { CHECKOUT_TYPE, PATHS } from '~/utils/constants';
+import { PAPER_PRICE_IDS, SUBJECT_STRIPE_IDS } from '~/utils/constants.server';
 import { validateLineItems } from '~/server/handlers';
+import { env } from '~/env';
 
 export const POST = withAxiom(async (req: AxiomRequest) => {
 	try {
@@ -25,11 +27,9 @@ export const POST = withAxiom(async (req: AxiomRequest) => {
 		});
 		if (!customer_id) throw new Error('Could not create customer');
 
-		const baseUrl = process.env.VERCEL_URL
-			? `https://${process.env.VERCEL_URL}`
-			: process.env.RENDER_INTERNAL_HOSTNAME
-			? `http://${process.env.RENDER_INTERNAL_HOSTNAME}:${process.env.PORT}`
-			: `http://localhost:${process.env.PORT ?? 4200}`;
+		const baseUrl = env.APP_BASE_URL
+			? env.APP_BASE_URL
+			: `http://localhost:${env.PORT ?? 3000}`;
 
 		if (type === CHECKOUT_TYPE.PAPER) {
 			const price_id = PAPER_PRICE_IDS[subject];

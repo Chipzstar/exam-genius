@@ -1,10 +1,10 @@
 'use client';
 
-import React, { useCallback, useMemo, useState } from 'react';
+import React, { use, useCallback, useMemo, useState } from 'react';
 import Page from '~/layout/Page';
 import { Anchor, Breadcrumbs, Button, Card, LoadingOverlay, ScrollArea, Text, Title } from '@mantine/core';
 import Image from 'next/image';
-import { CHECKOUT_TYPE, PAPER_PRICE_IDS, PATHS } from '~/utils/constants';
+import { CHECKOUT_TYPE, PATHS } from '~/utils/constants';
 import { capitalize, genCourseOrPaperName, notifyError, notifySuccess, sanitize } from '~/utils/functions';
 import { IconArrowLeft, IconCheck, IconX } from '@tabler/icons-react';
 import Link from 'next/link';
@@ -16,8 +16,10 @@ import { ExamBoard, PaperInfo, Subject, SUBJECT_PAPERS } from '@exam-genius/shar
 import NotFound from '~/app/not-found';
 import axios from 'axios';
 import { GeneratePaperPayload } from '~/utils/types';
+import { env } from '~/env';
 
-export default function PapersPage({ params }: { params: { course_id: string; unit: string } }) {
+export default function PapersPage({ params }: { params: Promise<{ course_id: string; unit: string }> }) {
+	const resolvedParams = use(params);
 	const [content, setContent] = useState<string>('');
 	const [generating, setGenerating] = useState<boolean>(false);
 	const [loading, setLoading] = useState<number | null>(null);
@@ -28,22 +30,22 @@ export default function PapersPage({ params }: { params: { course_id: string; un
 	const board = (searchParams.get('board') ?? '') as ExamBoard;
 	const { height } = useViewportSize();
 	const mobileScreen = useMediaQuery('(max-width: 30em)');
-	const { isLoading, data: course } = api.course.getSingleCourse.useQuery({ id: params.course_id });
-	const { data: course_papers } = api.paper.getPapersByCourse.useQuery(
-		{ courseId: params.course_id },
-		{ initialData: [] }
-	);
+	const { isLoading, data: course } = api.course.getSingleCourse.useQuery({ id: resolvedParams.course_id });
+	const {
+		data: course_papers = [],
+		isLoading: papersLoading
+	} = api.paper.getPapersByCourse.useQuery({ courseId: resolvedParams.course_id });
 	const { mutateAsync: createCheckoutSession } = api.stripe.createCheckoutSession.useMutation();
 	const { mutateAsync: createPastPaper } = api.paper.createPaper.useMutation();
 	const items = [
 		{ title: 'Courses', href: PATHS.HOME },
 		{
 			title: genCourseOrPaperName(course?.subject ?? subject, course?.exam_board ?? board),
-			href: `${PATHS.COURSE}/${params.course_id}?subject=${subject}&board=${board}`
+			href: `${PATHS.COURSE}/${resolvedParams.course_id}?subject=${subject}&board=${board}`
 		},
 		{
-			title: capitalize(sanitize(params.unit)),
-			href: `${PATHS.COURSE}/${params.course_id}/${params.unit}?subject=${subject}&board=${board}`
+			title: capitalize(sanitize(resolvedParams.unit)),
+			href: `${PATHS.COURSE}/${resolvedParams.course_id}/${resolvedParams.unit}?subject=${subject}&board=${board}`
 		}
 	].map((item, index) => {
 		const isActive = pathname === item.href;
@@ -55,65 +57,17 @@ export default function PapersPage({ params }: { params: { course_id: string; un
 	});
 
 	const course_info = useMemo(() => {
-		return course ? SUBJECT_PAPERS[course.subject][course.exam_board][params.unit] : null;
-	}, [course, params.unit]);
-
-	const generatePaper = useCallback(
-		async (paper: PaperInfo) => {
-			try {
-				const num_papers = course_papers.filter(p => p.paper_code === paper.code).length;
-				if (num_papers > 0) {
-					await openCheckoutSession(paper);
-					setLoading(null);
-				} else {
-					setGenerating(true);
-					const created_paper = await createPastPaper({
-						paper_name: paper.name,
-						paper_code: paper.code,
-						course_id: params.course_id,
-						subject: subject,
-						exam_board: board,
-						unit_name: params.unit,
-						num_questions: paper.num_questions,
-						num_marks: paper.marks
-					});
-					axios.post(`${process.env.NEXT_PUBLIC_BACKEND_HOST}/server/paper/generate`, {
-						paper_id: created_paper.paper_id,
-						paper_name: created_paper.name,
-						subject: created_paper.subject,
-						exam_board: created_paper.exam_board,
-						course: created_paper.unit_name,
-						num_questions: paper.num_questions,
-						num_marks: paper.marks
-					} as GeneratePaperPayload).then(({data}) => {
-						notifySuccess('paper-generation-success', `${created_paper.exam_board} ${created_paper.subject} has now been generated!!`, <IconCheck size={20}/>)
-					}).catch(error => {
-						console.error(error)
-					})
-					setLoading(null);
-					router.push(
-						`${PATHS.COURSE}/${params.course_id}/${params.unit}/${paper.href}?subject=${subject}&board=${board}&code=${paper.code}`
-					);
-					setGenerating(false);
-				}
-			} catch (err: any) {
-				console.error(err);
-				setGenerating(false);
-				notifyError('generate-paper-failed', err.message, <IconX size={20} />);
-			}
-		},
-		[params, course_papers, subject, board, router]
-	);
+		return course ? SUBJECT_PAPERS[course.subject][course.exam_board][resolvedParams.unit] : null;
+	}, [course, resolvedParams.unit]);
 
 	const openCheckoutSession = useCallback(
 		async (paper: PaperInfo) => {
 			const { checkout_url } = await createCheckoutSession({
 				type: CHECKOUT_TYPE.PAPER,
-				price_id: PAPER_PRICE_IDS[subject],
 				subject: course?.subject ?? subject,
 				exam_board: course?.exam_board ?? board,
-				course_id: params.course_id,
-				unit: params.unit,
+				course_id: resolvedParams.course_id,
+				unit: resolvedParams.unit,
 				paper_href: paper.href,
 				paper_name: paper.name,
 				paper_code: paper.code,
@@ -124,7 +78,64 @@ export default function PapersPage({ params }: { params: { course_id: string; un
 				router.push(checkout_url);
 			}
 		},
-		[course, subject, board, params, createCheckoutSession, router]
+		[course, subject, board, resolvedParams, createCheckoutSession, router]
+	);
+
+	const generatePaper = useCallback(
+		async (paper: PaperInfo) => {
+			if (papersLoading) {
+				return;
+			}
+			try {
+				const num_papers = course_papers.filter(p => p.paper_code === paper.code).length;
+				if (num_papers > 0) {
+					await openCheckoutSession(paper);
+					setLoading(null);
+				} else {
+					setGenerating(true);
+					const created_paper = await createPastPaper({
+						paper_name: paper.name,
+						paper_code: paper.code,
+						course_id: resolvedParams.course_id,
+						subject: subject,
+						exam_board: board,
+						unit_name: resolvedParams.unit,
+						num_questions: paper.num_questions,
+						num_marks: paper.marks
+					});
+					axios
+						.post(`${env.NEXT_PUBLIC_BACKEND_HOST}/server/paper/generate`, {
+							paper_id: created_paper.paper_id,
+							paper_name: created_paper.name,
+							subject: created_paper.subject,
+							exam_board: created_paper.exam_board,
+							course: created_paper.unit_name,
+							num_questions: paper.num_questions,
+							num_marks: paper.marks
+						} as GeneratePaperPayload)
+						.then(({ data }) => {
+							notifySuccess(
+								'paper-generation-success',
+								`${created_paper.exam_board} ${created_paper.subject} has now been generated!!`,
+								<IconCheck size={20} />
+							);
+						})
+						.catch(error => {
+							console.error(error);
+						});
+					setLoading(null);
+					router.push(
+						`${PATHS.COURSE}/${resolvedParams.course_id}/${resolvedParams.unit}/${paper.href}?subject=${subject}&board=${board}&code=${paper.code}`
+					);
+					setGenerating(false);
+				}
+			} catch (err: any) {
+				console.error(err);
+				setGenerating(false);
+				notifyError('generate-paper-failed', err.message, <IconX size={20} />);
+			}
+		},
+		[resolvedParams, course_papers, subject, board, router, createPastPaper, openCheckoutSession, papersLoading]
 	);
 
 	if (isLoading) {
@@ -161,7 +172,7 @@ export default function PapersPage({ params }: { params: { course_id: string; un
 							variant='outline'
 							onClick={() =>
 								router.replace(
-									`${PATHS.COURSE}/${params.course_id}?subject=${subject}&board=${board}`
+									`${PATHS.COURSE}/${resolvedParams.course_id}?subject=${subject}&board=${board}`
 								)
 							}
 						>
@@ -188,7 +199,7 @@ export default function PapersPage({ params }: { params: { course_id: string; un
 								</div>
 								<div className='flex grow flex-row items-center justify-between space-x-6 sm:flex-col sm:items-end sm:justify-center sm:space-y-4 sm:space-x-0'>
 									<Link
-										href={`${PATHS.COURSE}/${params.course_id}/${params.unit}/${paper.href}?subject=${subject}&board=${board}&code=${paper.code}`}
+										href={`${PATHS.COURSE}/${resolvedParams.course_id}/${resolvedParams.unit}/${paper.href}?subject=${subject}&board=${board}&code=${paper.code}`}
 									>
 										<Button
 											type='button'
@@ -203,10 +214,12 @@ export default function PapersPage({ params }: { params: { course_id: string; un
 										w={mobileScreen ? 120 : 200}
 										size={mobileScreen ? 'xs' : 'lg'}
 										onClick={() => {
+											if (papersLoading) return;
 											setLoading(index);
 											generatePaper(paper);
 										}}
 										loading={loading === index}
+										disabled={papersLoading || generating}
 									>
 										<Text fw='normal'>Generate New</Text>
 									</Button>

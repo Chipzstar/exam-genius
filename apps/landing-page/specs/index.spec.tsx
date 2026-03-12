@@ -1,11 +1,15 @@
 import React from 'react';
 import { render } from '@testing-library/react';
+import HomePage from '../app/page';
+import { Providers } from '../app/providers';
 
-import Index from '../pages/index';
-
-describe('Index', () => {
+describe('HomePage', () => {
 	it('should render successfully', () => {
-		const { baseElement } = render(<Index />);
+		const { baseElement } = render(
+			<Providers>
+				<HomePage />
+			</Providers>
+		);
 		expect(baseElement).toBeTruthy();
 	});
 });

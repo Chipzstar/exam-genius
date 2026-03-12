@@ -4,29 +4,28 @@ import { validateLineItems } from '~/server/handlers';
 import { z } from 'zod';
 import { TRPCError } from '@trpc/server';
 import { Logger } from '~/server/logger';
-import { CHECKOUT_TYPE, PAPER_PRICE_IDS, PATHS, SUBJECT_STRIPE_IDS } from '~/utils/constants';
+import { CHECKOUT_TYPE, PATHS } from '~/utils/constants';
+import { PAPER_PRICE_IDS, SUBJECT_STRIPE_IDS } from '~/utils/constants.server';
 import { env } from '~/env';
 
 const courseSchema = z.object({
 	type: z.literal(CHECKOUT_TYPE.COURSE),
 	exam_board: z.enum(['ocr', 'aqa', 'edexcel']),
-	subject: z.enum(['maths', 'physics', 'chemistry', 'biology', 'economics', 'psychology']),
-	price_id: z.string()
+	subject: z.enum(['maths', 'physics', 'chemistry', 'biology', 'economics', 'psychology'])
 });
 
 const paperSchema = z.object({
 	type: z.literal(CHECKOUT_TYPE.PAPER),
-	price_id: z.string(),
 	course_id: z.string(),
 	exam_board: z.enum(['ocr', 'aqa', 'edexcel']),
-	subject: z.enum(["maths", "physics", "chemistry", "biology", "economics", "psychology"]),
+	subject: z.enum(['maths', 'physics', 'chemistry', 'biology', 'economics', 'psychology']),
 	paper_href: z.string(),
 	paper_name: z.string(),
 	paper_code: z.string(),
 	unit: z.string(),
 	num_questions: z.number(),
 	marks: z.number()
-})
+});
 
 const stripeRouter = createTRPCRouter({
 	createCheckoutSession: protectedProcedure

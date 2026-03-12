@@ -33,23 +33,23 @@ const ChoosePaper = ({ course, next, prev, form } : Props) => {
 		<Page.Container classNames='h-full flex flex-col pb-2'>
 			<CustomLoader opened={loading} onClose={() => setLoading(false)} text={"Generating your AI-Powered Predicted Papers..."}/>
 			<header className="flex flex-col items-center space-y-6">
-				<Title align='center' order={2} size='h1' color='brand' weight={600}>
+				<Title ta="center" order={2} size="h1" c="brand.5" fw={600}>
 					Choose a paper
 				</Title>
-				<Text w={400} align='center' weight={500}>Choose a paper below to take a sneak peak at what you get with ExamGenius</Text>
+				<Text maw={400} ta="center" fw={500}>Choose a paper below to take a sneak peak at what you get with ExamGenius</Text>
 			</header>
 			<Page.Body extraClassNames='h-full justify-center'>
 				{course.map(([unit_name, unit]) => (
 					<Card shadow='sm' radius='md' my='sm' key={unit_name}>
-						<Group align='center' p='md' position='apart'>
+						<Group align="center" p="md" justify="space-between">
 							<div className='flex items-center grow space-x-6'>
 								<Image src={unit.icon} width={100} height={100} alt='maths-icon' />
 								<div className='flex flex-col space-y-4'>
-									<Title order={1} size='h2' weight={600}>
+									<Title order={1} size="h2" fw={600}>
 										{unit.label}
 									</Title>
 									{unit.papers.map((paper, index) => (
-										<Text key={index} size='xl' weight={500}>
+										<Text key={index} size="xl" fw={500}>
 											{paper.name}
 										</Text>
 									))}
@@ -57,7 +57,7 @@ const ChoosePaper = ({ course, next, prev, form } : Props) => {
 							</div>
 							<div className='shrink grow-0 flex-end justify-end right-0'>
 								<Button type="button" size='lg' onClick={() => handleSubmit(unit_name)}>
-									<Text weight='normal'>{'Get Papers'}</Text>
+									<Text fw={400}>{'Get Papers'}</Text>
 								</Button>
 							</div>
 						</Group>

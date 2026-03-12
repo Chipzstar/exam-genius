@@ -1,6 +1,7 @@
 import { createTRPCRouter, protectedProcedure } from '../trpc';
 import { TRPCError } from '@trpc/server';
 import { z } from 'zod';
+import { Course } from '@exam-genius/shared/prisma';
 
 const courseRouter = createTRPCRouter({
 	getCourses: protectedProcedure.query(async ({ ctx }) => {
@@ -21,14 +22,16 @@ const courseRouter = createTRPCRouter({
 				id: z.string()
 			})
 		)
-		.query(async ({ input, ctx }) => {
+		.query(async ({ input, ctx }): Promise<Course> => {
 			try {
-				return await ctx.prisma.course.findFirstOrThrow({
+				const dbCourse = await ctx.prisma.course.findFirstOrThrow({
 					where: {
 						user_id: ctx.auth.userId,
 						course_id: input.id
 					}
 				});
+				console.log(dbCourse);
+				return dbCourse as Course;
 			} catch (err) {
 				console.error(err);
 				throw new TRPCError({

@@ -8,18 +8,15 @@ import superjson from 'superjson';
 import type { AppRouter } from '~/server/api/routers/_app';
 import { getQueryClient } from './query-client';
 
-function getBaseUrl() {
-	if (typeof window !== 'undefined') return '';
-	if (process.env.VERCEL_URL) return `https://${process.env.VERCEL_URL}`;
-	if (process.env.RENDER_INTERNAL_HOSTNAME)
-		return `http://${process.env.RENDER_INTERNAL_HOSTNAME}:${process.env.PORT}`;
-	return `http://localhost:${process.env.PORT ?? 4200}`;
-}
-
 export const api = createTRPCReact<AppRouter>();
 
-export function TRPCReactProvider(props: { children: React.ReactNode }) {
+export function TRPCReactProvider(props: {
+	children: React.ReactNode;
+	/** Base URL from server (e.g. https://vercel.app). Empty string = relative URLs (client). */
+	baseUrl?: string;
+}) {
 	const queryClient = getQueryClient();
+	const baseUrl = props.baseUrl ?? '';
 
 	return (
 		<api.Provider client={api.createClient({
@@ -30,7 +27,7 @@ export function TRPCReactProvider(props: { children: React.ReactNode }) {
 						(opts.direction === 'down' && opts.result instanceof Error),
 				}),
 				httpBatchLink({
-					url: `${getBaseUrl()}/api/trpc`,
+					url: `${baseUrl}/api/trpc`,
 					transformer: superjson,
 				}),
 			],

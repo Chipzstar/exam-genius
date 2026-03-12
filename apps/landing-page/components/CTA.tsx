@@ -21,14 +21,14 @@ export const CTA = () => {
 				variant='gradient'
 				gradient={{ from: '#6B81FA', to: '#2742F5', deg: 180 }}
 				radius='lg'
-				styles={theme => ({
+				styles={() => ({
 					root: {
 						width: '250px',
 						height: '60px'
 					}
 				})}
 				size='xl'
-				uppercase
+				className='uppercase'
 				onClick={() => showSneakPeak(true)}
 			>
 				Start Now

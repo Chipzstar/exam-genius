@@ -1,3 +1,3 @@
 import { createContext } from 'react';
 
-export const SneakPeakContext = createContext(null);
+export const SneakPeakContext = createContext<[boolean, (value: boolean) => void]>([false, () => {}]);

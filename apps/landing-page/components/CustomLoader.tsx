@@ -30,7 +30,7 @@ const CustomLoader = ({ opened, onClose, text }) => {
 			}}
 		>
 			<Stack justify='center'>
-				<Title align='center' color='brand' weight={600} size='xl' px='lg'>
+				<Title size="xl" ta="center" c="brand.5" fw={600} style={{ paddingLeft: 'var(--mantine-spacing-lg)', paddingRight: 'var(--mantine-spacing-lg)' }}>
 					{text}
 				</Title>
 				<Lottie options={defaultOptions} height={mobileScreen ? 200 : 400} width={mobileScreen ? 200 : 400} />

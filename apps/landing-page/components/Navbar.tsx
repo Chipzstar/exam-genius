@@ -1,5 +1,6 @@
 import React, { useContext } from 'react';
-import { Box, Burger, Button, createStyles, Divider, Drawer, Group, rem, ScrollArea, Text } from '@mantine/core';
+import { Box, Burger, Button, Divider, Drawer, Group, rem, ScrollArea, Text } from '@mantine/core';
+import { createStyles } from '@mantine/emotion';
 import Image from 'next/image';
 import Link from 'next/link';
 import { Link as ScrollLink } from 'react-scroll';
@@ -17,33 +18,33 @@ const useStyles = createStyles(theme => ({
         textDecoration: 'none',
         fontWeight: 400,
 
-        [theme.fn.smallerThan('sm')]: {
+        '@media (max-width: 48em)': {
             height: rem(42),
             display: 'flex',
             alignItems: 'center',
             width: '100%',
-            ...theme.fn.hover({
-                backgroundColor: theme.colorScheme === 'dark' ? theme.colors.dark[6] : theme.colors.gray[0]
-            })
+            '&:hover': {
+                backgroundColor: theme.colors.gray[0]
+            }
         }
     },
     dropdownFooter: {
-        backgroundColor: theme.colorScheme === 'dark' ? theme.colors.dark[7] : theme.colors.gray[0],
+        backgroundColor: theme.colors.gray[0],
         margin: `calc(${theme.spacing.md} * -1)`,
         marginTop: theme.spacing.sm,
         padding: `${theme.spacing.md} calc(${theme.spacing.md} * 2)`,
         paddingBottom: theme.spacing.xl,
-        borderTop: `${rem(1)} solid ${theme.colorScheme === 'dark' ? theme.colors.dark[5] : theme.colors.gray[1]}`
+        borderTop: `${rem(1)} solid ${theme.colors.gray[1]}`
     },
 
     hiddenMobile: {
-        [theme.fn.smallerThan('sm')]: {
+        '@media (max-width: 48em)': {
             display: 'none'
         }
     },
 
     hiddenDesktop: {
-        [theme.fn.largerThan('sm')]: {
+        '@media (min-width: 48em)': {
             display: 'none'
         }
     }
@@ -61,7 +62,7 @@ const Navbar = () => {
                         <Image src="/static/images/logo.svg" alt="logo" width={250} height={50} />
                     </Link>
                 </div>
-                <Group sx={{ height: '100%' }} spacing={0} className={classes.hiddenMobile}>
+                <Group style={{ height: '100%' }} gap={0} className={classes.hiddenMobile}>
                     <div role="button" className={classes.link}>
                         <ScrollLink role="button" to="how-it-works">
                             How it works
@@ -86,7 +87,7 @@ const Navbar = () => {
                 <Group className={classes.hiddenMobile}>
                     <a target="_blank" href="https://app.exam-genius.com" rel="noopener noreferrer">
                         <Button size="md" variant="white">
-                            <Text weight="normal">Login</Text>
+                            <Text fw={400}>Login</Text>
                         </Button>
                     </a>
                     <Button
@@ -102,7 +103,7 @@ const Navbar = () => {
                         gradient={{ from: '#6B81FA', to: '#2742F5', deg: 180 }}
                         onClick={() => showSneakPeak(true)}
                     >
-                        <Text weight="normal">Start Now</Text>
+                        <Text fw={400}>Start Now</Text>
                     </Button>
                 </Group>
                 <Burger opened={drawerOpened} onClick={toggleDrawer} className={classes.hiddenDesktop} />
@@ -116,7 +117,7 @@ const Navbar = () => {
                 zIndex={1000000}
             >
                 <ScrollArea h={`calc(100vh - ${rem(60)})`} mx="-md">
-                    <Divider my="sm" color={theme.colorScheme === 'dark' ? 'dark.5' : 'gray.1'} />
+                    <Divider my="sm" color="gray.1" />
                     <div role="button" className={classes.link}>
                         <ScrollLink to="how-it-works" onClick={closeDrawer}>
                             How it works
@@ -138,8 +139,8 @@ const Navbar = () => {
                             Testimonials
                         </ScrollLink>
                     </div>
-                    <Divider my="sm" color={theme.colorScheme === 'dark' ? 'dark.5' : 'gray.1'} />
-                    <Group position="center" grow pb="xl" px="md">
+                    <Divider my="sm" color="gray.1" />
+                    <Group justify="center" grow pb="xl" px="md">
                         <a target="_blank" href="https://app.exam-genius.com" rel="noopener noreferrer">
                             <Button fullWidth variant="default">
                                 Log in
