@@ -59,8 +59,7 @@ export const metadata: Metadata = {
 
 function getBaseUrl() {
 	// Server-only: used when passing to client so client bundle never touches server env
-	if (env.APP_BASE_URL) return env.APP_BASE_URL;
-	return `http://localhost:${env.PORT ?? 3000}`;
+	return env.APP_BASE_URL || `http://localhost:${env.PORT ?? 3000}`;
 }
 
 export default function RootLayout({

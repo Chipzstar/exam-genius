@@ -16,6 +16,7 @@ import { ExamBoard, PaperInfo, Subject, SUBJECT_PAPERS } from '@exam-genius/shar
 import NotFound from '~/app/not-found';
 import axios from 'axios';
 import { GeneratePaperPayload } from '~/utils/types';
+import { env } from '~/env';
 
 export default function PapersPage({ params }: { params: Promise<{ course_id: string; unit: string }> }) {
 	const resolvedParams = use(params);
@@ -30,10 +31,10 @@ export default function PapersPage({ params }: { params: Promise<{ course_id: st
 	const { height } = useViewportSize();
 	const mobileScreen = useMediaQuery('(max-width: 30em)');
 	const { isLoading, data: course } = api.course.getSingleCourse.useQuery({ id: resolvedParams.course_id });
-	const { data: course_papers } = api.paper.getPapersByCourse.useQuery(
-		{ courseId: resolvedParams.course_id },
-		{ initialData: [] }
-	);
+	const {
+		data: course_papers = [],
+		isLoading: papersLoading
+	} = api.paper.getPapersByCourse.useQuery({ courseId: resolvedParams.course_id });
 	const { mutateAsync: createCheckoutSession } = api.stripe.createCheckoutSession.useMutation();
 	const { mutateAsync: createPastPaper } = api.paper.createPaper.useMutation();
 	const items = [
@@ -82,6 +83,9 @@ export default function PapersPage({ params }: { params: Promise<{ course_id: st
 
 	const generatePaper = useCallback(
 		async (paper: PaperInfo) => {
+			if (papersLoading) {
+				return;
+			}
 			try {
 				const num_papers = course_papers.filter(p => p.paper_code === paper.code).length;
 				if (num_papers > 0) {
@@ -99,19 +103,26 @@ export default function PapersPage({ params }: { params: Promise<{ course_id: st
 						num_questions: paper.num_questions,
 						num_marks: paper.marks
 					});
-					axios.post(`${process.env.NEXT_PUBLIC_BACKEND_HOST}/server/paper/generate`, {
-						paper_id: created_paper.paper_id,
-						paper_name: created_paper.name,
-						subject: created_paper.subject,
-						exam_board: created_paper.exam_board,
-						course: created_paper.unit_name,
-						num_questions: paper.num_questions,
-						num_marks: paper.marks
-					} as GeneratePaperPayload).then(({data}) => {
-						notifySuccess('paper-generation-success', `${created_paper.exam_board} ${created_paper.subject} has now been generated!!`, <IconCheck size={20}/>)
-					}).catch(error => {
-						console.error(error)
-					})
+					axios
+						.post(`${env.NEXT_PUBLIC_BACKEND_HOST}/server/paper/generate`, {
+							paper_id: created_paper.paper_id,
+							paper_name: created_paper.name,
+							subject: created_paper.subject,
+							exam_board: created_paper.exam_board,
+							course: created_paper.unit_name,
+							num_questions: paper.num_questions,
+							num_marks: paper.marks
+						} as GeneratePaperPayload)
+						.then(({ data }) => {
+							notifySuccess(
+								'paper-generation-success',
+								`${created_paper.exam_board} ${created_paper.subject} has now been generated!!`,
+								<IconCheck size={20} />
+							);
+						})
+						.catch(error => {
+							console.error(error);
+						});
 					setLoading(null);
 					router.push(
 						`${PATHS.COURSE}/${resolvedParams.course_id}/${resolvedParams.unit}/${paper.href}?subject=${subject}&board=${board}&code=${paper.code}`
@@ -124,7 +135,7 @@ export default function PapersPage({ params }: { params: Promise<{ course_id: st
 				notifyError('generate-paper-failed', err.message, <IconX size={20} />);
 			}
 		},
-		[resolvedParams, course_papers, subject, board, router, createPastPaper, openCheckoutSession]
+		[resolvedParams, course_papers, subject, board, router, createPastPaper, openCheckoutSession, papersLoading]
 	);
 
 	if (isLoading) {
@@ -203,10 +214,12 @@ export default function PapersPage({ params }: { params: Promise<{ course_id: st
 										w={mobileScreen ? 120 : 200}
 										size={mobileScreen ? 'xs' : 'lg'}
 										onClick={() => {
+											if (papersLoading) return;
 											setLoading(index);
 											generatePaper(paper);
 										}}
 										loading={loading === index}
+										disabled={papersLoading || generating}
 									>
 										<Text fw='normal'>Generate New</Text>
 									</Button>

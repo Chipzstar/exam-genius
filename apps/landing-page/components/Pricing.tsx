@@ -3,10 +3,12 @@ import { Button } from '@mantine/core';
 import Image from 'next/image';
 import { useMediaQuery } from '@mantine/hooks';
 import { SneakPeakContext } from '../context/SneakPeakContext';
+import { getYear } from 'date-fns';
 
 export const Pricing = () => {
 	const mobileScreen = useMediaQuery('(max-width: 30em)');
 	const [sneak, showSneakPeak] = useContext(SneakPeakContext);
+	const currentYear = getYear(new Date());
 	return (
 		<div id='pricing' className='flex min-h-screen items-center justify-center py-10'>
 			<div className='flex flex-col items-center justify-center space-y-10'>
@@ -28,7 +30,7 @@ export const Pricing = () => {
 					<div className='flex flex-col items-center space-y-4'>
 						<p className='text-2xl font-normal'>Genius Plan</p>
 						<p className='text-center' style={{ width: '250px' }}>
-							Available until <strong>31st July 2025</strong>
+							Available until <strong>31st July {currentYear}</strong>
 						</p>
 					</div>
 					<p className='text-4xl'>£5</p>
