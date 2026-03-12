@@ -80,11 +80,6 @@ export const env = createEnv({
 		DOPPLER_ENVIRONMENT: z.string().optional(),
 		DOPPLER_PROJECT: z.string().optional(),
 
-		// NX
-		NX_CACHE_DIRECTORY: z.string().optional(),
-		NX_SKIP_NX_CACHE: z.string().optional(),
-		NX_VERBOSE_LOGGING: z.string().optional(),
-
 		// App Base URL
 		APP_BASE_URL: z.string().url(),
 	},
@@ -186,11 +181,6 @@ export const env = createEnv({
 		DOPPLER_CONFIG: process.env.DOPPLER_CONFIG,
 		DOPPLER_ENVIRONMENT: process.env.DOPPLER_ENVIRONMENT,
 		DOPPLER_PROJECT: process.env.DOPPLER_PROJECT,
-
-		// NX
-		NX_CACHE_DIRECTORY: process.env.NX_CACHE_DIRECTORY,
-		NX_SKIP_NX_CACHE: process.env.NX_SKIP_NX_CACHE,
-		NX_VERBOSE_LOGGING: process.env.NX_VERBOSE_LOGGING,
 
 		// App Base URL
 		APP_BASE_URL: process.env.APP_BASE_URL,
