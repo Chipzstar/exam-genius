@@ -30,7 +30,6 @@ const courseRouter = createTRPCRouter({
 						course_id: input.id
 					}
 				});
-				console.log(dbCourse);
 				return dbCourse as Course;
 			} catch (err) {
 				console.error(err);
