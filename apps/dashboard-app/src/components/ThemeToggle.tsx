@@ -39,3 +39,12 @@ export function ThemeToggle() {
 		</ActionIcon>
 	);
 }
+
+/** Fixed bottom-right control; keeps print/PDF layouts clean via paper-no-print. */
+export function ThemeToggleFloating() {
+	return (
+		<div className='paper-no-print fixed bottom-0 right-0 z-[100] mb-4 mr-4'>
+			<ThemeToggle />
+		</div>
+	);
+}

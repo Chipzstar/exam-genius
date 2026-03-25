@@ -148,11 +148,12 @@ export default function PaperClient({ params, searchParams, initialPapers }: Pap
 	);
 	const { mutateAsync: checkPaperGenerated } = api.paper.checkPaperGenerated.useMutation();
 	const { mutate: regeneratePaper, isPending: regenLoading } = api.paper.regeneratePaper.useMutation();
-	const { mutateAsync: deletePaper } = api.paper.deletePaper.useMutation({
+	const { mutate: deletePaper, isPending: deletePaperPending } = api.paper.deletePaper.useMutation({
 		onSuccess() {
 			utils.paper.getPapersByCode.invalidate({ courseId: params.course_id, code: code });
 		}
 	});
+	const showDevDelete = process.env.NEXT_PUBLIC_VERCEL_ENV !== 'production';
 	const { height } = useViewportSize();
 	const { start } = useTimeout(([data]: RegeneratePayload[]) => {
 		checkPaperGenerated({ id: data.id }).then(isGenerated => {
@@ -247,109 +248,170 @@ export default function PaperClient({ params, searchParams, initialPapers }: Pap
 							controlsOffset='xl'
 							onSlideChange={setActiveSlideIndex}
 						>
-							{papers.map(paper => (
+						{papers.map((paper, slideIndex) => {
+							const hasPdfExport =
+								paper.status === 'success' && Boolean(paper.content && paper.content.trim().length > 0);
+							const pdfSourceId = hasPdfExport ? `paper-pdf-export-${paper.paper_id}` : null;
+							const safePdfBase =
+								(paper.name ?? 'exam-paper')
+									.replace(/[/\\?%*:|"<>]/g, '')
+									.trim()
+									.slice(0, 80) || 'exam-paper';
+
+							return (
 								<Carousel.Slide key={paper.paper_id}>
-									<ReaderToolbar />
+									<ReaderToolbar
+										pdfSourceId={pdfSourceId}
+										pdfFilename={`ExamGenius-${safePdfBase}.pdf`}
+										slideIndex={slideIndex}
+										activeSlideIndex={activeSlideIndex}
+										showDevDelete={showDevDelete}
+										onDelete={() => deletePaper({ id: paper.paper_id })}
+										deleteLoading={deletePaperPending}
+										paperTitle={paper.name}
+										paperId={paper.paper_id}
+									/>
 									<ScrollArea.Autosize mah={mobileScreen ? height - 150 : height - 100} p='sm'>
 										<Card shadow='sm' radius='md' className='w-full' p='xl'>
-											{!(process.env.NEXT_PUBLIC_VERCEL_ENV === 'production') && (
-												<Button
-													color='red'
-													variant='outline'
-													className={classes.deleteButton}
-													onClick={() => deletePaper({ id: paper.paper_id })}
+											{paper.content && paper.status === 'success' ? (
+												<div
+													id={pdfSourceId ?? undefined}
+													className={clsx(hasPdfExport && classes.pdfExportRegion)}
 												>
-													Delete
-												</Button>
-											)}
-											<div className='flex justify-center'>
-												<Stack justify='center' align='center'>
-													<Title c='brand'>ExamGenius</Title>
-													{paper.name && (
-														<Text size={mobileScreen ? 'xl' : '30px'} fw={600}>
-															{paper.name}
-														</Text>
-													)}
-													<Text size='lg'>AI Predicted Paper</Text>
-												</Stack>
-											</div>
-											<Space h='xl' />
-											<div
-												className={clsx(classes.paperContentRoot, 'h-full px-6 py-2')}
-												data-scale={String(fontScale)}
-											>
-												{paper.content || paper.status === 'success' ? (
-													<>
-														<div className={clsx(classes.paperContent, 'paperContent')}>
-															{parse(paper.content, { trim: true })}
-														</div>
-														<div className={classes.paperContentPrintFooter}>
-															ExamGenius: AI-predicted practice content — not an official past paper.
-														</div>
-													</>
-												) : paper.status === 'failed' ? (
-													<div className='flex flex-col items-center space-y-4'>
-														<Text ta='center' size='sm' w={300}>
-															Our AI failed to generate this paper. Click the button below to create a new
-															one.
-														</Text>
-														<Button
-															size='md'
-															onClick={() => {
-																const paper_info = SUBJECT_PAPERS[paper.subject][paper.exam_board][
-																	paper.unit_name
-																].papers.find(p => p.code === paper.paper_code);
-																if (!paper_info)
-																	notifyError(
-																		'invalid-paper-code',
-																		`No paper found with paper code ${paper.paper_code}. Refresh the page and try again.`,
-																		<IconX size={20} />
-																	);
-																else {
-																	regeneratePaper({
-																		id: paper.paper_id,
-																		num_questions: paper_info.num_questions,
-																		num_marks: paper_info.marks
-																	});
-																	start({
-																		id: paper.paper_id,
-																		num_questions: paper_info.num_questions,
-																		num_marks: paper_info.marks
-																	});
-																}
-															}}
-															loading={regenLoading}
-														>
-															Regenerate
-														</Button>
-													</div>
-												) : (
-													<CustomLoader
-														text='Generating Paper'
-														subText={
-															regenerateData
-																? 'After 2 minutes if no paper is generated, click here'
-																: 'Approx waiting time is 30 seconds to 2 minutes. Go grab a coffee while we get your paper ready'
-														}
-													>
-														<div className='flex flex-col items-center'>
-															{regenerateData && (
-																<Button
-																	size='md'
-																	onClick={() => regeneratePaper(regenerateData)}
-																	loading={regenLoading}
-																>
-																	Regenerate
-																</Button>
+													<div className='flex justify-center'>
+														<Stack justify='center' align='center'>
+															<Title c='brand'>ExamGenius</Title>
+															{paper.name && (
+																<Text size={mobileScreen ? 'xl' : '30px'} fw={600}>
+																	{paper.name}
+																</Text>
 															)}
+															<Text size='lg'>AI Predicted Paper</Text>
+														</Stack>
+													</div>
+													<Space h='xl' />
+													<div
+														className={clsx(classes.paperContentRoot, 'h-full px-6 py-2')}
+														data-scale={String(fontScale)}
+													>
+														{paper.content ? (
+															<>
+																<div className={clsx(classes.paperContent, 'paperContent')}>
+																	{parse(paper.content, { trim: true })}
+																</div>
+																<div className={classes.paperContentPrintFooter}>
+																	ExamGenius: AI-predicted practice content — not an
+																	official past paper.
+																</div>
+															</>
+														) : (
+															<Text c='dimmed' size='sm'>
+																Content is still loading…
+															</Text>
+														)}
+													</div>
+												</div>
+											) : paper.status === 'failed' ? (
+												<>
+													<div className='flex justify-center'>
+														<Stack justify='center' align='center'>
+															<Title c='brand'>ExamGenius</Title>
+															{paper.name && (
+																<Text size={mobileScreen ? 'xl' : '30px'} fw={600}>
+																	{paper.name}
+																</Text>
+															)}
+															<Text size='lg'>AI Predicted Paper</Text>
+														</Stack>
+													</div>
+													<Space h='xl' />
+													<div
+														className={clsx(classes.paperContentRoot, 'h-full px-6 py-2')}
+														data-scale={String(fontScale)}
+													>
+														<div className='flex flex-col items-center space-y-4'>
+															<Text ta='center' size='sm' w={300}>
+																Our AI failed to generate this paper. Click the button below to create a
+																new one.
+															</Text>
+															<Button
+																size='md'
+																onClick={() => {
+																	const paper_info = SUBJECT_PAPERS[paper.subject][paper.exam_board][
+																		paper.unit_name
+																	].papers.find(p => p.code === paper.paper_code);
+																	if (!paper_info)
+																		notifyError(
+																			'invalid-paper-code',
+																			`No paper found with paper code ${paper.paper_code}. Refresh the page and try again.`,
+																			<IconX size={20} />
+																		);
+																	else {
+																		regeneratePaper({
+																			id: paper.paper_id,
+																			num_questions: paper_info.num_questions,
+																			num_marks: paper_info.marks
+																		});
+																		start({
+																			id: paper.paper_id,
+																			num_questions: paper_info.num_questions,
+																			num_marks: paper_info.marks
+																		});
+																	}
+																}}
+																loading={regenLoading}
+															>
+																Regenerate
+															</Button>
 														</div>
-													</CustomLoader>
-												)}
-											</div>
+													</div>
+												</>
+											) : (
+												<>
+													<div className='flex justify-center'>
+														<Stack justify='center' align='center'>
+															<Title c='brand'>ExamGenius</Title>
+															{paper.name && (
+																<Text size={mobileScreen ? 'xl' : '30px'} fw={600}>
+																	{paper.name}
+																</Text>
+															)}
+															<Text size='lg'>AI Predicted Paper</Text>
+														</Stack>
+													</div>
+													<Space h='xl' />
+													<div
+														className={clsx(classes.paperContentRoot, 'h-full px-6 py-2')}
+														data-scale={String(fontScale)}
+													>
+														<CustomLoader
+															text='Generating Paper'
+															subText={
+																regenerateData
+																	? 'After 2 minutes if no paper is generated, click here'
+																	: 'Approx waiting time is 30 seconds to 2 minutes. Go grab a coffee while we get your paper ready'
+															}
+														>
+															<div className='flex flex-col items-center'>
+																{regenerateData && (
+																	<Button
+																		size='md'
+																		onClick={() => regeneratePaper(regenerateData)}
+																		loading={regenLoading}
+																	>
+																		Regenerate
+																	</Button>
+																)}
+															</div>
+														</CustomLoader>
+													</div>
+												</>
+											)}
 										</Card>
 									</ScrollArea.Autosize>
 								</Carousel.Slide>
-							))}
+							);
+						})}
 						</Carousel>
 					</>
 				)}

@@ -10,7 +10,6 @@ import { useClerk } from '@clerk/nextjs';
 import { useViewportSize } from '@mantine/hooks';
 import clsx from 'clsx';
 import classes from './Sidebar.module.css';
-import { ThemeToggle } from '~/components/ThemeToggle';
 
 const Sidebar = ({ opened, setOpened }: { opened: boolean; setOpened: (opened: boolean) => void }) => {
 	const { width } = useViewportSize();
@@ -75,11 +74,10 @@ const Sidebar = ({ opened, setOpened }: { opened: boolean; setOpened: (opened: b
 			</div>
 			<div style={{ flex: 1, marginTop: '100px' }} className='flex flex-col'>
 				{links}
-				<div className='mt-auto flex flex-col gap-2 px-5 pb-4 pt-6'>
-					<ThemeToggle />
-				</div>
-				<div data-cy='logout-button' role='button' className={classes.link} onClick={() => signOut()}>
-					<IconLogout className={classes.linkIcon} stroke={1.5} /> <span>Logout</span>
+				<div className='mt-auto'>
+					<div data-cy='logout-button' role='button' className={classes.link} onClick={() => signOut()}>
+						<IconLogout className={classes.linkIcon} stroke={1.5} /> <span>Logout</span>
+					</div>
 				</div>
 			</div>
 		</div>

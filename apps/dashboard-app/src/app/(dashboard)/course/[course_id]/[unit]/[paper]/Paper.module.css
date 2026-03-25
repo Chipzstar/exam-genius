@@ -12,12 +12,6 @@
 	opacity: 1;
 }
 
-.deleteButton {
-	position: absolute;
-	right: 20px;
-	top: 20px;
-}
-
 .paperViewRoot {
 	width: 100%;
 }
@@ -47,6 +41,21 @@
 
 .paperContentPrintFooter {
 	display: none;
+}
+
+/* Full paper capture for PDF: light canvas + visible disclaimer */
+.pdfExportRegion {
+	background: #ffffff;
+	color: #111111;
+}
+
+.pdfExportRegion .paperContentPrintFooter {
+	display: block;
+	margin-top: 2rem;
+	padding-top: 1rem;
+	border-top: 1px solid #cccccc;
+	font-size: 0.85rem;
+	color: #444444;
 }
 
 @media print {
