@@ -31,6 +31,29 @@ body {
     line-height: inherit;
     margin: 0;
 }
+
+/* Paper reader: hide app chrome in focus mode */
+body.paper-focus-mode [data-app-chrome='navbar'],
+body.paper-focus-mode [data-app-chrome='header'] {
+    display: none !important;
+}
+
+@media print {
+    body[data-printing='true'] [data-app-chrome='navbar'],
+    body[data-printing='true'] [data-app-chrome='header'] {
+        display: none !important;
+    }
+
+    body[data-printing='true'] .paper-no-print {
+        display: none !important;
+    }
+
+    body[data-printing='true'] .mantine-Carousel-controls,
+    body[data-printing='true'] .mantine-Carousel-indicators {
+        display: none !important;
+    }
+}
+
 h1,
 h2,
 p,

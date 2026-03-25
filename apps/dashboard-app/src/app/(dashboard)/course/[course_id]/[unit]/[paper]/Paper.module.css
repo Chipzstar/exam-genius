@@ -18,3 +18,48 @@
 	top: 20px;
 }
 
+.paperViewRoot {
+	width: 100%;
+}
+
+.paperFocusRoot {
+	max-width: 56rem;
+	margin-left: auto;
+	margin-right: auto;
+}
+
+/* Font scale targets wrapper from ReaderToolbar state */
+.paperContentRoot[data-scale='1'] .paperContent {
+	font-size: 1rem;
+}
+
+.paperContentRoot[data-scale='1.125'] .paperContent {
+	font-size: 1.125rem;
+}
+
+.paperContentRoot[data-scale='1.25'] .paperContent {
+	font-size: 1.25rem;
+}
+
+.paperContent {
+	line-height: 1.6;
+}
+
+.paperContentPrintFooter {
+	display: none;
+}
+
+@media print {
+	.paperContent {
+		max-width: none !important;
+	}
+
+	.paperContentPrintFooter {
+		display: block;
+		margin-top: 2rem;
+		padding-top: 1rem;
+		border-top: 1px solid #999;
+		font-size: 10pt;
+		color: #333;
+	}
+}

@@ -5,6 +5,7 @@ import { AxiomWebVitals } from 'next-axiom';
 import { TRPCReactProvider } from '~/trpc/react';
 import { MantineProvider } from '@mantine/core';
 import { Notifications } from '@mantine/notifications';
+import { ColorSchemeSync } from '~/components/ThemeToggle';
 
 const theme = {
 	colors: {
@@ -48,7 +49,8 @@ export function Providers({
 	return (
 		<ClerkProvider>
 			<AxiomWebVitals />
-			<MantineProvider defaultColorScheme="light" theme={theme}>
+			<MantineProvider defaultColorScheme="dark" theme={theme}>
+				<ColorSchemeSync />
 				<Notifications position="top-right" />
 				<TRPCReactProvider baseUrl={baseUrl}>{children}</TRPCReactProvider>
 			</MantineProvider>

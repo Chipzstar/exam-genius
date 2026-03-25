@@ -71,7 +71,7 @@ export default function RootLayout({
 	return (
 		<html lang="en-GB" className={poppins.variable}>
 			<head>
-				<ColorSchemeScript defaultColorScheme="light" />
+				<ColorSchemeScript defaultColorScheme="dark" />
 				<Favicon />
 			</head>
 			<body className="font-sans">
