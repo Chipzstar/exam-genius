@@ -55,7 +55,7 @@ export const metadata: Metadata = {
 	keywords: '',
 	other: {
 		'content-language': 'en-GB'
-	}
+	},
 };
 
 function getBaseUrl() {

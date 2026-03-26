@@ -1,15 +1,15 @@
 'use client';
 
-import React, { useState } from 'react';
+import { useClerk } from '@clerk/nextjs';
 import { Group, Text } from '@mantine/core';
+import { useViewportSize } from '@mantine/hooks';
 import { IconLicense, IconLogout, IconQuestionMark, IconUser } from '@tabler/icons-react';
+import clsx from 'clsx';
 import Image from 'next/image';
 import { usePathname, useRouter } from 'next/navigation';
-import { DEFAULT_HEADER_HEIGHT, PATHS } from '~/utils/constants';
-import { useClerk } from '@clerk/nextjs';
+import { useState } from 'react';
 import { resetAppStoreOnLogout } from '~/store/app.store';
-import { useViewportSize } from '@mantine/hooks';
-import clsx from 'clsx';
+import { PATHS } from '~/utils/constants';
 import classes from './Sidebar.module.css';
 
 const Sidebar = ({ opened, setOpened }: { opened: boolean; setOpened: (opened: boolean) => void }) => {
