@@ -46,6 +46,16 @@ if (typeof window !== 'undefined') {
 
 const MAX_RECENT = 5;
 
+/** Clears persisted user-specific state so the next account on this browser does not see it. Keeps colorScheme as a device preference. */
+export function resetAppStoreOnLogout() {
+	if (typeof window === 'undefined') return;
+	const colorScheme = appStore$.colorScheme.peek();
+	appStore$.set({
+		...initialState,
+		colorScheme
+	});
+}
+
 export function recordPaperOpen(entry: Omit<LastOpenedPaper, 'openedAt'> & { openedAt?: number }) {
 	const openedAt = entry.openedAt ?? Date.now();
 	const full: LastOpenedPaper = { ...entry, openedAt };

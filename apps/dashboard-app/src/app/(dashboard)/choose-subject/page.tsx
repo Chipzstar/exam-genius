@@ -1,7 +1,7 @@
 'use client';
 
 import { Group, Radio, SimpleGrid, Title } from '@mantine/core';
-import React, { useEffect } from 'react';
+import React, { useLayoutEffect } from 'react';
 import Page from '~/layout/Page';
 import { SubjectCard } from '@exam-genius/shared/ui';
 import { PATHS } from '~/utils/constants';
@@ -14,7 +14,7 @@ export default function ChooseSubjectPage() {
 	const mobileScreen = useMediaQuery('(max-width: 30em)');
 	const subject = useValue(appStore$.onboarding.subject);
 
-	useEffect(() => {
+	useLayoutEffect(() => {
 		appStore$.onboarding.subject.set('');
 	}, []);
 

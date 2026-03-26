@@ -18,6 +18,7 @@ import { IconArrowLeft, IconCheck, IconX } from '@tabler/icons-react';
 import { useRouter } from 'next/navigation';
 import { api } from '~/trpc/react';
 import parse from 'html-react-parser';
+import DOMPurify from 'dompurify';
 import { Carousel } from '@mantine/carousel';
 import CustomLoader from '~/components/CustomLoader';
 import { PATHS, TWO_MINUTES } from '~/utils/constants';
@@ -32,6 +33,11 @@ import { useValue } from '@legendapp/state/react';
 import { appStore$, recordPaperOpen } from '~/store/app.store';
 import { DisclaimerStrip } from '~/components/DisclaimerStrip';
 import { ReaderToolbar } from '~/components/ReaderToolbar';
+
+/** Safe subset for AI-generated exam HTML (lists, emphasis, tables); strips scripts and event handlers. */
+const PAPER_HTML_SANITIZE: DOMPurify.Config = {
+	USE_PROFILES: { html: true }
+};
 
 interface RegeneratePayload {
 	id: string;
@@ -149,8 +155,16 @@ export default function PaperClient({ params, searchParams, initialPapers }: Pap
 	const { mutateAsync: checkPaperGenerated } = api.paper.checkPaperGenerated.useMutation();
 	const { mutate: regeneratePaper, isPending: regenLoading } = api.paper.regeneratePaper.useMutation();
 	const { mutate: deletePaper, isPending: deletePaperPending } = api.paper.deletePaper.useMutation({
-		onSuccess() {
-			utils.paper.getPapersByCode.invalidate({ courseId: params.course_id, code: code });
+		onSuccess(_, variables) {
+			const lastOpened = appStore$.lastOpenedPaper.get();
+			if (lastOpened?.paperId === variables.id) {
+				appStore$.lastOpenedPaper.set(null);
+			}
+
+			const recent = appStore$.recentPapers.get() ?? [];
+			appStore$.recentPapers.set(recent.filter(p => p.paperId !== variables.id));
+
+			utils.paper.getPapersByCode.invalidate({ courseId: params.course_id, code });
 		}
 	});
 	const showDevDelete = process.env.NEXT_PUBLIC_VERCEL_ENV !== 'production';
@@ -297,7 +311,9 @@ export default function PaperClient({ params, searchParams, initialPapers }: Pap
 														{paper.content ? (
 															<>
 																<div className={clsx(classes.paperContent, 'paperContent')}>
-																	{parse(paper.content, { trim: true })}
+																	{parse(DOMPurify.sanitize(paper.content, PAPER_HTML_SANITIZE), {
+																		trim: true
+																	})}
 																</div>
 																<div className={classes.paperContentPrintFooter}>
 																	ExamGenius: AI-predicted practice content — not an

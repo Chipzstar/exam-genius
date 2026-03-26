@@ -15,7 +15,11 @@
       "dependsOn": ["^build"],
       "cache": true,
       "inputs": ["$TURBO_DEFAULT$", "jest.config.*", "jest.preset.js"]
-    }
+    },
+    "db:generate": { "cache": false },
+    "db:push": { "cache": false },
+    "db:migrate": { "cache": false },
+    "db:studio": { "cache": false }
   },
   "globalEnv": [
     "APP_BASE_URL",

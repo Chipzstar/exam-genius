@@ -7,6 +7,7 @@ import Image from 'next/image';
 import { usePathname, useRouter } from 'next/navigation';
 import { DEFAULT_HEADER_HEIGHT, PATHS } from '~/utils/constants';
 import { useClerk } from '@clerk/nextjs';
+import { resetAppStoreOnLogout } from '~/store/app.store';
 import { useViewportSize } from '@mantine/hooks';
 import clsx from 'clsx';
 import classes from './Sidebar.module.css';
@@ -75,7 +76,15 @@ const Sidebar = ({ opened, setOpened }: { opened: boolean; setOpened: (opened: b
 			<div style={{ flex: 1, marginTop: '100px' }} className='flex flex-col'>
 				{links}
 				<div className='mt-auto'>
-					<div data-cy='logout-button' role='button' className={classes.link} onClick={() => signOut()}>
+					<div
+						data-cy='logout-button'
+						role='button'
+						className={classes.link}
+						onClick={() => {
+							resetAppStoreOnLogout();
+							void signOut();
+						}}
+					>
 						<IconLogout className={classes.linkIcon} stroke={1.5} /> <span>Logout</span>
 					</div>
 				</div>
