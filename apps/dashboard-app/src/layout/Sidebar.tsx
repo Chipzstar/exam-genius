@@ -67,7 +67,7 @@ const Sidebar = ({ opened, setOpened }: { opened: boolean; setOpened: (opened: b
 		<div className={classes.navbar} style={{ padding: 'var(--mantine-spacing-xs)' }}>
 			<div className={classes.header}>
 				<Group gap='sm' role='button' onClick={() => router.push(PATHS.HOME)}>
-					<Image src='/static/images/logo-blue.svg' width={40} height={35} alt='' />
+					<Image src='/static/favicon/icon.svg' width={40} height={40} alt='Exam Genius' />
                     <Text size="24px" fw={600} c="brand">
                         ExamGenius
                     </Text>

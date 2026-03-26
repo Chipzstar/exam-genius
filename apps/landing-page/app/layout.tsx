@@ -32,22 +32,22 @@ export const metadata: Metadata = {
 		url: 'https://www.exam-genius.com/',
 		title: 'Exam Genius',
 		description: '',
-		images: ['/static/favicon/android-chrome-192x192.png'],
+		images: ['/static/favicon/web-app-manifest-512x512.png'],
 	},
 	twitter: {
 		card: 'summary_large_image',
 		title: 'Exam Genius',
 		description: '',
-		images: ['/static/favicon/android-chrome-192x192.png'],
+		images: ['/static/favicon/web-app-manifest-512x512.png'],
 	},
 	icons: {
 		icon: [
-			{ url: '/static/favicon/favicon-32x32.png', sizes: '32x32', type: 'image/png' },
-			{ url: '/static/favicon/favicon-16x16.png', sizes: '16x16', type: 'image/png' },
+			{ url: '/static/favicon/icon.svg', type: 'image/svg+xml' },
+			{ url: '/static/favicon/favicon.ico', sizes: 'any' },
 		],
-		apple: '/static/favicon/apple-touch-icon.png',
+		apple: '/static/favicon/apple-icon.png',
 	},
-	manifest: '/static/favicon/site.webmanifest',
+	manifest: '/static/favicon/manifest.json',
 	other: {
 		'msapplication-TileColor': '#da532c',
 		'theme-color': '#2742F5',
@@ -60,7 +60,6 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
 			<head>
 				<ColorSchemeScript defaultColorScheme="light" />
 				<meta name="viewport" content="minimum-scale=1, initial-scale=1, width=device-width" />
-				<link rel="mask-icon" href="/static/favicon/safari-pinned-tab.svg" color="#5bbad5" />
 			</head>
 			<body className="font-sans">
 				<PlausibleProvider domain="exam-genius.com">
