@@ -5,18 +5,31 @@
 @import url("https://fonts.googleapis.com/css2?family=Poppins&display=swap");
 @import './styles.css';
 
+:root {
+    color-scheme: light;
+}
+
+/* Using a class */
+.dark {
+    color-scheme: dark;
+}
+
 @layer base {
-    ul, ol {
+
+    ul,
+    ol {
         list-style: revert;
     }
-    ol > ol {
+
+    ol>ol {
         list-style: lower-alpha;
     }
-    ol > li {
-        padding: 10px 0
 
+    ol>li {
+        padding: 10px 0
     }
-    ol > ol > li {
+
+    ol>ol>li {
         margin-left: 20px;
     }
 }
@@ -27,6 +40,7 @@ html {
     tab-size: 4;
     scroll-behavior: smooth;
 }
+
 body {
     line-height: inherit;
     margin: 0;
@@ -39,6 +53,7 @@ body.paper-focus-mode [data-app-chrome='header'] {
 }
 
 @media print {
+
     body[data-printing='true'] [data-app-chrome='navbar'],
     body[data-printing='true'] [data-app-chrome='header'] {
         display: none !important;
@@ -60,6 +75,7 @@ p,
 pre {
     margin: 0;
 }
+
 *,
 ::before,
 ::after {
@@ -68,15 +84,18 @@ pre {
     border-style: solid;
     border-color: currentColor;
 }
+
 h1,
 h2 {
     font-size: inherit;
     font-weight: inherit;
 }
+
 a {
     color: inherit;
     text-decoration: inherit;
 }
+
 svg {
     display: block;
     vertical-align: middle;
@@ -86,9 +105,9 @@ svg {
 
 .shadow {
     box-shadow: 0 0 #0000, 0 0 #0000, 0 10px 15px -3px rgba(0, 0, 0, 0.1),
-    0 4px 6px -2px rgba(0, 0, 0, 0.05);
+        0 4px 6px -2px rgba(0, 0, 0, 0.05);
 }
+
 .rounded {
     border-radius: 1.5rem;
 }
-
