@@ -285,7 +285,7 @@ export default function PaperClient({ params, searchParams, initialPapers }: Pap
 										paperTitle={paper.name}
 										paperId={paper.paper_id}
 									/>
-									<ScrollArea.Autosize mah={mobileScreen ? height - 150 : height - 100} p='sm'>
+									<ScrollArea.Autosize mah={mobileScreen ? height - 150 : height - 125} p='sm'>
 										<Card shadow='sm' radius='md' className={clsx('w-full', classes.paperCard)} p='xl'>
 											{paper.content && paper.status === 'success' ? (
 												<div id={pdfSourceId ?? undefined}>

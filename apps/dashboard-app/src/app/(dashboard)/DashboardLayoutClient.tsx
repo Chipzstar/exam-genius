@@ -5,7 +5,7 @@ import { AppShell, Burger } from '@mantine/core';
 import Sidebar from '~/layout/Sidebar';
 import { useMediaQuery } from '@mantine/hooks';
 import { useAuth } from '@clerk/nextjs';
-import ChatwootWidget from '~/components/Chatwoot';
+import TawkWidget from '~/components/TawkWidget';
 import { motion, useReducedMotion } from 'motion/react';
 import { usePathname } from 'next/navigation';
 
@@ -59,7 +59,7 @@ export default function DashboardLayoutClient({ children }: { children: React.Re
 					>
 						{children}
 					</motion.div>
-					{isSignedIn && <ChatwootWidget />}
+					{isSignedIn && <TawkWidget />}
 				</AppShell.Main>
 			</AppShell>
 		</div>
