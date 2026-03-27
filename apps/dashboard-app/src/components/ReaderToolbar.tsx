@@ -83,6 +83,16 @@ export function ReaderToolbar({
 						root.querySelectorAll('p, li, span, td, th, label, figcaption').forEach(node => {
 							if (node instanceof HTMLElement) node.style.color = '#111111';
 						});
+						clonedDoc.querySelectorAll('[data-paper-print-footer]').forEach(node => {
+							if (node instanceof HTMLElement) {
+								node.style.display = 'block';
+								node.style.marginTop = '2rem';
+								node.style.paddingTop = '1rem';
+								node.style.borderTop = '1px solid #cccccc';
+								node.style.fontSize = '0.85rem';
+								node.style.color = '#444444';
+							}
+						});
 					}
 				},
 				jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' as const },

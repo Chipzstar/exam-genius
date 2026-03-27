@@ -61,8 +61,11 @@ export const env = createEnv({
 		AXIOM_ORG_ID: z.string().optional(),
 		AXIOM_TOKEN: z.string().optional(),
 
+		// Tawk.to (server-side API key for HMAC secure mode)
+		TAWK_API_KEY: z.string().min(1),
+
 		// Backend
-		BACKEND_HOST: z.string().optional(),
+		BACKEND_HOST: z.string().url(),
 
 		// Google OAuth
 		GOOGLE_OAUTH_CLIENT_ID: z.string().optional(),
@@ -102,6 +105,10 @@ export const env = createEnv({
 		NEXT_PUBLIC_CLERK_SIGN_UP_URL: z.string().optional(),
 		NEXT_PUBLIC_CLERK_SIGN_UP_FALLBACK_REDIRECT_URL: z.string().optional(),
 		NEXT_PUBLIC_CLERK_SIGN_IN_FALLBACK_REDIRECT_URL: z.string().optional(),
+
+		// Tawk.to (live chat; both required together in UI — see TawkWidget)
+		NEXT_PUBLIC_TAWK_PROPERTY_ID: z.string().min(1).default('69c5290331e8e31c37c54bb5'),
+		NEXT_PUBLIC_TAWK_WIDGET_ID: z.string().min(1).default('1jkl2ge1s'),
 	},
 
 	/**
@@ -163,6 +170,8 @@ export const env = createEnv({
 		AXIOM_ORG_ID: process.env.AXIOM_ORG_ID,
 		AXIOM_TOKEN: process.env.AXIOM_TOKEN,
 
+		TAWK_API_KEY: process.env.TAWK_API_KEY,
+
 		// Backend
 		BACKEND_HOST: process.env.BACKEND_HOST,
 
@@ -198,6 +207,9 @@ export const env = createEnv({
 		NEXT_PUBLIC_CLERK_SIGN_UP_URL: process.env.NEXT_PUBLIC_CLERK_SIGN_UP_URL,
 		NEXT_PUBLIC_CLERK_SIGN_UP_FALLBACK_REDIRECT_URL: process.env.NEXT_PUBLIC_CLERK_SIGN_UP_FALLBACK_REDIRECT_URL,
 		NEXT_PUBLIC_CLERK_SIGN_IN_FALLBACK_REDIRECT_URL: process.env.NEXT_PUBLIC_CLERK_SIGN_IN_FALLBACK_REDIRECT_URL,
+
+		NEXT_PUBLIC_TAWK_PROPERTY_ID: process.env.NEXT_PUBLIC_TAWK_PROPERTY_ID,
+		NEXT_PUBLIC_TAWK_WIDGET_ID: process.env.NEXT_PUBLIC_TAWK_WIDGET_ID,
 	},
 	/**
 	 * Run `build` or `dev` with SKIP_ENV_VALIDATION to skip env validation. This is especially

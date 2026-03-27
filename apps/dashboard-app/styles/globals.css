@@ -46,6 +46,13 @@ body {
     margin: 0;
 }
 
+/* Tawk.to: pin launcher bottom-left (theme toggle stays bottom-right). Confirm IDs in devtools if tawk updates embed markup. */
+#tawkchat-minimized,
+#tawkchat-maximized {
+    left: 16px !important;
+    right: auto !important;
+}
+
 /* Paper reader: hide app chrome in focus mode */
 body.paper-focus-mode [data-app-chrome='navbar'],
 body.paper-focus-mode [data-app-chrome='header'] {

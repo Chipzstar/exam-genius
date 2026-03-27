@@ -285,13 +285,10 @@ export default function PaperClient({ params, searchParams, initialPapers }: Pap
 										paperTitle={paper.name}
 										paperId={paper.paper_id}
 									/>
-									<ScrollArea.Autosize mah={mobileScreen ? height - 150 : height - 100} p='sm'>
-										<Card shadow='sm' radius='md' className='w-full' p='xl'>
+									<ScrollArea.Autosize mah={mobileScreen ? height - 150 : height - 125} p='sm'>
+										<Card shadow='sm' radius='md' className={clsx('w-full', classes.paperCard)} p='xl'>
 											{paper.content && paper.status === 'success' ? (
-												<div
-													id={pdfSourceId ?? undefined}
-													className={clsx(hasPdfExport && classes.pdfExportRegion)}
-												>
+												<div id={pdfSourceId ?? undefined}>
 													<div className='flex justify-center'>
 														<Stack justify='center' align='center'>
 															<Title c='brand'>ExamGenius</Title>
@@ -315,7 +312,10 @@ export default function PaperClient({ params, searchParams, initialPapers }: Pap
 																		trim: true
 																	})}
 																</div>
-																<div className={classes.paperContentPrintFooter}>
+																<div
+																	className={classes.paperContentPrintFooter}
+																	data-paper-print-footer
+																>
 																	ExamGenius: AI-predicted practice content — not an
 																	official past paper.
 																</div>
