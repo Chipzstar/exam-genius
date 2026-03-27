@@ -1,0 +1,21 @@
+{
+  "name": "ExamGenius",
+  "short_name": "ExamGenius",
+  "icons": [
+    {
+      "src": "/static/favicon/favicon-192x192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "maskable"
+    },
+    {
+      "src": "/static/favicon/favicon-512x512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ],
+  "theme_color": "#2742F5",
+  "background_color": "#2742F5",
+  "display": "standalone"
+}

@@ -1,14 +1,15 @@
 'use client';
 
-import React, { useState } from 'react';
+import { useClerk } from '@clerk/nextjs';
 import { Group, Text } from '@mantine/core';
-import { IconLicense, IconLogout, IconUser } from '@tabler/icons-react';
+import { useViewportSize } from '@mantine/hooks';
+import { IconLicense, IconLogout, IconQuestionMark, IconUser } from '@tabler/icons-react';
+import clsx from 'clsx';
 import Image from 'next/image';
 import { usePathname, useRouter } from 'next/navigation';
-import { DEFAULT_HEADER_HEIGHT, PATHS } from '~/utils/constants';
-import { useClerk } from '@clerk/nextjs';
-import { useViewportSize } from '@mantine/hooks';
-import clsx from 'clsx';
+import { useState } from 'react';
+import { resetAppStoreOnLogout } from '~/store/app.store';
+import { PATHS } from '~/utils/constants';
 import classes from './Sidebar.module.css';
 
 const Sidebar = ({ opened, setOpened }: { opened: boolean; setOpened: (opened: boolean) => void }) => {
@@ -31,6 +32,13 @@ const Sidebar = ({ opened, setOpened }: { opened: boolean; setOpened: (opened: b
 				label: 'Profile',
 				icon: IconUser,
 				isActive: pathname === PATHS.PROFILE,
+				disabled: false
+			},
+			{
+				link: PATHS.FAQ,
+				label: 'FAQ',
+				icon: IconQuestionMark,
+				isActive: pathname === PATHS.FAQ,
 				disabled: false
 			}
 		]
@@ -59,16 +67,26 @@ const Sidebar = ({ opened, setOpened }: { opened: boolean; setOpened: (opened: b
 		<div className={classes.navbar} style={{ padding: 'var(--mantine-spacing-xs)' }}>
 			<div className={classes.header}>
 				<Group gap='sm' role='button' onClick={() => router.push(PATHS.HOME)}>
-					<Image src='/static/images/logo-blue.svg' width={40} height={35} alt='' />
+					<Image src='/static/favicon/icon.svg' width={40} height={40} alt='Exam Genius' />
                     <Text size="24px" fw={600} c="brand">
                         ExamGenius
                     </Text>
 				</Group>
 			</div>
-			<div style={{ flex: 1, marginTop: '100px' }} className="flex flex-col">
+			<div style={{ flex: 1, marginTop: '100px' }} className='flex flex-col'>
 				{links}
-				<div data-cy='logout-button' role='button' className={classes.link} onClick={() => signOut()}>
-					<IconLogout className={classes.linkIcon} stroke={1.5} /> <span>Logout</span>
+				<div className='mt-auto'>
+					<div
+						data-cy='logout-button'
+						role='button'
+						className={classes.link}
+						onClick={() => {
+							resetAppStoreOnLogout();
+							void signOut();
+						}}
+					>
+						<IconLogout className={classes.linkIcon} stroke={1.5} /> <span>Logout</span>
+					</div>
 				</div>
 			</div>
 		</div>

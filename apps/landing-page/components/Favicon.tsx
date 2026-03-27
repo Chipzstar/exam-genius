@@ -1,15 +1,14 @@
-import React from 'react';
+import React from "react";
 
 const Favicon = () => {
 	return (
 		<>
-			<link rel='apple-touch-icon' sizes='180x180' href='/static/favicon/apple-touch-icon.png' />
-			<link rel='icon' type='image/png' sizes='32x32' href='/static/favicon/favicon-32x32.png' />
-			<link rel='icon' type='image/png' sizes='16x16' href='/static/favicon/favicon-16x16.png' />
-			<link rel='manifest' href='/static/favicon/site.webmanifest' />
-			<link rel='mask-icon' href='/static/favicon/safari-pinned-tab.svg' color='#5bbad5' />
-			<meta name='msapplication-TileColor' content='#da532c' />
-			<meta name='theme-color' content='#2742F5' />
+			<link rel="icon" href="/static/favicon/icon.svg" type="image/svg+xml" />
+			<link rel="icon" href="/static/favicon/favicon.ico" sizes="any" />
+			<link rel="apple-touch-icon" href="/static/favicon/apple-icon.png" />
+			<link rel="manifest" href="/static/favicon/manifest.json" />
+			<meta name="msapplication-TileColor" content="#da532c" />
+			<meta name="theme-color" content="#2742F5" />
 		</>
 	);
 };

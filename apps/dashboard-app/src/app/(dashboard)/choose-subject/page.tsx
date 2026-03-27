@@ -1,33 +1,32 @@
 'use client';
 
 import { Group, Radio, SimpleGrid, Title } from '@mantine/core';
-import React, { useEffect } from 'react';
+import React, { useLayoutEffect } from 'react';
 import Page from '~/layout/Page';
 import { SubjectCard } from '@exam-genius/shared/ui';
 import { PATHS } from '~/utils/constants';
-import { useLocalStorage, useMediaQuery } from '@mantine/hooks';
+import { useMediaQuery } from '@mantine/hooks';
 import LinkButton from '~/components/LinkButton';
+import { useValue } from '@legendapp/state/react';
+import { appStore$ } from '~/store/app.store';
 
 export default function ChooseSubjectPage() {
 	const mobileScreen = useMediaQuery('(max-width: 30em)');
-	const [subject, setSubject] = useLocalStorage<string>({
-		key: 'subject',
-		defaultValue: ''
-	});
+	const subject = useValue(appStore$.onboarding.subject);
 
-	useEffect(() => {
-		setSubject('');
-	}, [setSubject]);
+	useLayoutEffect(() => {
+		appStore$.onboarding.subject.set('');
+	}, []);
 
 	return (
-		<Page.Container extraClassNames='bg-white'>
+		<Page.Container extraClassNames='bg-[var(--mantine-color-body)]'>
 			<header className='py-6'>
 				<Title ta='center' order={2} size={mobileScreen ? 'h2' : 'h1'} c='brand' fw={600}>
 					Choose your Subjects
 				</Title>
 			</header>
 			<Page.Body extraClassNames='justify-between py-8'>
-				<Radio.Group name='subject' onChange={value => setSubject(value)}>
+				<Radio.Group name='subject' value={subject} onChange={v => appStore$.onboarding.subject.set(v)}>
 					<SimpleGrid cols={3}>
 						<SubjectCard subject='Maths' src='/static/images/maths-icon.svg' />
 						<SubjectCard subject='Biology' src='/static/images/biology-icon.svg' />
@@ -44,4 +43,3 @@ export default function ChooseSubjectPage() {
 		</Page.Container>
 	);
 }
-

@@ -11,7 +11,10 @@
 		"with-env": "dotenv -e ../../.env.local --"
 	},
 	"dependencies": {
-		"@clerk/nextjs": "^6.14.2",
+		"@clerk/nextjs": "^7.0.7",
+		"@clerk/themes": "^2.4.57",
+		"@clerk/ui": "^1.2.4",
+		"@legendapp/state": "3.0.0-beta.46",
 		"@mantine/carousel": "^7.14.6",
 		"@mantine/core": "catalog:",
 		"@mantine/dates": "^7.14.6",
@@ -39,10 +42,13 @@
 		"cors": "^2.8.5",
 		"crypto-js": "^4.2.0",
 		"dayjs": "^1.11.7",
+		"dompurify": "^3.3.3",
 		"embla-carousel-autoplay": "^7.1.0",
 		"embla-carousel-react": "^7.1.0",
 		"html-react-parser": "^3.0.15",
+		"html2pdf.js": "^0.10.2",
 		"micro": "^10.0.1",
+		"motion": "^12.23.12",
 		"nanoid": "^4.0.2",
 		"next": "catalog:",
 		"next-axiom": "^1.10.0",
@@ -61,6 +67,7 @@
 		"zod": "catalog:"
 	},
 	"devDependencies": {
+		"@clerk/types": "^4.101.20",
 		"postcss": "8.4.38",
 		"postcss-preset-mantine": "^1.17.0",
 		"postcss-simple-vars": "^7.0.1"

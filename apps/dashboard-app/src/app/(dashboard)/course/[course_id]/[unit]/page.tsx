@@ -17,6 +17,8 @@ import NotFound from '~/app/not-found';
 import axios from 'axios';
 import { GeneratePaperPayload } from '~/utils/types';
 import { env } from '~/env';
+import { AnimatedList } from '~/components/AnimatedList';
+import { motion, useReducedMotion } from 'motion/react';
 
 export default function PapersPage({ params }: { params: Promise<{ course_id: string; unit: string }> }) {
 	const resolvedParams = use(params);
@@ -30,6 +32,7 @@ export default function PapersPage({ params }: { params: Promise<{ course_id: st
 	const board = (searchParams.get('board') ?? '') as ExamBoard;
 	const { height } = useViewportSize();
 	const mobileScreen = useMediaQuery('(max-width: 30em)');
+	const reduceMotion = useReducedMotion();
 	const { isLoading, data: course } = api.course.getSingleCourse.useQuery({ id: resolvedParams.course_id });
 	const {
 		data: course_papers = [],
@@ -181,52 +184,61 @@ export default function PapersPage({ params }: { params: Promise<{ course_id: st
 					</div>
 				</header>
 				<ScrollArea.Autosize mah={height - 150} mt='lg'>
-					{course_info.papers.map((paper, index) => (
-						<Card shadow='sm' radius='md' mb='lg' key={index}>
-							<div className='flex flex-col items-center space-y-4 p-3 sm:flex-row sm:items-center sm:justify-between sm:space-y-0 sm:p-8'>
-								<div className='flex grow items-center space-x-8'>
-									<Image
-										src='/static/images/example-paper.svg'
-										width={mobileScreen ? 100 : 125}
-										height={mobileScreen ? 128 : 160}
-										alt='example-paper'
-									/>
-									<div className='flex flex-col'>
-										<Title order={1} size={mobileScreen ? 'h4' : 'h2'} fw={500}>
-											{paper.name}
-										</Title>
+					<AnimatedList>
+						{course_info.papers.map((paper, index) => (
+							<motion.div
+								key={paper.code}
+								whileHover={reduceMotion ? undefined : { y: -3 }}
+								whileTap={reduceMotion ? undefined : { scale: 0.995 }}
+								transition={{ type: 'spring', stiffness: 400, damping: 25 }}
+							>
+								<Card shadow='sm' radius='md' mb='lg'>
+									<div className='flex flex-col items-center space-y-4 p-3 sm:flex-row sm:items-center sm:justify-between sm:space-y-0 sm:p-8'>
+										<div className='flex grow items-center space-x-8'>
+											<Image
+												src='/static/images/example-paper.svg'
+												width={mobileScreen ? 100 : 125}
+												height={mobileScreen ? 128 : 160}
+												alt=''
+											/>
+											<div className='flex flex-col'>
+												<Title order={1} size={mobileScreen ? 'h4' : 'h2'} fw={500}>
+													{paper.name}
+												</Title>
+											</div>
+										</div>
+										<div className='flex grow flex-row items-center justify-between space-x-6 sm:flex-col sm:items-end sm:justify-center sm:space-y-4 sm:space-x-0'>
+											<Link
+												href={`${PATHS.COURSE}/${resolvedParams.course_id}/${resolvedParams.unit}/${paper.href}?subject=${subject}&board=${board}&code=${paper.code}`}
+											>
+												<Button
+													type='button'
+													w={mobileScreen ? 120 : 200}
+													size={mobileScreen ? 'xs' : 'lg'}
+												>
+													<Text fw='normal'>View Papers</Text>
+												</Button>
+											</Link>
+											<Button
+												type='button'
+												w={mobileScreen ? 120 : 200}
+												size={mobileScreen ? 'xs' : 'lg'}
+												onClick={() => {
+													if (papersLoading) return;
+													setLoading(index);
+													generatePaper(paper);
+												}}
+												loading={loading === index}
+												disabled={papersLoading || generating}
+											>
+												<Text fw='normal'>Generate New</Text>
+											</Button>
+										</div>
 									</div>
-								</div>
-								<div className='flex grow flex-row items-center justify-between space-x-6 sm:flex-col sm:items-end sm:justify-center sm:space-y-4 sm:space-x-0'>
-									<Link
-										href={`${PATHS.COURSE}/${resolvedParams.course_id}/${resolvedParams.unit}/${paper.href}?subject=${subject}&board=${board}&code=${paper.code}`}
-									>
-										<Button
-											type='button'
-											w={mobileScreen ? 120 : 200}
-											size={mobileScreen ? 'xs' : 'lg'}
-										>
-											<Text fw='normal'>View Papers</Text>
-										</Button>
-									</Link>
-									<Button
-										type='button'
-										w={mobileScreen ? 120 : 200}
-										size={mobileScreen ? 'xs' : 'lg'}
-										onClick={() => {
-											if (papersLoading) return;
-											setLoading(index);
-											generatePaper(paper);
-										}}
-										loading={loading === index}
-										disabled={papersLoading || generating}
-									>
-										<Text fw='normal'>Generate New</Text>
-									</Button>
-								</div>
-							</div>
-						</Card>
-					))}
+								</Card>
+							</motion.div>
+						))}
+					</AnimatedList>
 				</ScrollArea.Autosize>
 			</Page.Body>
 		</Page.Container>

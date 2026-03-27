@@ -12,6 +12,8 @@ import { useRouter, useSearchParams } from 'next/navigation';
 import { api } from '~/trpc/react';
 import { useMediaQuery, useViewportSize } from '@mantine/hooks';
 import { type CourseInfo, SUBJECT_PAPERS } from '@exam-genius/shared/utils';
+import { AnimatedList } from '~/components/AnimatedList';
+import { motion, useReducedMotion } from 'motion/react';
 
 export default function CoursePage({ params }: { params: Promise<{ course_id: string }> }) {
 	const resolvedParams = use(params);
@@ -22,6 +24,7 @@ export default function CoursePage({ params }: { params: Promise<{ course_id: st
 	const board = searchParams.get('board') ?? '';
 	const { isLoading, data: course } = api.course.getSingleCourse.useQuery({ id: resolvedParams.course_id });
 	const mobileScreen = useMediaQuery('(max-width: 30em)');
+	const reduceMotion = useReducedMotion();
 
 	const course_info = useMemo(() => {
 		if (course?.subject != null && course?.exam_board != null) {
@@ -51,34 +54,43 @@ export default function CoursePage({ params }: { params: Promise<{ course_id: st
 					</div>
 				</header>
 				<ScrollArea.Autosize mah={height - 100}>
-					{course_info.map(([unit_name, unit]) => (
-						<Card shadow='sm' radius='md' mb='lg' key={unit_name}>
-							<div className="flex flex-col sm:flex-row sm:items-center sm:justify-between p-4 sm:p-6">
-								<div className='flex flex-col grow items-center sm:flex-row space-y-4 sm:space-y-0 sm:space-x-6'>
-									<Image src={unit.icon} width={100} height={100} alt='maths-icon' />
-									<div className='flex flex-col space-y-4'>
-										<Title order={1} size={mobileScreen ? 'h4' : 'h2'} fw={600}>
-											{unit.label}
-										</Title>
-										{unit.papers.map((paper, index) => (
-											<Text key={index} size={mobileScreen ? 'md' : 'xl'} fw={500}>
-												{paper.name}
-											</Text>
-										))}
+					<AnimatedList>
+						{course_info.map(([unit_name, unit]) => (
+							<motion.div
+								key={unit_name}
+								whileHover={reduceMotion ? undefined : { y: -3 }}
+								whileTap={reduceMotion ? undefined : { scale: 0.995 }}
+								transition={{ type: 'spring', stiffness: 400, damping: 25 }}
+							>
+								<Card shadow='sm' radius='md' mb='lg'>
+									<div className='flex flex-col sm:flex-row sm:items-center sm:justify-between p-4 sm:p-6'>
+										<div className='flex flex-col grow items-center sm:flex-row space-y-4 sm:space-y-0 sm:space-x-6'>
+											<Image src={unit.icon} width={100} height={100} alt='' />
+											<div className='flex flex-col space-y-4'>
+												<Title order={1} size={mobileScreen ? 'h4' : 'h2'} fw={600}>
+													{unit.label}
+												</Title>
+												{unit.papers.map((paper, index) => (
+													<Text key={index} size={mobileScreen ? 'md' : 'xl'} fw={500}>
+														{paper.name}
+													</Text>
+												))}
+											</div>
+										</div>
+										<div className='flex flex-row grow-0 flex-end justify-center sm:justify-end right-0 pt-4 sm:pt-0'>
+											<Link
+												href={`${PATHS.COURSE}/${course.course_id}/${unit_name}?subject=${subject}&board=${board}`}
+											>
+												<Button size={mobileScreen ? 'sm' : 'lg'}>
+													<Text fw='normal'>{'Get Papers'}</Text>
+												</Button>
+											</Link>
+										</div>
 									</div>
-								</div>
-								<div className="flex flex-row grow-0 flex-end justify-center sm:justify-end right-0 pt-4 sm:pt-0">
-									<Link
-										href={`${PATHS.COURSE}/${course.course_id}/${unit_name}?subject=${subject}&board=${board}`}
-									>
-										<Button size={mobileScreen ? 'sm' : 'lg'}>
-											<Text fw='normal'>{'Get Papers'}</Text>
-										</Button>
-									</Link>
-								</div>
-							</div>
-						</Card>
-					))}
+								</Card>
+							</motion.div>
+						))}
+					</AnimatedList>
 				</ScrollArea.Autosize>
 			</Page.Body>
 		</Page.Container>

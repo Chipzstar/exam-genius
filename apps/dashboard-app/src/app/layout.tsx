@@ -6,6 +6,7 @@ import '@mantine/notifications/styles.css';
 import '../../styles/globals.css';
 import Favicon from '~/components/Favicon';
 import { Providers } from './Providers';
+import { ThemeToggleFloating } from '~/components/ThemeToggle';
 import { env } from '~/env';
 
 const poppins = localFont({
@@ -54,7 +55,7 @@ export const metadata: Metadata = {
 	keywords: '',
 	other: {
 		'content-language': 'en-GB'
-	}
+	},
 };
 
 function getBaseUrl() {
@@ -71,11 +72,16 @@ export default function RootLayout({
 	return (
 		<html lang="en-GB" className={poppins.variable}>
 			<head>
-				<ColorSchemeScript defaultColorScheme="light" />
+				<ColorSchemeScript defaultColorScheme="dark" />
 				<Favicon />
 			</head>
 			<body className="font-sans">
-				<Providers baseUrl={baseUrl}>{children}</Providers>
+				<Providers baseUrl={baseUrl}>
+					<>
+						{children}
+						<ThemeToggleFloating />
+					</>
+				</Providers>
 			</body>
 		</html>
 	);
