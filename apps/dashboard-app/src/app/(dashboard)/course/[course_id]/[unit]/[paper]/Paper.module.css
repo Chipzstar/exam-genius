@@ -35,32 +35,59 @@
 	font-size: 1.25rem;
 }
 
+/* Override Mantine Card default surface so paper matches dashboard theme */
+.paperCard:global(.mantine-Card-root) {
+	background-color: light-dark(var(--mantine-color-white), var(--mantine-color-dark-7));
+	color: light-dark(var(--mantine-color-dark-9), var(--mantine-color-dark-0));
+}
+
 .paperContent {
 	line-height: 1.6;
+	color: light-dark(var(--mantine-color-dark-9), var(--mantine-color-dark-0));
+}
+
+/* Parsed exam HTML: inherit theme text (inline styles from AI still win) */
+.paperContent :where(p, li, td, th, div, span, strong, em, b, i, h1, h2, h3, h4, h5, h6, label, figcaption) {
+	color: inherit;
+}
+
+.paperContent :where(a) {
+	color: var(--mantine-color-brand-5);
+}
+
+.paperContent :where(table, th, td) {
+	border-color: light-dark(var(--mantine-color-gray-4), var(--mantine-color-dark-4));
+}
+
+.paperContent :where(th) {
+	background-color: light-dark(var(--mantine-color-gray-1), var(--mantine-color-dark-6));
 }
 
 .paperContentPrintFooter {
 	display: none;
 }
 
-/* Full paper capture for PDF: light canvas + visible disclaimer */
-.pdfExportRegion {
-	background: #ffffff;
-	color: #111111;
-}
-
-.pdfExportRegion .paperContentPrintFooter {
-	display: block;
-	margin-top: 2rem;
-	padding-top: 1rem;
-	border-top: 1px solid #cccccc;
-	font-size: 0.85rem;
-	color: #444444;
-}
-
 @media print {
+	.paperCard:global(.mantine-Card-root) {
+		background: #ffffff !important;
+		color: #111111 !important;
+	}
+
 	.paperContent {
 		max-width: none !important;
+		color: #111111 !important;
+	}
+
+	.paperContent :where(p, li, td, th, div, span, strong, em, b, i, h1, h2, h3, h4, h5, h6, label, figcaption) {
+		color: inherit !important;
+	}
+
+	.paperContent :where(table, th, td) {
+		border-color: #999 !important;
+	}
+
+	.paperContent :where(th) {
+		background-color: #f0f0f0 !important;
 	}
 
 	.paperContentPrintFooter {
