@@ -5,6 +5,7 @@ import { CHECKOUT_TYPE } from '../../utils/constants';
 import { capitalize, genCourseOrPaperName, genID, sanitize } from '../../utils/functions';
 import axios from 'axios';
 import { GeneratePaperPayload } from '../../utils/types';
+import { env } from '~/env';
 
 export const getOrCreateStripeCustomerIdForUser = async ({
 	stripe,
@@ -154,7 +155,7 @@ export const handleCheckoutSessionComplete = async ({
 					console.log('[Stripe Checkout] Paper created', { paperId: paper.paper_id });
 					console.log('[Stripe Checkout] Triggering paper generate API', { paper_id: paper.paper_id });
 					axios
-						.post(`${process.env.BACKEND_HOST}/server/paper/generate`, {
+						.post(`${env.BACKEND_HOST}/server/paper/generate`, {
 							paper_id: paper.paper_id,
 							paper_name: paper.name,
 							subject: capitalize(paper.subject),

@@ -61,8 +61,11 @@ export const env = createEnv({
 		AXIOM_ORG_ID: z.string().optional(),
 		AXIOM_TOKEN: z.string().optional(),
 
+		// Tawk.to (server-side API key for HMAC secure mode)
+		TAWK_API_KEY: z.string().min(1),
+
 		// Backend
-		BACKEND_HOST: z.string().optional(),
+		BACKEND_HOST: z.string().url(),
 
 		// Google OAuth
 		GOOGLE_OAUTH_CLIENT_ID: z.string().optional(),
@@ -166,6 +169,8 @@ export const env = createEnv({
 		AXIOM_DATASET: process.env.AXIOM_DATASET,
 		AXIOM_ORG_ID: process.env.AXIOM_ORG_ID,
 		AXIOM_TOKEN: process.env.AXIOM_TOKEN,
+
+		TAWK_API_KEY: process.env.TAWK_API_KEY,
 
 		// Backend
 		BACKEND_HOST: process.env.BACKEND_HOST,

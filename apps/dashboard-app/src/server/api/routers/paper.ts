@@ -5,6 +5,7 @@ import axios from 'axios';
 import { capitalize, genID, sanitize } from '~/utils/functions';
 import { Logger } from '~/server/logger';
 import { GeneratePaperPayload } from '~/utils/types';
+import { env } from '~/env';
 
 const paperRouter = createTRPCRouter({
 	getPapers: protectedProcedure.query(async ({ ctx }) => {
@@ -246,7 +247,7 @@ const paperRouter = createTRPCRouter({
 				if (paper.status === 'success')
 					throw new TRPCError({ code: 'CLIENT_CLOSED_REQUEST', message: 'Paper has already been generated' });
 				axios
-					.post(`${process.env.BACKEND_HOST}/server/paper/generate`, {
+					.post(`${env.BACKEND_HOST}/server/paper/generate`, {
 						paper_id: paper.paper_id,
 						paper_name: paper.name,
 						subject: capitalize(paper.subject),

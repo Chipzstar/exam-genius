@@ -8,6 +8,7 @@ import { useAuth } from '@clerk/nextjs';
 import TawkWidget from '~/components/TawkWidget';
 import { motion, useReducedMotion } from 'motion/react';
 import { usePathname } from 'next/navigation';
+import { env } from '~/env';
 
 export default function DashboardLayoutClient({ children }: { children: React.ReactNode }) {
 	const { isSignedIn } = useAuth();
@@ -59,7 +60,7 @@ export default function DashboardLayoutClient({ children }: { children: React.Re
 					>
 						{children}
 					</motion.div>
-					{isSignedIn && <TawkWidget />}
+					{isSignedIn && <TawkWidget widgetId={env.NEXT_PUBLIC_TAWK_WIDGET_ID} propertyId={env.NEXT_PUBLIC_TAWK_PROPERTY_ID} />}
 				</AppShell.Main>
 			</AppShell>
 		</div>
