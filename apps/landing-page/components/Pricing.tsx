@@ -4,6 +4,7 @@ import Image from 'next/image';
 import { useMediaQuery } from '@mantine/hooks';
 import { SneakPeakContext } from '../context/SneakPeakContext';
 import { getYear } from 'date-fns';
+import { trackLandingCtaClick, trackSneakPeakOpened, trackStartNowClick } from '../utils/analytics';
 
 export const Pricing = () => {
 	const mobileScreen = useMediaQuery('(max-width: 30em)');
@@ -55,7 +56,12 @@ export const Pricing = () => {
 						}}
 						radius='xs'
 						size='xl'
-						onClick={() => showSneakPeak(true)}
+						onClick={() => {
+							trackLandingCtaClick('Start Now', 'pricing');
+							trackStartNowClick('pricing');
+							trackSneakPeakOpened('pricing-start-now');
+							showSneakPeak(true);
+						}}
 					>
 						Start Now
 					</Button>

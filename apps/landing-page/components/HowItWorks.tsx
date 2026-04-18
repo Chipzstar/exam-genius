@@ -4,6 +4,7 @@ import { IconPlayerPlay } from '@tabler/icons-react';
 import { useMediaQuery, useViewportSize } from '@mantine/hooks';
 import { Carousel, Embla } from '@mantine/carousel';
 import { SneakPeakContext } from '../context/SneakPeakContext';
+import { trackLandingCtaClick, trackSneakPeakOpened } from '../utils/analytics';
 
 const images = [
 	{
@@ -112,7 +113,11 @@ const HowItWorks = () => {
 					size={mobileScreen ? 'md' : 'xl'}
 					variant='outline'
 					leftSection={<IconPlayerPlay stroke={1.5} />}
-					onClick={() => showSneakPeak(true)}
+					onClick={() => {
+						trackLandingCtaClick('See example questions', 'how-it-works');
+						trackSneakPeakOpened('how-it-works-see-example-questions');
+						showSneakPeak(true);
+					}}
 				>
 					<Text>See example questions</Text>
 				</Button>

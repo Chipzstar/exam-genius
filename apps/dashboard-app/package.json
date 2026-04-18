@@ -57,6 +57,7 @@
 		"next": "catalog:",
 		"next-axiom": "^1.10.0",
 		"openai": "^3.2.1",
+		"posthog-js": "^1.369.3",
 		"react": "catalog:",
 		"react-dom": "catalog:",
 		"react-loader-spinner": "^5.3.4",

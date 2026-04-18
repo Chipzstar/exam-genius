@@ -7,6 +7,7 @@ import ChoosePaper from '../containers/ChoosePaper';
 import { SUBJECT_PAPERS } from '@exam-genius/shared/utils';
 import { FormValues } from '../utils/types';
 import SneakPeak from '../containers/SneakPeak';
+import { trackSneakPeakOpened, trackSneakPeakStepCompleted } from '../utils/analytics';
 
 const SneakPeakSlideshow = ({ opened, onClose }) => {
 	const [active, setActive] = useState(0);
@@ -40,11 +41,26 @@ const SneakPeakSlideshow = ({ opened, onClose }) => {
 		if (subject && examBoard) form.setFieldValue('course', Object.entries(SUBJECT_PAPERS[subject][examBoard]));
 	}, [form.values.subject, form.values.examBoard]);
 
+	useEffect(() => {
+		if (!opened) return;
+
+		trackSneakPeakOpened('sneak-peak-modal');
+	}, [opened]);
+
 	const nextStep = () =>
 		setActive(current => {
 			if (form.validate().hasErrors) {
 				return current;
 			}
+
+			const currentStep = ['subject', 'exam_board', 'paper_selection'][current] ?? 'unknown';
+			trackSneakPeakStepCompleted(currentStep, {
+				active_step_index: current,
+				subject: form.values.subject || undefined,
+				exam_board: form.values.examBoard || undefined,
+				paper: form.values.paper || undefined
+			});
+
 			return current < 3 ? current + 1 : current;
 		});
 
@@ -95,7 +111,13 @@ const SneakPeakSlideshow = ({ opened, onClose }) => {
 					<ChoosePaper next={nextStep} prev={prevStep} course={form.values.course} form={form} />
 				</Stepper.Step>
 				<Stepper.Completed>
-					<SneakPeak prev={prevStep} sneak_peak_questions={form.values.sneak_peak_questions} />
+					<SneakPeak
+						prev={prevStep}
+						sneak_peak_questions={form.values.sneak_peak_questions}
+						subject={form.values.subject}
+						examBoard={form.values.examBoard}
+						paper={form.values.paper}
+					/>
 				</Stepper.Completed>
 			</Stepper>
 		</Modal>

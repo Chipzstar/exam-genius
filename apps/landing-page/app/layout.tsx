@@ -1,7 +1,6 @@
 import type { Metadata } from 'next';
 import { ColorSchemeScript, mantineHtmlProps } from '@mantine/core';
 import localFont from 'next/font/local';
-import Script from 'next/script';
 import PlausibleProvider from 'next-plausible';
 import '@mantine/core/styles.css';
 import '@mantine/carousel/styles.css';
@@ -65,15 +64,6 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
 				<PlausibleProvider domain="exam-genius.com">
 					<Providers>{children}</Providers>
 					<Analytics />
-					{process.env.NEXT_PUBLIC_VERCEL_ENV === 'production' && (
-						<Script
-							type="text/javascript"
-							src="/static/script.js"
-							onLoad={() => {
-								console.log('Script has loaded');
-							}}
-						/>
-					)}
 				</PlausibleProvider>
 			</body>
 		</html>

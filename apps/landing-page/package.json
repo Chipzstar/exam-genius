@@ -23,6 +23,7 @@
 		"html-react-parser": "^3.0.15",
 		"next": "catalog:",
 		"next-plausible": "^3.7.2",
+		"posthog-js": "^1.369.3",
 		"react": "catalog:",
 		"react-dom": "catalog:",
 		"react-lottie": "^1.2.3",

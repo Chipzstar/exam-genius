@@ -6,6 +6,7 @@ import Link from 'next/link';
 import { Link as ScrollLink } from 'react-scroll';
 import { useDisclosure } from '@mantine/hooks';
 import { SneakPeakContext } from '../context/SneakPeakContext';
+import { trackLandingCtaClick, trackSneakPeakOpened, trackStartNowClick } from '../utils/analytics';
 
 const useStyles = createStyles(theme => ({
     link: {
@@ -85,7 +86,12 @@ const Navbar = () => {
                     </div>
                 </Group>
                 <Group className={classes.hiddenMobile}>
-                    <a target="_blank" href="https://app.exam-genius.com" rel="noopener noreferrer">
+                    <a
+                        target="_blank"
+                        href="https://app.exam-genius.com"
+                        rel="noopener noreferrer"
+                        onClick={() => trackLandingCtaClick('Login', 'navbar-desktop')}
+                    >
                         <Button size="md" variant="white">
                             <Text fw={400}>Login</Text>
                         </Button>
@@ -101,7 +107,12 @@ const Navbar = () => {
                         variant="gradient"
                         radius="lg"
                         gradient={{ from: '#6B81FA', to: '#2742F5', deg: 180 }}
-                        onClick={() => showSneakPeak(true)}
+                        onClick={() => {
+                            trackLandingCtaClick('Start Now', 'navbar-desktop');
+                            trackStartNowClick('navbar-desktop');
+                            trackSneakPeakOpened('navbar-desktop-start-now');
+                            showSneakPeak(true);
+                        }}
                     >
                         <Text fw={400}>Start Now</Text>
                     </Button>
@@ -141,12 +152,20 @@ const Navbar = () => {
                     </div>
                     <Divider my="sm" color="gray.1" />
                     <Group justify="center" grow pb="xl" px="md">
-                        <a target="_blank" href="https://app.exam-genius.com" rel="noopener noreferrer">
+                        <a
+                            target="_blank"
+                            href="https://app.exam-genius.com"
+                            rel="noopener noreferrer"
+                            onClick={() => trackLandingCtaClick('Log in', 'navbar-mobile-drawer')}
+                        >
                             <Button fullWidth variant="default">
                                 Log in
                             </Button>
                         </a>
                         <Button fullWidth onClick={() => {
+                            trackLandingCtaClick('Start Now', 'navbar-mobile-drawer');
+                            trackStartNowClick('navbar-mobile-drawer');
+                            trackSneakPeakOpened('navbar-mobile-start-now');
                             closeDrawer();
                             showSneakPeak(true);
                         }}>Start Now</Button>

@@ -1,9 +1,12 @@
 'use client';
 
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { createTheme, MantineProvider } from '@mantine/core';
 import { emotionTransform, MantineEmotionProvider } from '@mantine/emotion';
+import { usePathname, useSearchParams } from 'next/navigation';
+import posthog from 'posthog-js';
 import { SneakPeakContext } from '../context/SneakPeakContext';
+import { trackLandingPageVisit } from '../utils/analytics';
 
 const theme = createTheme({
 	colors: {
@@ -40,6 +43,36 @@ const theme = createTheme({
 
 export function Providers({ children }: { children: React.ReactNode }) {
 	const [sneak, showSneakPeak] = useState(false);
+	const pathname = usePathname();
+	const searchParams = useSearchParams();
+	const search = searchParams.toString();
+
+	useEffect(() => {
+		const posthogKey = process.env.NEXT_PUBLIC_POSTHOG_KEY;
+		const posthogHost = process.env.NEXT_PUBLIC_POSTHOG_HOST ?? 'https://us.i.posthog.com';
+
+		if (!posthogKey) return;
+
+		const posthogClient = posthog as { __loaded?: boolean };
+		if (posthogClient.__loaded) return;
+
+		posthog.init(posthogKey, {
+			api_host: posthogHost,
+			autocapture: true,
+			capture_pageview: false,
+			capture_pageleave: true,
+			persistence: 'localStorage+cookie'
+		});
+	}, []);
+
+	useEffect(() => {
+		trackLandingPageVisit({
+			pathname,
+			search,
+			url: window.location.href
+		});
+	}, [pathname, search]);
+
 	return (
 		<MantineProvider theme={theme} stylesTransform={emotionTransform}>
 			<MantineEmotionProvider>
