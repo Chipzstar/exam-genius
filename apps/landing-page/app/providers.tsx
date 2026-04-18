@@ -49,7 +49,7 @@ export function Providers({ children }: { children: React.ReactNode }) {
 
 	useEffect(() => {
 		const posthogKey = process.env.NEXT_PUBLIC_POSTHOG_KEY;
-		const posthogHost = process.env.NEXT_PUBLIC_POSTHOG_HOST ?? 'https://us.i.posthog.com';
+		const posthogHost = process.env.NEXT_PUBLIC_POSTHOG_HOST;
 
 		if (!posthogKey) return;
 

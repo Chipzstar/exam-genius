@@ -3,6 +3,7 @@ import { ColorSchemeScript, mantineHtmlProps } from '@mantine/core';
 import '@mantine/core/styles.css';
 import { Analytics } from '@vercel/analytics/next';
 import type { Metadata } from 'next';
+import { Suspense } from 'react';
 import localFont from 'next/font/local';
 import '../styles/globals.css';
 import { Providers } from './providers';
@@ -60,7 +61,10 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
 				<meta name='viewport' content='minimum-scale=1, initial-scale=1, width=device-width' />
 			</head>
 			<body className='font-sans'>
-				<Providers>{children}</Providers>
+				{/* useSearchParams() in Providers requires Suspense for static prerender (e.g. /_not-found) */}
+				<Suspense fallback={null}>
+					<Providers>{children}</Providers>
+				</Suspense>
 				<Analytics />
 			</body>
 		</html>
