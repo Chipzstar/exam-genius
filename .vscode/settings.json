@@ -1,4 +1,4 @@
 {
-    "prettier.configPath": ".prettierrc",
-    "python.terminal.activateEnvironment": false
+    "python.terminal.activateEnvironment": false,
+    "prettier.configPath": ".prettierrc"
 }
