@@ -259,7 +259,7 @@ export type PaperGroupByOutputType = {
   _max: PaperMaxAggregateOutputType | null
 }
 
-type GetPaperGroupByPayload<T extends PaperGroupByArgs> = Prisma.PrismaPromise<
+export type GetPaperGroupByPayload<T extends PaperGroupByArgs> = Prisma.PrismaPromise<
   Array<
     Prisma.PickEnumerable<PaperGroupByOutputType, T['by']> &
       {
@@ -1658,6 +1658,11 @@ export type PaperFindManyArgs<ExtArgs extends runtime.Types.Extensions.InternalA
    * Skip the first `n` Papers.
    */
   skip?: number
+  /**
+   * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+   * 
+   * Filter by unique combinations of Papers.
+   */
   distinct?: Prisma.PaperScalarFieldEnum | Prisma.PaperScalarFieldEnum[]
 }
 
