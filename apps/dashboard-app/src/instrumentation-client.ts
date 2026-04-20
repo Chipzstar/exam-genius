@@ -16,7 +16,7 @@ if (posthogKey) {
 		autocapture: true,
 		capture_pageview: true,
 		capture_pageleave: true,
-		persistence: 'localStorage+cookie'
+		defaults: '2026-01-30'
 	});
 
 	posthog.capture('posthog_debug_test');
