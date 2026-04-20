@@ -23,7 +23,6 @@
 		"embla-carousel-react": "^7.1.0",
 		"html-react-parser": "^3.0.15",
 		"next": "catalog:",
-		"next-plausible": "^3.7.2",
 		"posthog-js": "^1.369.3",
 		"react": "catalog:",
 		"react-dom": "catalog:",

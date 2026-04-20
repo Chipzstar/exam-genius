@@ -4,7 +4,6 @@ import { useEffect, useState } from 'react';
 import { createTheme, MantineProvider } from '@mantine/core';
 import { emotionTransform, MantineEmotionProvider } from '@mantine/emotion';
 import { usePathname, useSearchParams } from 'next/navigation';
-import posthog from 'posthog-js';
 import { SneakPeakContext } from '../context/SneakPeakContext';
 import { trackLandingPageVisit } from '../utils/analytics';
 
@@ -47,24 +46,7 @@ export function Providers({ children }: { children: React.ReactNode }) {
 	const searchParams = useSearchParams();
 	const search = searchParams.toString();
 
-	useEffect(() => {
-		const posthogKey = process.env.NEXT_PUBLIC_POSTHOG_KEY;
-		const posthogHost = process.env.NEXT_PUBLIC_POSTHOG_HOST;
-
-		if (!posthogKey) return;
-
-		const posthogClient = posthog as { __loaded?: boolean };
-		if (posthogClient.__loaded) return;
-
-		posthog.init(posthogKey, {
-			api_host: posthogHost,
-			autocapture: true,
-			capture_pageview: false,
-			capture_pageleave: true,
-			persistence: 'localStorage+cookie'
-		});
-	}, []);
-
+	// PostHog is initialised once in instrumentation-client.ts.
 	useEffect(() => {
 		trackLandingPageVisit({
 			pathname,

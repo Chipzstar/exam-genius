@@ -12,29 +12,14 @@ import {
 	trackDashboardEvent
 } from '~/utils/analytics';
 
+// PostHog is initialised once in instrumentation-client.ts.
+// This component is responsible only for page-view tracking,
+// user identification, and signup-completion events.
 export function PostHogTracker() {
 	const pathname = usePathname();
 	const searchParams = useSearchParams();
 	const search = searchParams.toString();
 	const { user, isSignedIn, isLoaded } = useUser();
-
-	useEffect(() => {
-		const posthogKey = process.env.NEXT_PUBLIC_POSTHOG_KEY;
-		const posthogHost = process.env.NEXT_PUBLIC_POSTHOG_HOST ?? 'https://us.i.posthog.com';
-
-		if (!posthogKey) return;
-
-		const posthogClient = posthog as { __loaded?: boolean };
-		if (posthogClient.__loaded) return;
-
-		posthog.init(posthogKey, {
-			api_host: posthogHost,
-			autocapture: true,
-			capture_pageview: false,
-			capture_pageleave: true,
-			persistence: 'localStorage+cookie'
-		});
-	}, []);
 
 	useEffect(() => {
 		trackDashboardEvent('dashboard_page_view', 'dashboard_page_view', {
