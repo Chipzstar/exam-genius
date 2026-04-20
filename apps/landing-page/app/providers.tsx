@@ -1,9 +1,11 @@
 'use client';
 
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { createTheme, MantineProvider } from '@mantine/core';
 import { emotionTransform, MantineEmotionProvider } from '@mantine/emotion';
+import { usePathname, useSearchParams } from 'next/navigation';
 import { SneakPeakContext } from '../context/SneakPeakContext';
+import { trackLandingPageVisit } from '../utils/analytics';
 
 const theme = createTheme({
 	colors: {
@@ -40,6 +42,19 @@ const theme = createTheme({
 
 export function Providers({ children }: { children: React.ReactNode }) {
 	const [sneak, showSneakPeak] = useState(false);
+	const pathname = usePathname();
+	const searchParams = useSearchParams();
+	const search = searchParams.toString();
+
+	// PostHog is initialised once in instrumentation-client.ts.
+	useEffect(() => {
+		trackLandingPageVisit({
+			pathname,
+			search,
+			url: window.location.href
+		});
+	}, [pathname, search]);
+
 	return (
 		<MantineProvider theme={theme} stylesTransform={emotionTransform}>
 			<MantineEmotionProvider>

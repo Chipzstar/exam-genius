@@ -2,6 +2,7 @@ import React, { useContext } from 'react';
 import { Button, Image } from '@mantine/core';
 import { useMediaQuery } from '@mantine/hooks';
 import { SneakPeakContext } from '../context/SneakPeakContext';
+import { trackLandingCtaClick, trackSneakPeakOpened } from '../utils/analytics';
 
 export const Hero = () => {
 	const mobileScreen = useMediaQuery('(max-width: 30em)');
@@ -44,7 +45,11 @@ export const Hero = () => {
 						})}
 						size='xl'
 						className='uppercase'
-						onClick={() => showSneakPeak(true)}
+						onClick={() => {
+							trackLandingCtaClick('SEE EXAMPLES', 'hero');
+							trackSneakPeakOpened('hero-see-examples');
+							showSneakPeak(true);
+						}}
 					>
 						SEE EXAMPLES
 					</Button>

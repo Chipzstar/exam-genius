@@ -219,7 +219,7 @@ export type StripeEventGroupByOutputType = {
   _max: StripeEventMaxAggregateOutputType | null
 }
 
-type GetStripeEventGroupByPayload<T extends StripeEventGroupByArgs> = Prisma.PrismaPromise<
+export type GetStripeEventGroupByPayload<T extends StripeEventGroupByArgs> = Prisma.PrismaPromise<
   Array<
     Prisma.PickEnumerable<StripeEventGroupByOutputType, T['by']> &
       {
@@ -1130,6 +1130,11 @@ export type StripeEventFindManyArgs<ExtArgs extends runtime.Types.Extensions.Int
    * Skip the first `n` StripeEvents.
    */
   skip?: number
+  /**
+   * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+   * 
+   * Filter by unique combinations of StripeEvents.
+   */
   distinct?: Prisma.StripeEventScalarFieldEnum | Prisma.StripeEventScalarFieldEnum[]
 }
 

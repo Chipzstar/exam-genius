@@ -2,6 +2,7 @@ import React, { useContext } from 'react';
 import { Button } from '@mantine/core';
 import { useMediaQuery } from '@mantine/hooks';
 import { SneakPeakContext } from '../context/SneakPeakContext';
+import { trackLandingCtaClick, trackSneakPeakOpened, trackStartNowClick } from '../utils/analytics';
 
 export const CTA = () => {
 	const [sneak, showSneakPeak] = useContext(SneakPeakContext);
@@ -29,7 +30,12 @@ export const CTA = () => {
 				})}
 				size='xl'
 				className='uppercase'
-				onClick={() => showSneakPeak(true)}
+				onClick={() => {
+					trackLandingCtaClick('Start Now', 'footer-cta');
+					trackStartNowClick('footer-cta');
+					trackSneakPeakOpened('footer-cta-start-now');
+					showSneakPeak(true);
+				}}
 			>
 				Start Now
 			</Button>

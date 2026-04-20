@@ -8,6 +8,7 @@ import { Notifications } from '@mantine/notifications';
 import { ModalsProvider } from '@mantine/modals';
 import { ColorSchemeSync } from '~/components/ThemeToggle';
 import { ui } from '@clerk/ui';
+import { PostHogTracker } from '~/components/PostHogTracker';
 
 const theme = {
 	colors: {
@@ -50,6 +51,7 @@ export function Providers({
 }) {
 	return (
 		<ClerkProvider ui={ui}>
+			<PostHogTracker />
 			<AxiomWebVitals />
 			<MantineProvider defaultColorScheme="dark" theme={theme}>
 				<ModalsProvider>

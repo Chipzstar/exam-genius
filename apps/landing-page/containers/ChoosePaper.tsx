@@ -6,6 +6,7 @@ import CustomLoader from '../components/CustomLoader';
 import { CourseInfo, SNEAK_PEAK_QUESTION_ANSWERS } from '@exam-genius/shared/utils';
 import { UseFormReturnType } from '@mantine/form';
 import { FormValues } from '../utils/types';
+import { trackSneakPeakEngagement } from '../utils/analytics';
 
 interface Props {
 	course: [string, CourseInfo][];
@@ -23,6 +24,12 @@ const ChoosePaper = ({ course, next, prev, form } : Props) => {
 		const question_answers = SNEAK_PEAK_QUESTION_ANSWERS[form.values.subject]
 		console.log(question_answers)
 		form.setFieldValue("sneak_peak_questions", question_answers)
+		trackSneakPeakEngagement({
+			subject: form.values.subject,
+			exam_board: form.values.examBoard,
+			paper: unit_name,
+			question_count: question_answers.length
+		});
 		setTimeout(() => {
 			setLoading(false);
 			next();

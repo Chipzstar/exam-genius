@@ -3,10 +3,20 @@ import { Button, Card, Group, Stack, Text, Title } from '@mantine/core';
 import Page from '../layout/Page';
 import { useMediaQuery, useViewportSize } from '@mantine/hooks';
 import parse from 'html-react-parser';
+import { trackLandingCtaClick, trackSignupCtaClick } from '../utils/analytics';
 
-const SneakPeak = ({ prev, sneak_peak_questions }) => {
+interface SneakPeakProps {
+	prev: () => void;
+	sneak_peak_questions: Array<{ question: string; answer: string; chance: number }>;
+	subject?: string;
+	examBoard?: string;
+	paper?: string;
+}
+
+const SneakPeak = ({ prev, sneak_peak_questions, subject, examBoard, paper }: SneakPeakProps) => {
 	const mobileScreen = useMediaQuery('(max-width: 48em)');
 	const { width } = useViewportSize();
+	const signupUrl = `https://app.exam-genius.com/signup?source=landing&phase=sneak_peak&subject=${encodeURIComponent(subject ?? '')}&examBoard=${encodeURIComponent(examBoard ?? '')}&paper=${encodeURIComponent(paper ?? '')}`;
 	return (
 		<Page.Container classNames='h-full flex flex-col pb-2'>
 			<header className='pb-20'>
@@ -40,7 +50,19 @@ const SneakPeak = ({ prev, sneak_peak_questions }) => {
 					</Card>
 				))}
 				<Group grow justify="center" pt="xl">
-					<a href='https://app.exam-genius.com/signup' className='flex-end right-0 shrink grow-0 justify-end'>
+					<a
+						href={signupUrl}
+						className='flex-end right-0 shrink grow-0 justify-end'
+						onClick={() => {
+							trackLandingCtaClick('Unlock full Paper', 'sneak-peak');
+							trackSignupCtaClick({
+								source: 'sneak_peak',
+								subject: subject || undefined,
+								exam_board: examBoard || undefined,
+								paper: paper || undefined
+							});
+						}}
+					>
 						<Button size='lg'>
 							<Text fw={400}>🔒 Unlock full Paper</Text>
 						</Button>
