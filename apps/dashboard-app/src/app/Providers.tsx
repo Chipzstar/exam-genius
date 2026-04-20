@@ -1,6 +1,5 @@
 'use client';
 
-import { Suspense } from 'react';
 import { ClerkProvider } from '@clerk/nextjs';
 import { AxiomWebVitals } from 'next-axiom';
 import { TRPCReactProvider } from '~/trpc/react';
@@ -50,26 +49,9 @@ export function Providers({
 	children: React.ReactNode;
 	baseUrl?: string;
 }) {
-	// #region agent log
-	fetch('http://127.0.0.1:7377/ingest/6c027480-495e-40ec-ba01-a117ac2c8793', {
-		method: 'POST',
-		headers: { 'Content-Type': 'application/json', 'X-Debug-Session-Id': '1cb770' },
-		body: JSON.stringify({
-			sessionId: '1cb770',
-			runId: 'post-fix',
-			hypothesisId: 'H1',
-			location: 'Providers.tsx:Providers',
-			message: 'Providers render; PostHogTracker wrapped in Suspense for useSearchParams',
-			data: { postHogSuspenseWrapped: true },
-			timestamp: Date.now()
-		})
-	}).catch(() => {});
-	// #endregion
 	return (
 		<ClerkProvider ui={ui}>
-			<Suspense fallback={null}>
-				<PostHogTracker />
-			</Suspense>
+			<PostHogTracker />
 			<AxiomWebVitals />
 			<MantineProvider defaultColorScheme="dark" theme={theme}>
 				<ModalsProvider>

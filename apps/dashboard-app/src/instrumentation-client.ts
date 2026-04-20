@@ -14,7 +14,7 @@ if (posthogKey) {
 		// ui_host keeps toolbar / session-replay links pointing at the real PostHog UI.
 		ui_host: 'https://eu.posthog.com',
 		autocapture: true,
-		capture_pageview: false,
+		capture_pageview: true,
 		capture_pageleave: true,
 		persistence: 'localStorage+cookie'
 	});
