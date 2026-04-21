@@ -256,19 +256,6 @@ enum Status {
   success
 }
 
-model StripeEvent {
-  id               String   @id @unique
-  api_version      String?
-  data             Json
-  request          Json?
-  type             String
-  object           String
-  account          String?
-  created          DateTime
-  livemode         Boolean
-  pending_webhooks Int
-}
-
 model User {
   id                         Int                       @id @default(autoincrement())
   clerk_id                   String                    @unique @default("")

@@ -61,7 +61,6 @@ export const ModelName = {
   AttemptAnswer: 'AttemptAnswer',
   Course: 'Course',
   Paper: 'Paper',
-  StripeEvent: 'StripeEvent',
   User: 'User'
 } as const
 
@@ -250,22 +249,6 @@ export const PaperScalarFieldEnum = {
 } as const
 
 export type PaperScalarFieldEnum = (typeof PaperScalarFieldEnum)[keyof typeof PaperScalarFieldEnum]
-
-
-export const StripeEventScalarFieldEnum = {
-  id: 'id',
-  api_version: 'api_version',
-  data: 'data',
-  request: 'request',
-  type: 'type',
-  object: 'object',
-  account: 'account',
-  created: 'created',
-  livemode: 'livemode',
-  pending_webhooks: 'pending_webhooks'
-} as const
-
-export type StripeEventScalarFieldEnum = (typeof StripeEventScalarFieldEnum)[keyof typeof StripeEventScalarFieldEnum]
 
 
 export const UserScalarFieldEnum = {

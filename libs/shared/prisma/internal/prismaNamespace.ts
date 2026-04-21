@@ -394,7 +394,6 @@ export const ModelName = {
   AttemptAnswer: 'AttemptAnswer',
   Course: 'Course',
   Paper: 'Paper',
-  StripeEvent: 'StripeEvent',
   User: 'User'
 } as const
 
@@ -411,7 +410,7 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
     omit: GlobalOmitOptions
   }
   meta: {
-    modelProps: "question" | "questionRevision" | "markScheme" | "paperReference" | "paperRating" | "questionFeedback" | "attempt" | "attemptAnswer" | "course" | "paper" | "stripeEvent" | "user"
+    modelProps: "question" | "questionRevision" | "markScheme" | "paperReference" | "paperRating" | "questionFeedback" | "attempt" | "attemptAnswer" | "course" | "paper" | "user"
     txIsolationLevel: TransactionIsolationLevel
   }
   model: {
@@ -1155,80 +1154,6 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         }
       }
     }
-    StripeEvent: {
-      payload: Prisma.$StripeEventPayload<ExtArgs>
-      fields: Prisma.StripeEventFieldRefs
-      operations: {
-        findUnique: {
-          args: Prisma.StripeEventFindUniqueArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$StripeEventPayload> | null
-        }
-        findUniqueOrThrow: {
-          args: Prisma.StripeEventFindUniqueOrThrowArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$StripeEventPayload>
-        }
-        findFirst: {
-          args: Prisma.StripeEventFindFirstArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$StripeEventPayload> | null
-        }
-        findFirstOrThrow: {
-          args: Prisma.StripeEventFindFirstOrThrowArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$StripeEventPayload>
-        }
-        findMany: {
-          args: Prisma.StripeEventFindManyArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$StripeEventPayload>[]
-        }
-        create: {
-          args: Prisma.StripeEventCreateArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$StripeEventPayload>
-        }
-        createMany: {
-          args: Prisma.StripeEventCreateManyArgs<ExtArgs>
-          result: BatchPayload
-        }
-        createManyAndReturn: {
-          args: Prisma.StripeEventCreateManyAndReturnArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$StripeEventPayload>[]
-        }
-        delete: {
-          args: Prisma.StripeEventDeleteArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$StripeEventPayload>
-        }
-        update: {
-          args: Prisma.StripeEventUpdateArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$StripeEventPayload>
-        }
-        deleteMany: {
-          args: Prisma.StripeEventDeleteManyArgs<ExtArgs>
-          result: BatchPayload
-        }
-        updateMany: {
-          args: Prisma.StripeEventUpdateManyArgs<ExtArgs>
-          result: BatchPayload
-        }
-        updateManyAndReturn: {
-          args: Prisma.StripeEventUpdateManyAndReturnArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$StripeEventPayload>[]
-        }
-        upsert: {
-          args: Prisma.StripeEventUpsertArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$StripeEventPayload>
-        }
-        aggregate: {
-          args: Prisma.StripeEventAggregateArgs<ExtArgs>
-          result: runtime.Types.Utils.Optional<Prisma.AggregateStripeEvent>
-        }
-        groupBy: {
-          args: Prisma.StripeEventGroupByArgs<ExtArgs>
-          result: runtime.Types.Utils.Optional<Prisma.StripeEventGroupByOutputType>[]
-        }
-        count: {
-          args: Prisma.StripeEventCountArgs<ExtArgs>
-          result: runtime.Types.Utils.Optional<Prisma.StripeEventCountAggregateOutputType> | number
-        }
-      }
-    }
     User: {
       payload: Prisma.$UserPayload<ExtArgs>
       fields: Prisma.UserFieldRefs
@@ -1513,22 +1438,6 @@ export const PaperScalarFieldEnum = {
 export type PaperScalarFieldEnum = (typeof PaperScalarFieldEnum)[keyof typeof PaperScalarFieldEnum]
 
 
-export const StripeEventScalarFieldEnum = {
-  id: 'id',
-  api_version: 'api_version',
-  data: 'data',
-  request: 'request',
-  type: 'type',
-  object: 'object',
-  account: 'account',
-  created: 'created',
-  livemode: 'livemode',
-  pending_webhooks: 'pending_webhooks'
-} as const
-
-export type StripeEventScalarFieldEnum = (typeof StripeEventScalarFieldEnum)[keyof typeof StripeEventScalarFieldEnum]
-
-
 export const UserScalarFieldEnum = {
   id: 'id',
   clerk_id: 'clerk_id',
@@ -1770,13 +1679,6 @@ export type ListEnumStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$Prism
 
 
 /**
- * Reference to a field of type 'Boolean'
- */
-export type BooleanFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Boolean'>
-    
-
-
-/**
  * Reference to a field of type 'UserPlan'
  */
 export type EnumUserPlanFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'UserPlan'>
@@ -1922,7 +1824,6 @@ export type GlobalOmitConfig = {
   attemptAnswer?: Prisma.AttemptAnswerOmit
   course?: Prisma.CourseOmit
   paper?: Prisma.PaperOmit
-  stripeEvent?: Prisma.StripeEventOmit
   user?: Prisma.UserOmit
 }
 

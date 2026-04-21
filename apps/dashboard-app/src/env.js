@@ -10,10 +10,6 @@ export const env = createEnv({
 		// Database
 		DATABASE_URL: z.string().url(),
 		DATABASE_URL_UNPOOLED: z.string().url().optional(),
-		DATABASE_NAME: z.string().optional(),
-		DATABASE_PASSWORD: z.string().optional(),
-		DATABASE_USERNAME: z.string().optional(),
-		DATABASE_HOST: z.string().optional(),
 
 		// Stripe
 		STRIPE_SECRET_KEY: z.string().min(1),
@@ -128,10 +124,6 @@ export const env = createEnv({
 		// Database
 		DATABASE_URL: process.env.DATABASE_URL,
 		DATABASE_URL_UNPOOLED: process.env.DATABASE_URL_UNPOOLED,
-		DATABASE_NAME: process.env.DATABASE_NAME,
-		DATABASE_PASSWORD: process.env.DATABASE_PASSWORD,
-		DATABASE_USERNAME: process.env.DATABASE_USERNAME,
-		DATABASE_HOST: process.env.DATABASE_HOST,
 
 		// Stripe
 		STRIPE_SECRET_KEY: process.env.STRIPE_SECRET_KEY,

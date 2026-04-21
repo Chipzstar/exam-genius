@@ -92,7 +92,6 @@ You are an expert in TypeScript, Node.js, Next.js App Router, React, Turborepo, 
   - `user.prisma`: user models
   - `course.prisma`: course models
   - `paper.prisma`: paper / exam models
-  - `StripeEvent.prisma`: Stripe webhook logging
 - Do not run `prisma generate` directly; instead use root scripts:
   - `pnpm prisma:generate` (merges schemas + generates client)
   - `pnpm prisma:sync` (merges schemas + generates client + pushes to DB)
@@ -112,7 +111,6 @@ You are an expert in TypeScript, Node.js, Next.js App Router, React, Turborepo, 
 - Use Stripe for payments and subscriptions.
 - Access the Stripe client via a dedicated server helper (e.g. `apps/dashboard-app/src/server/stripe.ts`).
 - Implement Stripe webhook handlers under `app/api/stripe/**/route.ts`.
-- Log all Stripe webhook events to the `StripeEvent` Prisma model for observability and debugging.
 - For local development, use the root script `pnpm stripe-local-webhook` with the Stripe CLI to forward webhooks.
 - Use `@stripe/stripe-js` for client-side Stripe integration where necessary (e.g. Checkout).
 - Always verify webhook signatures and handle idempotency for event processing.

@@ -92,11 +92,6 @@ export type Course = Prisma.CourseModel
  */
 export type Paper = Prisma.PaperModel
 /**
- * Model StripeEvent
- * 
- */
-export type StripeEvent = Prisma.StripeEventModel
-/**
  * Model User
  * 
  */

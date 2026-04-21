@@ -166,7 +166,6 @@ The dashboard app (`apps/dashboard-app`) is the core application with the follow
   - `user.prisma`: User models
   - `course.prisma`: Course-related models
   - `paper.prisma`: Paper/exam models
-  - `StripeEvent.prisma`: Stripe webhook event logging
 - **IMPORTANT**: Use `prismerge` to combine schema files before running Prisma commands
   - Always run `npm run prisma:generate` or `npm run prisma:sync` instead of direct `prisma generate`
   - The merged schema is output to `prisma/schema.prisma`
