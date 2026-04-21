@@ -72,4 +72,5 @@ export interface GeneratePaperPayload {
 	exam_board: string;
 	num_questions: number | string;
 	num_marks: number | string;
+	reference_ids?: string[];
 }

@@ -1,0 +1,55 @@
+name: Prisma schema
+
+on:
+  push:
+    branches: [main, master]
+    paths:
+      - 'prisma/**'
+      - 'prismerge.json'
+      - 'package.json'
+      - 'pnpm-lock.yaml'
+  pull_request:
+    paths:
+      - 'prisma/**'
+      - 'prismerge.json'
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 10
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: 'pnpm'
+
+      - run: pnpm install --frozen-lockfile
+
+      - name: Merge and validate Prisma schema
+        run: |
+          pnpm prisma:merge
+          npx prisma validate
+
+      - name: Optional backend drift check (sibling exam-genius-backend)
+        run: |
+          BACKEND="../exam-genius-backend"
+          if [ -d "$BACKEND/prisma/schemas" ]; then
+            chmod +x bin/sync-schemas-to-backend.sh
+            ./bin/sync-schemas-to-backend.sh
+            for f in prisma/schemas/*.prisma; do
+              base="$(basename "$f")"
+              [ "$base" = "base.prisma" ] && continue
+              if ! cmp -s "$f" "$BACKEND/prisma/schemas/$base"; then
+                echo "::error::Mismatch: $base — run pnpm sync:schemas:backend in exam-genius and commit backend"
+                exit 1
+              fi
+            done
+            echo "Backend schemas match (excluding base.prisma)."
+          else
+            echo "No sibling exam-genius-backend — skipping cross-repo diff."
+          fi

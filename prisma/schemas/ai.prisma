@@ -1,0 +1,172 @@
+enum UserPlan {
+  free
+  plus
+  pro
+}
+
+enum MarkSchemeStatus {
+  none
+  pending
+  success
+  failed
+}
+
+enum ReferenceKind {
+  question_paper
+  mark_scheme
+  examiner_report
+}
+
+enum ReferenceStatus {
+  pending
+  processing
+  ready
+  failed
+}
+
+enum AttemptMode {
+  mock
+  study
+}
+
+enum AttemptStatus {
+  in_progress
+  submitted
+  marking
+  marked
+  failed
+}
+
+model Question {
+  id          Int      @id @unique @default(autoincrement())
+  created_at  DateTime @default(now())
+  updated_at  DateTime @updatedAt
+  question_id String   @unique
+  paper_id    String
+  paper       Paper    @relation(fields: [paper_id], references: [paper_id], onDelete: Cascade)
+  parent_id   String?
+  parent      Question?  @relation("QuestionHierarchy", fields: [parent_id], references: [question_id], onDelete: Cascade)
+  children    Question[] @relation("QuestionHierarchy")
+  order       Int      @default(0)
+  label       String?
+  marks       Int      @default(0)
+  topic       String?
+  body        Json
+  revision    Int      @default(1)
+  revisions   QuestionRevision[]
+  feedback    QuestionFeedback[]
+
+  @@index([paper_id])
+  @@index([parent_id])
+}
+
+model QuestionRevision {
+  id          Int      @id @unique @default(autoincrement())
+  created_at  DateTime @default(now())
+  question_id String
+  question    Question @relation(fields: [question_id], references: [question_id], onDelete: Cascade)
+  revision    Int
+  body        Json
+  marks       Int
+
+  @@index([question_id])
+}
+
+model MarkScheme {
+  id             Int              @id @unique @default(autoincrement())
+  created_at     DateTime         @default(now())
+  updated_at     DateTime         @updatedAt
+  mark_scheme_id String           @unique
+  paper_id       String           @unique
+  paper          Paper            @relation(fields: [paper_id], references: [paper_id], onDelete: Cascade)
+  status         MarkSchemeStatus @default(pending)
+  model_answer   Json?
+  points         Json?
+  prompt_version String?
+  raw_content    String?          @db.Text
+}
+
+model PaperReference {
+  id               Int             @id @unique @default(autoincrement())
+  created_at       DateTime        @default(now())
+  updated_at       DateTime        @updatedAt
+  reference_id     String          @unique
+  user_id          String
+  user             User            @relation(fields: [user_id], references: [clerk_id], onDelete: Cascade)
+  course_id        String
+  paper_code       String?
+  kind             ReferenceKind
+  ut_key           String
+  ut_url           String
+  filename         String
+  extracted_text   String          @db.Text
+  text_hash        String
+  token_count      Int             @default(0)
+  status           ReferenceStatus @default(pending)
+
+  @@index([user_id, course_id, paper_code])
+  @@index([user_id, text_hash])
+}
+
+model PaperRating {
+  id          Int      @id @unique @default(autoincrement())
+  created_at  DateTime @default(now())
+  updated_at  DateTime @updatedAt
+  paper_id    String   @unique
+  paper       Paper    @relation(fields: [paper_id], references: [paper_id], onDelete: Cascade)
+  stars       Int
+  comment     String?  @db.Text
+  dimensions  Json?
+}
+
+model QuestionFeedback {
+  id          Int      @id @unique @default(autoincrement())
+  created_at  DateTime @default(now())
+  question_id String
+  question    Question @relation(fields: [question_id], references: [question_id], onDelete: Cascade)
+  user_id     String
+  sentiment   Int
+  reason_tags String[]
+  note        String?  @db.Text
+
+  @@unique([user_id, question_id])
+  @@index([question_id])
+}
+
+model Attempt {
+  id              Int            @id @unique @default(autoincrement())
+  attempt_id      String         @unique
+  paper_id        String
+  paper           Paper          @relation(fields: [paper_id], references: [paper_id], onDelete: Cascade)
+  user_id         String
+  user            User           @relation(fields: [user_id], references: [clerk_id], onDelete: Cascade)
+  mode            AttemptMode    @default(mock)
+  started_at      DateTime       @default(now())
+  submitted_at    DateTime?
+  time_limit_sec  Int?
+  total_score     Int?
+  total_max       Int?
+  grade_band      String?
+  marking_summary String?        @db.Text
+  status          AttemptStatus  @default(in_progress)
+  answers         AttemptAnswer[]
+
+  @@index([user_id, paper_id])
+}
+
+model AttemptAnswer {
+  id                    Int      @id @unique @default(autoincrement())
+  created_at            DateTime @default(now())
+  updated_at            DateTime @updatedAt
+  attempt_id            String
+  attempt               Attempt  @relation(fields: [attempt_id], references: [attempt_id], onDelete: Cascade)
+  question_id           String
+  answer_text           String   @db.Text
+  score                 Int?
+  max_score             Int
+  examiner_note         String?  @db.Text
+  model_answer_snapshot String?  @db.Text
+  prompt_version        String?
+
+  @@unique([attempt_id, question_id])
+}

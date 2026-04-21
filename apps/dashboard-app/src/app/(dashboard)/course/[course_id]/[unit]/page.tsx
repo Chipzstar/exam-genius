@@ -2,7 +2,18 @@
 
 import React, { use, useCallback, useMemo, useState } from 'react';
 import Page from '~/layout/Page';
-import { Anchor, Breadcrumbs, Button, Card, LoadingOverlay, ScrollArea, Text, Title } from '@mantine/core';
+import {
+	Accordion,
+	Anchor,
+	Breadcrumbs,
+	Button,
+	Card,
+	LoadingOverlay,
+	MultiSelect,
+	ScrollArea,
+	Text,
+	Title
+} from '@mantine/core';
 import Image from 'next/image';
 import { CHECKOUT_TYPE, PATHS } from '~/utils/constants';
 import { capitalize, genCourseOrPaperName, notifyError, notifySuccess, sanitize } from '~/utils/functions';
@@ -14,11 +25,10 @@ import { useMediaQuery, useViewportSize } from '@mantine/hooks';
 import CustomLoader from '~/components/CustomLoader';
 import { ExamBoard, PaperInfo, Subject, SUBJECT_PAPERS } from '@exam-genius/shared/utils';
 import NotFound from '~/app/not-found';
-import axios from 'axios';
-import { GeneratePaperPayload } from '~/utils/types';
-import { env } from '~/env';
 import { AnimatedList } from '~/components/AnimatedList';
 import { motion, useReducedMotion } from 'motion/react';
+import { useValue } from '@legendapp/state/react';
+import { appStore$ } from '~/store/app.store';
 
 export default function PapersPage({ params }: { params: Promise<{ course_id: string; unit: string }> }) {
 	const resolvedParams = use(params);
@@ -40,6 +50,14 @@ export default function PapersPage({ params }: { params: Promise<{ course_id: st
 	} = api.paper.getPapersByCourse.useQuery({ courseId: resolvedParams.course_id });
 	const { mutateAsync: createCheckoutSession } = api.stripe.createCheckoutSession.useMutation();
 	const { mutateAsync: createPastPaper } = api.paper.createPaper.useMutation();
+	const { mutateAsync: triggerBackendGenerate } = api.paper.triggerBackendGenerate.useMutation();
+	const utils = api.useUtils();
+	const flags = useValue(appStore$.flags);
+	const [referenceIds, setReferenceIds] = useState<string[]>([]);
+	const { data: referenceList = [] } = api.reference.list.useQuery(
+		{ courseId: resolvedParams.course_id },
+		{ enabled: flags.paperReferences }
+	);
 	const items = [
 		{ title: 'Courses', href: PATHS.HOME },
 		{
@@ -96,6 +114,21 @@ export default function PapersPage({ params }: { params: Promise<{ course_id: st
 					setLoading(null);
 				} else {
 					setGenerating(true);
+					try {
+						const hints = await utils.paper.getGenerationHints.fetch({
+							courseId: resolvedParams.course_id,
+							paperCode: paper.code
+						});
+						const hintText = [hints.avoid, hints.exemplars].filter(Boolean).join('\n\n');
+						setContent(
+							hintText ||
+								'Approx waiting time is 30 seconds to 2 minutes. Go grab a coffee while we get your paper ready'
+						);
+					} catch {
+						setContent(
+							'Approx waiting time is 30 seconds to 2 minutes. Go grab a coffee while we get your paper ready'
+						);
+					}
 					const created_paper = await createPastPaper({
 						paper_name: paper.name,
 						paper_code: paper.code,
@@ -106,26 +139,17 @@ export default function PapersPage({ params }: { params: Promise<{ course_id: st
 						num_questions: paper.num_questions,
 						num_marks: paper.marks
 					});
-					axios
-						.post(`${env.NEXT_PUBLIC_BACKEND_HOST}/server/paper/generate`, {
-							paper_id: created_paper.paper_id,
-							paper_name: created_paper.name,
-							subject: created_paper.subject,
-							exam_board: created_paper.exam_board,
-							course: created_paper.unit_name,
-							num_questions: paper.num_questions,
-							num_marks: paper.marks
-						} as GeneratePaperPayload)
-						.then(({ data }) => {
-							notifySuccess(
-								'paper-generation-success',
-								`${created_paper.exam_board} ${created_paper.subject} has now been generated!!`,
-								<IconCheck size={20} />
-							);
-						})
-						.catch(error => {
-							console.error(error);
-						});
+					await triggerBackendGenerate({
+						paperId: created_paper.paper_id,
+						num_questions: paper.num_questions,
+						num_marks: paper.marks,
+						referenceIds: flags.paperReferences && referenceIds.length ? referenceIds : undefined
+					});
+					notifySuccess(
+						'paper-generation-success',
+						`${created_paper.exam_board} ${created_paper.subject} has now been generated!!`,
+						<IconCheck size={20} />
+					);
 					setLoading(null);
 					router.push(
 						`${PATHS.COURSE}/${resolvedParams.course_id}/${resolvedParams.unit}/${paper.href}?subject=${subject}&board=${board}&code=${paper.code}`
@@ -138,7 +162,20 @@ export default function PapersPage({ params }: { params: Promise<{ course_id: st
 				notifyError('generate-paper-failed', err.message, <IconX size={20} />);
 			}
 		},
-		[resolvedParams, course_papers, subject, board, router, createPastPaper, openCheckoutSession, papersLoading]
+		[
+			resolvedParams,
+			course_papers,
+			subject,
+			board,
+			router,
+			createPastPaper,
+			openCheckoutSession,
+			papersLoading,
+			triggerBackendGenerate,
+			utils,
+			flags.paperReferences,
+			referenceIds
+		]
 	);
 
 	if (isLoading) {
@@ -184,6 +221,40 @@ export default function PapersPage({ params }: { params: Promise<{ course_id: st
 					</div>
 				</header>
 				<ScrollArea.Autosize mah={height - 150} mt='lg'>
+					{flags.paperReferences ? (
+						<Accordion mb='lg' variant='separated'>
+							<Accordion.Item value='refs'>
+								<Accordion.Control>Reference style for next generation</Accordion.Control>
+								<Accordion.Panel>
+									<Text size='sm' c='dimmed' mb='xs'>
+										Optional PDFs uploaded under References. Only &quot;ready&quot; files are used.
+									</Text>
+									<MultiSelect
+										placeholder='Pick references to steer style'
+										data={referenceList
+											.filter(r => r.status === 'ready')
+											.map(r => ({
+												value: r.reference_id,
+												label: `${r.filename} (${r.kind})`
+											}))}
+										value={referenceIds}
+										onChange={setReferenceIds}
+										clearable
+										searchable
+									/>
+								</Accordion.Panel>
+							</Accordion.Item>
+							<Accordion.Item value='hints'>
+								<Accordion.Control>What we learned from your feedback</Accordion.Control>
+								<Accordion.Panel>
+									<Text size='sm' c='dimmed'>
+										When you generate a paper, we show personalized style notes on the loading screen
+										(built from your ratings and question feedback for that paper code).
+									</Text>
+								</Accordion.Panel>
+							</Accordion.Item>
+						</Accordion>
+					) : null}
 					<AnimatedList>
 						{course_info.papers.map((paper, index) => (
 							<motion.div

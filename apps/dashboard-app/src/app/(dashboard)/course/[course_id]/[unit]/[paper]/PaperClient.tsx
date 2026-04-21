@@ -17,15 +17,12 @@ import { useMediaQuery, useTimeout, useViewportSize } from '@mantine/hooks';
 import { IconArrowLeft, IconCheck, IconX } from '@tabler/icons-react';
 import { useRouter } from 'next/navigation';
 import { api } from '~/trpc/react';
-import parse from 'html-react-parser';
-import DOMPurify from 'dompurify';
 import { Carousel } from '@mantine/carousel';
 import CustomLoader from '~/components/CustomLoader';
 import { PATHS, TWO_MINUTES } from '~/utils/constants';
 import { ExamBoard, Subject, SUBJECT_PAPERS } from '@exam-genius/shared/utils';
 import { capitalize, notifyError, notifySuccess, sanitize } from '~/utils/functions';
 import Link from 'next/link';
-import { GeneratePaperPayload } from '~/utils/types';
 import classes from './Paper.module.css';
 import type { RouterOutputs } from '~/trpc/react';
 import clsx from 'clsx';
@@ -33,11 +30,7 @@ import { useValue } from '@legendapp/state/react';
 import { appStore$, recordPaperOpen } from '~/store/app.store';
 import { DisclaimerStrip } from '~/components/DisclaimerStrip';
 import { ReaderToolbar } from '~/components/ReaderToolbar';
-
-/** Safe subset for AI-generated exam HTML (lists, emphasis, tables); strips scripts and event handlers. */
-const PAPER_HTML_SANITIZE: DOMPurify.Config = {
-	USE_PROFILES: { html: true }
-};
+import { PaperBody } from '~/components/paper/PaperBody';
 
 interface RegeneratePayload {
 	id: string;
@@ -55,6 +48,7 @@ interface PaperClientProps {
 		code: string;
 		subject: Subject;
 		board: ExamBoard;
+		mode?: string;
 	};
 	initialPapers: RouterOutputs['paper']['getPapersByCode'];
 }
@@ -68,6 +62,7 @@ const NoPapers = ({
 }) => {
 	const [loading, setLoading] = useState(false);
 	const { mutateAsync: createPastPaper } = api.paper.createPaper.useMutation();
+	const { mutateAsync: triggerBackendGenerate } = api.paper.triggerBackendGenerate.useMutation();
 
 	const generatePaper = useCallback(async () => {
 		setLoading(true);
@@ -84,32 +79,16 @@ const NoPapers = ({
 				num_questions: paper.num_questions,
 				num_marks: paper.marks
 			});
-			fetch(`${process.env.NEXT_PUBLIC_BACKEND_HOST}/server/paper/generate`, {
-				method: 'POST',
-				headers: {
-					'Content-Type': 'application/json'
-				},
-				body: JSON.stringify({
-					paper_id: created_paper.paper_id,
-					paper_name: created_paper.name,
-					course: capitalize(sanitize(created_paper.unit_name)),
-					subject: capitalize(created_paper.subject),
-					exam_board: capitalize(created_paper.exam_board),
-					num_questions: paper.num_questions,
-					num_marks: paper.marks
-				} as GeneratePaperPayload)
-			})
-				.then(response => response.json())
-				.then(() => {
-					notifySuccess(
-						'paper-generation-success',
-						`${capitalize(created_paper.exam_board)} ${capitalize(created_paper.subject)} paper has now been generated!!`,
-						<IconCheck size={20} />
-					);
-				})
-				.catch(error => {
-					console.error(error);
-				});
+			await triggerBackendGenerate({
+				paperId: created_paper.paper_id,
+				num_questions: paper.num_questions,
+				num_marks: paper.marks
+			});
+			notifySuccess(
+				'paper-generation-success',
+				`${capitalize(created_paper.exam_board)} ${capitalize(created_paper.subject)} paper has now been generated!!`,
+				<IconCheck size={20} />
+			);
 			start({
 				id: created_paper.paper_id,
 				num_questions: paper.num_questions,
@@ -121,7 +100,7 @@ const NoPapers = ({
 		} finally {
 			setLoading(false);
 		}
-	}, [query, start, createPastPaper]);
+	}, [query, start, createPastPaper, triggerBackendGenerate]);
 
 	return (
 		<div className='flex h-full flex-col items-center justify-center space-y-12'>
@@ -143,7 +122,7 @@ export default function PaperClient({ params, searchParams, initialPapers }: Pap
 	const [activeSlideIndex, setActiveSlideIndex] = useState(0);
 	const lastRecordedRef = useRef('');
 	const router = useRouter();
-	const { code, subject, board } = searchParams;
+	const { code, subject, board, mode: modeFromUrl } = searchParams;
 	const fontScale = useValue(appStore$.reader.fontScale);
 	const focusMode = useValue(appStore$.reader.focusMode);
 
@@ -289,43 +268,17 @@ export default function PaperClient({ params, searchParams, initialPapers }: Pap
 										<Card shadow='sm' radius='md' className={clsx('w-full', classes.paperCard)} p='xl'>
 											{paper.content && paper.status === 'success' ? (
 												<div id={pdfSourceId ?? undefined}>
-													<div className='flex justify-center'>
-														<Stack justify='center' align='center'>
-															<Title c='brand'>ExamGenius</Title>
-															{paper.name && (
-																<Text size={mobileScreen ? 'xl' : '30px'} fw={600}>
-																	{paper.name}
-																</Text>
-															)}
-															<Text size='lg'>AI Predicted Paper</Text>
-														</Stack>
-													</div>
-													<Space h='xl' />
-													<div
-														className={clsx(classes.paperContentRoot, 'h-full px-6 py-2')}
-														data-scale={String(fontScale)}
-													>
-														{paper.content ? (
-															<>
-																<div className={clsx(classes.paperContent, 'paperContent')}>
-																	{parse(DOMPurify.sanitize(paper.content, PAPER_HTML_SANITIZE), {
-																		trim: true
-																	})}
-																</div>
-																<div
-																	className={classes.paperContentPrintFooter}
-																	data-paper-print-footer
-																>
-																	ExamGenius: AI-predicted practice content — not an
-																	official past paper.
-																</div>
-															</>
-														) : (
-															<Text c='dimmed' size='sm'>
-																Content is still loading…
-															</Text>
-														)}
-													</div>
+													<PaperBody
+														paper={paper}
+														mobileScreen={Boolean(mobileScreen)}
+														fontScale={fontScale}
+														initialMode={modeFromUrl}
+														classes={{
+															paperContentRoot: classes.paperContentRoot,
+															paperContent: classes.paperContent,
+															paperContentPrintFooter: classes.paperContentPrintFooter
+														}}
+													/>
 												</div>
 											) : paper.status === 'failed' ? (
 												<>

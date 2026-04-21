@@ -66,17 +66,17 @@ export const env = createEnv({
 
 		// Backend
 		BACKEND_HOST: z.string().url(),
+		BACKEND_SHARED_SECRET: z.string().min(1).optional(),
 
-		// Google OAuth
-		GOOGLE_OAUTH_CLIENT_ID: z.string().optional(),
-		GOOGLE_OAUTH_CLIENT_SECRET: z.string().optional(),
+		// UploadThing
+		UPLOADTHING_TOKEN: z.string().min(1).optional(),
 
-		// Redis
-		REDIS_HOST: z.string().optional(),
-		REDIS_PASSWORD: z.string().optional(),
-		REDIS_PORT: z.string().optional(),
-		REDIS_URL: z.string().url().optional(),
-		REDIS_USERNAME: z.string().optional(),
+		// Upstash (rate limits; optional — disabled when unset)
+		UPSTASH_REDIS_REST_URL: z.string().url().optional(),
+		UPSTASH_REDIS_REST_TOKEN: z.string().min(1).optional(),
+
+		// Stripe price → plan map (JSON: { "price_xxx": "plus" })
+		STRIPE_PLAN_MAP: z.string().optional(),
 
 		// Doppler
 		DOPPLER_CONFIG: z.string().optional(),
@@ -108,6 +108,12 @@ export const env = createEnv({
 		NEXT_PUBLIC_POSTHOG_KEY: z.string(),
 		NEXT_PUBLIC_POSTHOG_HOST: z.string().url(),
 		NEXT_PUBLIC_DOPPLER_ENVIRONMENT: z.string(),
+
+		// Feature flags (default off in production unless set to "true")
+		NEXT_PUBLIC_FLAG_STRUCTURED_QUESTIONS: z.enum(['true', 'false']).optional().default('true'),
+		NEXT_PUBLIC_FLAG_QUESTION_EDITS: z.enum(['true', 'false']).optional().default('true'),
+		NEXT_PUBLIC_FLAG_PAPER_REFERENCES: z.enum(['true', 'false']).optional().default('true'),
+		NEXT_PUBLIC_FLAG_AI_MARKING: z.enum(['true', 'false']).optional().default('true'),
 
 		// Tawk.to (live chat; both required together in UI — see TawkWidget)
 		NEXT_PUBLIC_TAWK_PROPERTY_ID: z.string().min(1).default('69c5290331e8e31c37c54bb5'),
@@ -177,17 +183,11 @@ export const env = createEnv({
 
 		// Backend
 		BACKEND_HOST: process.env.BACKEND_HOST,
-
-		// Google OAuth
-		GOOGLE_OAUTH_CLIENT_ID: process.env.GOOGLE_OAUTH_CLIENT_ID,
-		GOOGLE_OAUTH_CLIENT_SECRET: process.env.GOOGLE_OAUTH_CLIENT_SECRET,
-
-		// Redis
-		REDIS_HOST: process.env.REDIS_HOST,
-		REDIS_PASSWORD: process.env.REDIS_PASSWORD,
-		REDIS_PORT: process.env.REDIS_PORT,
-		REDIS_URL: process.env.REDIS_URL,
-		REDIS_USERNAME: process.env.REDIS_USERNAME,
+		BACKEND_SHARED_SECRET: process.env.BACKEND_SHARED_SECRET,
+		UPLOADTHING_TOKEN: process.env.UPLOADTHING_TOKEN,
+		UPSTASH_REDIS_REST_URL: process.env.UPSTASH_REDIS_REST_URL,
+		UPSTASH_REDIS_REST_TOKEN: process.env.UPSTASH_REDIS_REST_TOKEN,
+		STRIPE_PLAN_MAP: process.env.STRIPE_PLAN_MAP,
 
 		// Doppler
 		DOPPLER_CONFIG: process.env.DOPPLER_CONFIG,
@@ -213,6 +213,11 @@ export const env = createEnv({
 		NEXT_PUBLIC_POSTHOG_KEY: process.env.NEXT_PUBLIC_POSTHOG_KEY,
 		NEXT_PUBLIC_POSTHOG_HOST: process.env.NEXT_PUBLIC_POSTHOG_HOST,
 		NEXT_PUBLIC_DOPPLER_ENVIRONMENT: process.env.NEXT_PUBLIC_DOPPLER_ENVIRONMENT,
+
+		NEXT_PUBLIC_FLAG_STRUCTURED_QUESTIONS: process.env.NEXT_PUBLIC_FLAG_STRUCTURED_QUESTIONS,
+		NEXT_PUBLIC_FLAG_QUESTION_EDITS: process.env.NEXT_PUBLIC_FLAG_QUESTION_EDITS,
+		NEXT_PUBLIC_FLAG_PAPER_REFERENCES: process.env.NEXT_PUBLIC_FLAG_PAPER_REFERENCES,
+		NEXT_PUBLIC_FLAG_AI_MARKING: process.env.NEXT_PUBLIC_FLAG_AI_MARKING,
 
 		NEXT_PUBLIC_TAWK_PROPERTY_ID: process.env.NEXT_PUBLIC_TAWK_PROPERTY_ID,
 		NEXT_PUBLIC_TAWK_WIDGET_ID: process.env.NEXT_PUBLIC_TAWK_WIDGET_ID,

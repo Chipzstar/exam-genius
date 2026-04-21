@@ -19,13 +19,25 @@ export type LastOpenedPaper = {
 
 export type RecentPaper = LastOpenedPaper;
 
+function envFlag(v: string | undefined): boolean {
+	return v === 'true';
+}
+
 const initialState = {
 	colorScheme: 'dark' as 'dark' | 'light',
 	lastOpenedPaper: null as LastOpenedPaper | null,
 	recentPapers: [] as RecentPaper[],
 	reader: {
 		fontScale: 1 as ReaderFontScale,
-		focusMode: false
+		focusMode: false,
+		rendererMode: 'structured' as 'structured' | 'classic',
+		paperMode: 'study' as 'study' | 'mock' | 'review'
+	},
+	flags: {
+		structuredQuestions: envFlag(process.env.NEXT_PUBLIC_FLAG_STRUCTURED_QUESTIONS),
+		questionEdits: envFlag(process.env.NEXT_PUBLIC_FLAG_QUESTION_EDITS),
+		paperReferences: envFlag(process.env.NEXT_PUBLIC_FLAG_PAPER_REFERENCES),
+		aiMarking: envFlag(process.env.NEXT_PUBLIC_FLAG_AI_MARKING)
 	},
 	onboarding: {
 		subject: '',

@@ -51,6 +51,14 @@ export const AnyNull = runtime.AnyNull
 
 
 export const ModelName = {
+  Question: 'Question',
+  QuestionRevision: 'QuestionRevision',
+  MarkScheme: 'MarkScheme',
+  PaperReference: 'PaperReference',
+  PaperRating: 'PaperRating',
+  QuestionFeedback: 'QuestionFeedback',
+  Attempt: 'Attempt',
+  AttemptAnswer: 'AttemptAnswer',
   Course: 'Course',
   Paper: 'Paper',
   StripeEvent: 'StripeEvent',
@@ -71,6 +79,135 @@ export const TransactionIsolationLevel = runtime.makeStrictEnum({
 } as const)
 
 export type TransactionIsolationLevel = (typeof TransactionIsolationLevel)[keyof typeof TransactionIsolationLevel]
+
+
+export const QuestionScalarFieldEnum = {
+  id: 'id',
+  created_at: 'created_at',
+  updated_at: 'updated_at',
+  question_id: 'question_id',
+  paper_id: 'paper_id',
+  parent_id: 'parent_id',
+  order: 'order',
+  label: 'label',
+  marks: 'marks',
+  topic: 'topic',
+  body: 'body',
+  revision: 'revision'
+} as const
+
+export type QuestionScalarFieldEnum = (typeof QuestionScalarFieldEnum)[keyof typeof QuestionScalarFieldEnum]
+
+
+export const QuestionRevisionScalarFieldEnum = {
+  id: 'id',
+  created_at: 'created_at',
+  question_id: 'question_id',
+  revision: 'revision',
+  body: 'body',
+  marks: 'marks'
+} as const
+
+export type QuestionRevisionScalarFieldEnum = (typeof QuestionRevisionScalarFieldEnum)[keyof typeof QuestionRevisionScalarFieldEnum]
+
+
+export const MarkSchemeScalarFieldEnum = {
+  id: 'id',
+  created_at: 'created_at',
+  updated_at: 'updated_at',
+  mark_scheme_id: 'mark_scheme_id',
+  paper_id: 'paper_id',
+  status: 'status',
+  model_answer: 'model_answer',
+  points: 'points',
+  prompt_version: 'prompt_version',
+  raw_content: 'raw_content'
+} as const
+
+export type MarkSchemeScalarFieldEnum = (typeof MarkSchemeScalarFieldEnum)[keyof typeof MarkSchemeScalarFieldEnum]
+
+
+export const PaperReferenceScalarFieldEnum = {
+  id: 'id',
+  created_at: 'created_at',
+  updated_at: 'updated_at',
+  reference_id: 'reference_id',
+  user_id: 'user_id',
+  course_id: 'course_id',
+  paper_code: 'paper_code',
+  kind: 'kind',
+  ut_key: 'ut_key',
+  ut_url: 'ut_url',
+  filename: 'filename',
+  extracted_text: 'extracted_text',
+  text_hash: 'text_hash',
+  token_count: 'token_count',
+  status: 'status'
+} as const
+
+export type PaperReferenceScalarFieldEnum = (typeof PaperReferenceScalarFieldEnum)[keyof typeof PaperReferenceScalarFieldEnum]
+
+
+export const PaperRatingScalarFieldEnum = {
+  id: 'id',
+  created_at: 'created_at',
+  updated_at: 'updated_at',
+  paper_id: 'paper_id',
+  stars: 'stars',
+  comment: 'comment',
+  dimensions: 'dimensions'
+} as const
+
+export type PaperRatingScalarFieldEnum = (typeof PaperRatingScalarFieldEnum)[keyof typeof PaperRatingScalarFieldEnum]
+
+
+export const QuestionFeedbackScalarFieldEnum = {
+  id: 'id',
+  created_at: 'created_at',
+  question_id: 'question_id',
+  user_id: 'user_id',
+  sentiment: 'sentiment',
+  reason_tags: 'reason_tags',
+  note: 'note'
+} as const
+
+export type QuestionFeedbackScalarFieldEnum = (typeof QuestionFeedbackScalarFieldEnum)[keyof typeof QuestionFeedbackScalarFieldEnum]
+
+
+export const AttemptScalarFieldEnum = {
+  id: 'id',
+  attempt_id: 'attempt_id',
+  paper_id: 'paper_id',
+  user_id: 'user_id',
+  mode: 'mode',
+  started_at: 'started_at',
+  submitted_at: 'submitted_at',
+  time_limit_sec: 'time_limit_sec',
+  total_score: 'total_score',
+  total_max: 'total_max',
+  grade_band: 'grade_band',
+  marking_summary: 'marking_summary',
+  status: 'status'
+} as const
+
+export type AttemptScalarFieldEnum = (typeof AttemptScalarFieldEnum)[keyof typeof AttemptScalarFieldEnum]
+
+
+export const AttemptAnswerScalarFieldEnum = {
+  id: 'id',
+  created_at: 'created_at',
+  updated_at: 'updated_at',
+  attempt_id: 'attempt_id',
+  question_id: 'question_id',
+  answer_text: 'answer_text',
+  score: 'score',
+  max_score: 'max_score',
+  examiner_note: 'examiner_note',
+  model_answer_snapshot: 'model_answer_snapshot',
+  prompt_version: 'prompt_version'
+} as const
+
+export type AttemptAnswerScalarFieldEnum = (typeof AttemptAnswerScalarFieldEnum)[keyof typeof AttemptAnswerScalarFieldEnum]
 
 
 export const CourseScalarFieldEnum = {
@@ -104,7 +241,12 @@ export const PaperScalarFieldEnum = {
   user_id: 'user_id',
   course_id: 'course_id',
   content: 'content',
-  status: 'status'
+  status: 'status',
+  prompt_version: 'prompt_version',
+  model: 'model',
+  generator_version: 'generator_version',
+  structured_at: 'structured_at',
+  mark_scheme_status: 'mark_scheme_status'
 } as const
 
 export type PaperScalarFieldEnum = (typeof PaperScalarFieldEnum)[keyof typeof PaperScalarFieldEnum]
@@ -135,6 +277,7 @@ export const UserScalarFieldEnum = {
   lastname: 'lastname',
   year: 'year',
   role: 'role',
+  plan: 'plan',
   stripe_customer_id: 'stripe_customer_id',
   stripe_subscription_id: 'stripe_subscription_id',
   stripe_subscription_status: 'stripe_subscription_status'
@@ -174,14 +317,6 @@ export const QueryMode = {
 export type QueryMode = (typeof QueryMode)[keyof typeof QueryMode]
 
 
-export const NullsOrder = {
-  first: 'first',
-  last: 'last'
-} as const
-
-export type NullsOrder = (typeof NullsOrder)[keyof typeof NullsOrder]
-
-
 export const JsonNullValueFilter = {
   DbNull: DbNull,
   JsonNull: JsonNull,
@@ -189,4 +324,12 @@ export const JsonNullValueFilter = {
 } as const
 
 export type JsonNullValueFilter = (typeof JsonNullValueFilter)[keyof typeof JsonNullValueFilter]
+
+
+export const NullsOrder = {
+  first: 'first',
+  last: 'last'
+} as const
+
+export type NullsOrder = (typeof NullsOrder)[keyof typeof NullsOrder]
 

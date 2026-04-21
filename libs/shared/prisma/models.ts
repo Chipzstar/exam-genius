@@ -8,6 +8,14 @@
  *
  * 🟢 You can import this file directly.
  */
+export type * from './models/Question.ts'
+export type * from './models/QuestionRevision.ts'
+export type * from './models/MarkScheme.ts'
+export type * from './models/PaperReference.ts'
+export type * from './models/PaperRating.ts'
+export type * from './models/QuestionFeedback.ts'
+export type * from './models/Attempt.ts'
+export type * from './models/AttemptAnswer.ts'
 export type * from './models/Course.ts'
 export type * from './models/Paper.ts'
 export type * from './models/StripeEvent.ts'

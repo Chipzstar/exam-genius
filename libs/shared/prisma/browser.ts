@@ -18,6 +18,46 @@ export { Prisma }
 export * as $Enums from './enums.ts'
 export * from './enums.ts';
 /**
+ * Model Question
+ * 
+ */
+export type Question = Prisma.QuestionModel
+/**
+ * Model QuestionRevision
+ * 
+ */
+export type QuestionRevision = Prisma.QuestionRevisionModel
+/**
+ * Model MarkScheme
+ * 
+ */
+export type MarkScheme = Prisma.MarkSchemeModel
+/**
+ * Model PaperReference
+ * 
+ */
+export type PaperReference = Prisma.PaperReferenceModel
+/**
+ * Model PaperRating
+ * 
+ */
+export type PaperRating = Prisma.PaperRatingModel
+/**
+ * Model QuestionFeedback
+ * 
+ */
+export type QuestionFeedback = Prisma.QuestionFeedbackModel
+/**
+ * Model Attempt
+ * 
+ */
+export type Attempt = Prisma.AttemptModel
+/**
+ * Model AttemptAnswer
+ * 
+ */
+export type AttemptAnswer = Prisma.AttemptAnswerModel
+/**
  * Model Course
  * 
  */
