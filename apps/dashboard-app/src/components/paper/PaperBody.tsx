@@ -13,8 +13,7 @@ import {
 	Title
 } from '@mantine/core';
 import clsx from 'clsx';
-import parse from 'html-react-parser';
-import DOMPurify from 'dompurify';
+import { LatexHtml } from './Latex';
 import { useValue } from '@legendapp/state/react';
 import { appStore$ } from '~/store/app.store';
 import { api } from '~/trpc/react';
@@ -26,10 +25,6 @@ import { MockTimer } from './MockTimer';
 import { PaperErrorBoundary } from './PaperErrorBoundary';
 import { captureAttempt, captureRating } from '~/utils/posthog-events';
 import type { RouterOutputs } from '~/trpc/react';
-
-const PAPER_HTML_SANITIZE: DOMPurify.Config = {
-	USE_PROFILES: { html: true }
-};
 
 type PaperRow = RouterOutputs['paper']['getPapersByCode'][number];
 
@@ -263,7 +258,7 @@ export function PaperBody({ paper, mobileScreen, fontScale, initialMode, classes
 				) : (
 					<>
 						<div className={clsx(classes.paperContent, 'paperContent')}>
-							{parse(DOMPurify.sanitize(paper.content, PAPER_HTML_SANITIZE), { trim: true })}
+							<LatexHtml html={paper.content} />
 						</div>
 						<div className={classes.paperContentPrintFooter} data-paper-print-footer>
 							ExamGenius: AI-predicted practice content — not an official past paper.

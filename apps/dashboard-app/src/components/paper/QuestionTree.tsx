@@ -17,8 +17,7 @@ import {
 	Checkbox
 } from '@mantine/core';
 import { IconDotsVertical, IconThumbDown, IconThumbUp } from '@tabler/icons-react';
-import parse from 'html-react-parser';
-import DOMPurify from 'dompurify';
+import { LatexHtml, LatexText } from './Latex';
 import type { RouterOutputs } from '~/trpc/react';
 import { api } from '~/trpc/react';
 import { useMemo, useState } from 'react';
@@ -28,11 +27,16 @@ import { notifyError, notifySuccess } from '~/utils/functions';
 import { IconCheck, IconX } from '@tabler/icons-react';
 import { captureQuestionEdit, captureRating } from '~/utils/posthog-events';
 
-const PAPER_HTML_SANITIZE: DOMPurify.Config = {
-	USE_PROFILES: { html: true }
-};
-
 type Q = RouterOutputs['question']['listForPaper'][number];
+
+function wrapBlockMath(value: string): string {
+	const v = value.trim();
+	if (!v) return '';
+	if (/^\\\[[\s\S]*\\\]$/.test(v) || /^\$\$[\s\S]*\$\$$/.test(v) || /^\\\([\s\S]*\\\)$/.test(v)) {
+		return v;
+	}
+	return `\\[${v}\\]`;
+}
 
 function BlockView({ block }: { block: unknown }) {
 	if (!block || typeof block !== 'object' || !('kind' in block)) return null;
@@ -47,14 +51,14 @@ function BlockView({ block }: { block: unknown }) {
 		case 'text':
 			return (
 				<div className='eg-block-text'>
-					{parse(DOMPurify.sanitize(b.value ?? '', PAPER_HTML_SANITIZE), { trim: true })}
+					<LatexHtml html={b.value ?? ''} />
 				</div>
 			);
 		case 'math':
 			return (
-				<Text component='pre' size='sm' className='whitespace-pre-wrap font-mono'>
-					{b.value}
-				</Text>
+				<div className='eg-block-math my-2'>
+					<LatexText block>{wrapBlockMath(b.value ?? '')}</LatexText>
+				</div>
 			);
 		case 'image_placeholder':
 			return (
@@ -69,7 +73,7 @@ function BlockView({ block }: { block: unknown }) {
 						<tr>
 							{(b.headers ?? []).map((h, i) => (
 								<th key={i} className='border p-2 text-left'>
-									{h}
+									<LatexText>{h ?? ''}</LatexText>
 								</th>
 							))}
 						</tr>
@@ -79,7 +83,7 @@ function BlockView({ block }: { block: unknown }) {
 							<tr key={ri}>
 								{row.map((c, ci) => (
 									<td key={ci} className='border p-2'>
-										{c}
+										<LatexText>{c ?? ''}</LatexText>
 									</td>
 								))}
 							</tr>
