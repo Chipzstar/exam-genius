@@ -6,6 +6,7 @@ import { Logger } from '~/server/logger';
 import { GeneratePaperPayload } from '~/utils/types';
 import { backendApi } from '~/server/backend-headers';
 import { buildStudentStyleContextDashboard } from '~/server/style-context-dashboard';
+import { logger } from '@exam-genius/shared/utils';
 
 const paperRouter = createTRPCRouter({
 	getPapers: protectedProcedure.query(async ({ ctx }) => {
@@ -16,6 +17,7 @@ const paperRouter = createTRPCRouter({
 					user_id
 				}
 			});
+			logger.info('Papers', { papers });
 			return papers;
 		} catch (err) {
 			console.error(err);
@@ -61,6 +63,7 @@ const paperRouter = createTRPCRouter({
 						user_id: ctx.auth.userId
 					}
 				});
+				logger.info('Papers', { papers });
 				return papers;
 			} catch (err) {
 				console.error(err);
@@ -84,6 +87,7 @@ const paperRouter = createTRPCRouter({
 						course_id: input.courseId
 					}
 				});
+				logger.info('Papers', { papers });
 				return papers;
 			} catch (err) {
 				console.error(err);
