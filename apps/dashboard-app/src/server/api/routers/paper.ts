@@ -61,9 +61,11 @@ const paperRouter = createTRPCRouter({
 						course_id: input.courseId,
 						paper_code: input.code,
 						user_id: ctx.auth.userId
+					},
+					include: {
+						paperRating: true
 					}
 				});
-				logger.info('Papers', { papers });
 				return papers;
 			} catch (err) {
 				console.error(err);

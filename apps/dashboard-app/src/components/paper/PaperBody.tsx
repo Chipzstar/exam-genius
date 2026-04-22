@@ -149,13 +149,26 @@ export function PaperBody({ paper, mobileScreen, fontScale, initialMode, classes
 		[attempt, debouncedSave]
 	);
 
-	const ratingMut = api.rating.submitPaper.useMutation({
-		onSuccess: () => captureRating('paper', { paperId: paper.paper_id })
+	const { mutateAsync: submitRating, isPending: isSubmittingRating } = api.rating.submitPaper.useMutation({
+		onSuccess: () => {
+			captureRating('paper', { paperId: paper.paper_id });
+			void utils.paper.getPapersByCode.invalidate({
+				courseId: paper.course_id,
+				code: paper.paper_code
+			});
+		}
 	});
 
-	const [ratingVal, setRatingVal] = useState<number>(0);
+	const [ratingVal, setRatingVal] = useState<number>(paper.paperRating?.stars ?? 0);
 	const [ratingNote, setRatingNote] = useState('');
 	const [ratingSaved, setRatingSaved] = useState(false);
+
+	useEffect(() => {
+		const pr = paper.paperRating;
+		setRatingVal(pr?.stars ?? 0);
+		setRatingNote(pr?.comment ?? '');
+		setRatingSaved(Boolean(pr));
+	}, [paper.paper_id, paper.paperRating?.stars, paper.paperRating?.comment]);
 	const [msOpen, setMsOpen] = useState(false);
 
 	const showStructured =
@@ -258,7 +271,7 @@ export function PaperBody({ paper, mobileScreen, fontScale, initialMode, classes
 					</>
 				)}
 			</div>
-			<Stack mt='xl' gap='sm'>
+			<Stack pt='lg' gap='sm'>
 				<Text size='sm' fw={600}>
 					Rate this paper
 				</Text>
@@ -271,10 +284,10 @@ export function PaperBody({ paper, mobileScreen, fontScale, initialMode, classes
 				/>
 				<Button
 					size='sm'
-					disabled={ratingVal < 1 || ratingMut.isPending}
-					loading={ratingMut.isPending}
+					disabled={ratingVal < 1 || isSubmittingRating}
+					loading={isSubmittingRating}
 					onClick={async () => {
-						await ratingMut.mutateAsync({
+						await submitRating({
 							paperId: paper.paper_id,
 							stars: ratingVal,
 							comment: ratingNote || undefined
@@ -282,7 +295,9 @@ export function PaperBody({ paper, mobileScreen, fontScale, initialMode, classes
 						setRatingSaved(true);
 					}}
 				>
-					{ratingSaved ? 'Saved' : 'Save rating'}
+					{ratingVal >= 1 && ratingSaved && paper.paperRating?.stars === ratingVal
+						? 'Saved'
+						: 'Save rating'}
 				</Button>
 			</Stack>
 		</PaperErrorBoundary>

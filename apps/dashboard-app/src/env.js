@@ -106,10 +106,10 @@ export const env = createEnv({
 		NEXT_PUBLIC_DOPPLER_ENVIRONMENT: z.string(),
 
 		// Feature flags (default off in production unless set to "true")
-		NEXT_PUBLIC_FLAG_STRUCTURED_QUESTIONS: z.enum(['true', 'false']).optional().default('true'),
-		NEXT_PUBLIC_FLAG_QUESTION_EDITS: z.enum(['true', 'false']).optional().default('true'),
-		NEXT_PUBLIC_FLAG_PAPER_REFERENCES: z.enum(['true', 'false']).optional().default('true'),
-		NEXT_PUBLIC_FLAG_AI_MARKING: z.enum(['true', 'false']).optional().default('true'),
+		NEXT_PUBLIC_FLAG_STRUCTURED_QUESTIONS: z.enum(['true', 'false']).default('true'),
+		NEXT_PUBLIC_FLAG_QUESTION_EDITS: z.enum(['true', 'false']).default('true'),
+		NEXT_PUBLIC_FLAG_PAPER_REFERENCES: z.enum(['true', 'false']).default('true'),
+		NEXT_PUBLIC_FLAG_AI_MARKING: z.enum(['true', 'false']).default('true'),
 
 		// Tawk.to (live chat; both required together in UI — see TawkWidget)
 		NEXT_PUBLIC_TAWK_PROPERTY_ID: z.string().min(1).default('69c5290331e8e31c37c54bb5'),
