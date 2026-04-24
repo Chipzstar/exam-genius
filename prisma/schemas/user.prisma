@@ -7,11 +7,14 @@ model User {
   lastname                   String
   year                       String?
   role                       String?
+  plan                       UserPlan                  @default(free)
   stripe_customer_id         String?                   @unique
   stripe_subscription_id     String?
   stripe_subscription_status StripeSubscriptionStatus?
   courses                    Course[]
   papers                     Paper[]
+  paperReferences            PaperReference[]
+  attempts                   Attempt[]
 }
 
 enum StripeSubscriptionStatus {

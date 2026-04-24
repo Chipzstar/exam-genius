@@ -1,20 +1,29 @@
 model Paper {
-  id           Int       @id @unique @default(autoincrement())
-  created_at   DateTime  @default(now())
-  updated_at   DateTime  @updatedAt
-  paper_id     String    @unique
-  paper_code   String
-  paper_number Int       @default(1)
-  name         String
-  subject      Subject
-  exam_board   ExamBoard
-  unit_name    String
-  user_id      String
-  user         User      @relation(fields: [user_id], references: [clerk_id], onDelete: Cascade)
-  course_id    String
-  course       Course    @relation(fields: [course_id], references: [course_id], onDelete: Cascade)
-  content      String    @db.Text
-  status       Status    @default(pending)
+  id                  Int               @id @unique @default(autoincrement())
+  created_at          DateTime          @default(now())
+  updated_at          DateTime          @updatedAt
+  paper_id            String            @unique
+  paper_code          String
+  paper_number        Int               @default(1)
+  name                String
+  subject             Subject
+  exam_board          ExamBoard
+  unit_name           String
+  user_id             String
+  user                User              @relation(fields: [user_id], references: [clerk_id], onDelete: Cascade)
+  course_id           String
+  course              Course            @relation(fields: [course_id], references: [course_id], onDelete: Cascade)
+  content             String            @db.Text
+  status              Status            @default(pending)
+  prompt_version      String?
+  model               String?
+  generator_version   Int               @default(1)
+  structured_at       DateTime?
+  mark_scheme_status  MarkSchemeStatus  @default(none)
+  questions           Question[]
+  markScheme          MarkScheme?
+  paperRating         PaperRating?
+  attempts            Attempt[]
 
   @@index([user_id, course_id])
 }

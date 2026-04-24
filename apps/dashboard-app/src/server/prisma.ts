@@ -1,19 +1,30 @@
 import { env } from '~/env';
-import { PrismaNeon } from '@prisma/adapter-neon';
+import { Pool } from 'pg';
+import { PrismaPg } from '@prisma/adapter-pg';
 import { PrismaClient } from '@exam-genius/shared/prisma';
 
-const connectionString = `${env.DATABASE_URL}`;
-const adapter = new PrismaNeon({ connectionString });
+const globalForDb = globalThis as unknown as {
+	prisma: PrismaClient | undefined;
+	pgPool: Pool | undefined;
+};
 
+const pool =
+	globalForDb.pgPool ??
+	new Pool({
+		connectionString: env.DATABASE_URL
+	});
 
-const globalForPrisma = globalThis as unknown as { prisma: PrismaClient };
+if (process.env.NODE_ENV !== 'production') {
+	globalForDb.pgPool = pool;
+}
+
+const adapter = new PrismaPg(pool);
 
 export const prisma =
-  globalForPrisma.prisma ||
-  new PrismaClient({
-    adapter,
-    log:
-      process.env.NODE_ENV === 'development' ? ['error', 'warn'] : ['error']
-  });
+	globalForDb.prisma ??
+	new PrismaClient({
+		adapter,
+		log: process.env.NODE_ENV === 'development' ? ['error', 'warn'] : ['error']
+	});
 
-if (process.env.NODE_ENV !== 'production') globalForPrisma.prisma = prisma;
+if (process.env.NODE_ENV !== 'production') globalForDb.prisma = prisma;

@@ -86,19 +86,18 @@ You are an expert in TypeScript, Node.js, Next.js App Router, React, Turborepo, 
 - Throw `TRPCError` with appropriate error codes (`UNAUTHORIZED`, `BAD_REQUEST`, etc.) for expected failures.
 
 ## Prisma & Database
-- Use Prisma ORM with Neon PostgreSQL (serverless with connection pooling).
+- Use Prisma ORM with **Prisma Postgres** (or any Postgres); the dashboard uses the `pg` driver with `@prisma/adapter-pg`.
 - Schemas are split across multiple files in `prisma/schemas/` and merged via `prismerge`:
   - `base.prisma`: database config
   - `user.prisma`: user models
   - `course.prisma`: course models
   - `paper.prisma`: paper / exam models
-  - `StripeEvent.prisma`: Stripe webhook logging
 - Do not run `prisma generate` directly; instead use root scripts:
   - `pnpm prisma:generate` (merges schemas + generates client)
   - `pnpm prisma:sync` (merges schemas + generates client + pushes to DB)
 - The merged schema is output to `prisma/schema.prisma` via `prismerge`.
 - Access the Prisma client via shared code under `libs/shared/prisma` (and the `server/prisma` helper in `dashboard-app`).
-- Use `DATABASE_URL` (pooled) and `DATABASE_URL_UNPOOLED` (direct) from the environment when needed.
+- Use `DATABASE_URL` from the environment (Prisma Postgres / platform connection string). `DATABASE_URL_UNPOOLED` is optional for migrations or direct connections.
 - Handle Prisma errors gracefully and translate them into appropriate tRPC errors.
 
 ## Clerk Authentication
@@ -112,7 +111,6 @@ You are an expert in TypeScript, Node.js, Next.js App Router, React, Turborepo, 
 - Use Stripe for payments and subscriptions.
 - Access the Stripe client via a dedicated server helper (e.g. `apps/dashboard-app/src/server/stripe.ts`).
 - Implement Stripe webhook handlers under `app/api/stripe/**/route.ts`.
-- Log all Stripe webhook events to the `StripeEvent` Prisma model for observability and debugging.
 - For local development, use the root script `pnpm stripe-local-webhook` with the Stripe CLI to forward webhooks.
 - Use `@stripe/stripe-js` for client-side Stripe integration where necessary (e.g. Checkout).
 - Always verify webhook signatures and handle idempotency for event processing.

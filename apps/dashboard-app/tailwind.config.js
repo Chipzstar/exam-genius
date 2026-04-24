@@ -1,8 +1,9 @@
 const { join } = require('path');
 const { fontFamily } = require('tailwindcss/defaultTheme');
+const { withUt } = require('uploadthing/tw');
 
 /** @type {import('tailwindcss').Config} */
-module.exports = {
+module.exports = withUt({
 	content: [
 		join(__dirname, '{src,pages,components,modals,layout}/**/*!(*.stories|*.spec).{ts,tsx,html}'),
 		join(__dirname, '../../libs/shared/ui/src/**/*.{ts,tsx,html}'),
@@ -47,4 +48,4 @@ module.exports = {
 		}
 	},
 	plugins: []
-};
+});

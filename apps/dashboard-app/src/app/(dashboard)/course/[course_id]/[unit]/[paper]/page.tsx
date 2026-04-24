@@ -5,7 +5,7 @@ import PaperClient from './PaperClient';
 
 interface PageProps {
 	params: Promise<{ course_id: string; unit: string; paper: string }>;
-	searchParams: Promise<{ code?: string; subject?: string; board?: string }>;
+	searchParams: Promise<{ code?: string; subject?: string; board?: string; mode?: string }>;
 }
 
 export default async function PaperPage({ params, searchParams }: PageProps) {
@@ -14,6 +14,7 @@ export default async function PaperPage({ params, searchParams }: PageProps) {
 	const code = resolvedSearchParams.code ?? '';
 	const subject = (resolvedSearchParams.subject ?? '') as Subject;
 	const board = (resolvedSearchParams.board ?? '') as ExamBoard;
+	const mode = resolvedSearchParams.mode;
 
 	// Fetch data on the server
 	const trpcApi = await api();
@@ -30,7 +31,7 @@ export default async function PaperPage({ params, searchParams }: PageProps) {
 		<HydrateClient>
 			<PaperClient
 				params={resolvedParams}
-				searchParams={{ code, subject, board }}
+				searchParams={{ code, subject, board, mode }}
 				initialPapers={initialPapers}
 			/>
 		</HydrateClient>

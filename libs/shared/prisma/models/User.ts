@@ -43,6 +43,7 @@ export type UserMinAggregateOutputType = {
   lastname: string | null
   year: string | null
   role: string | null
+  plan: $Enums.UserPlan | null
   stripe_customer_id: string | null
   stripe_subscription_id: string | null
   stripe_subscription_status: $Enums.StripeSubscriptionStatus | null
@@ -57,6 +58,7 @@ export type UserMaxAggregateOutputType = {
   lastname: string | null
   year: string | null
   role: string | null
+  plan: $Enums.UserPlan | null
   stripe_customer_id: string | null
   stripe_subscription_id: string | null
   stripe_subscription_status: $Enums.StripeSubscriptionStatus | null
@@ -71,6 +73,7 @@ export type UserCountAggregateOutputType = {
   lastname: number
   year: number
   role: number
+  plan: number
   stripe_customer_id: number
   stripe_subscription_id: number
   stripe_subscription_status: number
@@ -95,6 +98,7 @@ export type UserMinAggregateInputType = {
   lastname?: true
   year?: true
   role?: true
+  plan?: true
   stripe_customer_id?: true
   stripe_subscription_id?: true
   stripe_subscription_status?: true
@@ -109,6 +113,7 @@ export type UserMaxAggregateInputType = {
   lastname?: true
   year?: true
   role?: true
+  plan?: true
   stripe_customer_id?: true
   stripe_subscription_id?: true
   stripe_subscription_status?: true
@@ -123,6 +128,7 @@ export type UserCountAggregateInputType = {
   lastname?: true
   year?: true
   role?: true
+  plan?: true
   stripe_customer_id?: true
   stripe_subscription_id?: true
   stripe_subscription_status?: true
@@ -224,6 +230,7 @@ export type UserGroupByOutputType = {
   lastname: string
   year: string | null
   role: string | null
+  plan: $Enums.UserPlan
   stripe_customer_id: string | null
   stripe_subscription_id: string | null
   stripe_subscription_status: $Enums.StripeSubscriptionStatus | null
@@ -261,11 +268,14 @@ export type UserWhereInput = {
   lastname?: Prisma.StringFilter<"User"> | string
   year?: Prisma.StringNullableFilter<"User"> | string | null
   role?: Prisma.StringNullableFilter<"User"> | string | null
+  plan?: Prisma.EnumUserPlanFilter<"User"> | $Enums.UserPlan
   stripe_customer_id?: Prisma.StringNullableFilter<"User"> | string | null
   stripe_subscription_id?: Prisma.StringNullableFilter<"User"> | string | null
   stripe_subscription_status?: Prisma.EnumStripeSubscriptionStatusNullableFilter<"User"> | $Enums.StripeSubscriptionStatus | null
   courses?: Prisma.CourseListRelationFilter
   papers?: Prisma.PaperListRelationFilter
+  paperReferences?: Prisma.PaperReferenceListRelationFilter
+  attempts?: Prisma.AttemptListRelationFilter
 }
 
 export type UserOrderByWithRelationInput = {
@@ -277,11 +287,14 @@ export type UserOrderByWithRelationInput = {
   lastname?: Prisma.SortOrder
   year?: Prisma.SortOrderInput | Prisma.SortOrder
   role?: Prisma.SortOrderInput | Prisma.SortOrder
+  plan?: Prisma.SortOrder
   stripe_customer_id?: Prisma.SortOrderInput | Prisma.SortOrder
   stripe_subscription_id?: Prisma.SortOrderInput | Prisma.SortOrder
   stripe_subscription_status?: Prisma.SortOrderInput | Prisma.SortOrder
   courses?: Prisma.CourseOrderByRelationAggregateInput
   papers?: Prisma.PaperOrderByRelationAggregateInput
+  paperReferences?: Prisma.PaperReferenceOrderByRelationAggregateInput
+  attempts?: Prisma.AttemptOrderByRelationAggregateInput
 }
 
 export type UserWhereUniqueInput = Prisma.AtLeast<{
@@ -297,10 +310,13 @@ export type UserWhereUniqueInput = Prisma.AtLeast<{
   lastname?: Prisma.StringFilter<"User"> | string
   year?: Prisma.StringNullableFilter<"User"> | string | null
   role?: Prisma.StringNullableFilter<"User"> | string | null
+  plan?: Prisma.EnumUserPlanFilter<"User"> | $Enums.UserPlan
   stripe_subscription_id?: Prisma.StringNullableFilter<"User"> | string | null
   stripe_subscription_status?: Prisma.EnumStripeSubscriptionStatusNullableFilter<"User"> | $Enums.StripeSubscriptionStatus | null
   courses?: Prisma.CourseListRelationFilter
   papers?: Prisma.PaperListRelationFilter
+  paperReferences?: Prisma.PaperReferenceListRelationFilter
+  attempts?: Prisma.AttemptListRelationFilter
 }, "id" | "clerk_id" | "email" | "stripe_customer_id">
 
 export type UserOrderByWithAggregationInput = {
@@ -312,6 +328,7 @@ export type UserOrderByWithAggregationInput = {
   lastname?: Prisma.SortOrder
   year?: Prisma.SortOrderInput | Prisma.SortOrder
   role?: Prisma.SortOrderInput | Prisma.SortOrder
+  plan?: Prisma.SortOrder
   stripe_customer_id?: Prisma.SortOrderInput | Prisma.SortOrder
   stripe_subscription_id?: Prisma.SortOrderInput | Prisma.SortOrder
   stripe_subscription_status?: Prisma.SortOrderInput | Prisma.SortOrder
@@ -334,6 +351,7 @@ export type UserScalarWhereWithAggregatesInput = {
   lastname?: Prisma.StringWithAggregatesFilter<"User"> | string
   year?: Prisma.StringNullableWithAggregatesFilter<"User"> | string | null
   role?: Prisma.StringNullableWithAggregatesFilter<"User"> | string | null
+  plan?: Prisma.EnumUserPlanWithAggregatesFilter<"User"> | $Enums.UserPlan
   stripe_customer_id?: Prisma.StringNullableWithAggregatesFilter<"User"> | string | null
   stripe_subscription_id?: Prisma.StringNullableWithAggregatesFilter<"User"> | string | null
   stripe_subscription_status?: Prisma.EnumStripeSubscriptionStatusNullableWithAggregatesFilter<"User"> | $Enums.StripeSubscriptionStatus | null
@@ -347,11 +365,14 @@ export type UserCreateInput = {
   lastname: string
   year?: string | null
   role?: string | null
+  plan?: $Enums.UserPlan
   stripe_customer_id?: string | null
   stripe_subscription_id?: string | null
   stripe_subscription_status?: $Enums.StripeSubscriptionStatus | null
   courses?: Prisma.CourseCreateNestedManyWithoutUserInput
   papers?: Prisma.PaperCreateNestedManyWithoutUserInput
+  paperReferences?: Prisma.PaperReferenceCreateNestedManyWithoutUserInput
+  attempts?: Prisma.AttemptCreateNestedManyWithoutUserInput
 }
 
 export type UserUncheckedCreateInput = {
@@ -363,11 +384,14 @@ export type UserUncheckedCreateInput = {
   lastname: string
   year?: string | null
   role?: string | null
+  plan?: $Enums.UserPlan
   stripe_customer_id?: string | null
   stripe_subscription_id?: string | null
   stripe_subscription_status?: $Enums.StripeSubscriptionStatus | null
   courses?: Prisma.CourseUncheckedCreateNestedManyWithoutUserInput
   papers?: Prisma.PaperUncheckedCreateNestedManyWithoutUserInput
+  paperReferences?: Prisma.PaperReferenceUncheckedCreateNestedManyWithoutUserInput
+  attempts?: Prisma.AttemptUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserUpdateInput = {
@@ -378,11 +402,14 @@ export type UserUpdateInput = {
   lastname?: Prisma.StringFieldUpdateOperationsInput | string
   year?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   role?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  plan?: Prisma.EnumUserPlanFieldUpdateOperationsInput | $Enums.UserPlan
   stripe_customer_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   stripe_subscription_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   stripe_subscription_status?: Prisma.NullableEnumStripeSubscriptionStatusFieldUpdateOperationsInput | $Enums.StripeSubscriptionStatus | null
   courses?: Prisma.CourseUpdateManyWithoutUserNestedInput
   papers?: Prisma.PaperUpdateManyWithoutUserNestedInput
+  paperReferences?: Prisma.PaperReferenceUpdateManyWithoutUserNestedInput
+  attempts?: Prisma.AttemptUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateInput = {
@@ -394,11 +421,14 @@ export type UserUncheckedUpdateInput = {
   lastname?: Prisma.StringFieldUpdateOperationsInput | string
   year?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   role?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  plan?: Prisma.EnumUserPlanFieldUpdateOperationsInput | $Enums.UserPlan
   stripe_customer_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   stripe_subscription_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   stripe_subscription_status?: Prisma.NullableEnumStripeSubscriptionStatusFieldUpdateOperationsInput | $Enums.StripeSubscriptionStatus | null
   courses?: Prisma.CourseUncheckedUpdateManyWithoutUserNestedInput
   papers?: Prisma.PaperUncheckedUpdateManyWithoutUserNestedInput
+  paperReferences?: Prisma.PaperReferenceUncheckedUpdateManyWithoutUserNestedInput
+  attempts?: Prisma.AttemptUncheckedUpdateManyWithoutUserNestedInput
 }
 
 export type UserCreateManyInput = {
@@ -410,6 +440,7 @@ export type UserCreateManyInput = {
   lastname: string
   year?: string | null
   role?: string | null
+  plan?: $Enums.UserPlan
   stripe_customer_id?: string | null
   stripe_subscription_id?: string | null
   stripe_subscription_status?: $Enums.StripeSubscriptionStatus | null
@@ -423,6 +454,7 @@ export type UserUpdateManyMutationInput = {
   lastname?: Prisma.StringFieldUpdateOperationsInput | string
   year?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   role?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  plan?: Prisma.EnumUserPlanFieldUpdateOperationsInput | $Enums.UserPlan
   stripe_customer_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   stripe_subscription_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   stripe_subscription_status?: Prisma.NullableEnumStripeSubscriptionStatusFieldUpdateOperationsInput | $Enums.StripeSubscriptionStatus | null
@@ -437,6 +469,7 @@ export type UserUncheckedUpdateManyInput = {
   lastname?: Prisma.StringFieldUpdateOperationsInput | string
   year?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   role?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  plan?: Prisma.EnumUserPlanFieldUpdateOperationsInput | $Enums.UserPlan
   stripe_customer_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   stripe_subscription_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   stripe_subscription_status?: Prisma.NullableEnumStripeSubscriptionStatusFieldUpdateOperationsInput | $Enums.StripeSubscriptionStatus | null
@@ -456,6 +489,7 @@ export type UserCountOrderByAggregateInput = {
   lastname?: Prisma.SortOrder
   year?: Prisma.SortOrder
   role?: Prisma.SortOrder
+  plan?: Prisma.SortOrder
   stripe_customer_id?: Prisma.SortOrder
   stripe_subscription_id?: Prisma.SortOrder
   stripe_subscription_status?: Prisma.SortOrder
@@ -474,6 +508,7 @@ export type UserMaxOrderByAggregateInput = {
   lastname?: Prisma.SortOrder
   year?: Prisma.SortOrder
   role?: Prisma.SortOrder
+  plan?: Prisma.SortOrder
   stripe_customer_id?: Prisma.SortOrder
   stripe_subscription_id?: Prisma.SortOrder
   stripe_subscription_status?: Prisma.SortOrder
@@ -488,6 +523,7 @@ export type UserMinOrderByAggregateInput = {
   lastname?: Prisma.SortOrder
   year?: Prisma.SortOrder
   role?: Prisma.SortOrder
+  plan?: Prisma.SortOrder
   stripe_customer_id?: Prisma.SortOrder
   stripe_subscription_id?: Prisma.SortOrder
   stripe_subscription_status?: Prisma.SortOrder
@@ -495,6 +531,34 @@ export type UserMinOrderByAggregateInput = {
 
 export type UserSumOrderByAggregateInput = {
   id?: Prisma.SortOrder
+}
+
+export type UserCreateNestedOneWithoutPaperReferencesInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutPaperReferencesInput, Prisma.UserUncheckedCreateWithoutPaperReferencesInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutPaperReferencesInput
+  connect?: Prisma.UserWhereUniqueInput
+}
+
+export type UserUpdateOneRequiredWithoutPaperReferencesNestedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutPaperReferencesInput, Prisma.UserUncheckedCreateWithoutPaperReferencesInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutPaperReferencesInput
+  upsert?: Prisma.UserUpsertWithoutPaperReferencesInput
+  connect?: Prisma.UserWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutPaperReferencesInput, Prisma.UserUpdateWithoutPaperReferencesInput>, Prisma.UserUncheckedUpdateWithoutPaperReferencesInput>
+}
+
+export type UserCreateNestedOneWithoutAttemptsInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutAttemptsInput, Prisma.UserUncheckedCreateWithoutAttemptsInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutAttemptsInput
+  connect?: Prisma.UserWhereUniqueInput
+}
+
+export type UserUpdateOneRequiredWithoutAttemptsNestedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutAttemptsInput, Prisma.UserUncheckedCreateWithoutAttemptsInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutAttemptsInput
+  upsert?: Prisma.UserUpsertWithoutAttemptsInput
+  connect?: Prisma.UserWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutAttemptsInput, Prisma.UserUpdateWithoutAttemptsInput>, Prisma.UserUncheckedUpdateWithoutAttemptsInput>
 }
 
 export type UserCreateNestedOneWithoutCoursesInput = {
@@ -525,8 +589,184 @@ export type UserUpdateOneRequiredWithoutPapersNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutPapersInput, Prisma.UserUpdateWithoutPapersInput>, Prisma.UserUncheckedUpdateWithoutPapersInput>
 }
 
+export type EnumUserPlanFieldUpdateOperationsInput = {
+  set?: $Enums.UserPlan
+}
+
 export type NullableEnumStripeSubscriptionStatusFieldUpdateOperationsInput = {
   set?: $Enums.StripeSubscriptionStatus | null
+}
+
+export type UserCreateWithoutPaperReferencesInput = {
+  clerk_id?: string
+  email: string
+  full_name: string
+  firstname: string
+  lastname: string
+  year?: string | null
+  role?: string | null
+  plan?: $Enums.UserPlan
+  stripe_customer_id?: string | null
+  stripe_subscription_id?: string | null
+  stripe_subscription_status?: $Enums.StripeSubscriptionStatus | null
+  courses?: Prisma.CourseCreateNestedManyWithoutUserInput
+  papers?: Prisma.PaperCreateNestedManyWithoutUserInput
+  attempts?: Prisma.AttemptCreateNestedManyWithoutUserInput
+}
+
+export type UserUncheckedCreateWithoutPaperReferencesInput = {
+  id?: number
+  clerk_id?: string
+  email: string
+  full_name: string
+  firstname: string
+  lastname: string
+  year?: string | null
+  role?: string | null
+  plan?: $Enums.UserPlan
+  stripe_customer_id?: string | null
+  stripe_subscription_id?: string | null
+  stripe_subscription_status?: $Enums.StripeSubscriptionStatus | null
+  courses?: Prisma.CourseUncheckedCreateNestedManyWithoutUserInput
+  papers?: Prisma.PaperUncheckedCreateNestedManyWithoutUserInput
+  attempts?: Prisma.AttemptUncheckedCreateNestedManyWithoutUserInput
+}
+
+export type UserCreateOrConnectWithoutPaperReferencesInput = {
+  where: Prisma.UserWhereUniqueInput
+  create: Prisma.XOR<Prisma.UserCreateWithoutPaperReferencesInput, Prisma.UserUncheckedCreateWithoutPaperReferencesInput>
+}
+
+export type UserUpsertWithoutPaperReferencesInput = {
+  update: Prisma.XOR<Prisma.UserUpdateWithoutPaperReferencesInput, Prisma.UserUncheckedUpdateWithoutPaperReferencesInput>
+  create: Prisma.XOR<Prisma.UserCreateWithoutPaperReferencesInput, Prisma.UserUncheckedCreateWithoutPaperReferencesInput>
+  where?: Prisma.UserWhereInput
+}
+
+export type UserUpdateToOneWithWhereWithoutPaperReferencesInput = {
+  where?: Prisma.UserWhereInput
+  data: Prisma.XOR<Prisma.UserUpdateWithoutPaperReferencesInput, Prisma.UserUncheckedUpdateWithoutPaperReferencesInput>
+}
+
+export type UserUpdateWithoutPaperReferencesInput = {
+  clerk_id?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  full_name?: Prisma.StringFieldUpdateOperationsInput | string
+  firstname?: Prisma.StringFieldUpdateOperationsInput | string
+  lastname?: Prisma.StringFieldUpdateOperationsInput | string
+  year?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  role?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  plan?: Prisma.EnumUserPlanFieldUpdateOperationsInput | $Enums.UserPlan
+  stripe_customer_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  stripe_subscription_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  stripe_subscription_status?: Prisma.NullableEnumStripeSubscriptionStatusFieldUpdateOperationsInput | $Enums.StripeSubscriptionStatus | null
+  courses?: Prisma.CourseUpdateManyWithoutUserNestedInput
+  papers?: Prisma.PaperUpdateManyWithoutUserNestedInput
+  attempts?: Prisma.AttemptUpdateManyWithoutUserNestedInput
+}
+
+export type UserUncheckedUpdateWithoutPaperReferencesInput = {
+  id?: Prisma.IntFieldUpdateOperationsInput | number
+  clerk_id?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  full_name?: Prisma.StringFieldUpdateOperationsInput | string
+  firstname?: Prisma.StringFieldUpdateOperationsInput | string
+  lastname?: Prisma.StringFieldUpdateOperationsInput | string
+  year?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  role?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  plan?: Prisma.EnumUserPlanFieldUpdateOperationsInput | $Enums.UserPlan
+  stripe_customer_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  stripe_subscription_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  stripe_subscription_status?: Prisma.NullableEnumStripeSubscriptionStatusFieldUpdateOperationsInput | $Enums.StripeSubscriptionStatus | null
+  courses?: Prisma.CourseUncheckedUpdateManyWithoutUserNestedInput
+  papers?: Prisma.PaperUncheckedUpdateManyWithoutUserNestedInput
+  attempts?: Prisma.AttemptUncheckedUpdateManyWithoutUserNestedInput
+}
+
+export type UserCreateWithoutAttemptsInput = {
+  clerk_id?: string
+  email: string
+  full_name: string
+  firstname: string
+  lastname: string
+  year?: string | null
+  role?: string | null
+  plan?: $Enums.UserPlan
+  stripe_customer_id?: string | null
+  stripe_subscription_id?: string | null
+  stripe_subscription_status?: $Enums.StripeSubscriptionStatus | null
+  courses?: Prisma.CourseCreateNestedManyWithoutUserInput
+  papers?: Prisma.PaperCreateNestedManyWithoutUserInput
+  paperReferences?: Prisma.PaperReferenceCreateNestedManyWithoutUserInput
+}
+
+export type UserUncheckedCreateWithoutAttemptsInput = {
+  id?: number
+  clerk_id?: string
+  email: string
+  full_name: string
+  firstname: string
+  lastname: string
+  year?: string | null
+  role?: string | null
+  plan?: $Enums.UserPlan
+  stripe_customer_id?: string | null
+  stripe_subscription_id?: string | null
+  stripe_subscription_status?: $Enums.StripeSubscriptionStatus | null
+  courses?: Prisma.CourseUncheckedCreateNestedManyWithoutUserInput
+  papers?: Prisma.PaperUncheckedCreateNestedManyWithoutUserInput
+  paperReferences?: Prisma.PaperReferenceUncheckedCreateNestedManyWithoutUserInput
+}
+
+export type UserCreateOrConnectWithoutAttemptsInput = {
+  where: Prisma.UserWhereUniqueInput
+  create: Prisma.XOR<Prisma.UserCreateWithoutAttemptsInput, Prisma.UserUncheckedCreateWithoutAttemptsInput>
+}
+
+export type UserUpsertWithoutAttemptsInput = {
+  update: Prisma.XOR<Prisma.UserUpdateWithoutAttemptsInput, Prisma.UserUncheckedUpdateWithoutAttemptsInput>
+  create: Prisma.XOR<Prisma.UserCreateWithoutAttemptsInput, Prisma.UserUncheckedCreateWithoutAttemptsInput>
+  where?: Prisma.UserWhereInput
+}
+
+export type UserUpdateToOneWithWhereWithoutAttemptsInput = {
+  where?: Prisma.UserWhereInput
+  data: Prisma.XOR<Prisma.UserUpdateWithoutAttemptsInput, Prisma.UserUncheckedUpdateWithoutAttemptsInput>
+}
+
+export type UserUpdateWithoutAttemptsInput = {
+  clerk_id?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  full_name?: Prisma.StringFieldUpdateOperationsInput | string
+  firstname?: Prisma.StringFieldUpdateOperationsInput | string
+  lastname?: Prisma.StringFieldUpdateOperationsInput | string
+  year?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  role?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  plan?: Prisma.EnumUserPlanFieldUpdateOperationsInput | $Enums.UserPlan
+  stripe_customer_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  stripe_subscription_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  stripe_subscription_status?: Prisma.NullableEnumStripeSubscriptionStatusFieldUpdateOperationsInput | $Enums.StripeSubscriptionStatus | null
+  courses?: Prisma.CourseUpdateManyWithoutUserNestedInput
+  papers?: Prisma.PaperUpdateManyWithoutUserNestedInput
+  paperReferences?: Prisma.PaperReferenceUpdateManyWithoutUserNestedInput
+}
+
+export type UserUncheckedUpdateWithoutAttemptsInput = {
+  id?: Prisma.IntFieldUpdateOperationsInput | number
+  clerk_id?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  full_name?: Prisma.StringFieldUpdateOperationsInput | string
+  firstname?: Prisma.StringFieldUpdateOperationsInput | string
+  lastname?: Prisma.StringFieldUpdateOperationsInput | string
+  year?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  role?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  plan?: Prisma.EnumUserPlanFieldUpdateOperationsInput | $Enums.UserPlan
+  stripe_customer_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  stripe_subscription_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  stripe_subscription_status?: Prisma.NullableEnumStripeSubscriptionStatusFieldUpdateOperationsInput | $Enums.StripeSubscriptionStatus | null
+  courses?: Prisma.CourseUncheckedUpdateManyWithoutUserNestedInput
+  papers?: Prisma.PaperUncheckedUpdateManyWithoutUserNestedInput
+  paperReferences?: Prisma.PaperReferenceUncheckedUpdateManyWithoutUserNestedInput
 }
 
 export type UserCreateWithoutCoursesInput = {
@@ -537,10 +777,13 @@ export type UserCreateWithoutCoursesInput = {
   lastname: string
   year?: string | null
   role?: string | null
+  plan?: $Enums.UserPlan
   stripe_customer_id?: string | null
   stripe_subscription_id?: string | null
   stripe_subscription_status?: $Enums.StripeSubscriptionStatus | null
   papers?: Prisma.PaperCreateNestedManyWithoutUserInput
+  paperReferences?: Prisma.PaperReferenceCreateNestedManyWithoutUserInput
+  attempts?: Prisma.AttemptCreateNestedManyWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutCoursesInput = {
@@ -552,10 +795,13 @@ export type UserUncheckedCreateWithoutCoursesInput = {
   lastname: string
   year?: string | null
   role?: string | null
+  plan?: $Enums.UserPlan
   stripe_customer_id?: string | null
   stripe_subscription_id?: string | null
   stripe_subscription_status?: $Enums.StripeSubscriptionStatus | null
   papers?: Prisma.PaperUncheckedCreateNestedManyWithoutUserInput
+  paperReferences?: Prisma.PaperReferenceUncheckedCreateNestedManyWithoutUserInput
+  attempts?: Prisma.AttemptUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutCoursesInput = {
@@ -582,10 +828,13 @@ export type UserUpdateWithoutCoursesInput = {
   lastname?: Prisma.StringFieldUpdateOperationsInput | string
   year?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   role?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  plan?: Prisma.EnumUserPlanFieldUpdateOperationsInput | $Enums.UserPlan
   stripe_customer_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   stripe_subscription_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   stripe_subscription_status?: Prisma.NullableEnumStripeSubscriptionStatusFieldUpdateOperationsInput | $Enums.StripeSubscriptionStatus | null
   papers?: Prisma.PaperUpdateManyWithoutUserNestedInput
+  paperReferences?: Prisma.PaperReferenceUpdateManyWithoutUserNestedInput
+  attempts?: Prisma.AttemptUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutCoursesInput = {
@@ -597,10 +846,13 @@ export type UserUncheckedUpdateWithoutCoursesInput = {
   lastname?: Prisma.StringFieldUpdateOperationsInput | string
   year?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   role?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  plan?: Prisma.EnumUserPlanFieldUpdateOperationsInput | $Enums.UserPlan
   stripe_customer_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   stripe_subscription_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   stripe_subscription_status?: Prisma.NullableEnumStripeSubscriptionStatusFieldUpdateOperationsInput | $Enums.StripeSubscriptionStatus | null
   papers?: Prisma.PaperUncheckedUpdateManyWithoutUserNestedInput
+  paperReferences?: Prisma.PaperReferenceUncheckedUpdateManyWithoutUserNestedInput
+  attempts?: Prisma.AttemptUncheckedUpdateManyWithoutUserNestedInput
 }
 
 export type UserCreateWithoutPapersInput = {
@@ -611,10 +863,13 @@ export type UserCreateWithoutPapersInput = {
   lastname: string
   year?: string | null
   role?: string | null
+  plan?: $Enums.UserPlan
   stripe_customer_id?: string | null
   stripe_subscription_id?: string | null
   stripe_subscription_status?: $Enums.StripeSubscriptionStatus | null
   courses?: Prisma.CourseCreateNestedManyWithoutUserInput
+  paperReferences?: Prisma.PaperReferenceCreateNestedManyWithoutUserInput
+  attempts?: Prisma.AttemptCreateNestedManyWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutPapersInput = {
@@ -626,10 +881,13 @@ export type UserUncheckedCreateWithoutPapersInput = {
   lastname: string
   year?: string | null
   role?: string | null
+  plan?: $Enums.UserPlan
   stripe_customer_id?: string | null
   stripe_subscription_id?: string | null
   stripe_subscription_status?: $Enums.StripeSubscriptionStatus | null
   courses?: Prisma.CourseUncheckedCreateNestedManyWithoutUserInput
+  paperReferences?: Prisma.PaperReferenceUncheckedCreateNestedManyWithoutUserInput
+  attempts?: Prisma.AttemptUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutPapersInput = {
@@ -656,10 +914,13 @@ export type UserUpdateWithoutPapersInput = {
   lastname?: Prisma.StringFieldUpdateOperationsInput | string
   year?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   role?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  plan?: Prisma.EnumUserPlanFieldUpdateOperationsInput | $Enums.UserPlan
   stripe_customer_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   stripe_subscription_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   stripe_subscription_status?: Prisma.NullableEnumStripeSubscriptionStatusFieldUpdateOperationsInput | $Enums.StripeSubscriptionStatus | null
   courses?: Prisma.CourseUpdateManyWithoutUserNestedInput
+  paperReferences?: Prisma.PaperReferenceUpdateManyWithoutUserNestedInput
+  attempts?: Prisma.AttemptUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutPapersInput = {
@@ -671,10 +932,13 @@ export type UserUncheckedUpdateWithoutPapersInput = {
   lastname?: Prisma.StringFieldUpdateOperationsInput | string
   year?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   role?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  plan?: Prisma.EnumUserPlanFieldUpdateOperationsInput | $Enums.UserPlan
   stripe_customer_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   stripe_subscription_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   stripe_subscription_status?: Prisma.NullableEnumStripeSubscriptionStatusFieldUpdateOperationsInput | $Enums.StripeSubscriptionStatus | null
   courses?: Prisma.CourseUncheckedUpdateManyWithoutUserNestedInput
+  paperReferences?: Prisma.PaperReferenceUncheckedUpdateManyWithoutUserNestedInput
+  attempts?: Prisma.AttemptUncheckedUpdateManyWithoutUserNestedInput
 }
 
 
@@ -685,11 +949,15 @@ export type UserUncheckedUpdateWithoutPapersInput = {
 export type UserCountOutputType = {
   courses: number
   papers: number
+  paperReferences: number
+  attempts: number
 }
 
 export type UserCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   courses?: boolean | UserCountOutputTypeCountCoursesArgs
   papers?: boolean | UserCountOutputTypeCountPapersArgs
+  paperReferences?: boolean | UserCountOutputTypeCountPaperReferencesArgs
+  attempts?: boolean | UserCountOutputTypeCountAttemptsArgs
 }
 
 /**
@@ -716,6 +984,20 @@ export type UserCountOutputTypeCountPapersArgs<ExtArgs extends runtime.Types.Ext
   where?: Prisma.PaperWhereInput
 }
 
+/**
+ * UserCountOutputType without action
+ */
+export type UserCountOutputTypeCountPaperReferencesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.PaperReferenceWhereInput
+}
+
+/**
+ * UserCountOutputType without action
+ */
+export type UserCountOutputTypeCountAttemptsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.AttemptWhereInput
+}
+
 
 export type UserSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
@@ -726,11 +1008,14 @@ export type UserSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = r
   lastname?: boolean
   year?: boolean
   role?: boolean
+  plan?: boolean
   stripe_customer_id?: boolean
   stripe_subscription_id?: boolean
   stripe_subscription_status?: boolean
   courses?: boolean | Prisma.User$coursesArgs<ExtArgs>
   papers?: boolean | Prisma.User$papersArgs<ExtArgs>
+  paperReferences?: boolean | Prisma.User$paperReferencesArgs<ExtArgs>
+  attempts?: boolean | Prisma.User$attemptsArgs<ExtArgs>
   _count?: boolean | Prisma.UserCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["user"]>
 
@@ -743,6 +1028,7 @@ export type UserSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensio
   lastname?: boolean
   year?: boolean
   role?: boolean
+  plan?: boolean
   stripe_customer_id?: boolean
   stripe_subscription_id?: boolean
   stripe_subscription_status?: boolean
@@ -757,6 +1043,7 @@ export type UserSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensio
   lastname?: boolean
   year?: boolean
   role?: boolean
+  plan?: boolean
   stripe_customer_id?: boolean
   stripe_subscription_id?: boolean
   stripe_subscription_status?: boolean
@@ -771,15 +1058,18 @@ export type UserSelectScalar = {
   lastname?: boolean
   year?: boolean
   role?: boolean
+  plan?: boolean
   stripe_customer_id?: boolean
   stripe_subscription_id?: boolean
   stripe_subscription_status?: boolean
 }
 
-export type UserOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "clerk_id" | "email" | "full_name" | "firstname" | "lastname" | "year" | "role" | "stripe_customer_id" | "stripe_subscription_id" | "stripe_subscription_status", ExtArgs["result"]["user"]>
+export type UserOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "clerk_id" | "email" | "full_name" | "firstname" | "lastname" | "year" | "role" | "plan" | "stripe_customer_id" | "stripe_subscription_id" | "stripe_subscription_status", ExtArgs["result"]["user"]>
 export type UserInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   courses?: boolean | Prisma.User$coursesArgs<ExtArgs>
   papers?: boolean | Prisma.User$papersArgs<ExtArgs>
+  paperReferences?: boolean | Prisma.User$paperReferencesArgs<ExtArgs>
+  attempts?: boolean | Prisma.User$attemptsArgs<ExtArgs>
   _count?: boolean | Prisma.UserCountOutputTypeDefaultArgs<ExtArgs>
 }
 export type UserIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {}
@@ -790,6 +1080,8 @@ export type $UserPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs =
   objects: {
     courses: Prisma.$CoursePayload<ExtArgs>[]
     papers: Prisma.$PaperPayload<ExtArgs>[]
+    paperReferences: Prisma.$PaperReferencePayload<ExtArgs>[]
+    attempts: Prisma.$AttemptPayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: number
@@ -800,6 +1092,7 @@ export type $UserPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs =
     lastname: string
     year: string | null
     role: string | null
+    plan: $Enums.UserPlan
     stripe_customer_id: string | null
     stripe_subscription_id: string | null
     stripe_subscription_status: $Enums.StripeSubscriptionStatus | null
@@ -1199,6 +1492,8 @@ export interface Prisma__UserClient<T, Null = never, ExtArgs extends runtime.Typ
   readonly [Symbol.toStringTag]: "PrismaPromise"
   courses<T extends Prisma.User$coursesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$coursesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$CoursePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   papers<T extends Prisma.User$papersArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$papersArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$PaperPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  paperReferences<T extends Prisma.User$paperReferencesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$paperReferencesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$PaperReferencePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  attempts<T extends Prisma.User$attemptsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$attemptsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$AttemptPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -1236,6 +1531,7 @@ export interface UserFieldRefs {
   readonly lastname: Prisma.FieldRef<"User", 'String'>
   readonly year: Prisma.FieldRef<"User", 'String'>
   readonly role: Prisma.FieldRef<"User", 'String'>
+  readonly plan: Prisma.FieldRef<"User", 'UserPlan'>
   readonly stripe_customer_id: Prisma.FieldRef<"User", 'String'>
   readonly stripe_subscription_id: Prisma.FieldRef<"User", 'String'>
   readonly stripe_subscription_status: Prisma.FieldRef<"User", 'StripeSubscriptionStatus'>
@@ -1677,6 +1973,54 @@ export type User$papersArgs<ExtArgs extends runtime.Types.Extensions.InternalArg
   take?: number
   skip?: number
   distinct?: Prisma.PaperScalarFieldEnum | Prisma.PaperScalarFieldEnum[]
+}
+
+/**
+ * User.paperReferences
+ */
+export type User$paperReferencesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the PaperReference
+   */
+  select?: Prisma.PaperReferenceSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the PaperReference
+   */
+  omit?: Prisma.PaperReferenceOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.PaperReferenceInclude<ExtArgs> | null
+  where?: Prisma.PaperReferenceWhereInput
+  orderBy?: Prisma.PaperReferenceOrderByWithRelationInput | Prisma.PaperReferenceOrderByWithRelationInput[]
+  cursor?: Prisma.PaperReferenceWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.PaperReferenceScalarFieldEnum | Prisma.PaperReferenceScalarFieldEnum[]
+}
+
+/**
+ * User.attempts
+ */
+export type User$attemptsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the Attempt
+   */
+  select?: Prisma.AttemptSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the Attempt
+   */
+  omit?: Prisma.AttemptOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.AttemptInclude<ExtArgs> | null
+  where?: Prisma.AttemptWhereInput
+  orderBy?: Prisma.AttemptOrderByWithRelationInput | Prisma.AttemptOrderByWithRelationInput[]
+  cursor?: Prisma.AttemptWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.AttemptScalarFieldEnum | Prisma.AttemptScalarFieldEnum[]
 }
 
 /**

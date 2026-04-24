@@ -4,7 +4,7 @@ This file provides guidance to WARP (warp.dev) when working with code in this re
 
 ## Project Overview
 
-ExamGenius is a Next.js-based educational platform built with Nx monorepo architecture. It consists of two main applications (dashboard and landing page) with shared UI and utility libraries. The project uses tRPC for type-safe APIs, Prisma with Neon database for data management, Clerk for authentication, and Stripe for payments.
+ExamGenius is a Next.js-based educational platform built with Nx monorepo architecture. It consists of two main applications (dashboard and landing page) with shared UI and utility libraries. The project uses tRPC for type-safe APIs, Prisma with **Prisma Postgres** for data management, Clerk for authentication, and Stripe for payments.
 
 ## Common Commands
 
@@ -160,13 +160,12 @@ The dashboard app (`apps/dashboard-app`) is the core application with the follow
 - Access auth in tRPC via `ctx.auth.userId`
 
 #### Database
-- **Prisma ORM** with **Neon PostgreSQL** (serverless)
+- **Prisma ORM** with **Prisma Postgres** (`pg` + `@prisma/adapter-pg` in the dashboard)
 - Schemas are split into multiple files in `prisma/schemas/`:
   - `base.prisma`: Database config
   - `user.prisma`: User models
   - `course.prisma`: Course-related models
   - `paper.prisma`: Paper/exam models
-  - `StripeEvent.prisma`: Stripe webhook event logging
 - **IMPORTANT**: Use `prismerge` to combine schema files before running Prisma commands
   - Always run `npm run prisma:generate` or `npm run prisma:sync` instead of direct `prisma generate`
   - The merged schema is output to `prisma/schema.prisma`
@@ -213,7 +212,7 @@ Environment variables are managed through **Doppler**:
 - Config: `loc` (local development)
 
 Required environment variables:
-- `DATABASE_URL`: Neon PostgreSQL connection string (pooled)
+- `DATABASE_URL`: PostgreSQL connection string (e.g. from Prisma Postgres)
 - `DATABASE_URL_UNPOOLED`: Direct connection string
 - `NGROK_AUTHTOKEN`: ngrok authentication token (for local webhook testing)
 - Clerk auth variables (see Clerk dashboard)

@@ -29,11 +29,13 @@ export type AggregatePaper = {
 export type PaperAvgAggregateOutputType = {
   id: number | null
   paper_number: number | null
+  generator_version: number | null
 }
 
 export type PaperSumAggregateOutputType = {
   id: number | null
   paper_number: number | null
+  generator_version: number | null
 }
 
 export type PaperMinAggregateOutputType = {
@@ -51,6 +53,11 @@ export type PaperMinAggregateOutputType = {
   course_id: string | null
   content: string | null
   status: $Enums.Status | null
+  prompt_version: string | null
+  model: string | null
+  generator_version: number | null
+  structured_at: Date | null
+  mark_scheme_status: $Enums.MarkSchemeStatus | null
 }
 
 export type PaperMaxAggregateOutputType = {
@@ -68,6 +75,11 @@ export type PaperMaxAggregateOutputType = {
   course_id: string | null
   content: string | null
   status: $Enums.Status | null
+  prompt_version: string | null
+  model: string | null
+  generator_version: number | null
+  structured_at: Date | null
+  mark_scheme_status: $Enums.MarkSchemeStatus | null
 }
 
 export type PaperCountAggregateOutputType = {
@@ -85,6 +97,11 @@ export type PaperCountAggregateOutputType = {
   course_id: number
   content: number
   status: number
+  prompt_version: number
+  model: number
+  generator_version: number
+  structured_at: number
+  mark_scheme_status: number
   _all: number
 }
 
@@ -92,11 +109,13 @@ export type PaperCountAggregateOutputType = {
 export type PaperAvgAggregateInputType = {
   id?: true
   paper_number?: true
+  generator_version?: true
 }
 
 export type PaperSumAggregateInputType = {
   id?: true
   paper_number?: true
+  generator_version?: true
 }
 
 export type PaperMinAggregateInputType = {
@@ -114,6 +133,11 @@ export type PaperMinAggregateInputType = {
   course_id?: true
   content?: true
   status?: true
+  prompt_version?: true
+  model?: true
+  generator_version?: true
+  structured_at?: true
+  mark_scheme_status?: true
 }
 
 export type PaperMaxAggregateInputType = {
@@ -131,6 +155,11 @@ export type PaperMaxAggregateInputType = {
   course_id?: true
   content?: true
   status?: true
+  prompt_version?: true
+  model?: true
+  generator_version?: true
+  structured_at?: true
+  mark_scheme_status?: true
 }
 
 export type PaperCountAggregateInputType = {
@@ -148,6 +177,11 @@ export type PaperCountAggregateInputType = {
   course_id?: true
   content?: true
   status?: true
+  prompt_version?: true
+  model?: true
+  generator_version?: true
+  structured_at?: true
+  mark_scheme_status?: true
   _all?: true
 }
 
@@ -252,6 +286,11 @@ export type PaperGroupByOutputType = {
   course_id: string
   content: string
   status: $Enums.Status
+  prompt_version: string | null
+  model: string | null
+  generator_version: number
+  structured_at: Date | null
+  mark_scheme_status: $Enums.MarkSchemeStatus
   _count: PaperCountAggregateOutputType | null
   _avg: PaperAvgAggregateOutputType | null
   _sum: PaperSumAggregateOutputType | null
@@ -292,8 +331,17 @@ export type PaperWhereInput = {
   course_id?: Prisma.StringFilter<"Paper"> | string
   content?: Prisma.StringFilter<"Paper"> | string
   status?: Prisma.EnumStatusFilter<"Paper"> | $Enums.Status
+  prompt_version?: Prisma.StringNullableFilter<"Paper"> | string | null
+  model?: Prisma.StringNullableFilter<"Paper"> | string | null
+  generator_version?: Prisma.IntFilter<"Paper"> | number
+  structured_at?: Prisma.DateTimeNullableFilter<"Paper"> | Date | string | null
+  mark_scheme_status?: Prisma.EnumMarkSchemeStatusFilter<"Paper"> | $Enums.MarkSchemeStatus
   user?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
   course?: Prisma.XOR<Prisma.CourseScalarRelationFilter, Prisma.CourseWhereInput>
+  questions?: Prisma.QuestionListRelationFilter
+  markScheme?: Prisma.XOR<Prisma.MarkSchemeNullableScalarRelationFilter, Prisma.MarkSchemeWhereInput> | null
+  paperRating?: Prisma.XOR<Prisma.PaperRatingNullableScalarRelationFilter, Prisma.PaperRatingWhereInput> | null
+  attempts?: Prisma.AttemptListRelationFilter
 }
 
 export type PaperOrderByWithRelationInput = {
@@ -311,8 +359,17 @@ export type PaperOrderByWithRelationInput = {
   course_id?: Prisma.SortOrder
   content?: Prisma.SortOrder
   status?: Prisma.SortOrder
+  prompt_version?: Prisma.SortOrderInput | Prisma.SortOrder
+  model?: Prisma.SortOrderInput | Prisma.SortOrder
+  generator_version?: Prisma.SortOrder
+  structured_at?: Prisma.SortOrderInput | Prisma.SortOrder
+  mark_scheme_status?: Prisma.SortOrder
   user?: Prisma.UserOrderByWithRelationInput
   course?: Prisma.CourseOrderByWithRelationInput
+  questions?: Prisma.QuestionOrderByRelationAggregateInput
+  markScheme?: Prisma.MarkSchemeOrderByWithRelationInput
+  paperRating?: Prisma.PaperRatingOrderByWithRelationInput
+  attempts?: Prisma.AttemptOrderByRelationAggregateInput
 }
 
 export type PaperWhereUniqueInput = Prisma.AtLeast<{
@@ -333,8 +390,17 @@ export type PaperWhereUniqueInput = Prisma.AtLeast<{
   course_id?: Prisma.StringFilter<"Paper"> | string
   content?: Prisma.StringFilter<"Paper"> | string
   status?: Prisma.EnumStatusFilter<"Paper"> | $Enums.Status
+  prompt_version?: Prisma.StringNullableFilter<"Paper"> | string | null
+  model?: Prisma.StringNullableFilter<"Paper"> | string | null
+  generator_version?: Prisma.IntFilter<"Paper"> | number
+  structured_at?: Prisma.DateTimeNullableFilter<"Paper"> | Date | string | null
+  mark_scheme_status?: Prisma.EnumMarkSchemeStatusFilter<"Paper"> | $Enums.MarkSchemeStatus
   user?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
   course?: Prisma.XOR<Prisma.CourseScalarRelationFilter, Prisma.CourseWhereInput>
+  questions?: Prisma.QuestionListRelationFilter
+  markScheme?: Prisma.XOR<Prisma.MarkSchemeNullableScalarRelationFilter, Prisma.MarkSchemeWhereInput> | null
+  paperRating?: Prisma.XOR<Prisma.PaperRatingNullableScalarRelationFilter, Prisma.PaperRatingWhereInput> | null
+  attempts?: Prisma.AttemptListRelationFilter
 }, "id" | "id" | "paper_id">
 
 export type PaperOrderByWithAggregationInput = {
@@ -352,6 +418,11 @@ export type PaperOrderByWithAggregationInput = {
   course_id?: Prisma.SortOrder
   content?: Prisma.SortOrder
   status?: Prisma.SortOrder
+  prompt_version?: Prisma.SortOrderInput | Prisma.SortOrder
+  model?: Prisma.SortOrderInput | Prisma.SortOrder
+  generator_version?: Prisma.SortOrder
+  structured_at?: Prisma.SortOrderInput | Prisma.SortOrder
+  mark_scheme_status?: Prisma.SortOrder
   _count?: Prisma.PaperCountOrderByAggregateInput
   _avg?: Prisma.PaperAvgOrderByAggregateInput
   _max?: Prisma.PaperMaxOrderByAggregateInput
@@ -377,6 +448,11 @@ export type PaperScalarWhereWithAggregatesInput = {
   course_id?: Prisma.StringWithAggregatesFilter<"Paper"> | string
   content?: Prisma.StringWithAggregatesFilter<"Paper"> | string
   status?: Prisma.EnumStatusWithAggregatesFilter<"Paper"> | $Enums.Status
+  prompt_version?: Prisma.StringNullableWithAggregatesFilter<"Paper"> | string | null
+  model?: Prisma.StringNullableWithAggregatesFilter<"Paper"> | string | null
+  generator_version?: Prisma.IntWithAggregatesFilter<"Paper"> | number
+  structured_at?: Prisma.DateTimeNullableWithAggregatesFilter<"Paper"> | Date | string | null
+  mark_scheme_status?: Prisma.EnumMarkSchemeStatusWithAggregatesFilter<"Paper"> | $Enums.MarkSchemeStatus
 }
 
 export type PaperCreateInput = {
@@ -391,8 +467,17 @@ export type PaperCreateInput = {
   unit_name: string
   content: string
   status?: $Enums.Status
+  prompt_version?: string | null
+  model?: string | null
+  generator_version?: number
+  structured_at?: Date | string | null
+  mark_scheme_status?: $Enums.MarkSchemeStatus
   user: Prisma.UserCreateNestedOneWithoutPapersInput
   course: Prisma.CourseCreateNestedOneWithoutPapersInput
+  questions?: Prisma.QuestionCreateNestedManyWithoutPaperInput
+  markScheme?: Prisma.MarkSchemeCreateNestedOneWithoutPaperInput
+  paperRating?: Prisma.PaperRatingCreateNestedOneWithoutPaperInput
+  attempts?: Prisma.AttemptCreateNestedManyWithoutPaperInput
 }
 
 export type PaperUncheckedCreateInput = {
@@ -410,6 +495,15 @@ export type PaperUncheckedCreateInput = {
   course_id: string
   content: string
   status?: $Enums.Status
+  prompt_version?: string | null
+  model?: string | null
+  generator_version?: number
+  structured_at?: Date | string | null
+  mark_scheme_status?: $Enums.MarkSchemeStatus
+  questions?: Prisma.QuestionUncheckedCreateNestedManyWithoutPaperInput
+  markScheme?: Prisma.MarkSchemeUncheckedCreateNestedOneWithoutPaperInput
+  paperRating?: Prisma.PaperRatingUncheckedCreateNestedOneWithoutPaperInput
+  attempts?: Prisma.AttemptUncheckedCreateNestedManyWithoutPaperInput
 }
 
 export type PaperUpdateInput = {
@@ -424,8 +518,17 @@ export type PaperUpdateInput = {
   unit_name?: Prisma.StringFieldUpdateOperationsInput | string
   content?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.EnumStatusFieldUpdateOperationsInput | $Enums.Status
+  prompt_version?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  model?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  generator_version?: Prisma.IntFieldUpdateOperationsInput | number
+  structured_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  mark_scheme_status?: Prisma.EnumMarkSchemeStatusFieldUpdateOperationsInput | $Enums.MarkSchemeStatus
   user?: Prisma.UserUpdateOneRequiredWithoutPapersNestedInput
   course?: Prisma.CourseUpdateOneRequiredWithoutPapersNestedInput
+  questions?: Prisma.QuestionUpdateManyWithoutPaperNestedInput
+  markScheme?: Prisma.MarkSchemeUpdateOneWithoutPaperNestedInput
+  paperRating?: Prisma.PaperRatingUpdateOneWithoutPaperNestedInput
+  attempts?: Prisma.AttemptUpdateManyWithoutPaperNestedInput
 }
 
 export type PaperUncheckedUpdateInput = {
@@ -443,6 +546,15 @@ export type PaperUncheckedUpdateInput = {
   course_id?: Prisma.StringFieldUpdateOperationsInput | string
   content?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.EnumStatusFieldUpdateOperationsInput | $Enums.Status
+  prompt_version?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  model?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  generator_version?: Prisma.IntFieldUpdateOperationsInput | number
+  structured_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  mark_scheme_status?: Prisma.EnumMarkSchemeStatusFieldUpdateOperationsInput | $Enums.MarkSchemeStatus
+  questions?: Prisma.QuestionUncheckedUpdateManyWithoutPaperNestedInput
+  markScheme?: Prisma.MarkSchemeUncheckedUpdateOneWithoutPaperNestedInput
+  paperRating?: Prisma.PaperRatingUncheckedUpdateOneWithoutPaperNestedInput
+  attempts?: Prisma.AttemptUncheckedUpdateManyWithoutPaperNestedInput
 }
 
 export type PaperCreateManyInput = {
@@ -460,6 +572,11 @@ export type PaperCreateManyInput = {
   course_id: string
   content: string
   status?: $Enums.Status
+  prompt_version?: string | null
+  model?: string | null
+  generator_version?: number
+  structured_at?: Date | string | null
+  mark_scheme_status?: $Enums.MarkSchemeStatus
 }
 
 export type PaperUpdateManyMutationInput = {
@@ -474,6 +591,11 @@ export type PaperUpdateManyMutationInput = {
   unit_name?: Prisma.StringFieldUpdateOperationsInput | string
   content?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.EnumStatusFieldUpdateOperationsInput | $Enums.Status
+  prompt_version?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  model?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  generator_version?: Prisma.IntFieldUpdateOperationsInput | number
+  structured_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  mark_scheme_status?: Prisma.EnumMarkSchemeStatusFieldUpdateOperationsInput | $Enums.MarkSchemeStatus
 }
 
 export type PaperUncheckedUpdateManyInput = {
@@ -491,6 +613,16 @@ export type PaperUncheckedUpdateManyInput = {
   course_id?: Prisma.StringFieldUpdateOperationsInput | string
   content?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.EnumStatusFieldUpdateOperationsInput | $Enums.Status
+  prompt_version?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  model?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  generator_version?: Prisma.IntFieldUpdateOperationsInput | number
+  structured_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  mark_scheme_status?: Prisma.EnumMarkSchemeStatusFieldUpdateOperationsInput | $Enums.MarkSchemeStatus
+}
+
+export type PaperScalarRelationFilter = {
+  is?: Prisma.PaperWhereInput
+  isNot?: Prisma.PaperWhereInput
 }
 
 export type PaperListRelationFilter = {
@@ -518,11 +650,17 @@ export type PaperCountOrderByAggregateInput = {
   course_id?: Prisma.SortOrder
   content?: Prisma.SortOrder
   status?: Prisma.SortOrder
+  prompt_version?: Prisma.SortOrder
+  model?: Prisma.SortOrder
+  generator_version?: Prisma.SortOrder
+  structured_at?: Prisma.SortOrder
+  mark_scheme_status?: Prisma.SortOrder
 }
 
 export type PaperAvgOrderByAggregateInput = {
   id?: Prisma.SortOrder
   paper_number?: Prisma.SortOrder
+  generator_version?: Prisma.SortOrder
 }
 
 export type PaperMaxOrderByAggregateInput = {
@@ -540,6 +678,11 @@ export type PaperMaxOrderByAggregateInput = {
   course_id?: Prisma.SortOrder
   content?: Prisma.SortOrder
   status?: Prisma.SortOrder
+  prompt_version?: Prisma.SortOrder
+  model?: Prisma.SortOrder
+  generator_version?: Prisma.SortOrder
+  structured_at?: Prisma.SortOrder
+  mark_scheme_status?: Prisma.SortOrder
 }
 
 export type PaperMinOrderByAggregateInput = {
@@ -557,11 +700,73 @@ export type PaperMinOrderByAggregateInput = {
   course_id?: Prisma.SortOrder
   content?: Prisma.SortOrder
   status?: Prisma.SortOrder
+  prompt_version?: Prisma.SortOrder
+  model?: Prisma.SortOrder
+  generator_version?: Prisma.SortOrder
+  structured_at?: Prisma.SortOrder
+  mark_scheme_status?: Prisma.SortOrder
 }
 
 export type PaperSumOrderByAggregateInput = {
   id?: Prisma.SortOrder
   paper_number?: Prisma.SortOrder
+  generator_version?: Prisma.SortOrder
+}
+
+export type PaperCreateNestedOneWithoutQuestionsInput = {
+  create?: Prisma.XOR<Prisma.PaperCreateWithoutQuestionsInput, Prisma.PaperUncheckedCreateWithoutQuestionsInput>
+  connectOrCreate?: Prisma.PaperCreateOrConnectWithoutQuestionsInput
+  connect?: Prisma.PaperWhereUniqueInput
+}
+
+export type PaperUpdateOneRequiredWithoutQuestionsNestedInput = {
+  create?: Prisma.XOR<Prisma.PaperCreateWithoutQuestionsInput, Prisma.PaperUncheckedCreateWithoutQuestionsInput>
+  connectOrCreate?: Prisma.PaperCreateOrConnectWithoutQuestionsInput
+  upsert?: Prisma.PaperUpsertWithoutQuestionsInput
+  connect?: Prisma.PaperWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.PaperUpdateToOneWithWhereWithoutQuestionsInput, Prisma.PaperUpdateWithoutQuestionsInput>, Prisma.PaperUncheckedUpdateWithoutQuestionsInput>
+}
+
+export type PaperCreateNestedOneWithoutMarkSchemeInput = {
+  create?: Prisma.XOR<Prisma.PaperCreateWithoutMarkSchemeInput, Prisma.PaperUncheckedCreateWithoutMarkSchemeInput>
+  connectOrCreate?: Prisma.PaperCreateOrConnectWithoutMarkSchemeInput
+  connect?: Prisma.PaperWhereUniqueInput
+}
+
+export type PaperUpdateOneRequiredWithoutMarkSchemeNestedInput = {
+  create?: Prisma.XOR<Prisma.PaperCreateWithoutMarkSchemeInput, Prisma.PaperUncheckedCreateWithoutMarkSchemeInput>
+  connectOrCreate?: Prisma.PaperCreateOrConnectWithoutMarkSchemeInput
+  upsert?: Prisma.PaperUpsertWithoutMarkSchemeInput
+  connect?: Prisma.PaperWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.PaperUpdateToOneWithWhereWithoutMarkSchemeInput, Prisma.PaperUpdateWithoutMarkSchemeInput>, Prisma.PaperUncheckedUpdateWithoutMarkSchemeInput>
+}
+
+export type PaperCreateNestedOneWithoutPaperRatingInput = {
+  create?: Prisma.XOR<Prisma.PaperCreateWithoutPaperRatingInput, Prisma.PaperUncheckedCreateWithoutPaperRatingInput>
+  connectOrCreate?: Prisma.PaperCreateOrConnectWithoutPaperRatingInput
+  connect?: Prisma.PaperWhereUniqueInput
+}
+
+export type PaperUpdateOneRequiredWithoutPaperRatingNestedInput = {
+  create?: Prisma.XOR<Prisma.PaperCreateWithoutPaperRatingInput, Prisma.PaperUncheckedCreateWithoutPaperRatingInput>
+  connectOrCreate?: Prisma.PaperCreateOrConnectWithoutPaperRatingInput
+  upsert?: Prisma.PaperUpsertWithoutPaperRatingInput
+  connect?: Prisma.PaperWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.PaperUpdateToOneWithWhereWithoutPaperRatingInput, Prisma.PaperUpdateWithoutPaperRatingInput>, Prisma.PaperUncheckedUpdateWithoutPaperRatingInput>
+}
+
+export type PaperCreateNestedOneWithoutAttemptsInput = {
+  create?: Prisma.XOR<Prisma.PaperCreateWithoutAttemptsInput, Prisma.PaperUncheckedCreateWithoutAttemptsInput>
+  connectOrCreate?: Prisma.PaperCreateOrConnectWithoutAttemptsInput
+  connect?: Prisma.PaperWhereUniqueInput
+}
+
+export type PaperUpdateOneRequiredWithoutAttemptsNestedInput = {
+  create?: Prisma.XOR<Prisma.PaperCreateWithoutAttemptsInput, Prisma.PaperUncheckedCreateWithoutAttemptsInput>
+  connectOrCreate?: Prisma.PaperCreateOrConnectWithoutAttemptsInput
+  upsert?: Prisma.PaperUpsertWithoutAttemptsInput
+  connect?: Prisma.PaperWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.PaperUpdateToOneWithWhereWithoutAttemptsInput, Prisma.PaperUpdateWithoutAttemptsInput>, Prisma.PaperUncheckedUpdateWithoutAttemptsInput>
 }
 
 export type PaperCreateNestedManyWithoutCourseInput = {
@@ -652,6 +857,462 @@ export type PaperUncheckedUpdateManyWithoutUserNestedInput = {
   deleteMany?: Prisma.PaperScalarWhereInput | Prisma.PaperScalarWhereInput[]
 }
 
+export type PaperCreateWithoutQuestionsInput = {
+  created_at?: Date | string
+  updated_at?: Date | string
+  paper_id: string
+  paper_code: string
+  paper_number?: number
+  name: string
+  subject: $Enums.Subject
+  exam_board: $Enums.ExamBoard
+  unit_name: string
+  content: string
+  status?: $Enums.Status
+  prompt_version?: string | null
+  model?: string | null
+  generator_version?: number
+  structured_at?: Date | string | null
+  mark_scheme_status?: $Enums.MarkSchemeStatus
+  user: Prisma.UserCreateNestedOneWithoutPapersInput
+  course: Prisma.CourseCreateNestedOneWithoutPapersInput
+  markScheme?: Prisma.MarkSchemeCreateNestedOneWithoutPaperInput
+  paperRating?: Prisma.PaperRatingCreateNestedOneWithoutPaperInput
+  attempts?: Prisma.AttemptCreateNestedManyWithoutPaperInput
+}
+
+export type PaperUncheckedCreateWithoutQuestionsInput = {
+  id?: number
+  created_at?: Date | string
+  updated_at?: Date | string
+  paper_id: string
+  paper_code: string
+  paper_number?: number
+  name: string
+  subject: $Enums.Subject
+  exam_board: $Enums.ExamBoard
+  unit_name: string
+  user_id: string
+  course_id: string
+  content: string
+  status?: $Enums.Status
+  prompt_version?: string | null
+  model?: string | null
+  generator_version?: number
+  structured_at?: Date | string | null
+  mark_scheme_status?: $Enums.MarkSchemeStatus
+  markScheme?: Prisma.MarkSchemeUncheckedCreateNestedOneWithoutPaperInput
+  paperRating?: Prisma.PaperRatingUncheckedCreateNestedOneWithoutPaperInput
+  attempts?: Prisma.AttemptUncheckedCreateNestedManyWithoutPaperInput
+}
+
+export type PaperCreateOrConnectWithoutQuestionsInput = {
+  where: Prisma.PaperWhereUniqueInput
+  create: Prisma.XOR<Prisma.PaperCreateWithoutQuestionsInput, Prisma.PaperUncheckedCreateWithoutQuestionsInput>
+}
+
+export type PaperUpsertWithoutQuestionsInput = {
+  update: Prisma.XOR<Prisma.PaperUpdateWithoutQuestionsInput, Prisma.PaperUncheckedUpdateWithoutQuestionsInput>
+  create: Prisma.XOR<Prisma.PaperCreateWithoutQuestionsInput, Prisma.PaperUncheckedCreateWithoutQuestionsInput>
+  where?: Prisma.PaperWhereInput
+}
+
+export type PaperUpdateToOneWithWhereWithoutQuestionsInput = {
+  where?: Prisma.PaperWhereInput
+  data: Prisma.XOR<Prisma.PaperUpdateWithoutQuestionsInput, Prisma.PaperUncheckedUpdateWithoutQuestionsInput>
+}
+
+export type PaperUpdateWithoutQuestionsInput = {
+  created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  paper_id?: Prisma.StringFieldUpdateOperationsInput | string
+  paper_code?: Prisma.StringFieldUpdateOperationsInput | string
+  paper_number?: Prisma.IntFieldUpdateOperationsInput | number
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  subject?: Prisma.EnumSubjectFieldUpdateOperationsInput | $Enums.Subject
+  exam_board?: Prisma.EnumExamBoardFieldUpdateOperationsInput | $Enums.ExamBoard
+  unit_name?: Prisma.StringFieldUpdateOperationsInput | string
+  content?: Prisma.StringFieldUpdateOperationsInput | string
+  status?: Prisma.EnumStatusFieldUpdateOperationsInput | $Enums.Status
+  prompt_version?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  model?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  generator_version?: Prisma.IntFieldUpdateOperationsInput | number
+  structured_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  mark_scheme_status?: Prisma.EnumMarkSchemeStatusFieldUpdateOperationsInput | $Enums.MarkSchemeStatus
+  user?: Prisma.UserUpdateOneRequiredWithoutPapersNestedInput
+  course?: Prisma.CourseUpdateOneRequiredWithoutPapersNestedInput
+  markScheme?: Prisma.MarkSchemeUpdateOneWithoutPaperNestedInput
+  paperRating?: Prisma.PaperRatingUpdateOneWithoutPaperNestedInput
+  attempts?: Prisma.AttemptUpdateManyWithoutPaperNestedInput
+}
+
+export type PaperUncheckedUpdateWithoutQuestionsInput = {
+  id?: Prisma.IntFieldUpdateOperationsInput | number
+  created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  paper_id?: Prisma.StringFieldUpdateOperationsInput | string
+  paper_code?: Prisma.StringFieldUpdateOperationsInput | string
+  paper_number?: Prisma.IntFieldUpdateOperationsInput | number
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  subject?: Prisma.EnumSubjectFieldUpdateOperationsInput | $Enums.Subject
+  exam_board?: Prisma.EnumExamBoardFieldUpdateOperationsInput | $Enums.ExamBoard
+  unit_name?: Prisma.StringFieldUpdateOperationsInput | string
+  user_id?: Prisma.StringFieldUpdateOperationsInput | string
+  course_id?: Prisma.StringFieldUpdateOperationsInput | string
+  content?: Prisma.StringFieldUpdateOperationsInput | string
+  status?: Prisma.EnumStatusFieldUpdateOperationsInput | $Enums.Status
+  prompt_version?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  model?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  generator_version?: Prisma.IntFieldUpdateOperationsInput | number
+  structured_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  mark_scheme_status?: Prisma.EnumMarkSchemeStatusFieldUpdateOperationsInput | $Enums.MarkSchemeStatus
+  markScheme?: Prisma.MarkSchemeUncheckedUpdateOneWithoutPaperNestedInput
+  paperRating?: Prisma.PaperRatingUncheckedUpdateOneWithoutPaperNestedInput
+  attempts?: Prisma.AttemptUncheckedUpdateManyWithoutPaperNestedInput
+}
+
+export type PaperCreateWithoutMarkSchemeInput = {
+  created_at?: Date | string
+  updated_at?: Date | string
+  paper_id: string
+  paper_code: string
+  paper_number?: number
+  name: string
+  subject: $Enums.Subject
+  exam_board: $Enums.ExamBoard
+  unit_name: string
+  content: string
+  status?: $Enums.Status
+  prompt_version?: string | null
+  model?: string | null
+  generator_version?: number
+  structured_at?: Date | string | null
+  mark_scheme_status?: $Enums.MarkSchemeStatus
+  user: Prisma.UserCreateNestedOneWithoutPapersInput
+  course: Prisma.CourseCreateNestedOneWithoutPapersInput
+  questions?: Prisma.QuestionCreateNestedManyWithoutPaperInput
+  paperRating?: Prisma.PaperRatingCreateNestedOneWithoutPaperInput
+  attempts?: Prisma.AttemptCreateNestedManyWithoutPaperInput
+}
+
+export type PaperUncheckedCreateWithoutMarkSchemeInput = {
+  id?: number
+  created_at?: Date | string
+  updated_at?: Date | string
+  paper_id: string
+  paper_code: string
+  paper_number?: number
+  name: string
+  subject: $Enums.Subject
+  exam_board: $Enums.ExamBoard
+  unit_name: string
+  user_id: string
+  course_id: string
+  content: string
+  status?: $Enums.Status
+  prompt_version?: string | null
+  model?: string | null
+  generator_version?: number
+  structured_at?: Date | string | null
+  mark_scheme_status?: $Enums.MarkSchemeStatus
+  questions?: Prisma.QuestionUncheckedCreateNestedManyWithoutPaperInput
+  paperRating?: Prisma.PaperRatingUncheckedCreateNestedOneWithoutPaperInput
+  attempts?: Prisma.AttemptUncheckedCreateNestedManyWithoutPaperInput
+}
+
+export type PaperCreateOrConnectWithoutMarkSchemeInput = {
+  where: Prisma.PaperWhereUniqueInput
+  create: Prisma.XOR<Prisma.PaperCreateWithoutMarkSchemeInput, Prisma.PaperUncheckedCreateWithoutMarkSchemeInput>
+}
+
+export type PaperUpsertWithoutMarkSchemeInput = {
+  update: Prisma.XOR<Prisma.PaperUpdateWithoutMarkSchemeInput, Prisma.PaperUncheckedUpdateWithoutMarkSchemeInput>
+  create: Prisma.XOR<Prisma.PaperCreateWithoutMarkSchemeInput, Prisma.PaperUncheckedCreateWithoutMarkSchemeInput>
+  where?: Prisma.PaperWhereInput
+}
+
+export type PaperUpdateToOneWithWhereWithoutMarkSchemeInput = {
+  where?: Prisma.PaperWhereInput
+  data: Prisma.XOR<Prisma.PaperUpdateWithoutMarkSchemeInput, Prisma.PaperUncheckedUpdateWithoutMarkSchemeInput>
+}
+
+export type PaperUpdateWithoutMarkSchemeInput = {
+  created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  paper_id?: Prisma.StringFieldUpdateOperationsInput | string
+  paper_code?: Prisma.StringFieldUpdateOperationsInput | string
+  paper_number?: Prisma.IntFieldUpdateOperationsInput | number
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  subject?: Prisma.EnumSubjectFieldUpdateOperationsInput | $Enums.Subject
+  exam_board?: Prisma.EnumExamBoardFieldUpdateOperationsInput | $Enums.ExamBoard
+  unit_name?: Prisma.StringFieldUpdateOperationsInput | string
+  content?: Prisma.StringFieldUpdateOperationsInput | string
+  status?: Prisma.EnumStatusFieldUpdateOperationsInput | $Enums.Status
+  prompt_version?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  model?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  generator_version?: Prisma.IntFieldUpdateOperationsInput | number
+  structured_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  mark_scheme_status?: Prisma.EnumMarkSchemeStatusFieldUpdateOperationsInput | $Enums.MarkSchemeStatus
+  user?: Prisma.UserUpdateOneRequiredWithoutPapersNestedInput
+  course?: Prisma.CourseUpdateOneRequiredWithoutPapersNestedInput
+  questions?: Prisma.QuestionUpdateManyWithoutPaperNestedInput
+  paperRating?: Prisma.PaperRatingUpdateOneWithoutPaperNestedInput
+  attempts?: Prisma.AttemptUpdateManyWithoutPaperNestedInput
+}
+
+export type PaperUncheckedUpdateWithoutMarkSchemeInput = {
+  id?: Prisma.IntFieldUpdateOperationsInput | number
+  created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  paper_id?: Prisma.StringFieldUpdateOperationsInput | string
+  paper_code?: Prisma.StringFieldUpdateOperationsInput | string
+  paper_number?: Prisma.IntFieldUpdateOperationsInput | number
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  subject?: Prisma.EnumSubjectFieldUpdateOperationsInput | $Enums.Subject
+  exam_board?: Prisma.EnumExamBoardFieldUpdateOperationsInput | $Enums.ExamBoard
+  unit_name?: Prisma.StringFieldUpdateOperationsInput | string
+  user_id?: Prisma.StringFieldUpdateOperationsInput | string
+  course_id?: Prisma.StringFieldUpdateOperationsInput | string
+  content?: Prisma.StringFieldUpdateOperationsInput | string
+  status?: Prisma.EnumStatusFieldUpdateOperationsInput | $Enums.Status
+  prompt_version?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  model?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  generator_version?: Prisma.IntFieldUpdateOperationsInput | number
+  structured_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  mark_scheme_status?: Prisma.EnumMarkSchemeStatusFieldUpdateOperationsInput | $Enums.MarkSchemeStatus
+  questions?: Prisma.QuestionUncheckedUpdateManyWithoutPaperNestedInput
+  paperRating?: Prisma.PaperRatingUncheckedUpdateOneWithoutPaperNestedInput
+  attempts?: Prisma.AttemptUncheckedUpdateManyWithoutPaperNestedInput
+}
+
+export type PaperCreateWithoutPaperRatingInput = {
+  created_at?: Date | string
+  updated_at?: Date | string
+  paper_id: string
+  paper_code: string
+  paper_number?: number
+  name: string
+  subject: $Enums.Subject
+  exam_board: $Enums.ExamBoard
+  unit_name: string
+  content: string
+  status?: $Enums.Status
+  prompt_version?: string | null
+  model?: string | null
+  generator_version?: number
+  structured_at?: Date | string | null
+  mark_scheme_status?: $Enums.MarkSchemeStatus
+  user: Prisma.UserCreateNestedOneWithoutPapersInput
+  course: Prisma.CourseCreateNestedOneWithoutPapersInput
+  questions?: Prisma.QuestionCreateNestedManyWithoutPaperInput
+  markScheme?: Prisma.MarkSchemeCreateNestedOneWithoutPaperInput
+  attempts?: Prisma.AttemptCreateNestedManyWithoutPaperInput
+}
+
+export type PaperUncheckedCreateWithoutPaperRatingInput = {
+  id?: number
+  created_at?: Date | string
+  updated_at?: Date | string
+  paper_id: string
+  paper_code: string
+  paper_number?: number
+  name: string
+  subject: $Enums.Subject
+  exam_board: $Enums.ExamBoard
+  unit_name: string
+  user_id: string
+  course_id: string
+  content: string
+  status?: $Enums.Status
+  prompt_version?: string | null
+  model?: string | null
+  generator_version?: number
+  structured_at?: Date | string | null
+  mark_scheme_status?: $Enums.MarkSchemeStatus
+  questions?: Prisma.QuestionUncheckedCreateNestedManyWithoutPaperInput
+  markScheme?: Prisma.MarkSchemeUncheckedCreateNestedOneWithoutPaperInput
+  attempts?: Prisma.AttemptUncheckedCreateNestedManyWithoutPaperInput
+}
+
+export type PaperCreateOrConnectWithoutPaperRatingInput = {
+  where: Prisma.PaperWhereUniqueInput
+  create: Prisma.XOR<Prisma.PaperCreateWithoutPaperRatingInput, Prisma.PaperUncheckedCreateWithoutPaperRatingInput>
+}
+
+export type PaperUpsertWithoutPaperRatingInput = {
+  update: Prisma.XOR<Prisma.PaperUpdateWithoutPaperRatingInput, Prisma.PaperUncheckedUpdateWithoutPaperRatingInput>
+  create: Prisma.XOR<Prisma.PaperCreateWithoutPaperRatingInput, Prisma.PaperUncheckedCreateWithoutPaperRatingInput>
+  where?: Prisma.PaperWhereInput
+}
+
+export type PaperUpdateToOneWithWhereWithoutPaperRatingInput = {
+  where?: Prisma.PaperWhereInput
+  data: Prisma.XOR<Prisma.PaperUpdateWithoutPaperRatingInput, Prisma.PaperUncheckedUpdateWithoutPaperRatingInput>
+}
+
+export type PaperUpdateWithoutPaperRatingInput = {
+  created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  paper_id?: Prisma.StringFieldUpdateOperationsInput | string
+  paper_code?: Prisma.StringFieldUpdateOperationsInput | string
+  paper_number?: Prisma.IntFieldUpdateOperationsInput | number
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  subject?: Prisma.EnumSubjectFieldUpdateOperationsInput | $Enums.Subject
+  exam_board?: Prisma.EnumExamBoardFieldUpdateOperationsInput | $Enums.ExamBoard
+  unit_name?: Prisma.StringFieldUpdateOperationsInput | string
+  content?: Prisma.StringFieldUpdateOperationsInput | string
+  status?: Prisma.EnumStatusFieldUpdateOperationsInput | $Enums.Status
+  prompt_version?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  model?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  generator_version?: Prisma.IntFieldUpdateOperationsInput | number
+  structured_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  mark_scheme_status?: Prisma.EnumMarkSchemeStatusFieldUpdateOperationsInput | $Enums.MarkSchemeStatus
+  user?: Prisma.UserUpdateOneRequiredWithoutPapersNestedInput
+  course?: Prisma.CourseUpdateOneRequiredWithoutPapersNestedInput
+  questions?: Prisma.QuestionUpdateManyWithoutPaperNestedInput
+  markScheme?: Prisma.MarkSchemeUpdateOneWithoutPaperNestedInput
+  attempts?: Prisma.AttemptUpdateManyWithoutPaperNestedInput
+}
+
+export type PaperUncheckedUpdateWithoutPaperRatingInput = {
+  id?: Prisma.IntFieldUpdateOperationsInput | number
+  created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  paper_id?: Prisma.StringFieldUpdateOperationsInput | string
+  paper_code?: Prisma.StringFieldUpdateOperationsInput | string
+  paper_number?: Prisma.IntFieldUpdateOperationsInput | number
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  subject?: Prisma.EnumSubjectFieldUpdateOperationsInput | $Enums.Subject
+  exam_board?: Prisma.EnumExamBoardFieldUpdateOperationsInput | $Enums.ExamBoard
+  unit_name?: Prisma.StringFieldUpdateOperationsInput | string
+  user_id?: Prisma.StringFieldUpdateOperationsInput | string
+  course_id?: Prisma.StringFieldUpdateOperationsInput | string
+  content?: Prisma.StringFieldUpdateOperationsInput | string
+  status?: Prisma.EnumStatusFieldUpdateOperationsInput | $Enums.Status
+  prompt_version?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  model?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  generator_version?: Prisma.IntFieldUpdateOperationsInput | number
+  structured_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  mark_scheme_status?: Prisma.EnumMarkSchemeStatusFieldUpdateOperationsInput | $Enums.MarkSchemeStatus
+  questions?: Prisma.QuestionUncheckedUpdateManyWithoutPaperNestedInput
+  markScheme?: Prisma.MarkSchemeUncheckedUpdateOneWithoutPaperNestedInput
+  attempts?: Prisma.AttemptUncheckedUpdateManyWithoutPaperNestedInput
+}
+
+export type PaperCreateWithoutAttemptsInput = {
+  created_at?: Date | string
+  updated_at?: Date | string
+  paper_id: string
+  paper_code: string
+  paper_number?: number
+  name: string
+  subject: $Enums.Subject
+  exam_board: $Enums.ExamBoard
+  unit_name: string
+  content: string
+  status?: $Enums.Status
+  prompt_version?: string | null
+  model?: string | null
+  generator_version?: number
+  structured_at?: Date | string | null
+  mark_scheme_status?: $Enums.MarkSchemeStatus
+  user: Prisma.UserCreateNestedOneWithoutPapersInput
+  course: Prisma.CourseCreateNestedOneWithoutPapersInput
+  questions?: Prisma.QuestionCreateNestedManyWithoutPaperInput
+  markScheme?: Prisma.MarkSchemeCreateNestedOneWithoutPaperInput
+  paperRating?: Prisma.PaperRatingCreateNestedOneWithoutPaperInput
+}
+
+export type PaperUncheckedCreateWithoutAttemptsInput = {
+  id?: number
+  created_at?: Date | string
+  updated_at?: Date | string
+  paper_id: string
+  paper_code: string
+  paper_number?: number
+  name: string
+  subject: $Enums.Subject
+  exam_board: $Enums.ExamBoard
+  unit_name: string
+  user_id: string
+  course_id: string
+  content: string
+  status?: $Enums.Status
+  prompt_version?: string | null
+  model?: string | null
+  generator_version?: number
+  structured_at?: Date | string | null
+  mark_scheme_status?: $Enums.MarkSchemeStatus
+  questions?: Prisma.QuestionUncheckedCreateNestedManyWithoutPaperInput
+  markScheme?: Prisma.MarkSchemeUncheckedCreateNestedOneWithoutPaperInput
+  paperRating?: Prisma.PaperRatingUncheckedCreateNestedOneWithoutPaperInput
+}
+
+export type PaperCreateOrConnectWithoutAttemptsInput = {
+  where: Prisma.PaperWhereUniqueInput
+  create: Prisma.XOR<Prisma.PaperCreateWithoutAttemptsInput, Prisma.PaperUncheckedCreateWithoutAttemptsInput>
+}
+
+export type PaperUpsertWithoutAttemptsInput = {
+  update: Prisma.XOR<Prisma.PaperUpdateWithoutAttemptsInput, Prisma.PaperUncheckedUpdateWithoutAttemptsInput>
+  create: Prisma.XOR<Prisma.PaperCreateWithoutAttemptsInput, Prisma.PaperUncheckedCreateWithoutAttemptsInput>
+  where?: Prisma.PaperWhereInput
+}
+
+export type PaperUpdateToOneWithWhereWithoutAttemptsInput = {
+  where?: Prisma.PaperWhereInput
+  data: Prisma.XOR<Prisma.PaperUpdateWithoutAttemptsInput, Prisma.PaperUncheckedUpdateWithoutAttemptsInput>
+}
+
+export type PaperUpdateWithoutAttemptsInput = {
+  created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  paper_id?: Prisma.StringFieldUpdateOperationsInput | string
+  paper_code?: Prisma.StringFieldUpdateOperationsInput | string
+  paper_number?: Prisma.IntFieldUpdateOperationsInput | number
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  subject?: Prisma.EnumSubjectFieldUpdateOperationsInput | $Enums.Subject
+  exam_board?: Prisma.EnumExamBoardFieldUpdateOperationsInput | $Enums.ExamBoard
+  unit_name?: Prisma.StringFieldUpdateOperationsInput | string
+  content?: Prisma.StringFieldUpdateOperationsInput | string
+  status?: Prisma.EnumStatusFieldUpdateOperationsInput | $Enums.Status
+  prompt_version?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  model?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  generator_version?: Prisma.IntFieldUpdateOperationsInput | number
+  structured_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  mark_scheme_status?: Prisma.EnumMarkSchemeStatusFieldUpdateOperationsInput | $Enums.MarkSchemeStatus
+  user?: Prisma.UserUpdateOneRequiredWithoutPapersNestedInput
+  course?: Prisma.CourseUpdateOneRequiredWithoutPapersNestedInput
+  questions?: Prisma.QuestionUpdateManyWithoutPaperNestedInput
+  markScheme?: Prisma.MarkSchemeUpdateOneWithoutPaperNestedInput
+  paperRating?: Prisma.PaperRatingUpdateOneWithoutPaperNestedInput
+}
+
+export type PaperUncheckedUpdateWithoutAttemptsInput = {
+  id?: Prisma.IntFieldUpdateOperationsInput | number
+  created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  paper_id?: Prisma.StringFieldUpdateOperationsInput | string
+  paper_code?: Prisma.StringFieldUpdateOperationsInput | string
+  paper_number?: Prisma.IntFieldUpdateOperationsInput | number
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  subject?: Prisma.EnumSubjectFieldUpdateOperationsInput | $Enums.Subject
+  exam_board?: Prisma.EnumExamBoardFieldUpdateOperationsInput | $Enums.ExamBoard
+  unit_name?: Prisma.StringFieldUpdateOperationsInput | string
+  user_id?: Prisma.StringFieldUpdateOperationsInput | string
+  course_id?: Prisma.StringFieldUpdateOperationsInput | string
+  content?: Prisma.StringFieldUpdateOperationsInput | string
+  status?: Prisma.EnumStatusFieldUpdateOperationsInput | $Enums.Status
+  prompt_version?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  model?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  generator_version?: Prisma.IntFieldUpdateOperationsInput | number
+  structured_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  mark_scheme_status?: Prisma.EnumMarkSchemeStatusFieldUpdateOperationsInput | $Enums.MarkSchemeStatus
+  questions?: Prisma.QuestionUncheckedUpdateManyWithoutPaperNestedInput
+  markScheme?: Prisma.MarkSchemeUncheckedUpdateOneWithoutPaperNestedInput
+  paperRating?: Prisma.PaperRatingUncheckedUpdateOneWithoutPaperNestedInput
+}
+
 export type PaperCreateWithoutCourseInput = {
   created_at?: Date | string
   updated_at?: Date | string
@@ -664,7 +1325,16 @@ export type PaperCreateWithoutCourseInput = {
   unit_name: string
   content: string
   status?: $Enums.Status
+  prompt_version?: string | null
+  model?: string | null
+  generator_version?: number
+  structured_at?: Date | string | null
+  mark_scheme_status?: $Enums.MarkSchemeStatus
   user: Prisma.UserCreateNestedOneWithoutPapersInput
+  questions?: Prisma.QuestionCreateNestedManyWithoutPaperInput
+  markScheme?: Prisma.MarkSchemeCreateNestedOneWithoutPaperInput
+  paperRating?: Prisma.PaperRatingCreateNestedOneWithoutPaperInput
+  attempts?: Prisma.AttemptCreateNestedManyWithoutPaperInput
 }
 
 export type PaperUncheckedCreateWithoutCourseInput = {
@@ -681,6 +1351,15 @@ export type PaperUncheckedCreateWithoutCourseInput = {
   user_id: string
   content: string
   status?: $Enums.Status
+  prompt_version?: string | null
+  model?: string | null
+  generator_version?: number
+  structured_at?: Date | string | null
+  mark_scheme_status?: $Enums.MarkSchemeStatus
+  questions?: Prisma.QuestionUncheckedCreateNestedManyWithoutPaperInput
+  markScheme?: Prisma.MarkSchemeUncheckedCreateNestedOneWithoutPaperInput
+  paperRating?: Prisma.PaperRatingUncheckedCreateNestedOneWithoutPaperInput
+  attempts?: Prisma.AttemptUncheckedCreateNestedManyWithoutPaperInput
 }
 
 export type PaperCreateOrConnectWithoutCourseInput = {
@@ -727,6 +1406,11 @@ export type PaperScalarWhereInput = {
   course_id?: Prisma.StringFilter<"Paper"> | string
   content?: Prisma.StringFilter<"Paper"> | string
   status?: Prisma.EnumStatusFilter<"Paper"> | $Enums.Status
+  prompt_version?: Prisma.StringNullableFilter<"Paper"> | string | null
+  model?: Prisma.StringNullableFilter<"Paper"> | string | null
+  generator_version?: Prisma.IntFilter<"Paper"> | number
+  structured_at?: Prisma.DateTimeNullableFilter<"Paper"> | Date | string | null
+  mark_scheme_status?: Prisma.EnumMarkSchemeStatusFilter<"Paper"> | $Enums.MarkSchemeStatus
 }
 
 export type PaperCreateWithoutUserInput = {
@@ -741,7 +1425,16 @@ export type PaperCreateWithoutUserInput = {
   unit_name: string
   content: string
   status?: $Enums.Status
+  prompt_version?: string | null
+  model?: string | null
+  generator_version?: number
+  structured_at?: Date | string | null
+  mark_scheme_status?: $Enums.MarkSchemeStatus
   course: Prisma.CourseCreateNestedOneWithoutPapersInput
+  questions?: Prisma.QuestionCreateNestedManyWithoutPaperInput
+  markScheme?: Prisma.MarkSchemeCreateNestedOneWithoutPaperInput
+  paperRating?: Prisma.PaperRatingCreateNestedOneWithoutPaperInput
+  attempts?: Prisma.AttemptCreateNestedManyWithoutPaperInput
 }
 
 export type PaperUncheckedCreateWithoutUserInput = {
@@ -758,6 +1451,15 @@ export type PaperUncheckedCreateWithoutUserInput = {
   course_id: string
   content: string
   status?: $Enums.Status
+  prompt_version?: string | null
+  model?: string | null
+  generator_version?: number
+  structured_at?: Date | string | null
+  mark_scheme_status?: $Enums.MarkSchemeStatus
+  questions?: Prisma.QuestionUncheckedCreateNestedManyWithoutPaperInput
+  markScheme?: Prisma.MarkSchemeUncheckedCreateNestedOneWithoutPaperInput
+  paperRating?: Prisma.PaperRatingUncheckedCreateNestedOneWithoutPaperInput
+  attempts?: Prisma.AttemptUncheckedCreateNestedManyWithoutPaperInput
 }
 
 export type PaperCreateOrConnectWithoutUserInput = {
@@ -800,6 +1502,11 @@ export type PaperCreateManyCourseInput = {
   user_id: string
   content: string
   status?: $Enums.Status
+  prompt_version?: string | null
+  model?: string | null
+  generator_version?: number
+  structured_at?: Date | string | null
+  mark_scheme_status?: $Enums.MarkSchemeStatus
 }
 
 export type PaperUpdateWithoutCourseInput = {
@@ -814,7 +1521,16 @@ export type PaperUpdateWithoutCourseInput = {
   unit_name?: Prisma.StringFieldUpdateOperationsInput | string
   content?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.EnumStatusFieldUpdateOperationsInput | $Enums.Status
+  prompt_version?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  model?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  generator_version?: Prisma.IntFieldUpdateOperationsInput | number
+  structured_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  mark_scheme_status?: Prisma.EnumMarkSchemeStatusFieldUpdateOperationsInput | $Enums.MarkSchemeStatus
   user?: Prisma.UserUpdateOneRequiredWithoutPapersNestedInput
+  questions?: Prisma.QuestionUpdateManyWithoutPaperNestedInput
+  markScheme?: Prisma.MarkSchemeUpdateOneWithoutPaperNestedInput
+  paperRating?: Prisma.PaperRatingUpdateOneWithoutPaperNestedInput
+  attempts?: Prisma.AttemptUpdateManyWithoutPaperNestedInput
 }
 
 export type PaperUncheckedUpdateWithoutCourseInput = {
@@ -831,6 +1547,15 @@ export type PaperUncheckedUpdateWithoutCourseInput = {
   user_id?: Prisma.StringFieldUpdateOperationsInput | string
   content?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.EnumStatusFieldUpdateOperationsInput | $Enums.Status
+  prompt_version?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  model?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  generator_version?: Prisma.IntFieldUpdateOperationsInput | number
+  structured_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  mark_scheme_status?: Prisma.EnumMarkSchemeStatusFieldUpdateOperationsInput | $Enums.MarkSchemeStatus
+  questions?: Prisma.QuestionUncheckedUpdateManyWithoutPaperNestedInput
+  markScheme?: Prisma.MarkSchemeUncheckedUpdateOneWithoutPaperNestedInput
+  paperRating?: Prisma.PaperRatingUncheckedUpdateOneWithoutPaperNestedInput
+  attempts?: Prisma.AttemptUncheckedUpdateManyWithoutPaperNestedInput
 }
 
 export type PaperUncheckedUpdateManyWithoutCourseInput = {
@@ -847,6 +1572,11 @@ export type PaperUncheckedUpdateManyWithoutCourseInput = {
   user_id?: Prisma.StringFieldUpdateOperationsInput | string
   content?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.EnumStatusFieldUpdateOperationsInput | $Enums.Status
+  prompt_version?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  model?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  generator_version?: Prisma.IntFieldUpdateOperationsInput | number
+  structured_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  mark_scheme_status?: Prisma.EnumMarkSchemeStatusFieldUpdateOperationsInput | $Enums.MarkSchemeStatus
 }
 
 export type PaperCreateManyUserInput = {
@@ -863,6 +1593,11 @@ export type PaperCreateManyUserInput = {
   course_id: string
   content: string
   status?: $Enums.Status
+  prompt_version?: string | null
+  model?: string | null
+  generator_version?: number
+  structured_at?: Date | string | null
+  mark_scheme_status?: $Enums.MarkSchemeStatus
 }
 
 export type PaperUpdateWithoutUserInput = {
@@ -877,7 +1612,16 @@ export type PaperUpdateWithoutUserInput = {
   unit_name?: Prisma.StringFieldUpdateOperationsInput | string
   content?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.EnumStatusFieldUpdateOperationsInput | $Enums.Status
+  prompt_version?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  model?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  generator_version?: Prisma.IntFieldUpdateOperationsInput | number
+  structured_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  mark_scheme_status?: Prisma.EnumMarkSchemeStatusFieldUpdateOperationsInput | $Enums.MarkSchemeStatus
   course?: Prisma.CourseUpdateOneRequiredWithoutPapersNestedInput
+  questions?: Prisma.QuestionUpdateManyWithoutPaperNestedInput
+  markScheme?: Prisma.MarkSchemeUpdateOneWithoutPaperNestedInput
+  paperRating?: Prisma.PaperRatingUpdateOneWithoutPaperNestedInput
+  attempts?: Prisma.AttemptUpdateManyWithoutPaperNestedInput
 }
 
 export type PaperUncheckedUpdateWithoutUserInput = {
@@ -894,6 +1638,15 @@ export type PaperUncheckedUpdateWithoutUserInput = {
   course_id?: Prisma.StringFieldUpdateOperationsInput | string
   content?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.EnumStatusFieldUpdateOperationsInput | $Enums.Status
+  prompt_version?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  model?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  generator_version?: Prisma.IntFieldUpdateOperationsInput | number
+  structured_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  mark_scheme_status?: Prisma.EnumMarkSchemeStatusFieldUpdateOperationsInput | $Enums.MarkSchemeStatus
+  questions?: Prisma.QuestionUncheckedUpdateManyWithoutPaperNestedInput
+  markScheme?: Prisma.MarkSchemeUncheckedUpdateOneWithoutPaperNestedInput
+  paperRating?: Prisma.PaperRatingUncheckedUpdateOneWithoutPaperNestedInput
+  attempts?: Prisma.AttemptUncheckedUpdateManyWithoutPaperNestedInput
 }
 
 export type PaperUncheckedUpdateManyWithoutUserInput = {
@@ -910,8 +1663,51 @@ export type PaperUncheckedUpdateManyWithoutUserInput = {
   course_id?: Prisma.StringFieldUpdateOperationsInput | string
   content?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.EnumStatusFieldUpdateOperationsInput | $Enums.Status
+  prompt_version?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  model?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  generator_version?: Prisma.IntFieldUpdateOperationsInput | number
+  structured_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  mark_scheme_status?: Prisma.EnumMarkSchemeStatusFieldUpdateOperationsInput | $Enums.MarkSchemeStatus
 }
 
+
+/**
+ * Count Type PaperCountOutputType
+ */
+
+export type PaperCountOutputType = {
+  questions: number
+  attempts: number
+}
+
+export type PaperCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  questions?: boolean | PaperCountOutputTypeCountQuestionsArgs
+  attempts?: boolean | PaperCountOutputTypeCountAttemptsArgs
+}
+
+/**
+ * PaperCountOutputType without action
+ */
+export type PaperCountOutputTypeDefaultArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the PaperCountOutputType
+   */
+  select?: Prisma.PaperCountOutputTypeSelect<ExtArgs> | null
+}
+
+/**
+ * PaperCountOutputType without action
+ */
+export type PaperCountOutputTypeCountQuestionsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.QuestionWhereInput
+}
+
+/**
+ * PaperCountOutputType without action
+ */
+export type PaperCountOutputTypeCountAttemptsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.AttemptWhereInput
+}
 
 
 export type PaperSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
@@ -929,8 +1725,18 @@ export type PaperSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = 
   course_id?: boolean
   content?: boolean
   status?: boolean
+  prompt_version?: boolean
+  model?: boolean
+  generator_version?: boolean
+  structured_at?: boolean
+  mark_scheme_status?: boolean
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
   course?: boolean | Prisma.CourseDefaultArgs<ExtArgs>
+  questions?: boolean | Prisma.Paper$questionsArgs<ExtArgs>
+  markScheme?: boolean | Prisma.Paper$markSchemeArgs<ExtArgs>
+  paperRating?: boolean | Prisma.Paper$paperRatingArgs<ExtArgs>
+  attempts?: boolean | Prisma.Paper$attemptsArgs<ExtArgs>
+  _count?: boolean | Prisma.PaperCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["paper"]>
 
 export type PaperSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
@@ -948,6 +1754,11 @@ export type PaperSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensi
   course_id?: boolean
   content?: boolean
   status?: boolean
+  prompt_version?: boolean
+  model?: boolean
+  generator_version?: boolean
+  structured_at?: boolean
+  mark_scheme_status?: boolean
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
   course?: boolean | Prisma.CourseDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["paper"]>
@@ -967,6 +1778,11 @@ export type PaperSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensi
   course_id?: boolean
   content?: boolean
   status?: boolean
+  prompt_version?: boolean
+  model?: boolean
+  generator_version?: boolean
+  structured_at?: boolean
+  mark_scheme_status?: boolean
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
   course?: boolean | Prisma.CourseDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["paper"]>
@@ -986,12 +1802,22 @@ export type PaperSelectScalar = {
   course_id?: boolean
   content?: boolean
   status?: boolean
+  prompt_version?: boolean
+  model?: boolean
+  generator_version?: boolean
+  structured_at?: boolean
+  mark_scheme_status?: boolean
 }
 
-export type PaperOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "created_at" | "updated_at" | "paper_id" | "paper_code" | "paper_number" | "name" | "subject" | "exam_board" | "unit_name" | "user_id" | "course_id" | "content" | "status", ExtArgs["result"]["paper"]>
+export type PaperOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "created_at" | "updated_at" | "paper_id" | "paper_code" | "paper_number" | "name" | "subject" | "exam_board" | "unit_name" | "user_id" | "course_id" | "content" | "status" | "prompt_version" | "model" | "generator_version" | "structured_at" | "mark_scheme_status", ExtArgs["result"]["paper"]>
 export type PaperInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
   course?: boolean | Prisma.CourseDefaultArgs<ExtArgs>
+  questions?: boolean | Prisma.Paper$questionsArgs<ExtArgs>
+  markScheme?: boolean | Prisma.Paper$markSchemeArgs<ExtArgs>
+  paperRating?: boolean | Prisma.Paper$paperRatingArgs<ExtArgs>
+  attempts?: boolean | Prisma.Paper$attemptsArgs<ExtArgs>
+  _count?: boolean | Prisma.PaperCountOutputTypeDefaultArgs<ExtArgs>
 }
 export type PaperIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
@@ -1007,6 +1833,10 @@ export type $PaperPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs 
   objects: {
     user: Prisma.$UserPayload<ExtArgs>
     course: Prisma.$CoursePayload<ExtArgs>
+    questions: Prisma.$QuestionPayload<ExtArgs>[]
+    markScheme: Prisma.$MarkSchemePayload<ExtArgs> | null
+    paperRating: Prisma.$PaperRatingPayload<ExtArgs> | null
+    attempts: Prisma.$AttemptPayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: number
@@ -1023,6 +1853,11 @@ export type $PaperPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs 
     course_id: string
     content: string
     status: $Enums.Status
+    prompt_version: string | null
+    model: string | null
+    generator_version: number
+    structured_at: Date | null
+    mark_scheme_status: $Enums.MarkSchemeStatus
   }, ExtArgs["result"]["paper"]>
   composites: {}
 }
@@ -1419,6 +2254,10 @@ export interface Prisma__PaperClient<T, Null = never, ExtArgs extends runtime.Ty
   readonly [Symbol.toStringTag]: "PrismaPromise"
   user<T extends Prisma.UserDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.UserDefaultArgs<ExtArgs>>): Prisma.Prisma__UserClient<runtime.Types.Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
   course<T extends Prisma.CourseDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.CourseDefaultArgs<ExtArgs>>): Prisma.Prisma__CourseClient<runtime.Types.Result.GetResult<Prisma.$CoursePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+  questions<T extends Prisma.Paper$questionsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Paper$questionsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$QuestionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  markScheme<T extends Prisma.Paper$markSchemeArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Paper$markSchemeArgs<ExtArgs>>): Prisma.Prisma__MarkSchemeClient<runtime.Types.Result.GetResult<Prisma.$MarkSchemePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+  paperRating<T extends Prisma.Paper$paperRatingArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Paper$paperRatingArgs<ExtArgs>>): Prisma.Prisma__PaperRatingClient<runtime.Types.Result.GetResult<Prisma.$PaperRatingPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+  attempts<T extends Prisma.Paper$attemptsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Paper$attemptsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$AttemptPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -1462,6 +2301,11 @@ export interface PaperFieldRefs {
   readonly course_id: Prisma.FieldRef<"Paper", 'String'>
   readonly content: Prisma.FieldRef<"Paper", 'String'>
   readonly status: Prisma.FieldRef<"Paper", 'Status'>
+  readonly prompt_version: Prisma.FieldRef<"Paper", 'String'>
+  readonly model: Prisma.FieldRef<"Paper", 'String'>
+  readonly generator_version: Prisma.FieldRef<"Paper", 'Int'>
+  readonly structured_at: Prisma.FieldRef<"Paper", 'DateTime'>
+  readonly mark_scheme_status: Prisma.FieldRef<"Paper", 'MarkSchemeStatus'>
 }
     
 
@@ -1860,6 +2704,92 @@ export type PaperDeleteManyArgs<ExtArgs extends runtime.Types.Extensions.Interna
    * Limit how many Papers to delete.
    */
   limit?: number
+}
+
+/**
+ * Paper.questions
+ */
+export type Paper$questionsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the Question
+   */
+  select?: Prisma.QuestionSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the Question
+   */
+  omit?: Prisma.QuestionOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.QuestionInclude<ExtArgs> | null
+  where?: Prisma.QuestionWhereInput
+  orderBy?: Prisma.QuestionOrderByWithRelationInput | Prisma.QuestionOrderByWithRelationInput[]
+  cursor?: Prisma.QuestionWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.QuestionScalarFieldEnum | Prisma.QuestionScalarFieldEnum[]
+}
+
+/**
+ * Paper.markScheme
+ */
+export type Paper$markSchemeArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the MarkScheme
+   */
+  select?: Prisma.MarkSchemeSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the MarkScheme
+   */
+  omit?: Prisma.MarkSchemeOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.MarkSchemeInclude<ExtArgs> | null
+  where?: Prisma.MarkSchemeWhereInput
+}
+
+/**
+ * Paper.paperRating
+ */
+export type Paper$paperRatingArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the PaperRating
+   */
+  select?: Prisma.PaperRatingSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the PaperRating
+   */
+  omit?: Prisma.PaperRatingOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.PaperRatingInclude<ExtArgs> | null
+  where?: Prisma.PaperRatingWhereInput
+}
+
+/**
+ * Paper.attempts
+ */
+export type Paper$attemptsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the Attempt
+   */
+  select?: Prisma.AttemptSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the Attempt
+   */
+  omit?: Prisma.AttemptOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.AttemptInclude<ExtArgs> | null
+  where?: Prisma.AttemptWhereInput
+  orderBy?: Prisma.AttemptOrderByWithRelationInput | Prisma.AttemptOrderByWithRelationInput[]
+  cursor?: Prisma.AttemptWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.AttemptScalarFieldEnum | Prisma.AttemptScalarFieldEnum[]
 }
 
 /**

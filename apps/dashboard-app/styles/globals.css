@@ -59,6 +59,40 @@ body.paper-focus-mode [data-app-chrome='header'] {
     display: none !important;
 }
 
+/* LaTeX / KaTeX rendering */
+.eg-latex {
+    font-size: 1em;
+}
+
+.eg-latex-block {
+    display: block;
+    margin: 0.5em 0;
+    overflow-x: auto;
+    text-align: center;
+}
+
+.eg-latex-inline {
+    display: inline;
+    white-space: nowrap;
+}
+
+.eg-latex-error {
+    color: #c92a2a;
+    background: rgba(201, 42, 42, 0.08);
+    padding: 0 0.25em;
+    border-radius: 3px;
+    font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+    font-size: 0.95em;
+}
+
+.eg-latex .katex {
+    font-size: 1.05em;
+}
+
+.eg-latex-block .katex-display {
+    margin: 0;
+}
+
 @media print {
 
     body[data-printing='true'] [data-app-chrome='navbar'],
