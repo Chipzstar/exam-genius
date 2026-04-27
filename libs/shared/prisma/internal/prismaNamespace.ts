@@ -1373,6 +1373,7 @@ export const AttemptScalarFieldEnum = {
   total_max: 'total_max',
   grade_band: 'grade_band',
   marking_summary: 'marking_summary',
+  marking_started_at: 'marking_started_at',
   status: 'status'
 } as const
 

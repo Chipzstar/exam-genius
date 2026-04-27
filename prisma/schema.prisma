@@ -140,24 +140,26 @@ model QuestionFeedback {
 }
 
 model Attempt {
-  id              Int             @id @unique @default(autoincrement())
-  attempt_id      String          @unique
-  paper_id        String
-  paper           Paper           @relation(fields: [paper_id], references: [paper_id], onDelete: Cascade)
-  user_id         String
-  user            User            @relation(fields: [user_id], references: [clerk_id], onDelete: Cascade)
-  mode            AttemptMode     @default(mock)
-  started_at      DateTime        @default(now())
-  submitted_at    DateTime?
-  time_limit_sec  Int?
-  total_score     Int?
-  total_max       Int?
-  grade_band      String?
-  marking_summary String?         @db.Text
-  status          AttemptStatus   @default(in_progress)
-  answers         AttemptAnswer[]
+  id                 Int             @id @unique @default(autoincrement())
+  attempt_id         String          @unique
+  paper_id           String
+  paper              Paper           @relation(fields: [paper_id], references: [paper_id], onDelete: Cascade)
+  user_id            String
+  user               User            @relation(fields: [user_id], references: [clerk_id], onDelete: Cascade)
+  mode               AttemptMode     @default(mock)
+  started_at         DateTime        @default(now())
+  submitted_at       DateTime?
+  time_limit_sec     Int?
+  total_score        Int?
+  total_max          Int?
+  grade_band         String?
+  marking_summary    String?         @db.Text
+  marking_started_at DateTime?
+  status             AttemptStatus   @default(in_progress)
+  answers            AttemptAnswer[]
 
   @@index([user_id, paper_id])
+  @@index([status, marking_started_at])
 }
 
 model AttemptAnswer {

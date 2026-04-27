@@ -53,6 +53,7 @@ export type AttemptMinAggregateOutputType = {
   total_max: number | null
   grade_band: string | null
   marking_summary: string | null
+  marking_started_at: Date | null
   status: $Enums.AttemptStatus | null
 }
 
@@ -69,6 +70,7 @@ export type AttemptMaxAggregateOutputType = {
   total_max: number | null
   grade_band: string | null
   marking_summary: string | null
+  marking_started_at: Date | null
   status: $Enums.AttemptStatus | null
 }
 
@@ -85,6 +87,7 @@ export type AttemptCountAggregateOutputType = {
   total_max: number
   grade_band: number
   marking_summary: number
+  marking_started_at: number
   status: number
   _all: number
 }
@@ -117,6 +120,7 @@ export type AttemptMinAggregateInputType = {
   total_max?: true
   grade_band?: true
   marking_summary?: true
+  marking_started_at?: true
   status?: true
 }
 
@@ -133,6 +137,7 @@ export type AttemptMaxAggregateInputType = {
   total_max?: true
   grade_band?: true
   marking_summary?: true
+  marking_started_at?: true
   status?: true
 }
 
@@ -149,6 +154,7 @@ export type AttemptCountAggregateInputType = {
   total_max?: true
   grade_band?: true
   marking_summary?: true
+  marking_started_at?: true
   status?: true
   _all?: true
 }
@@ -252,6 +258,7 @@ export type AttemptGroupByOutputType = {
   total_max: number | null
   grade_band: string | null
   marking_summary: string | null
+  marking_started_at: Date | null
   status: $Enums.AttemptStatus
   _count: AttemptCountAggregateOutputType | null
   _avg: AttemptAvgAggregateOutputType | null
@@ -291,6 +298,7 @@ export type AttemptWhereInput = {
   total_max?: Prisma.IntNullableFilter<"Attempt"> | number | null
   grade_band?: Prisma.StringNullableFilter<"Attempt"> | string | null
   marking_summary?: Prisma.StringNullableFilter<"Attempt"> | string | null
+  marking_started_at?: Prisma.DateTimeNullableFilter<"Attempt"> | Date | string | null
   status?: Prisma.EnumAttemptStatusFilter<"Attempt"> | $Enums.AttemptStatus
   paper?: Prisma.XOR<Prisma.PaperScalarRelationFilter, Prisma.PaperWhereInput>
   user?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
@@ -310,6 +318,7 @@ export type AttemptOrderByWithRelationInput = {
   total_max?: Prisma.SortOrderInput | Prisma.SortOrder
   grade_band?: Prisma.SortOrderInput | Prisma.SortOrder
   marking_summary?: Prisma.SortOrderInput | Prisma.SortOrder
+  marking_started_at?: Prisma.SortOrderInput | Prisma.SortOrder
   status?: Prisma.SortOrder
   paper?: Prisma.PaperOrderByWithRelationInput
   user?: Prisma.UserOrderByWithRelationInput
@@ -332,6 +341,7 @@ export type AttemptWhereUniqueInput = Prisma.AtLeast<{
   total_max?: Prisma.IntNullableFilter<"Attempt"> | number | null
   grade_band?: Prisma.StringNullableFilter<"Attempt"> | string | null
   marking_summary?: Prisma.StringNullableFilter<"Attempt"> | string | null
+  marking_started_at?: Prisma.DateTimeNullableFilter<"Attempt"> | Date | string | null
   status?: Prisma.EnumAttemptStatusFilter<"Attempt"> | $Enums.AttemptStatus
   paper?: Prisma.XOR<Prisma.PaperScalarRelationFilter, Prisma.PaperWhereInput>
   user?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
@@ -351,6 +361,7 @@ export type AttemptOrderByWithAggregationInput = {
   total_max?: Prisma.SortOrderInput | Prisma.SortOrder
   grade_band?: Prisma.SortOrderInput | Prisma.SortOrder
   marking_summary?: Prisma.SortOrderInput | Prisma.SortOrder
+  marking_started_at?: Prisma.SortOrderInput | Prisma.SortOrder
   status?: Prisma.SortOrder
   _count?: Prisma.AttemptCountOrderByAggregateInput
   _avg?: Prisma.AttemptAvgOrderByAggregateInput
@@ -375,6 +386,7 @@ export type AttemptScalarWhereWithAggregatesInput = {
   total_max?: Prisma.IntNullableWithAggregatesFilter<"Attempt"> | number | null
   grade_band?: Prisma.StringNullableWithAggregatesFilter<"Attempt"> | string | null
   marking_summary?: Prisma.StringNullableWithAggregatesFilter<"Attempt"> | string | null
+  marking_started_at?: Prisma.DateTimeNullableWithAggregatesFilter<"Attempt"> | Date | string | null
   status?: Prisma.EnumAttemptStatusWithAggregatesFilter<"Attempt"> | $Enums.AttemptStatus
 }
 
@@ -388,6 +400,7 @@ export type AttemptCreateInput = {
   total_max?: number | null
   grade_band?: string | null
   marking_summary?: string | null
+  marking_started_at?: Date | string | null
   status?: $Enums.AttemptStatus
   paper: Prisma.PaperCreateNestedOneWithoutAttemptsInput
   user: Prisma.UserCreateNestedOneWithoutAttemptsInput
@@ -407,6 +420,7 @@ export type AttemptUncheckedCreateInput = {
   total_max?: number | null
   grade_band?: string | null
   marking_summary?: string | null
+  marking_started_at?: Date | string | null
   status?: $Enums.AttemptStatus
   answers?: Prisma.AttemptAnswerUncheckedCreateNestedManyWithoutAttemptInput
 }
@@ -421,6 +435,7 @@ export type AttemptUpdateInput = {
   total_max?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   grade_band?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   marking_summary?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  marking_started_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   status?: Prisma.EnumAttemptStatusFieldUpdateOperationsInput | $Enums.AttemptStatus
   paper?: Prisma.PaperUpdateOneRequiredWithoutAttemptsNestedInput
   user?: Prisma.UserUpdateOneRequiredWithoutAttemptsNestedInput
@@ -440,6 +455,7 @@ export type AttemptUncheckedUpdateInput = {
   total_max?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   grade_band?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   marking_summary?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  marking_started_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   status?: Prisma.EnumAttemptStatusFieldUpdateOperationsInput | $Enums.AttemptStatus
   answers?: Prisma.AttemptAnswerUncheckedUpdateManyWithoutAttemptNestedInput
 }
@@ -457,6 +473,7 @@ export type AttemptCreateManyInput = {
   total_max?: number | null
   grade_band?: string | null
   marking_summary?: string | null
+  marking_started_at?: Date | string | null
   status?: $Enums.AttemptStatus
 }
 
@@ -470,6 +487,7 @@ export type AttemptUpdateManyMutationInput = {
   total_max?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   grade_band?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   marking_summary?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  marking_started_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   status?: Prisma.EnumAttemptStatusFieldUpdateOperationsInput | $Enums.AttemptStatus
 }
 
@@ -486,6 +504,7 @@ export type AttemptUncheckedUpdateManyInput = {
   total_max?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   grade_band?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   marking_summary?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  marking_started_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   status?: Prisma.EnumAttemptStatusFieldUpdateOperationsInput | $Enums.AttemptStatus
 }
 
@@ -502,6 +521,7 @@ export type AttemptCountOrderByAggregateInput = {
   total_max?: Prisma.SortOrder
   grade_band?: Prisma.SortOrder
   marking_summary?: Prisma.SortOrder
+  marking_started_at?: Prisma.SortOrder
   status?: Prisma.SortOrder
 }
 
@@ -525,6 +545,7 @@ export type AttemptMaxOrderByAggregateInput = {
   total_max?: Prisma.SortOrder
   grade_band?: Prisma.SortOrder
   marking_summary?: Prisma.SortOrder
+  marking_started_at?: Prisma.SortOrder
   status?: Prisma.SortOrder
 }
 
@@ -541,6 +562,7 @@ export type AttemptMinOrderByAggregateInput = {
   total_max?: Prisma.SortOrder
   grade_band?: Prisma.SortOrder
   marking_summary?: Prisma.SortOrder
+  marking_started_at?: Prisma.SortOrder
   status?: Prisma.SortOrder
 }
 
@@ -694,6 +716,7 @@ export type AttemptCreateWithoutAnswersInput = {
   total_max?: number | null
   grade_band?: string | null
   marking_summary?: string | null
+  marking_started_at?: Date | string | null
   status?: $Enums.AttemptStatus
   paper: Prisma.PaperCreateNestedOneWithoutAttemptsInput
   user: Prisma.UserCreateNestedOneWithoutAttemptsInput
@@ -712,6 +735,7 @@ export type AttemptUncheckedCreateWithoutAnswersInput = {
   total_max?: number | null
   grade_band?: string | null
   marking_summary?: string | null
+  marking_started_at?: Date | string | null
   status?: $Enums.AttemptStatus
 }
 
@@ -741,6 +765,7 @@ export type AttemptUpdateWithoutAnswersInput = {
   total_max?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   grade_band?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   marking_summary?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  marking_started_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   status?: Prisma.EnumAttemptStatusFieldUpdateOperationsInput | $Enums.AttemptStatus
   paper?: Prisma.PaperUpdateOneRequiredWithoutAttemptsNestedInput
   user?: Prisma.UserUpdateOneRequiredWithoutAttemptsNestedInput
@@ -759,6 +784,7 @@ export type AttemptUncheckedUpdateWithoutAnswersInput = {
   total_max?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   grade_band?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   marking_summary?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  marking_started_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   status?: Prisma.EnumAttemptStatusFieldUpdateOperationsInput | $Enums.AttemptStatus
 }
 
@@ -772,6 +798,7 @@ export type AttemptCreateWithoutPaperInput = {
   total_max?: number | null
   grade_band?: string | null
   marking_summary?: string | null
+  marking_started_at?: Date | string | null
   status?: $Enums.AttemptStatus
   user: Prisma.UserCreateNestedOneWithoutAttemptsInput
   answers?: Prisma.AttemptAnswerCreateNestedManyWithoutAttemptInput
@@ -789,6 +816,7 @@ export type AttemptUncheckedCreateWithoutPaperInput = {
   total_max?: number | null
   grade_band?: string | null
   marking_summary?: string | null
+  marking_started_at?: Date | string | null
   status?: $Enums.AttemptStatus
   answers?: Prisma.AttemptAnswerUncheckedCreateNestedManyWithoutAttemptInput
 }
@@ -835,6 +863,7 @@ export type AttemptScalarWhereInput = {
   total_max?: Prisma.IntNullableFilter<"Attempt"> | number | null
   grade_band?: Prisma.StringNullableFilter<"Attempt"> | string | null
   marking_summary?: Prisma.StringNullableFilter<"Attempt"> | string | null
+  marking_started_at?: Prisma.DateTimeNullableFilter<"Attempt"> | Date | string | null
   status?: Prisma.EnumAttemptStatusFilter<"Attempt"> | $Enums.AttemptStatus
 }
 
@@ -848,6 +877,7 @@ export type AttemptCreateWithoutUserInput = {
   total_max?: number | null
   grade_band?: string | null
   marking_summary?: string | null
+  marking_started_at?: Date | string | null
   status?: $Enums.AttemptStatus
   paper: Prisma.PaperCreateNestedOneWithoutAttemptsInput
   answers?: Prisma.AttemptAnswerCreateNestedManyWithoutAttemptInput
@@ -865,6 +895,7 @@ export type AttemptUncheckedCreateWithoutUserInput = {
   total_max?: number | null
   grade_band?: string | null
   marking_summary?: string | null
+  marking_started_at?: Date | string | null
   status?: $Enums.AttemptStatus
   answers?: Prisma.AttemptAnswerUncheckedCreateNestedManyWithoutAttemptInput
 }
@@ -907,6 +938,7 @@ export type AttemptCreateManyPaperInput = {
   total_max?: number | null
   grade_band?: string | null
   marking_summary?: string | null
+  marking_started_at?: Date | string | null
   status?: $Enums.AttemptStatus
 }
 
@@ -920,6 +952,7 @@ export type AttemptUpdateWithoutPaperInput = {
   total_max?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   grade_band?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   marking_summary?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  marking_started_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   status?: Prisma.EnumAttemptStatusFieldUpdateOperationsInput | $Enums.AttemptStatus
   user?: Prisma.UserUpdateOneRequiredWithoutAttemptsNestedInput
   answers?: Prisma.AttemptAnswerUpdateManyWithoutAttemptNestedInput
@@ -937,6 +970,7 @@ export type AttemptUncheckedUpdateWithoutPaperInput = {
   total_max?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   grade_band?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   marking_summary?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  marking_started_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   status?: Prisma.EnumAttemptStatusFieldUpdateOperationsInput | $Enums.AttemptStatus
   answers?: Prisma.AttemptAnswerUncheckedUpdateManyWithoutAttemptNestedInput
 }
@@ -953,6 +987,7 @@ export type AttemptUncheckedUpdateManyWithoutPaperInput = {
   total_max?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   grade_band?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   marking_summary?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  marking_started_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   status?: Prisma.EnumAttemptStatusFieldUpdateOperationsInput | $Enums.AttemptStatus
 }
 
@@ -968,6 +1003,7 @@ export type AttemptCreateManyUserInput = {
   total_max?: number | null
   grade_band?: string | null
   marking_summary?: string | null
+  marking_started_at?: Date | string | null
   status?: $Enums.AttemptStatus
 }
 
@@ -981,6 +1017,7 @@ export type AttemptUpdateWithoutUserInput = {
   total_max?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   grade_band?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   marking_summary?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  marking_started_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   status?: Prisma.EnumAttemptStatusFieldUpdateOperationsInput | $Enums.AttemptStatus
   paper?: Prisma.PaperUpdateOneRequiredWithoutAttemptsNestedInput
   answers?: Prisma.AttemptAnswerUpdateManyWithoutAttemptNestedInput
@@ -998,6 +1035,7 @@ export type AttemptUncheckedUpdateWithoutUserInput = {
   total_max?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   grade_band?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   marking_summary?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  marking_started_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   status?: Prisma.EnumAttemptStatusFieldUpdateOperationsInput | $Enums.AttemptStatus
   answers?: Prisma.AttemptAnswerUncheckedUpdateManyWithoutAttemptNestedInput
 }
@@ -1014,6 +1052,7 @@ export type AttemptUncheckedUpdateManyWithoutUserInput = {
   total_max?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   grade_band?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   marking_summary?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  marking_started_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   status?: Prisma.EnumAttemptStatusFieldUpdateOperationsInput | $Enums.AttemptStatus
 }
 
@@ -1061,6 +1100,7 @@ export type AttemptSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs 
   total_max?: boolean
   grade_band?: boolean
   marking_summary?: boolean
+  marking_started_at?: boolean
   status?: boolean
   paper?: boolean | Prisma.PaperDefaultArgs<ExtArgs>
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
@@ -1081,6 +1121,7 @@ export type AttemptSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Exten
   total_max?: boolean
   grade_band?: boolean
   marking_summary?: boolean
+  marking_started_at?: boolean
   status?: boolean
   paper?: boolean | Prisma.PaperDefaultArgs<ExtArgs>
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
@@ -1099,6 +1140,7 @@ export type AttemptSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Exten
   total_max?: boolean
   grade_band?: boolean
   marking_summary?: boolean
+  marking_started_at?: boolean
   status?: boolean
   paper?: boolean | Prisma.PaperDefaultArgs<ExtArgs>
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
@@ -1117,10 +1159,11 @@ export type AttemptSelectScalar = {
   total_max?: boolean
   grade_band?: boolean
   marking_summary?: boolean
+  marking_started_at?: boolean
   status?: boolean
 }
 
-export type AttemptOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "attempt_id" | "paper_id" | "user_id" | "mode" | "started_at" | "submitted_at" | "time_limit_sec" | "total_score" | "total_max" | "grade_band" | "marking_summary" | "status", ExtArgs["result"]["attempt"]>
+export type AttemptOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "attempt_id" | "paper_id" | "user_id" | "mode" | "started_at" | "submitted_at" | "time_limit_sec" | "total_score" | "total_max" | "grade_band" | "marking_summary" | "marking_started_at" | "status", ExtArgs["result"]["attempt"]>
 export type AttemptInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   paper?: boolean | Prisma.PaperDefaultArgs<ExtArgs>
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
@@ -1156,6 +1199,7 @@ export type $AttemptPayload<ExtArgs extends runtime.Types.Extensions.InternalArg
     total_max: number | null
     grade_band: string | null
     marking_summary: string | null
+    marking_started_at: Date | null
     status: $Enums.AttemptStatus
   }, ExtArgs["result"]["attempt"]>
   composites: {}
@@ -1595,6 +1639,7 @@ export interface AttemptFieldRefs {
   readonly total_max: Prisma.FieldRef<"Attempt", 'Int'>
   readonly grade_band: Prisma.FieldRef<"Attempt", 'String'>
   readonly marking_summary: Prisma.FieldRef<"Attempt", 'String'>
+  readonly marking_started_at: Prisma.FieldRef<"Attempt", 'DateTime'>
   readonly status: Prisma.FieldRef<"Attempt", 'AttemptStatus'>
 }
     
