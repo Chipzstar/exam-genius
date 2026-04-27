@@ -16,7 +16,7 @@ export function MarkSchemeHintButton({ item, questionLabel }: Props) {
 	const [drawerOpen, { close: closeDrawer, open: openDrawer }] = useDisclosure(false);
 
 	const heading =
-		questionLabel && questionLabel.trim() ? `Question ${questionLabel}` : 'Marking hints';
+		questionLabel && questionLabel.trim() ? `${questionLabel}` : 'Marking hints';
 
 	if (mobile) {
 		return (

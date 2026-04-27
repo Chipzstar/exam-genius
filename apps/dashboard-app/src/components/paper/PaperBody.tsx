@@ -1,6 +1,6 @@
 'use client';
 
-import { Alert, Button, Group, Rating, SegmentedControl, Space, Stack, Text, Textarea, Title } from '@mantine/core';
+import { Alert, Button, Group, Rating, SegmentedControl, Stack, Text, Textarea, Title } from '@mantine/core';
 import clsx from 'clsx';
 import { LatexHtml } from './Latex';
 import { useValue } from '@legendapp/state/react';
@@ -182,47 +182,60 @@ export function PaperBody({ paper, mobileScreen, fontScale, initialMode, classes
 
 	const mockSeconds = 90 * 60;
 
+	const showRendererToggle = flags.structuredQuestions && Boolean(paper.structured_at);
+	const showPaperModeToggle = flags.aiMarking;
+
 	return (
 		<PaperErrorBoundary paperId={paper.paper_id}>
-			<div className='flex justify-center'>
-				<Stack justify='center' align='center'>
-					<Title c='brand'>ExamGenius</Title>
-					{paper.name && (
-						<Text size={mobileScreen ? 'xl' : '30px'} fw={600}>
+			<Stack gap={4} align='center' mb='sm' px='xs'>
+				<Group justify='center' gap='xs' wrap='wrap' align='center'>
+					<Title order={3} size='h4' c='brand' lh={1.2} m={0}>
+						ExamGenius
+					</Title>
+					{paper.name ? (
+						<Text
+							component='span'
+							size={mobileScreen ? 'lg' : 'xl'}
+							fw={600}
+							lh={1.2}
+						>
 							{paper.name}
 						</Text>
-					)}
-					<Text size='lg'>AI Predicted Paper</Text>
-				</Stack>
-			</div>
-			<Space h='md' />
-			{flags.structuredQuestions && paper.structured_at ? (
-				<Group justify='center' mb='md'>
-					<SegmentedControl
-						value={rendererMode}
-						onChange={v => appStore$.reader.rendererMode.set(v as 'structured' | 'classic')}
-						data={[
-							{ label: 'Structured', value: 'structured' },
-							{ label: 'Classic', value: 'classic' }
-						]}
-					/>
+					) : null}
 				</Group>
-			) : null}
-			{flags.aiMarking ? (
-				<Group justify='center' mb='md'>
-					<SegmentedControl
-						value={paperMode}
-						onChange={v => setPaperMode(v as 'study' | 'mock' | 'review')}
-						data={[
-							{ label: 'Study', value: 'study' },
-							{ label: 'Mock', value: 'mock' },
-							{ label: 'Review', value: 'review' }
-						]}
-					/>
-				</Group>
-			) : null}
+				<Text size='xs' c='dimmed' lh={1.2}>
+					AI Predicted Paper
+				</Text>
+				{showRendererToggle || showPaperModeToggle ? (
+					<Group justify='center' gap='sm' wrap='wrap' mt={4}>
+						{showRendererToggle ? (
+							<SegmentedControl
+								size='sm'
+								value={rendererMode}
+								onChange={v => appStore$.reader.rendererMode.set(v as 'structured' | 'classic')}
+								data={[
+									{ label: 'Structured', value: 'structured' },
+									{ label: 'Classic', value: 'classic' }
+								]}
+							/>
+						) : null}
+						{showPaperModeToggle ? (
+							<SegmentedControl
+								size='sm'
+								value={paperMode}
+								onChange={v => setPaperMode(v as 'study' | 'mock' | 'review')}
+								data={[
+									{ label: 'Study', value: 'study' },
+									{ label: 'Mock', value: 'mock' },
+									{ label: 'Review', value: 'review' }
+								]}
+							/>
+						) : null}
+					</Group>
+				) : null}
+			</Stack>
 			{flags.aiMarking && paperMode === 'mock' ? (
-				<Group justify='center' mb='md'>
+				<Group justify='center' mb='xs' wrap='wrap'>
 					<MockTimer initialSeconds={mockSeconds} />
 					{!attempt || attempt.status !== 'in_progress' ? (
 						<Button
@@ -245,14 +258,22 @@ export function PaperBody({ paper, mobileScreen, fontScale, initialMode, classes
 				</Group>
 			) : null}
 			{showClassicMarkScheme ? (
-				<Group justify='center' mb='sm'>
-					<Button variant='light' size='sm' onClick={() => setMarkSchemeModalOpen(true)}>
+				<Group justify='center' mb='xs'>
+					<Button variant='light' size='xs' onClick={() => setMarkSchemeModalOpen(true)}>
 						Mark scheme hints
 					</Button>
 				</Group>
 			) : null}
 			{paperMode === 'study' && markScheme?.status === 'pending' ? (
-				<Alert variant='light' color='blue' mb='sm' ta='center'>
+				<Alert
+					variant='light'
+					color='blue'
+					mb='xs'
+					py='xs'
+					px='sm'
+					ta='center'
+					styles={{ message: { fontSize: 'var(--mantine-font-size-xs)' } }}
+				>
 					Mark scheme hints are being generated and will appear automatically in a moment.
 				</Alert>
 			) : null}
@@ -262,7 +283,7 @@ export function PaperBody({ paper, mobileScreen, fontScale, initialMode, classes
 				order={markSchemeParsed.order}
 				byId={markSchemeParsed.byId}
 			/>
-			<div className={clsx(classes.paperContentRoot, 'h-full px-6 py-2')} data-scale={String(fontScale)}>
+			<div className={clsx(classes.paperContentRoot, 'h-full px-6 pt-1 pb-2')} data-scale={String(fontScale)}>
 				{showStructured && questions.length > 0 ? (
 					<div className={clsx(classes.paperContent, 'paperContent')}>
 						<QuestionTree
