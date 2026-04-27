@@ -9,6 +9,63 @@
 * 🟢 You can import this file directly.
 */
 
+export const UserPlan = {
+  free: 'free',
+  plus: 'plus',
+  pro: 'pro'
+} as const
+
+export type UserPlan = (typeof UserPlan)[keyof typeof UserPlan]
+
+
+export const MarkSchemeStatus = {
+  none: 'none',
+  pending: 'pending',
+  success: 'success',
+  failed: 'failed'
+} as const
+
+export type MarkSchemeStatus = (typeof MarkSchemeStatus)[keyof typeof MarkSchemeStatus]
+
+
+export const ReferenceKind = {
+  question_paper: 'question_paper',
+  mark_scheme: 'mark_scheme',
+  examiner_report: 'examiner_report'
+} as const
+
+export type ReferenceKind = (typeof ReferenceKind)[keyof typeof ReferenceKind]
+
+
+export const ReferenceStatus = {
+  pending: 'pending',
+  processing: 'processing',
+  ready: 'ready',
+  failed: 'failed'
+} as const
+
+export type ReferenceStatus = (typeof ReferenceStatus)[keyof typeof ReferenceStatus]
+
+
+export const AttemptMode = {
+  mock: 'mock',
+  study: 'study'
+} as const
+
+export type AttemptMode = (typeof AttemptMode)[keyof typeof AttemptMode]
+
+
+export const AttemptStatus = {
+  in_progress: 'in_progress',
+  submitted: 'submitted',
+  marking: 'marking',
+  marked: 'marked',
+  failed: 'failed'
+} as const
+
+export type AttemptStatus = (typeof AttemptStatus)[keyof typeof AttemptStatus]
+
+
 export const Subject = {
   maths: 'maths',
   biology: 'biology',

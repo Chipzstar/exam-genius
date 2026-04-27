@@ -3,9 +3,9 @@ import type Stripe from 'stripe';
 import type { Logger } from 'next-axiom';
 import { CHECKOUT_TYPE } from '../../utils/constants';
 import { capitalize, genCourseOrPaperName, genID, sanitize } from '../../utils/functions';
-import axios from 'axios';
 import { GeneratePaperPayload } from '../../utils/types';
 import { env } from '~/env';
+import { backendApi } from '~/server/backend-headers';
 
 export const getOrCreateStripeCustomerIdForUser = async ({
 	stripe,
@@ -154,8 +154,8 @@ export const handleCheckoutSessionComplete = async ({
 					});
 					console.log('[Stripe Checkout] Paper created', { paperId: paper.paper_id });
 					console.log('[Stripe Checkout] Triggering paper generate API', { paper_id: paper.paper_id });
-					axios
-						.post(`${env.BACKEND_HOST}/server/paper/generate`, {
+					backendApi
+						.post('/server/paper/generate', {
 							paper_id: paper.paper_id,
 							paper_name: paper.name,
 							subject: capitalize(paper.subject),
@@ -241,6 +241,29 @@ export const handleInvoicePaid = async ({
 	}
 };
 
+function resolvePlanFromStripeSubscription(subscription: Stripe.Subscription): 'free' | 'plus' | 'pro' {
+	const active =
+		subscription.status === 'active' ||
+		subscription.status === 'trialing' ||
+		subscription.status === 'past_due';
+	if (!active) return 'free';
+
+	const raw = env.STRIPE_PLAN_MAP;
+	if (!raw) return 'plus';
+	try {
+		const map = JSON.parse(raw) as Record<string, string>;
+		for (const item of subscription.items.data) {
+			const pid = typeof item.price === 'string' ? item.price : item.price?.id;
+			if (pid && map[pid] && ['free', 'plus', 'pro'].includes(map[pid])) {
+				return map[pid] as 'free' | 'plus' | 'pro';
+			}
+		}
+	} catch {
+		/* ignore */
+	}
+	return 'plus';
+}
+
 export const handleSubscriptionCreatedOrUpdated = async ({
 	event,
 	prisma,
@@ -253,15 +276,16 @@ export const handleSubscriptionCreatedOrUpdated = async ({
 	const subscription = event.data.object as Stripe.Subscription;
 	console.log('[Stripe Subscription] handleSubscriptionCreatedOrUpdated called', { subscriptionId: subscription.id, customerId: subscription.customer, status: subscription.status });
 	const customer_id = subscription.customer;
-	// update user with subscription data
-	console.log('[Stripe Subscription] Updating user with subscription data', { stripeCustomerId: customer_id });
+	const plan = resolvePlanFromStripeSubscription(subscription);
+	console.log('[Stripe Subscription] Updating user with subscription data', { stripeCustomerId: customer_id, plan });
 	await prisma.user.update({
 		where: {
 			stripe_customer_id: String(customer_id)
 		},
 		data: {
 			stripe_subscription_id: subscription.id,
-			stripe_subscription_status: subscription.status
+			stripe_subscription_status: subscription.status,
+			plan
 		}
 	});
 	console.log('[Stripe Subscription] handleSubscriptionCreatedOrUpdated completed');
@@ -289,7 +313,8 @@ export const handleSubscriptionCanceled = async ({
 		},
 		data: {
 			stripe_subscription_id: null,
-			stripe_subscription_status: null
+			stripe_subscription_status: null,
+			plan: 'free'
 		}
 	});
 	console.log('[Stripe Subscription] handleSubscriptionCanceled completed');

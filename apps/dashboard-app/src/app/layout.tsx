@@ -3,11 +3,15 @@ import localFont from 'next/font/local';
 import { ColorSchemeScript } from '@mantine/core';
 import '@mantine/core/styles.css';
 import '@mantine/notifications/styles.css';
+import 'katex/dist/katex.min.css';
 import '../../styles/globals.css';
 import Favicon from '~/components/Favicon';
 import { Providers } from './Providers';
 import { ThemeToggleFloating } from '~/components/ThemeToggle';
 import { env } from '~/env';
+import { NextSSRPlugin } from '@uploadthing/react/next-ssr-plugin';
+import { extractRouterConfig } from 'uploadthing/server';
+import { ourFileRouter } from '~/app/api/uploadthing/core';
 
 const poppins = localFont({
 	src: [
@@ -76,6 +80,7 @@ export default function RootLayout({
 				<Favicon />
 			</head>
 			<body className="font-sans">
+				<NextSSRPlugin routerConfig={extractRouterConfig(ourFileRouter)} />
 				<Providers baseUrl={baseUrl}>
 					<>
 						{children}

@@ -1,11 +1,12 @@
-import { createTRPCRouter, protectedProcedure } from '../trpc';
+import { createTRPCRouter, protectedProcedure, rateLimited } from '../trpc';
 import { TRPCError } from '@trpc/server';
 import { z } from 'zod';
-import axios from 'axios';
 import { capitalize, genID, sanitize } from '~/utils/functions';
 import { Logger } from '~/server/logger';
 import { GeneratePaperPayload } from '~/utils/types';
-import { env } from '~/env';
+import { backendApi } from '~/server/backend-headers';
+import { buildStudentStyleContextDashboard } from '~/server/style-context-dashboard';
+import { logger } from '@exam-genius/shared/utils';
 
 const paperRouter = createTRPCRouter({
 	getPapers: protectedProcedure.query(async ({ ctx }) => {
@@ -16,6 +17,7 @@ const paperRouter = createTRPCRouter({
 					user_id
 				}
 			});
+			logger.info('Papers', { papers });
 			return papers;
 		} catch (err) {
 			console.error(err);
@@ -57,7 +59,11 @@ const paperRouter = createTRPCRouter({
 				const papers = await ctx.prisma.paper.findMany({
 					where: {
 						course_id: input.courseId,
-						paper_code: input.code
+						paper_code: input.code,
+						user_id: ctx.auth.userId
+					},
+					include: {
+						paperRating: true
 					}
 				});
 				return papers;
@@ -83,6 +89,7 @@ const paperRouter = createTRPCRouter({
 						course_id: input.courseId
 					}
 				});
+				logger.info('Papers', { papers });
 				return papers;
 			} catch (err) {
 				console.error(err);
@@ -188,6 +195,81 @@ const paperRouter = createTRPCRouter({
 				});
 			}
 		}),
+
+	triggerBackendGenerate: protectedProcedure
+		.use(rateLimited('paper_generate'))
+		.input(
+			z.object({
+				paperId: z.string(),
+				num_questions: z.coerce.number(),
+				num_marks: z.coerce.number(),
+				referenceIds: z.array(z.string()).optional()
+			})
+		)
+		.mutation(async ({ ctx, input }) => {
+			const paper = await ctx.prisma.paper.findFirst({
+				where: { paper_id: input.paperId, user_id: ctx.auth.userId }
+			});
+			if (!paper) throw new TRPCError({ code: 'NOT_FOUND', message: 'Paper not found' });
+			try {
+				await backendApi.post('/server/paper/generate', {
+					paper_id: paper.paper_id,
+					paper_name: paper.name,
+					subject: capitalize(paper.subject),
+					exam_board: capitalize(paper.exam_board),
+					course: capitalize(sanitize(paper.unit_name)),
+					num_questions: input.num_questions,
+					num_marks: input.num_marks,
+					reference_ids: input.referenceIds ?? []
+				} as GeneratePaperPayload);
+				return { ok: true as const };
+			} catch (e) {
+				console.error(e);
+				throw new TRPCError({
+					code: 'INTERNAL_SERVER_ERROR',
+					message: 'Failed to start paper generation'
+				});
+			}
+		}),
+
+	getGenerationHints: protectedProcedure
+		.input(z.object({ courseId: z.string(), paperCode: z.string() }))
+		.query(async ({ ctx, input }) => {
+			return buildStudentStyleContextDashboard(ctx.prisma, {
+				userId: ctx.auth.userId,
+				courseId: input.courseId,
+				paperCode: input.paperCode
+			});
+		}),
+
+	getMarkScheme: protectedProcedure
+		.input(z.object({ paperId: z.string() }))
+		.query(async ({ ctx, input }) => {
+			const paper = await ctx.prisma.paper.findFirst({
+				where: { paper_id: input.paperId, user_id: ctx.auth.userId }
+			});
+			if (!paper) throw new TRPCError({ code: 'NOT_FOUND' });
+			return ctx.prisma.markScheme.findUnique({
+				where: { paper_id: input.paperId }
+			});
+		}),
+
+	ensureStructured: protectedProcedure
+		.input(z.object({ paperId: z.string() }))
+		.mutation(async ({ ctx, input }) => {
+			const paper = await ctx.prisma.paper.findFirst({
+				where: { paper_id: input.paperId, user_id: ctx.auth.userId }
+			});
+			if (!paper) throw new TRPCError({ code: 'NOT_FOUND' });
+			if (paper.structured_at) return { ok: true as const };
+			try {
+				await backendApi.post('/server/paper/parse-legacy', { paper_id: input.paperId });
+				return { ok: true as const };
+			} catch {
+				throw new TRPCError({ code: 'INTERNAL_SERVER_ERROR', message: 'Legacy parse failed' });
+			}
+		}),
+
 	checkPaperGenerated: protectedProcedure
 		.input(
 			z.object({
@@ -236,6 +318,10 @@ const paperRouter = createTRPCRouter({
 		.mutation(async ({ input, ctx }) => {
 			const log = new Logger();
 			try {
+				const existing = await ctx.prisma.paper.findFirst({
+					where: { paper_id: input.id, user_id: ctx.auth.userId }
+				});
+				if (!existing) throw new TRPCError({ code: 'NOT_FOUND' });
 				const paper = await ctx.prisma.paper.update({
 					where: {
 						paper_id: input.id
@@ -244,10 +330,8 @@ const paperRouter = createTRPCRouter({
 						status: 'pending'
 					}
 				});
-				if (paper.status === 'success')
-					throw new TRPCError({ code: 'CLIENT_CLOSED_REQUEST', message: 'Paper has already been generated' });
-				axios
-					.post(`${env.BACKEND_HOST}/server/paper/generate`, {
+				backendApi
+					.post('/server/paper/generate', {
 						paper_id: paper.paper_id,
 						paper_name: paper.name,
 						subject: capitalize(paper.subject),

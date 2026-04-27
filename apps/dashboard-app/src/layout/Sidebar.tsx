@@ -3,7 +3,7 @@
 import { useClerk } from '@clerk/nextjs';
 import { Group, Text } from '@mantine/core';
 import { useViewportSize } from '@mantine/hooks';
-import { IconLicense, IconLogout, IconQuestionMark, IconUser } from '@tabler/icons-react';
+import { IconBook, IconLicense, IconLogout, IconQuestionMark, IconUser } from '@tabler/icons-react';
 import clsx from 'clsx';
 import Image from 'next/image';
 import { usePathname, useRouter } from 'next/navigation';
@@ -25,6 +25,13 @@ const Sidebar = ({ opened, setOpened }: { opened: boolean; setOpened: (opened: b
 				label: 'Papers',
 				icon: IconLicense,
 				isActive: pathname === PATHS.HOME,
+				disabled: false
+			},
+			{
+				link: PATHS.REFERENCES,
+				label: 'References',
+				icon: IconBook,
+				isActive: pathname === PATHS.REFERENCES,
 				disabled: false
 			},
 			{

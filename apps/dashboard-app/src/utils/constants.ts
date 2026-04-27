@@ -44,7 +44,8 @@ export const PATHS = {
 	BIOLOGY: '/papers/biology',
 	ECONOMICS: '/papers/economics',
 	PSYCHOLOGY: '/papers/psychology',
-	FAQ: '/faq'
+	FAQ: '/faq',
+	REFERENCES: '/references'
 
 };
 

@@ -1,0 +1,128 @@
+---
+description: How to open high-quality pull requests for the Exam Genius repos (title, body, checklists, review).
+alwaysApply: false
+---
+
+# Pull request guidelines (Exam Genius)
+
+This document reflects patterns from merged PRs in **exam-genius** and **exam-genius-backend** and the repo’s tooling. Use it when drafting or reviewing PRs.
+
+## Title conventions
+
+- **Be specific.** Prefer a short clause that names the *user-visible outcome* or the *main change*, not only the branch name (avoid titles like `Dev` or `Merge dev into master` without context).
+- **Conventional style (recommended).** Use a `type: summary` form aligned with commit history in this repo:
+  - `feat:` — new behavior, UI, or API
+  - `fix:` — bug fixes
+  - `chore:` — maintenance, deps, config cleanup
+  - `refactor:` — behavior-preserving restructures
+  - `docs:` — documentation only
+  - `build:` — build/tooling (Turbo, Nx, CI scripts)
+- **Compound work.** If one PR ships several features, either use a broad but honest title (e.g. feature A + B + C) or **split** into multiple PRs so each title matches one main theme.
+- **Length.** Aim for one line, roughly **~72 characters** so it displays cleanly in lists and notifications.
+
+**Examples (from this codebase’s style):**
+
+- `feat: Tawk.to live chat integration, paper theming & PDF export improvements`
+- `feat: PDF export, UI enhancements, and new AI skill`
+- `Upgrade to Next.js 15 / React 19 and refactor dashboard layout`
+- `Bump Nx + Prisma versions` (backend)
+
+## Description: what to include
+
+A good body helps reviewers, release readers, and your future self. Merged PRs in this monorepo often use **clear section headings** and bullet lists.
+
+### 1. Summary
+
+One short paragraph: **what** changed and **why** (business or technical reason). If the PR replaces or deprecates something (e.g. one chat provider for another), say so here.
+
+### 2. Changes (grouped)
+
+Use `###` subheadings for each **theme** or feature area, then bullets:
+
+- **User-facing / product** — what users will notice.
+- **Technical** — refactors, new deps, new env vars, routing, data layer.
+- **Chores** — logging cleanup, config, formatting.
+
+For large multi-commit PRs, this mirrors the successful structure of past merges (e.g. theming + PDF + chat in separate subsections).
+
+### 3. Commit highlights (optional)
+
+List important commits as `` `abc1234` type: message `` — helpful when the branch has many commits and reviewers need a **map** without reading every diff.
+
+### 4. Artifacts and references (optional)
+
+- Links to design docs, tickets, **Warp** or other session URLs, or external specs under a heading like **Artifacts**.
+- If you use **CodeRabbit** (or similar), the bot may append a release-style summary; you do **not** need to remove it. Keep your own **Summary** and **Changes** at the top so humans see intent first.
+
+### 5. Co-authorship
+
+When pair-programming or using agents, the repo has used **Co-Authored-By** trailer lines. Add them in the PR body or in commit messages as your team agrees.
+
+## Formatting
+
+- Use **markdown headings** (`##`, `###`) for scanability.
+- Use **bullets** for lists; use **bold** labels sparingly for emphasis inside bullets.
+- Avoid an **empty description** (seen on early `dev` → `master` PRs) — it slows review and loses context.
+
+## Checklist before opening / marking ready
+
+Tailor to your PR; not every item applies every time.
+
+**General**
+
+- [ ] **Title** matches the main change and uses the repo’s voice (clear, not generic).
+- [ ] **Description** has at least: Summary + grouped Changes.
+- [ ] **Default branch** for this org/repo is typically **`master`** (not `main`) for exam-genius—confirm the **base branch** you intend (often `dev` for integration work, then `master` for release—follow your team’s flow).
+- [ ] **pnpm** only; lockfile and workspace boundaries respected (`pnpm install` / `pnpm build` as appropriate).
+
+**exam-genius (Turborepo / Next / Prisma)**
+
+- [ ] If you touched **`prisma/`, `prismerge.json`**, or related: run **`pnpm prisma:merge`** (or the project’s merge script) and ensure **`npx prisma validate`** passes. CI runs **Prisma schema** workflow on those paths.
+- [ ] If schemas should stay in sync with the backend: after changes, run **`pnpm sync:schemas:backend`** from exam-genius when your workflow requires it, so CI’s optional sibling **`exam-genius-backend`** check does not fail.
+- [ ] For env changes: document new or renamed variables in the PR (and Doppler / `.env.example` as required). Call out **Clerk, Stripe, PostHog, Tawk**, or **database** vars explicitly.
+- [ ] For webhooks (Clerk, Stripe, etc.): note if reviewers should run **Stripe CLI** or local hooks for verification.
+
+**exam-genius-backend (Nx)**
+
+- [ ] **Nx** tasks relevant to the change: `nx build exam-genius-backend`, `nx lint`, `nx test` as applicable.
+- [ ] **Prisma** migrate/generate steps documented if the schema or client usage changed.
+
+**Review readiness**
+
+- [ ] **Small scope** per PR when possible; huge mixed PRs are harder to review and revert.
+- [ ] **Screenshots or short Loom** for visible UI changes (if your team uses them).
+- [ ] **Breaking changes** called out in the first paragraph and in a **Migration / Rollout** subsection if needed.
+
+## Code review: author tips
+
+- **Point reviewers to the “center” of the change** — e.g. “main logic in `ReaderToolbar`”, “webhook change in `app/api/.../route.ts`”.
+- **Separate mechanical from semantic commits** when you can (format vs behavior) so `git` history and reviews stay readable.
+- **Respond to review comments** in-thread; resolve threads when the code reflects the fix.
+
+## Code review: reviewer tips
+
+- **Start from the PR description** — it should match the diff; if not, ask for an update before deep-diving.
+- **Check security-sensitive paths**: webhooks (signature verification), auth middleware, and anything that processes **user input** or **files**.
+- **Respect monorepo boundaries** — no forbidden imports from apps into the wrong package; align with `AGENTS.md` / `.mdc` rules for each repo.
+- **Prisma / schema PRs** — watch for **naming, indexes, and backward compatibility**; confirm CI’s Prisma job is green.
+
+## Repository-specific notes
+
+| Topic | exam-genius | exam-genius-backend |
+| --- | --- | --- |
+| PM / tasks | pnpm, Turborepo | pnpm, Nx |
+| DB | Split Prisma schemas under `prisma/schemas/`, merged via prismerge | Prisma; follow AGENTS.md |
+| CI | e.g. Prisma schema workflow on `pull_request` for schema paths | Follow project’s Nx/CI |
+| Env | Doppler, typed env (e.g. T3 env); don’t commit secrets | Railway / env per deployment docs |
+| Branches | **master** is default; align feature branches with team policy | Same |
+
+## Anti-patterns (observed gaps to avoid)
+
+- **Empty PR body** for non-trivial merges.
+- **Title = branch name only** with no product or technical meaning.
+- **Unscoped mega-PRs** with no subsections—split or structure with headings.
+- **Schema changes** without mentioning sync or validate steps for reviewers and CI.
+
+---
+
+*Contributors of all levels: a clear title and a short, structured description take minutes and save hours of review and release confusion.*
