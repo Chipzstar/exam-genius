@@ -26,6 +26,8 @@ import { notifications } from '@mantine/notifications';
 import { notifyError, notifySuccess } from '~/utils/functions';
 import { IconCheck, IconX } from '@tabler/icons-react';
 import { captureQuestionEdit, captureRating } from '~/utils/posthog-events';
+import { MarkSchemeHintButton } from './MarkSchemeHintButton';
+import type { MarkSchemeItem } from './mark-scheme-hint.utils';
 
 type Q = RouterOutputs['question']['listForPaper'][number];
 
@@ -105,7 +107,8 @@ function QuestionSubtree({
 	mode,
 	attemptAnswers,
 	onAnswerChange,
-	flags
+	flags,
+	markSchemeByQuestionId
 }: {
 	parentId: string | null;
 	questions: Q[];
@@ -114,6 +117,7 @@ function QuestionSubtree({
 	attemptAnswers?: Record<string, string>;
 	onAnswerChange?: (questionId: string, text: string) => void;
 	flags: Flags;
+	markSchemeByQuestionId?: Map<string, MarkSchemeItem>;
 }) {
 	const nodes = useMemo(
 		() =>
@@ -135,6 +139,7 @@ function QuestionSubtree({
 					attemptAnswers={attemptAnswers}
 					onAnswerChange={onAnswerChange}
 					flags={flags}
+					markSchemeByQuestionId={markSchemeByQuestionId}
 				/>
 			))}
 		</Stack>
@@ -148,7 +153,8 @@ function QuestionNode({
 	mode,
 	attemptAnswers,
 	onAnswerChange,
-	flags
+	flags,
+	markSchemeByQuestionId
 }: {
 	node: Q;
 	depth: number;
@@ -157,6 +163,7 @@ function QuestionNode({
 	attemptAnswers?: Record<string, string>;
 	onAnswerChange?: (questionId: string, text: string) => void;
 	flags: Flags;
+	markSchemeByQuestionId?: Map<string, MarkSchemeItem>;
 }) {
 	const utils = api.useUtils();
 	const mobileDrawer = useMediaQuery('(max-width: 30em)');
@@ -188,6 +195,8 @@ function QuestionNode({
 	const showAnswerInput = flags.aiMarking && mode === 'mock';
 	const showReview = flags.aiMarking && mode === 'review';
 	const answerText = attemptAnswers?.[node.question_id];
+	const markSchemeItem =
+		mode === 'study' ? markSchemeByQuestionId?.get(node.question_id) : undefined;
 
 	return (
 		<Box
@@ -206,6 +215,9 @@ function QuestionNode({
 					<Badge size='xs' variant='light'>
 						{node.marks} marks
 					</Badge>
+					{markSchemeItem ? (
+						<MarkSchemeHintButton item={markSchemeItem} questionLabel={node.label} />
+					) : null}
 				</Group>
 				<Menu shadow='md' width={220}>
 					<Menu.Target>
@@ -266,6 +278,7 @@ function QuestionNode({
 				attemptAnswers={attemptAnswers}
 				onAnswerChange={onAnswerChange}
 				flags={flags}
+				markSchemeByQuestionId={markSchemeByQuestionId}
 			/>
 			<Drawer
 				opened={drawerOpen}
@@ -412,13 +425,15 @@ export function QuestionTree({
 	mode,
 	attemptAnswers,
 	onAnswerChange,
-	flags
+	flags,
+	markSchemeByQuestionId
 }: {
 	questions: Q[];
 	mode: 'study' | 'mock' | 'review';
 	attemptAnswers?: Record<string, string>;
 	onAnswerChange?: (questionId: string, text: string) => void;
 	flags: Flags;
+	markSchemeByQuestionId?: Map<string, MarkSchemeItem>;
 }) {
 	return (
 		<QuestionSubtree
@@ -429,6 +444,7 @@ export function QuestionTree({
 			attemptAnswers={attemptAnswers}
 			onAnswerChange={onAnswerChange}
 			flags={flags}
+			markSchemeByQuestionId={markSchemeByQuestionId}
 		/>
 	);
 }
