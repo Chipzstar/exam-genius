@@ -11,6 +11,7 @@
 		"db:push": "pnpm with-env prisma db push",
 		"db:pull": "pnpm with-env prisma db pull",
 		"db:migrate": "pnpm with-env prisma migrate dev",
+		"db:migrate:prod": "doppler run -c prd -p exam-genius -- prisma migrate deploy",
 		"db:studio": "pnpm with-env prisma studio",
 		"with-env": "dotenv -e .env.local --"
 	},

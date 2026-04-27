@@ -57,3 +57,4 @@ Thumbs.db
 .turbo
 
 *.bak
+apps/dashboard-app/misc/sample-papers/*.pdf
