@@ -1433,7 +1433,8 @@ export const PaperScalarFieldEnum = {
   model: 'model',
   generator_version: 'generator_version',
   structured_at: 'structured_at',
-  mark_scheme_status: 'mark_scheme_status'
+  mark_scheme_status: 'mark_scheme_status',
+  legacy_one_time_regenerate_available: 'legacy_one_time_regenerate_available'
 } as const
 
 export type PaperScalarFieldEnum = (typeof PaperScalarFieldEnum)[keyof typeof PaperScalarFieldEnum]
@@ -1676,6 +1677,13 @@ export type EnumStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaMod
  * Reference to a field of type 'Status[]'
  */
 export type ListEnumStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Status[]'>
+    
+
+
+/**
+ * Reference to a field of type 'Boolean'
+ */
+export type BooleanFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Boolean'>
     
 
 

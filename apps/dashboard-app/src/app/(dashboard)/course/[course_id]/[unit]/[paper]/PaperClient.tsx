@@ -1,6 +1,7 @@
 'use client';
 
 import {
+	Alert,
 	Anchor,
 	Button,
 	Card,
@@ -11,6 +12,7 @@ import {
 	Text,
 	Title
 } from '@mantine/core';
+import { modals } from '@mantine/modals';
 import Page from '~/layout/Page';
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { useMediaQuery, useTimeout, useViewportSize } from '@mantine/hooks';
@@ -133,6 +135,8 @@ export default function PaperClient({ params, searchParams, initialPapers }: Pap
 	);
 	const { mutateAsync: checkPaperGenerated } = api.paper.checkPaperGenerated.useMutation();
 	const { mutate: regeneratePaper, isPending: regenLoading } = api.paper.regeneratePaper.useMutation();
+	const { mutate: regenerateWithLegacyGrant, isPending: legacyGrantLoading } =
+		api.paper.regenerateWithLegacyGrant.useMutation();
 	const { mutate: deletePaper, isPending: deletePaperPending } = api.paper.deletePaper.useMutation({
 		onSuccess(_, variables) {
 			const lastOpened = appStore$.lastOpenedPaper.get();
@@ -267,6 +271,60 @@ export default function PaperClient({ params, searchParams, initialPapers }: Pap
 									<ScrollArea.Autosize mah={height - 150} p='sm'>
 										<Card shadow='sm' radius='md' className={clsx('w-full', classes.paperCard)} p='xl'>
 											{paper.content && paper.status === 'success' ? (
+												<>
+													{paper.legacy_one_time_regenerate_available ? (
+														<Alert color='brand' variant='light' mb='md' title='Latest features'>
+															<Text size='sm'>
+																Regenerate this paper once with the latest AI pipeline. Any mock attempts
+																and your star rating for this paper will be removed.
+															</Text>
+															<Button
+																mt='sm'
+																size='sm'
+																variant='light'
+																loading={legacyGrantLoading}
+																onClick={() => {
+																	const paper_info =
+																		SUBJECT_PAPERS[paper.subject][paper.exam_board][paper.unit_name]?.papers.find(
+																			p => p.code === paper.paper_code
+																		);
+																	if (!paper_info) {
+																		notifyError(
+																			'invalid-paper-code',
+																			`No paper found with paper code ${paper.paper_code}. Refresh the page and try again.`,
+																			<IconX size={20} />
+																		);
+																		return;
+																	}
+																	modals.openConfirmModal({
+																		title: 'Use your one-time regeneration?',
+																		children: (
+																			<Text size='sm'>
+																				This cannot be undone. You will receive a newly generated paper and
+																				lose attempts and ratings tied to this copy.
+																			</Text>
+																		),
+																		labels: { confirm: 'Regenerate', cancel: 'Cancel' },
+																		confirmProps: { color: 'brand' },
+																		onConfirm: () => {
+																			regenerateWithLegacyGrant({
+																				id: paper.paper_id,
+																				num_questions: paper_info.num_questions,
+																				num_marks: paper_info.marks
+																			});
+																			start({
+																				id: paper.paper_id,
+																				num_questions: paper_info.num_questions,
+																				num_marks: paper_info.marks
+																			});
+																		}
+																	});
+																}}
+															>
+																Regenerate (one-time)
+															</Button>
+														</Alert>
+													) : null}
 												<div id={pdfSourceId ?? undefined}>
 													<PaperBody
 														paper={paper}
@@ -280,6 +338,7 @@ export default function PaperClient({ params, searchParams, initialPapers }: Pap
 														}}
 													/>
 												</div>
+												</>
 											) : paper.status === 'failed' ? (
 												<>
 													<div className='flex justify-center'>

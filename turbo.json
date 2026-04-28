@@ -20,7 +20,8 @@
     "db:push": { "cache": false, "persistent": true, "interactive": true },
     "db:pull": { "cache": false, "persistent": true, "interactive": true },
     "db:migrate": { "cache": false },
-    "db:studio": { "cache": false }
+    "db:studio": { "cache": false },
+    "db:grant-legacy-regenerate": { "cache": false }
   },
   "globalEnv": [
     "APP_BASE_URL",

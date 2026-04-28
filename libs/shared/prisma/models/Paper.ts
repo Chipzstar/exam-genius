@@ -58,6 +58,7 @@ export type PaperMinAggregateOutputType = {
   generator_version: number | null
   structured_at: Date | null
   mark_scheme_status: $Enums.MarkSchemeStatus | null
+  legacy_one_time_regenerate_available: boolean | null
 }
 
 export type PaperMaxAggregateOutputType = {
@@ -80,6 +81,7 @@ export type PaperMaxAggregateOutputType = {
   generator_version: number | null
   structured_at: Date | null
   mark_scheme_status: $Enums.MarkSchemeStatus | null
+  legacy_one_time_regenerate_available: boolean | null
 }
 
 export type PaperCountAggregateOutputType = {
@@ -102,6 +104,7 @@ export type PaperCountAggregateOutputType = {
   generator_version: number
   structured_at: number
   mark_scheme_status: number
+  legacy_one_time_regenerate_available: number
   _all: number
 }
 
@@ -138,6 +141,7 @@ export type PaperMinAggregateInputType = {
   generator_version?: true
   structured_at?: true
   mark_scheme_status?: true
+  legacy_one_time_regenerate_available?: true
 }
 
 export type PaperMaxAggregateInputType = {
@@ -160,6 +164,7 @@ export type PaperMaxAggregateInputType = {
   generator_version?: true
   structured_at?: true
   mark_scheme_status?: true
+  legacy_one_time_regenerate_available?: true
 }
 
 export type PaperCountAggregateInputType = {
@@ -182,6 +187,7 @@ export type PaperCountAggregateInputType = {
   generator_version?: true
   structured_at?: true
   mark_scheme_status?: true
+  legacy_one_time_regenerate_available?: true
   _all?: true
 }
 
@@ -291,6 +297,7 @@ export type PaperGroupByOutputType = {
   generator_version: number
   structured_at: Date | null
   mark_scheme_status: $Enums.MarkSchemeStatus
+  legacy_one_time_regenerate_available: boolean
   _count: PaperCountAggregateOutputType | null
   _avg: PaperAvgAggregateOutputType | null
   _sum: PaperSumAggregateOutputType | null
@@ -336,6 +343,7 @@ export type PaperWhereInput = {
   generator_version?: Prisma.IntFilter<"Paper"> | number
   structured_at?: Prisma.DateTimeNullableFilter<"Paper"> | Date | string | null
   mark_scheme_status?: Prisma.EnumMarkSchemeStatusFilter<"Paper"> | $Enums.MarkSchemeStatus
+  legacy_one_time_regenerate_available?: Prisma.BoolFilter<"Paper"> | boolean
   user?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
   course?: Prisma.XOR<Prisma.CourseScalarRelationFilter, Prisma.CourseWhereInput>
   questions?: Prisma.QuestionListRelationFilter
@@ -364,6 +372,7 @@ export type PaperOrderByWithRelationInput = {
   generator_version?: Prisma.SortOrder
   structured_at?: Prisma.SortOrderInput | Prisma.SortOrder
   mark_scheme_status?: Prisma.SortOrder
+  legacy_one_time_regenerate_available?: Prisma.SortOrder
   user?: Prisma.UserOrderByWithRelationInput
   course?: Prisma.CourseOrderByWithRelationInput
   questions?: Prisma.QuestionOrderByRelationAggregateInput
@@ -395,6 +404,7 @@ export type PaperWhereUniqueInput = Prisma.AtLeast<{
   generator_version?: Prisma.IntFilter<"Paper"> | number
   structured_at?: Prisma.DateTimeNullableFilter<"Paper"> | Date | string | null
   mark_scheme_status?: Prisma.EnumMarkSchemeStatusFilter<"Paper"> | $Enums.MarkSchemeStatus
+  legacy_one_time_regenerate_available?: Prisma.BoolFilter<"Paper"> | boolean
   user?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
   course?: Prisma.XOR<Prisma.CourseScalarRelationFilter, Prisma.CourseWhereInput>
   questions?: Prisma.QuestionListRelationFilter
@@ -423,6 +433,7 @@ export type PaperOrderByWithAggregationInput = {
   generator_version?: Prisma.SortOrder
   structured_at?: Prisma.SortOrderInput | Prisma.SortOrder
   mark_scheme_status?: Prisma.SortOrder
+  legacy_one_time_regenerate_available?: Prisma.SortOrder
   _count?: Prisma.PaperCountOrderByAggregateInput
   _avg?: Prisma.PaperAvgOrderByAggregateInput
   _max?: Prisma.PaperMaxOrderByAggregateInput
@@ -453,6 +464,7 @@ export type PaperScalarWhereWithAggregatesInput = {
   generator_version?: Prisma.IntWithAggregatesFilter<"Paper"> | number
   structured_at?: Prisma.DateTimeNullableWithAggregatesFilter<"Paper"> | Date | string | null
   mark_scheme_status?: Prisma.EnumMarkSchemeStatusWithAggregatesFilter<"Paper"> | $Enums.MarkSchemeStatus
+  legacy_one_time_regenerate_available?: Prisma.BoolWithAggregatesFilter<"Paper"> | boolean
 }
 
 export type PaperCreateInput = {
@@ -472,6 +484,7 @@ export type PaperCreateInput = {
   generator_version?: number
   structured_at?: Date | string | null
   mark_scheme_status?: $Enums.MarkSchemeStatus
+  legacy_one_time_regenerate_available?: boolean
   user: Prisma.UserCreateNestedOneWithoutPapersInput
   course: Prisma.CourseCreateNestedOneWithoutPapersInput
   questions?: Prisma.QuestionCreateNestedManyWithoutPaperInput
@@ -500,6 +513,7 @@ export type PaperUncheckedCreateInput = {
   generator_version?: number
   structured_at?: Date | string | null
   mark_scheme_status?: $Enums.MarkSchemeStatus
+  legacy_one_time_regenerate_available?: boolean
   questions?: Prisma.QuestionUncheckedCreateNestedManyWithoutPaperInput
   markScheme?: Prisma.MarkSchemeUncheckedCreateNestedOneWithoutPaperInput
   paperRating?: Prisma.PaperRatingUncheckedCreateNestedOneWithoutPaperInput
@@ -523,6 +537,7 @@ export type PaperUpdateInput = {
   generator_version?: Prisma.IntFieldUpdateOperationsInput | number
   structured_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   mark_scheme_status?: Prisma.EnumMarkSchemeStatusFieldUpdateOperationsInput | $Enums.MarkSchemeStatus
+  legacy_one_time_regenerate_available?: Prisma.BoolFieldUpdateOperationsInput | boolean
   user?: Prisma.UserUpdateOneRequiredWithoutPapersNestedInput
   course?: Prisma.CourseUpdateOneRequiredWithoutPapersNestedInput
   questions?: Prisma.QuestionUpdateManyWithoutPaperNestedInput
@@ -551,6 +566,7 @@ export type PaperUncheckedUpdateInput = {
   generator_version?: Prisma.IntFieldUpdateOperationsInput | number
   structured_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   mark_scheme_status?: Prisma.EnumMarkSchemeStatusFieldUpdateOperationsInput | $Enums.MarkSchemeStatus
+  legacy_one_time_regenerate_available?: Prisma.BoolFieldUpdateOperationsInput | boolean
   questions?: Prisma.QuestionUncheckedUpdateManyWithoutPaperNestedInput
   markScheme?: Prisma.MarkSchemeUncheckedUpdateOneWithoutPaperNestedInput
   paperRating?: Prisma.PaperRatingUncheckedUpdateOneWithoutPaperNestedInput
@@ -577,6 +593,7 @@ export type PaperCreateManyInput = {
   generator_version?: number
   structured_at?: Date | string | null
   mark_scheme_status?: $Enums.MarkSchemeStatus
+  legacy_one_time_regenerate_available?: boolean
 }
 
 export type PaperUpdateManyMutationInput = {
@@ -596,6 +613,7 @@ export type PaperUpdateManyMutationInput = {
   generator_version?: Prisma.IntFieldUpdateOperationsInput | number
   structured_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   mark_scheme_status?: Prisma.EnumMarkSchemeStatusFieldUpdateOperationsInput | $Enums.MarkSchemeStatus
+  legacy_one_time_regenerate_available?: Prisma.BoolFieldUpdateOperationsInput | boolean
 }
 
 export type PaperUncheckedUpdateManyInput = {
@@ -618,6 +636,7 @@ export type PaperUncheckedUpdateManyInput = {
   generator_version?: Prisma.IntFieldUpdateOperationsInput | number
   structured_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   mark_scheme_status?: Prisma.EnumMarkSchemeStatusFieldUpdateOperationsInput | $Enums.MarkSchemeStatus
+  legacy_one_time_regenerate_available?: Prisma.BoolFieldUpdateOperationsInput | boolean
 }
 
 export type PaperScalarRelationFilter = {
@@ -655,6 +674,7 @@ export type PaperCountOrderByAggregateInput = {
   generator_version?: Prisma.SortOrder
   structured_at?: Prisma.SortOrder
   mark_scheme_status?: Prisma.SortOrder
+  legacy_one_time_regenerate_available?: Prisma.SortOrder
 }
 
 export type PaperAvgOrderByAggregateInput = {
@@ -683,6 +703,7 @@ export type PaperMaxOrderByAggregateInput = {
   generator_version?: Prisma.SortOrder
   structured_at?: Prisma.SortOrder
   mark_scheme_status?: Prisma.SortOrder
+  legacy_one_time_regenerate_available?: Prisma.SortOrder
 }
 
 export type PaperMinOrderByAggregateInput = {
@@ -705,6 +726,7 @@ export type PaperMinOrderByAggregateInput = {
   generator_version?: Prisma.SortOrder
   structured_at?: Prisma.SortOrder
   mark_scheme_status?: Prisma.SortOrder
+  legacy_one_time_regenerate_available?: Prisma.SortOrder
 }
 
 export type PaperSumOrderByAggregateInput = {
@@ -815,6 +837,10 @@ export type EnumStatusFieldUpdateOperationsInput = {
   set?: $Enums.Status
 }
 
+export type BoolFieldUpdateOperationsInput = {
+  set?: boolean
+}
+
 export type PaperCreateNestedManyWithoutUserInput = {
   create?: Prisma.XOR<Prisma.PaperCreateWithoutUserInput, Prisma.PaperUncheckedCreateWithoutUserInput> | Prisma.PaperCreateWithoutUserInput[] | Prisma.PaperUncheckedCreateWithoutUserInput[]
   connectOrCreate?: Prisma.PaperCreateOrConnectWithoutUserInput | Prisma.PaperCreateOrConnectWithoutUserInput[]
@@ -874,6 +900,7 @@ export type PaperCreateWithoutQuestionsInput = {
   generator_version?: number
   structured_at?: Date | string | null
   mark_scheme_status?: $Enums.MarkSchemeStatus
+  legacy_one_time_regenerate_available?: boolean
   user: Prisma.UserCreateNestedOneWithoutPapersInput
   course: Prisma.CourseCreateNestedOneWithoutPapersInput
   markScheme?: Prisma.MarkSchemeCreateNestedOneWithoutPaperInput
@@ -901,6 +928,7 @@ export type PaperUncheckedCreateWithoutQuestionsInput = {
   generator_version?: number
   structured_at?: Date | string | null
   mark_scheme_status?: $Enums.MarkSchemeStatus
+  legacy_one_time_regenerate_available?: boolean
   markScheme?: Prisma.MarkSchemeUncheckedCreateNestedOneWithoutPaperInput
   paperRating?: Prisma.PaperRatingUncheckedCreateNestedOneWithoutPaperInput
   attempts?: Prisma.AttemptUncheckedCreateNestedManyWithoutPaperInput
@@ -939,6 +967,7 @@ export type PaperUpdateWithoutQuestionsInput = {
   generator_version?: Prisma.IntFieldUpdateOperationsInput | number
   structured_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   mark_scheme_status?: Prisma.EnumMarkSchemeStatusFieldUpdateOperationsInput | $Enums.MarkSchemeStatus
+  legacy_one_time_regenerate_available?: Prisma.BoolFieldUpdateOperationsInput | boolean
   user?: Prisma.UserUpdateOneRequiredWithoutPapersNestedInput
   course?: Prisma.CourseUpdateOneRequiredWithoutPapersNestedInput
   markScheme?: Prisma.MarkSchemeUpdateOneWithoutPaperNestedInput
@@ -966,6 +995,7 @@ export type PaperUncheckedUpdateWithoutQuestionsInput = {
   generator_version?: Prisma.IntFieldUpdateOperationsInput | number
   structured_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   mark_scheme_status?: Prisma.EnumMarkSchemeStatusFieldUpdateOperationsInput | $Enums.MarkSchemeStatus
+  legacy_one_time_regenerate_available?: Prisma.BoolFieldUpdateOperationsInput | boolean
   markScheme?: Prisma.MarkSchemeUncheckedUpdateOneWithoutPaperNestedInput
   paperRating?: Prisma.PaperRatingUncheckedUpdateOneWithoutPaperNestedInput
   attempts?: Prisma.AttemptUncheckedUpdateManyWithoutPaperNestedInput
@@ -988,6 +1018,7 @@ export type PaperCreateWithoutMarkSchemeInput = {
   generator_version?: number
   structured_at?: Date | string | null
   mark_scheme_status?: $Enums.MarkSchemeStatus
+  legacy_one_time_regenerate_available?: boolean
   user: Prisma.UserCreateNestedOneWithoutPapersInput
   course: Prisma.CourseCreateNestedOneWithoutPapersInput
   questions?: Prisma.QuestionCreateNestedManyWithoutPaperInput
@@ -1015,6 +1046,7 @@ export type PaperUncheckedCreateWithoutMarkSchemeInput = {
   generator_version?: number
   structured_at?: Date | string | null
   mark_scheme_status?: $Enums.MarkSchemeStatus
+  legacy_one_time_regenerate_available?: boolean
   questions?: Prisma.QuestionUncheckedCreateNestedManyWithoutPaperInput
   paperRating?: Prisma.PaperRatingUncheckedCreateNestedOneWithoutPaperInput
   attempts?: Prisma.AttemptUncheckedCreateNestedManyWithoutPaperInput
@@ -1053,6 +1085,7 @@ export type PaperUpdateWithoutMarkSchemeInput = {
   generator_version?: Prisma.IntFieldUpdateOperationsInput | number
   structured_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   mark_scheme_status?: Prisma.EnumMarkSchemeStatusFieldUpdateOperationsInput | $Enums.MarkSchemeStatus
+  legacy_one_time_regenerate_available?: Prisma.BoolFieldUpdateOperationsInput | boolean
   user?: Prisma.UserUpdateOneRequiredWithoutPapersNestedInput
   course?: Prisma.CourseUpdateOneRequiredWithoutPapersNestedInput
   questions?: Prisma.QuestionUpdateManyWithoutPaperNestedInput
@@ -1080,6 +1113,7 @@ export type PaperUncheckedUpdateWithoutMarkSchemeInput = {
   generator_version?: Prisma.IntFieldUpdateOperationsInput | number
   structured_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   mark_scheme_status?: Prisma.EnumMarkSchemeStatusFieldUpdateOperationsInput | $Enums.MarkSchemeStatus
+  legacy_one_time_regenerate_available?: Prisma.BoolFieldUpdateOperationsInput | boolean
   questions?: Prisma.QuestionUncheckedUpdateManyWithoutPaperNestedInput
   paperRating?: Prisma.PaperRatingUncheckedUpdateOneWithoutPaperNestedInput
   attempts?: Prisma.AttemptUncheckedUpdateManyWithoutPaperNestedInput
@@ -1102,6 +1136,7 @@ export type PaperCreateWithoutPaperRatingInput = {
   generator_version?: number
   structured_at?: Date | string | null
   mark_scheme_status?: $Enums.MarkSchemeStatus
+  legacy_one_time_regenerate_available?: boolean
   user: Prisma.UserCreateNestedOneWithoutPapersInput
   course: Prisma.CourseCreateNestedOneWithoutPapersInput
   questions?: Prisma.QuestionCreateNestedManyWithoutPaperInput
@@ -1129,6 +1164,7 @@ export type PaperUncheckedCreateWithoutPaperRatingInput = {
   generator_version?: number
   structured_at?: Date | string | null
   mark_scheme_status?: $Enums.MarkSchemeStatus
+  legacy_one_time_regenerate_available?: boolean
   questions?: Prisma.QuestionUncheckedCreateNestedManyWithoutPaperInput
   markScheme?: Prisma.MarkSchemeUncheckedCreateNestedOneWithoutPaperInput
   attempts?: Prisma.AttemptUncheckedCreateNestedManyWithoutPaperInput
@@ -1167,6 +1203,7 @@ export type PaperUpdateWithoutPaperRatingInput = {
   generator_version?: Prisma.IntFieldUpdateOperationsInput | number
   structured_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   mark_scheme_status?: Prisma.EnumMarkSchemeStatusFieldUpdateOperationsInput | $Enums.MarkSchemeStatus
+  legacy_one_time_regenerate_available?: Prisma.BoolFieldUpdateOperationsInput | boolean
   user?: Prisma.UserUpdateOneRequiredWithoutPapersNestedInput
   course?: Prisma.CourseUpdateOneRequiredWithoutPapersNestedInput
   questions?: Prisma.QuestionUpdateManyWithoutPaperNestedInput
@@ -1194,6 +1231,7 @@ export type PaperUncheckedUpdateWithoutPaperRatingInput = {
   generator_version?: Prisma.IntFieldUpdateOperationsInput | number
   structured_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   mark_scheme_status?: Prisma.EnumMarkSchemeStatusFieldUpdateOperationsInput | $Enums.MarkSchemeStatus
+  legacy_one_time_regenerate_available?: Prisma.BoolFieldUpdateOperationsInput | boolean
   questions?: Prisma.QuestionUncheckedUpdateManyWithoutPaperNestedInput
   markScheme?: Prisma.MarkSchemeUncheckedUpdateOneWithoutPaperNestedInput
   attempts?: Prisma.AttemptUncheckedUpdateManyWithoutPaperNestedInput
@@ -1216,6 +1254,7 @@ export type PaperCreateWithoutAttemptsInput = {
   generator_version?: number
   structured_at?: Date | string | null
   mark_scheme_status?: $Enums.MarkSchemeStatus
+  legacy_one_time_regenerate_available?: boolean
   user: Prisma.UserCreateNestedOneWithoutPapersInput
   course: Prisma.CourseCreateNestedOneWithoutPapersInput
   questions?: Prisma.QuestionCreateNestedManyWithoutPaperInput
@@ -1243,6 +1282,7 @@ export type PaperUncheckedCreateWithoutAttemptsInput = {
   generator_version?: number
   structured_at?: Date | string | null
   mark_scheme_status?: $Enums.MarkSchemeStatus
+  legacy_one_time_regenerate_available?: boolean
   questions?: Prisma.QuestionUncheckedCreateNestedManyWithoutPaperInput
   markScheme?: Prisma.MarkSchemeUncheckedCreateNestedOneWithoutPaperInput
   paperRating?: Prisma.PaperRatingUncheckedCreateNestedOneWithoutPaperInput
@@ -1281,6 +1321,7 @@ export type PaperUpdateWithoutAttemptsInput = {
   generator_version?: Prisma.IntFieldUpdateOperationsInput | number
   structured_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   mark_scheme_status?: Prisma.EnumMarkSchemeStatusFieldUpdateOperationsInput | $Enums.MarkSchemeStatus
+  legacy_one_time_regenerate_available?: Prisma.BoolFieldUpdateOperationsInput | boolean
   user?: Prisma.UserUpdateOneRequiredWithoutPapersNestedInput
   course?: Prisma.CourseUpdateOneRequiredWithoutPapersNestedInput
   questions?: Prisma.QuestionUpdateManyWithoutPaperNestedInput
@@ -1308,6 +1349,7 @@ export type PaperUncheckedUpdateWithoutAttemptsInput = {
   generator_version?: Prisma.IntFieldUpdateOperationsInput | number
   structured_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   mark_scheme_status?: Prisma.EnumMarkSchemeStatusFieldUpdateOperationsInput | $Enums.MarkSchemeStatus
+  legacy_one_time_regenerate_available?: Prisma.BoolFieldUpdateOperationsInput | boolean
   questions?: Prisma.QuestionUncheckedUpdateManyWithoutPaperNestedInput
   markScheme?: Prisma.MarkSchemeUncheckedUpdateOneWithoutPaperNestedInput
   paperRating?: Prisma.PaperRatingUncheckedUpdateOneWithoutPaperNestedInput
@@ -1330,6 +1372,7 @@ export type PaperCreateWithoutCourseInput = {
   generator_version?: number
   structured_at?: Date | string | null
   mark_scheme_status?: $Enums.MarkSchemeStatus
+  legacy_one_time_regenerate_available?: boolean
   user: Prisma.UserCreateNestedOneWithoutPapersInput
   questions?: Prisma.QuestionCreateNestedManyWithoutPaperInput
   markScheme?: Prisma.MarkSchemeCreateNestedOneWithoutPaperInput
@@ -1356,6 +1399,7 @@ export type PaperUncheckedCreateWithoutCourseInput = {
   generator_version?: number
   structured_at?: Date | string | null
   mark_scheme_status?: $Enums.MarkSchemeStatus
+  legacy_one_time_regenerate_available?: boolean
   questions?: Prisma.QuestionUncheckedCreateNestedManyWithoutPaperInput
   markScheme?: Prisma.MarkSchemeUncheckedCreateNestedOneWithoutPaperInput
   paperRating?: Prisma.PaperRatingUncheckedCreateNestedOneWithoutPaperInput
@@ -1411,6 +1455,7 @@ export type PaperScalarWhereInput = {
   generator_version?: Prisma.IntFilter<"Paper"> | number
   structured_at?: Prisma.DateTimeNullableFilter<"Paper"> | Date | string | null
   mark_scheme_status?: Prisma.EnumMarkSchemeStatusFilter<"Paper"> | $Enums.MarkSchemeStatus
+  legacy_one_time_regenerate_available?: Prisma.BoolFilter<"Paper"> | boolean
 }
 
 export type PaperCreateWithoutUserInput = {
@@ -1430,6 +1475,7 @@ export type PaperCreateWithoutUserInput = {
   generator_version?: number
   structured_at?: Date | string | null
   mark_scheme_status?: $Enums.MarkSchemeStatus
+  legacy_one_time_regenerate_available?: boolean
   course: Prisma.CourseCreateNestedOneWithoutPapersInput
   questions?: Prisma.QuestionCreateNestedManyWithoutPaperInput
   markScheme?: Prisma.MarkSchemeCreateNestedOneWithoutPaperInput
@@ -1456,6 +1502,7 @@ export type PaperUncheckedCreateWithoutUserInput = {
   generator_version?: number
   structured_at?: Date | string | null
   mark_scheme_status?: $Enums.MarkSchemeStatus
+  legacy_one_time_regenerate_available?: boolean
   questions?: Prisma.QuestionUncheckedCreateNestedManyWithoutPaperInput
   markScheme?: Prisma.MarkSchemeUncheckedCreateNestedOneWithoutPaperInput
   paperRating?: Prisma.PaperRatingUncheckedCreateNestedOneWithoutPaperInput
@@ -1507,6 +1554,7 @@ export type PaperCreateManyCourseInput = {
   generator_version?: number
   structured_at?: Date | string | null
   mark_scheme_status?: $Enums.MarkSchemeStatus
+  legacy_one_time_regenerate_available?: boolean
 }
 
 export type PaperUpdateWithoutCourseInput = {
@@ -1526,6 +1574,7 @@ export type PaperUpdateWithoutCourseInput = {
   generator_version?: Prisma.IntFieldUpdateOperationsInput | number
   structured_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   mark_scheme_status?: Prisma.EnumMarkSchemeStatusFieldUpdateOperationsInput | $Enums.MarkSchemeStatus
+  legacy_one_time_regenerate_available?: Prisma.BoolFieldUpdateOperationsInput | boolean
   user?: Prisma.UserUpdateOneRequiredWithoutPapersNestedInput
   questions?: Prisma.QuestionUpdateManyWithoutPaperNestedInput
   markScheme?: Prisma.MarkSchemeUpdateOneWithoutPaperNestedInput
@@ -1552,6 +1601,7 @@ export type PaperUncheckedUpdateWithoutCourseInput = {
   generator_version?: Prisma.IntFieldUpdateOperationsInput | number
   structured_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   mark_scheme_status?: Prisma.EnumMarkSchemeStatusFieldUpdateOperationsInput | $Enums.MarkSchemeStatus
+  legacy_one_time_regenerate_available?: Prisma.BoolFieldUpdateOperationsInput | boolean
   questions?: Prisma.QuestionUncheckedUpdateManyWithoutPaperNestedInput
   markScheme?: Prisma.MarkSchemeUncheckedUpdateOneWithoutPaperNestedInput
   paperRating?: Prisma.PaperRatingUncheckedUpdateOneWithoutPaperNestedInput
@@ -1577,6 +1627,7 @@ export type PaperUncheckedUpdateManyWithoutCourseInput = {
   generator_version?: Prisma.IntFieldUpdateOperationsInput | number
   structured_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   mark_scheme_status?: Prisma.EnumMarkSchemeStatusFieldUpdateOperationsInput | $Enums.MarkSchemeStatus
+  legacy_one_time_regenerate_available?: Prisma.BoolFieldUpdateOperationsInput | boolean
 }
 
 export type PaperCreateManyUserInput = {
@@ -1598,6 +1649,7 @@ export type PaperCreateManyUserInput = {
   generator_version?: number
   structured_at?: Date | string | null
   mark_scheme_status?: $Enums.MarkSchemeStatus
+  legacy_one_time_regenerate_available?: boolean
 }
 
 export type PaperUpdateWithoutUserInput = {
@@ -1617,6 +1669,7 @@ export type PaperUpdateWithoutUserInput = {
   generator_version?: Prisma.IntFieldUpdateOperationsInput | number
   structured_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   mark_scheme_status?: Prisma.EnumMarkSchemeStatusFieldUpdateOperationsInput | $Enums.MarkSchemeStatus
+  legacy_one_time_regenerate_available?: Prisma.BoolFieldUpdateOperationsInput | boolean
   course?: Prisma.CourseUpdateOneRequiredWithoutPapersNestedInput
   questions?: Prisma.QuestionUpdateManyWithoutPaperNestedInput
   markScheme?: Prisma.MarkSchemeUpdateOneWithoutPaperNestedInput
@@ -1643,6 +1696,7 @@ export type PaperUncheckedUpdateWithoutUserInput = {
   generator_version?: Prisma.IntFieldUpdateOperationsInput | number
   structured_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   mark_scheme_status?: Prisma.EnumMarkSchemeStatusFieldUpdateOperationsInput | $Enums.MarkSchemeStatus
+  legacy_one_time_regenerate_available?: Prisma.BoolFieldUpdateOperationsInput | boolean
   questions?: Prisma.QuestionUncheckedUpdateManyWithoutPaperNestedInput
   markScheme?: Prisma.MarkSchemeUncheckedUpdateOneWithoutPaperNestedInput
   paperRating?: Prisma.PaperRatingUncheckedUpdateOneWithoutPaperNestedInput
@@ -1668,6 +1722,7 @@ export type PaperUncheckedUpdateManyWithoutUserInput = {
   generator_version?: Prisma.IntFieldUpdateOperationsInput | number
   structured_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   mark_scheme_status?: Prisma.EnumMarkSchemeStatusFieldUpdateOperationsInput | $Enums.MarkSchemeStatus
+  legacy_one_time_regenerate_available?: Prisma.BoolFieldUpdateOperationsInput | boolean
 }
 
 
@@ -1730,6 +1785,7 @@ export type PaperSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = 
   generator_version?: boolean
   structured_at?: boolean
   mark_scheme_status?: boolean
+  legacy_one_time_regenerate_available?: boolean
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
   course?: boolean | Prisma.CourseDefaultArgs<ExtArgs>
   questions?: boolean | Prisma.Paper$questionsArgs<ExtArgs>
@@ -1759,6 +1815,7 @@ export type PaperSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensi
   generator_version?: boolean
   structured_at?: boolean
   mark_scheme_status?: boolean
+  legacy_one_time_regenerate_available?: boolean
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
   course?: boolean | Prisma.CourseDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["paper"]>
@@ -1783,6 +1840,7 @@ export type PaperSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensi
   generator_version?: boolean
   structured_at?: boolean
   mark_scheme_status?: boolean
+  legacy_one_time_regenerate_available?: boolean
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
   course?: boolean | Prisma.CourseDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["paper"]>
@@ -1807,9 +1865,10 @@ export type PaperSelectScalar = {
   generator_version?: boolean
   structured_at?: boolean
   mark_scheme_status?: boolean
+  legacy_one_time_regenerate_available?: boolean
 }
 
-export type PaperOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "created_at" | "updated_at" | "paper_id" | "paper_code" | "paper_number" | "name" | "subject" | "exam_board" | "unit_name" | "user_id" | "course_id" | "content" | "status" | "prompt_version" | "model" | "generator_version" | "structured_at" | "mark_scheme_status", ExtArgs["result"]["paper"]>
+export type PaperOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "created_at" | "updated_at" | "paper_id" | "paper_code" | "paper_number" | "name" | "subject" | "exam_board" | "unit_name" | "user_id" | "course_id" | "content" | "status" | "prompt_version" | "model" | "generator_version" | "structured_at" | "mark_scheme_status" | "legacy_one_time_regenerate_available", ExtArgs["result"]["paper"]>
 export type PaperInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
   course?: boolean | Prisma.CourseDefaultArgs<ExtArgs>
@@ -1858,6 +1917,10 @@ export type $PaperPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs 
     generator_version: number
     structured_at: Date | null
     mark_scheme_status: $Enums.MarkSchemeStatus
+    /**
+     * When true, the user may run a one-off full regeneration with the latest pipeline (consumes grant).
+     */
+    legacy_one_time_regenerate_available: boolean
   }, ExtArgs["result"]["paper"]>
   composites: {}
 }
@@ -2306,6 +2369,7 @@ export interface PaperFieldRefs {
   readonly generator_version: Prisma.FieldRef<"Paper", 'Int'>
   readonly structured_at: Prisma.FieldRef<"Paper", 'DateTime'>
   readonly mark_scheme_status: Prisma.FieldRef<"Paper", 'MarkSchemeStatus'>
+  readonly legacy_one_time_regenerate_available: Prisma.FieldRef<"Paper", 'Boolean'>
 }
     
 

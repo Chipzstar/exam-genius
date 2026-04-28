@@ -26,6 +26,7 @@
 		"db:pull": "turbo run db:pull --filter=@exam-genius/dashboard-app",
 		"db:migrate": "turbo run db:migrate --filter=@exam-genius/dashboard-app",
 		"db:studio": "turbo run db:studio --filter=@exam-genius/dashboard-app",
+		"db:grant-legacy-regenerate": "turbo run db:grant-legacy-regenerate --filter=@exam-genius/dashboard-app",
 		"create-env-file:dashboard": "doppler secrets download --no-file --format env > ./apps/dashboard-app/.env -p exam-genius -c loc",
 		"webhookthing": "pnpm dlx webhookthing@latest",
 		"stripe-local-webhook": "stripe listen --forward-to localhost:3000/api/stripe/webhook",

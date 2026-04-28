@@ -307,6 +307,75 @@ const paperRouter = createTRPCRouter({
 				});
 			}
 		}),
+	/** Clears attempts/mark scheme ratings so regenerated papers align with new question IDs (consumes one-time legacy grant). */
+	regenerateWithLegacyGrant: protectedProcedure
+		.use(rateLimited('paper_generate'))
+		.input(
+			z.object({
+				id: z.string(),
+				num_questions: z.number(),
+				num_marks: z.number(),
+				referenceIds: z.array(z.string()).optional()
+			})
+		)
+		.mutation(async ({ input, ctx }) => {
+			const log = new Logger();
+			try {
+				const existing = await ctx.prisma.paper.findFirst({
+					where: { paper_id: input.id, user_id: ctx.auth.userId }
+				});
+				if (!existing) throw new TRPCError({ code: 'NOT_FOUND' });
+				if (!existing.legacy_one_time_regenerate_available) {
+					throw new TRPCError({
+						code: 'FORBIDDEN',
+						message: 'Legacy one-time regeneration is not available for this paper.'
+					});
+				}
+				await ctx.prisma.$transaction([
+					ctx.prisma.attempt.deleteMany({
+						where: { paper_id: existing.paper_id }
+					}),
+					ctx.prisma.markScheme.deleteMany({
+						where: { paper_id: existing.paper_id }
+					}),
+					ctx.prisma.paperRating.deleteMany({
+						where: { paper_id: existing.paper_id }
+					}),
+					ctx.prisma.paper.update({
+						where: { paper_id: existing.paper_id },
+						data: {
+							legacy_one_time_regenerate_available: false,
+							status: 'pending',
+							mark_scheme_status: 'none'
+						}
+					})
+				]);
+				await backendApi.post('/server/paper/generate', {
+					paper_id: existing.paper_id,
+					paper_name: existing.name,
+					subject: capitalize(existing.subject),
+					exam_board: capitalize(existing.exam_board),
+					course: capitalize(sanitize(existing.unit_name)),
+					num_questions: input.num_questions,
+					num_marks: input.num_marks,
+					reference_ids: input.referenceIds ?? []
+				} as GeneratePaperPayload).catch(err => {
+					log.error('Legacy regenerate API error', { error: String(err) });
+					void log.flush();
+				});
+				await log.flush();
+				return { paper_id: existing.paper_id };
+			} catch (err) {
+				if (err instanceof TRPCError) throw err;
+				log.error('Legacy regenerate error', { error: String(err) });
+				await log.flush();
+				throw new TRPCError({
+					code: 'INTERNAL_SERVER_ERROR',
+					message: 'Oops, something went wrong' + (err as Error).message
+				});
+			}
+		}),
+
 	regeneratePaper: protectedProcedure
 		.input(
 			z.object({
