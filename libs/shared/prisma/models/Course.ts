@@ -270,6 +270,7 @@ export type CourseWhereInput = {
   year_level?: Prisma.IntFilter<"Course"> | number
   user?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
   papers?: Prisma.PaperListRelationFilter
+  paperReferences?: Prisma.PaperReferenceListRelationFilter
 }
 
 export type CourseOrderByWithRelationInput = {
@@ -286,6 +287,7 @@ export type CourseOrderByWithRelationInput = {
   year_level?: Prisma.SortOrder
   user?: Prisma.UserOrderByWithRelationInput
   papers?: Prisma.PaperOrderByRelationAggregateInput
+  paperReferences?: Prisma.PaperReferenceOrderByRelationAggregateInput
 }
 
 export type CourseWhereUniqueInput = Prisma.AtLeast<{
@@ -305,6 +307,7 @@ export type CourseWhereUniqueInput = Prisma.AtLeast<{
   year_level?: Prisma.IntFilter<"Course"> | number
   user?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
   papers?: Prisma.PaperListRelationFilter
+  paperReferences?: Prisma.PaperReferenceListRelationFilter
 }, "id" | "id" | "course_id">
 
 export type CourseOrderByWithAggregationInput = {
@@ -355,6 +358,7 @@ export type CourseCreateInput = {
   year_level: number
   user: Prisma.UserCreateNestedOneWithoutCoursesInput
   papers?: Prisma.PaperCreateNestedManyWithoutCourseInput
+  paperReferences?: Prisma.PaperReferenceCreateNestedManyWithoutCourseInput
 }
 
 export type CourseUncheckedCreateInput = {
@@ -370,6 +374,7 @@ export type CourseUncheckedCreateInput = {
   product_id?: string | null
   year_level: number
   papers?: Prisma.PaperUncheckedCreateNestedManyWithoutCourseInput
+  paperReferences?: Prisma.PaperReferenceUncheckedCreateNestedManyWithoutCourseInput
 }
 
 export type CourseUpdateInput = {
@@ -384,6 +389,7 @@ export type CourseUpdateInput = {
   year_level?: Prisma.IntFieldUpdateOperationsInput | number
   user?: Prisma.UserUpdateOneRequiredWithoutCoursesNestedInput
   papers?: Prisma.PaperUpdateManyWithoutCourseNestedInput
+  paperReferences?: Prisma.PaperReferenceUpdateManyWithoutCourseNestedInput
 }
 
 export type CourseUncheckedUpdateInput = {
@@ -399,6 +405,7 @@ export type CourseUncheckedUpdateInput = {
   product_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   year_level?: Prisma.IntFieldUpdateOperationsInput | number
   papers?: Prisma.PaperUncheckedUpdateManyWithoutCourseNestedInput
+  paperReferences?: Prisma.PaperReferenceUncheckedUpdateManyWithoutCourseNestedInput
 }
 
 export type CourseCreateManyInput = {
@@ -439,6 +446,11 @@ export type CourseUncheckedUpdateManyInput = {
   exam_board?: Prisma.EnumExamBoardFieldUpdateOperationsInput | $Enums.ExamBoard
   product_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   year_level?: Prisma.IntFieldUpdateOperationsInput | number
+}
+
+export type CourseScalarRelationFilter = {
+  is?: Prisma.CourseWhereInput
+  isNot?: Prisma.CourseWhereInput
 }
 
 export type CourseCountOrderByAggregateInput = {
@@ -493,11 +505,6 @@ export type CourseSumOrderByAggregateInput = {
   year_level?: Prisma.SortOrder
 }
 
-export type CourseScalarRelationFilter = {
-  is?: Prisma.CourseWhereInput
-  isNot?: Prisma.CourseWhereInput
-}
-
 export type CourseListRelationFilter = {
   every?: Prisma.CourseWhereInput
   some?: Prisma.CourseWhereInput
@@ -506,6 +513,20 @@ export type CourseListRelationFilter = {
 
 export type CourseOrderByRelationAggregateInput = {
   _count?: Prisma.SortOrder
+}
+
+export type CourseCreateNestedOneWithoutPaperReferencesInput = {
+  create?: Prisma.XOR<Prisma.CourseCreateWithoutPaperReferencesInput, Prisma.CourseUncheckedCreateWithoutPaperReferencesInput>
+  connectOrCreate?: Prisma.CourseCreateOrConnectWithoutPaperReferencesInput
+  connect?: Prisma.CourseWhereUniqueInput
+}
+
+export type CourseUpdateOneRequiredWithoutPaperReferencesNestedInput = {
+  create?: Prisma.XOR<Prisma.CourseCreateWithoutPaperReferencesInput, Prisma.CourseUncheckedCreateWithoutPaperReferencesInput>
+  connectOrCreate?: Prisma.CourseCreateOrConnectWithoutPaperReferencesInput
+  upsert?: Prisma.CourseUpsertWithoutPaperReferencesInput
+  connect?: Prisma.CourseWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.CourseUpdateToOneWithWhereWithoutPaperReferencesInput, Prisma.CourseUpdateWithoutPaperReferencesInput>, Prisma.CourseUncheckedUpdateWithoutPaperReferencesInput>
 }
 
 export type EnumSubjectFieldUpdateOperationsInput = {
@@ -572,6 +593,80 @@ export type CourseUncheckedUpdateManyWithoutUserNestedInput = {
   deleteMany?: Prisma.CourseScalarWhereInput | Prisma.CourseScalarWhereInput[]
 }
 
+export type CourseCreateWithoutPaperReferencesInput = {
+  created_at?: Date | string
+  updated_at?: Date | string
+  course_id: string
+  name: string
+  subject: $Enums.Subject
+  code?: string | null
+  exam_board: $Enums.ExamBoard
+  product_id?: string | null
+  year_level: number
+  user: Prisma.UserCreateNestedOneWithoutCoursesInput
+  papers?: Prisma.PaperCreateNestedManyWithoutCourseInput
+}
+
+export type CourseUncheckedCreateWithoutPaperReferencesInput = {
+  id?: number
+  created_at?: Date | string
+  updated_at?: Date | string
+  course_id: string
+  name: string
+  subject: $Enums.Subject
+  code?: string | null
+  user_id: string
+  exam_board: $Enums.ExamBoard
+  product_id?: string | null
+  year_level: number
+  papers?: Prisma.PaperUncheckedCreateNestedManyWithoutCourseInput
+}
+
+export type CourseCreateOrConnectWithoutPaperReferencesInput = {
+  where: Prisma.CourseWhereUniqueInput
+  create: Prisma.XOR<Prisma.CourseCreateWithoutPaperReferencesInput, Prisma.CourseUncheckedCreateWithoutPaperReferencesInput>
+}
+
+export type CourseUpsertWithoutPaperReferencesInput = {
+  update: Prisma.XOR<Prisma.CourseUpdateWithoutPaperReferencesInput, Prisma.CourseUncheckedUpdateWithoutPaperReferencesInput>
+  create: Prisma.XOR<Prisma.CourseCreateWithoutPaperReferencesInput, Prisma.CourseUncheckedCreateWithoutPaperReferencesInput>
+  where?: Prisma.CourseWhereInput
+}
+
+export type CourseUpdateToOneWithWhereWithoutPaperReferencesInput = {
+  where?: Prisma.CourseWhereInput
+  data: Prisma.XOR<Prisma.CourseUpdateWithoutPaperReferencesInput, Prisma.CourseUncheckedUpdateWithoutPaperReferencesInput>
+}
+
+export type CourseUpdateWithoutPaperReferencesInput = {
+  created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  course_id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  subject?: Prisma.EnumSubjectFieldUpdateOperationsInput | $Enums.Subject
+  code?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  exam_board?: Prisma.EnumExamBoardFieldUpdateOperationsInput | $Enums.ExamBoard
+  product_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  year_level?: Prisma.IntFieldUpdateOperationsInput | number
+  user?: Prisma.UserUpdateOneRequiredWithoutCoursesNestedInput
+  papers?: Prisma.PaperUpdateManyWithoutCourseNestedInput
+}
+
+export type CourseUncheckedUpdateWithoutPaperReferencesInput = {
+  id?: Prisma.IntFieldUpdateOperationsInput | number
+  created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  course_id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  subject?: Prisma.EnumSubjectFieldUpdateOperationsInput | $Enums.Subject
+  code?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  user_id?: Prisma.StringFieldUpdateOperationsInput | string
+  exam_board?: Prisma.EnumExamBoardFieldUpdateOperationsInput | $Enums.ExamBoard
+  product_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  year_level?: Prisma.IntFieldUpdateOperationsInput | number
+  papers?: Prisma.PaperUncheckedUpdateManyWithoutCourseNestedInput
+}
+
 export type CourseCreateWithoutPapersInput = {
   created_at?: Date | string
   updated_at?: Date | string
@@ -583,6 +678,7 @@ export type CourseCreateWithoutPapersInput = {
   product_id?: string | null
   year_level: number
   user: Prisma.UserCreateNestedOneWithoutCoursesInput
+  paperReferences?: Prisma.PaperReferenceCreateNestedManyWithoutCourseInput
 }
 
 export type CourseUncheckedCreateWithoutPapersInput = {
@@ -597,6 +693,7 @@ export type CourseUncheckedCreateWithoutPapersInput = {
   exam_board: $Enums.ExamBoard
   product_id?: string | null
   year_level: number
+  paperReferences?: Prisma.PaperReferenceUncheckedCreateNestedManyWithoutCourseInput
 }
 
 export type CourseCreateOrConnectWithoutPapersInput = {
@@ -626,6 +723,7 @@ export type CourseUpdateWithoutPapersInput = {
   product_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   year_level?: Prisma.IntFieldUpdateOperationsInput | number
   user?: Prisma.UserUpdateOneRequiredWithoutCoursesNestedInput
+  paperReferences?: Prisma.PaperReferenceUpdateManyWithoutCourseNestedInput
 }
 
 export type CourseUncheckedUpdateWithoutPapersInput = {
@@ -640,6 +738,7 @@ export type CourseUncheckedUpdateWithoutPapersInput = {
   exam_board?: Prisma.EnumExamBoardFieldUpdateOperationsInput | $Enums.ExamBoard
   product_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   year_level?: Prisma.IntFieldUpdateOperationsInput | number
+  paperReferences?: Prisma.PaperReferenceUncheckedUpdateManyWithoutCourseNestedInput
 }
 
 export type CourseCreateWithoutUserInput = {
@@ -653,6 +752,7 @@ export type CourseCreateWithoutUserInput = {
   product_id?: string | null
   year_level: number
   papers?: Prisma.PaperCreateNestedManyWithoutCourseInput
+  paperReferences?: Prisma.PaperReferenceCreateNestedManyWithoutCourseInput
 }
 
 export type CourseUncheckedCreateWithoutUserInput = {
@@ -667,6 +767,7 @@ export type CourseUncheckedCreateWithoutUserInput = {
   product_id?: string | null
   year_level: number
   papers?: Prisma.PaperUncheckedCreateNestedManyWithoutCourseInput
+  paperReferences?: Prisma.PaperReferenceUncheckedCreateNestedManyWithoutCourseInput
 }
 
 export type CourseCreateOrConnectWithoutUserInput = {
@@ -736,6 +837,7 @@ export type CourseUpdateWithoutUserInput = {
   product_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   year_level?: Prisma.IntFieldUpdateOperationsInput | number
   papers?: Prisma.PaperUpdateManyWithoutCourseNestedInput
+  paperReferences?: Prisma.PaperReferenceUpdateManyWithoutCourseNestedInput
 }
 
 export type CourseUncheckedUpdateWithoutUserInput = {
@@ -750,6 +852,7 @@ export type CourseUncheckedUpdateWithoutUserInput = {
   product_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   year_level?: Prisma.IntFieldUpdateOperationsInput | number
   papers?: Prisma.PaperUncheckedUpdateManyWithoutCourseNestedInput
+  paperReferences?: Prisma.PaperReferenceUncheckedUpdateManyWithoutCourseNestedInput
 }
 
 export type CourseUncheckedUpdateManyWithoutUserInput = {
@@ -772,10 +875,12 @@ export type CourseUncheckedUpdateManyWithoutUserInput = {
 
 export type CourseCountOutputType = {
   papers: number
+  paperReferences: number
 }
 
 export type CourseCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   papers?: boolean | CourseCountOutputTypeCountPapersArgs
+  paperReferences?: boolean | CourseCountOutputTypeCountPaperReferencesArgs
 }
 
 /**
@@ -795,6 +900,13 @@ export type CourseCountOutputTypeCountPapersArgs<ExtArgs extends runtime.Types.E
   where?: Prisma.PaperWhereInput
 }
 
+/**
+ * CourseCountOutputType without action
+ */
+export type CourseCountOutputTypeCountPaperReferencesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.PaperReferenceWhereInput
+}
+
 
 export type CourseSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
@@ -810,6 +922,7 @@ export type CourseSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs =
   year_level?: boolean
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
   papers?: boolean | Prisma.Course$papersArgs<ExtArgs>
+  paperReferences?: boolean | Prisma.Course$paperReferencesArgs<ExtArgs>
   _count?: boolean | Prisma.CourseCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["course"]>
 
@@ -861,6 +974,7 @@ export type CourseOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = r
 export type CourseInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
   papers?: boolean | Prisma.Course$papersArgs<ExtArgs>
+  paperReferences?: boolean | Prisma.Course$paperReferencesArgs<ExtArgs>
   _count?: boolean | Prisma.CourseCountOutputTypeDefaultArgs<ExtArgs>
 }
 export type CourseIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -875,6 +989,7 @@ export type $CoursePayload<ExtArgs extends runtime.Types.Extensions.InternalArgs
   objects: {
     user: Prisma.$UserPayload<ExtArgs>
     papers: Prisma.$PaperPayload<ExtArgs>[]
+    paperReferences: Prisma.$PaperReferencePayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: number
@@ -1284,6 +1399,7 @@ export interface Prisma__CourseClient<T, Null = never, ExtArgs extends runtime.T
   readonly [Symbol.toStringTag]: "PrismaPromise"
   user<T extends Prisma.UserDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.UserDefaultArgs<ExtArgs>>): Prisma.Prisma__UserClient<runtime.Types.Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
   papers<T extends Prisma.Course$papersArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Course$papersArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$PaperPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  paperReferences<T extends Prisma.Course$paperReferencesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Course$paperReferencesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$PaperReferencePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -1746,6 +1862,30 @@ export type Course$papersArgs<ExtArgs extends runtime.Types.Extensions.InternalA
   take?: number
   skip?: number
   distinct?: Prisma.PaperScalarFieldEnum | Prisma.PaperScalarFieldEnum[]
+}
+
+/**
+ * Course.paperReferences
+ */
+export type Course$paperReferencesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the PaperReference
+   */
+  select?: Prisma.PaperReferenceSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the PaperReference
+   */
+  omit?: Prisma.PaperReferenceOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.PaperReferenceInclude<ExtArgs> | null
+  where?: Prisma.PaperReferenceWhereInput
+  orderBy?: Prisma.PaperReferenceOrderByWithRelationInput | Prisma.PaperReferenceOrderByWithRelationInput[]
+  cursor?: Prisma.PaperReferenceWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.PaperReferenceScalarFieldEnum | Prisma.PaperReferenceScalarFieldEnum[]
 }
 
 /**

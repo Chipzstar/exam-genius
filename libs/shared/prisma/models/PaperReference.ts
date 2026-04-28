@@ -301,6 +301,7 @@ export type PaperReferenceWhereInput = {
   token_count?: Prisma.IntFilter<"PaperReference"> | number
   status?: Prisma.EnumReferenceStatusFilter<"PaperReference"> | $Enums.ReferenceStatus
   user?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
+  course?: Prisma.XOR<Prisma.CourseScalarRelationFilter, Prisma.CourseWhereInput>
 }
 
 export type PaperReferenceOrderByWithRelationInput = {
@@ -320,6 +321,7 @@ export type PaperReferenceOrderByWithRelationInput = {
   token_count?: Prisma.SortOrder
   status?: Prisma.SortOrder
   user?: Prisma.UserOrderByWithRelationInput
+  course?: Prisma.CourseOrderByWithRelationInput
 }
 
 export type PaperReferenceWhereUniqueInput = Prisma.AtLeast<{
@@ -342,6 +344,7 @@ export type PaperReferenceWhereUniqueInput = Prisma.AtLeast<{
   token_count?: Prisma.IntFilter<"PaperReference"> | number
   status?: Prisma.EnumReferenceStatusFilter<"PaperReference"> | $Enums.ReferenceStatus
   user?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
+  course?: Prisma.XOR<Prisma.CourseScalarRelationFilter, Prisma.CourseWhereInput>
 }, "id" | "id" | "reference_id">
 
 export type PaperReferenceOrderByWithAggregationInput = {
@@ -392,7 +395,6 @@ export type PaperReferenceCreateInput = {
   created_at?: Date | string
   updated_at?: Date | string
   reference_id: string
-  course_id: string
   paper_code?: string | null
   kind: $Enums.ReferenceKind
   ut_key: string
@@ -403,6 +405,7 @@ export type PaperReferenceCreateInput = {
   token_count?: number
   status?: $Enums.ReferenceStatus
   user: Prisma.UserCreateNestedOneWithoutPaperReferencesInput
+  course: Prisma.CourseCreateNestedOneWithoutPaperReferencesInput
 }
 
 export type PaperReferenceUncheckedCreateInput = {
@@ -427,7 +430,6 @@ export type PaperReferenceUpdateInput = {
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   reference_id?: Prisma.StringFieldUpdateOperationsInput | string
-  course_id?: Prisma.StringFieldUpdateOperationsInput | string
   paper_code?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   kind?: Prisma.EnumReferenceKindFieldUpdateOperationsInput | $Enums.ReferenceKind
   ut_key?: Prisma.StringFieldUpdateOperationsInput | string
@@ -438,6 +440,7 @@ export type PaperReferenceUpdateInput = {
   token_count?: Prisma.IntFieldUpdateOperationsInput | number
   status?: Prisma.EnumReferenceStatusFieldUpdateOperationsInput | $Enums.ReferenceStatus
   user?: Prisma.UserUpdateOneRequiredWithoutPaperReferencesNestedInput
+  course?: Prisma.CourseUpdateOneRequiredWithoutPaperReferencesNestedInput
 }
 
 export type PaperReferenceUncheckedUpdateInput = {
@@ -480,7 +483,6 @@ export type PaperReferenceUpdateManyMutationInput = {
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   reference_id?: Prisma.StringFieldUpdateOperationsInput | string
-  course_id?: Prisma.StringFieldUpdateOperationsInput | string
   paper_code?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   kind?: Prisma.EnumReferenceKindFieldUpdateOperationsInput | $Enums.ReferenceKind
   ut_key?: Prisma.StringFieldUpdateOperationsInput | string
@@ -592,6 +594,48 @@ export type EnumReferenceStatusFieldUpdateOperationsInput = {
   set?: $Enums.ReferenceStatus
 }
 
+export type PaperReferenceCreateNestedManyWithoutCourseInput = {
+  create?: Prisma.XOR<Prisma.PaperReferenceCreateWithoutCourseInput, Prisma.PaperReferenceUncheckedCreateWithoutCourseInput> | Prisma.PaperReferenceCreateWithoutCourseInput[] | Prisma.PaperReferenceUncheckedCreateWithoutCourseInput[]
+  connectOrCreate?: Prisma.PaperReferenceCreateOrConnectWithoutCourseInput | Prisma.PaperReferenceCreateOrConnectWithoutCourseInput[]
+  createMany?: Prisma.PaperReferenceCreateManyCourseInputEnvelope
+  connect?: Prisma.PaperReferenceWhereUniqueInput | Prisma.PaperReferenceWhereUniqueInput[]
+}
+
+export type PaperReferenceUncheckedCreateNestedManyWithoutCourseInput = {
+  create?: Prisma.XOR<Prisma.PaperReferenceCreateWithoutCourseInput, Prisma.PaperReferenceUncheckedCreateWithoutCourseInput> | Prisma.PaperReferenceCreateWithoutCourseInput[] | Prisma.PaperReferenceUncheckedCreateWithoutCourseInput[]
+  connectOrCreate?: Prisma.PaperReferenceCreateOrConnectWithoutCourseInput | Prisma.PaperReferenceCreateOrConnectWithoutCourseInput[]
+  createMany?: Prisma.PaperReferenceCreateManyCourseInputEnvelope
+  connect?: Prisma.PaperReferenceWhereUniqueInput | Prisma.PaperReferenceWhereUniqueInput[]
+}
+
+export type PaperReferenceUpdateManyWithoutCourseNestedInput = {
+  create?: Prisma.XOR<Prisma.PaperReferenceCreateWithoutCourseInput, Prisma.PaperReferenceUncheckedCreateWithoutCourseInput> | Prisma.PaperReferenceCreateWithoutCourseInput[] | Prisma.PaperReferenceUncheckedCreateWithoutCourseInput[]
+  connectOrCreate?: Prisma.PaperReferenceCreateOrConnectWithoutCourseInput | Prisma.PaperReferenceCreateOrConnectWithoutCourseInput[]
+  upsert?: Prisma.PaperReferenceUpsertWithWhereUniqueWithoutCourseInput | Prisma.PaperReferenceUpsertWithWhereUniqueWithoutCourseInput[]
+  createMany?: Prisma.PaperReferenceCreateManyCourseInputEnvelope
+  set?: Prisma.PaperReferenceWhereUniqueInput | Prisma.PaperReferenceWhereUniqueInput[]
+  disconnect?: Prisma.PaperReferenceWhereUniqueInput | Prisma.PaperReferenceWhereUniqueInput[]
+  delete?: Prisma.PaperReferenceWhereUniqueInput | Prisma.PaperReferenceWhereUniqueInput[]
+  connect?: Prisma.PaperReferenceWhereUniqueInput | Prisma.PaperReferenceWhereUniqueInput[]
+  update?: Prisma.PaperReferenceUpdateWithWhereUniqueWithoutCourseInput | Prisma.PaperReferenceUpdateWithWhereUniqueWithoutCourseInput[]
+  updateMany?: Prisma.PaperReferenceUpdateManyWithWhereWithoutCourseInput | Prisma.PaperReferenceUpdateManyWithWhereWithoutCourseInput[]
+  deleteMany?: Prisma.PaperReferenceScalarWhereInput | Prisma.PaperReferenceScalarWhereInput[]
+}
+
+export type PaperReferenceUncheckedUpdateManyWithoutCourseNestedInput = {
+  create?: Prisma.XOR<Prisma.PaperReferenceCreateWithoutCourseInput, Prisma.PaperReferenceUncheckedCreateWithoutCourseInput> | Prisma.PaperReferenceCreateWithoutCourseInput[] | Prisma.PaperReferenceUncheckedCreateWithoutCourseInput[]
+  connectOrCreate?: Prisma.PaperReferenceCreateOrConnectWithoutCourseInput | Prisma.PaperReferenceCreateOrConnectWithoutCourseInput[]
+  upsert?: Prisma.PaperReferenceUpsertWithWhereUniqueWithoutCourseInput | Prisma.PaperReferenceUpsertWithWhereUniqueWithoutCourseInput[]
+  createMany?: Prisma.PaperReferenceCreateManyCourseInputEnvelope
+  set?: Prisma.PaperReferenceWhereUniqueInput | Prisma.PaperReferenceWhereUniqueInput[]
+  disconnect?: Prisma.PaperReferenceWhereUniqueInput | Prisma.PaperReferenceWhereUniqueInput[]
+  delete?: Prisma.PaperReferenceWhereUniqueInput | Prisma.PaperReferenceWhereUniqueInput[]
+  connect?: Prisma.PaperReferenceWhereUniqueInput | Prisma.PaperReferenceWhereUniqueInput[]
+  update?: Prisma.PaperReferenceUpdateWithWhereUniqueWithoutCourseInput | Prisma.PaperReferenceUpdateWithWhereUniqueWithoutCourseInput[]
+  updateMany?: Prisma.PaperReferenceUpdateManyWithWhereWithoutCourseInput | Prisma.PaperReferenceUpdateManyWithWhereWithoutCourseInput[]
+  deleteMany?: Prisma.PaperReferenceScalarWhereInput | Prisma.PaperReferenceScalarWhereInput[]
+}
+
 export type PaperReferenceCreateNestedManyWithoutUserInput = {
   create?: Prisma.XOR<Prisma.PaperReferenceCreateWithoutUserInput, Prisma.PaperReferenceUncheckedCreateWithoutUserInput> | Prisma.PaperReferenceCreateWithoutUserInput[] | Prisma.PaperReferenceUncheckedCreateWithoutUserInput[]
   connectOrCreate?: Prisma.PaperReferenceCreateOrConnectWithoutUserInput | Prisma.PaperReferenceCreateOrConnectWithoutUserInput[]
@@ -634,11 +678,10 @@ export type PaperReferenceUncheckedUpdateManyWithoutUserNestedInput = {
   deleteMany?: Prisma.PaperReferenceScalarWhereInput | Prisma.PaperReferenceScalarWhereInput[]
 }
 
-export type PaperReferenceCreateWithoutUserInput = {
+export type PaperReferenceCreateWithoutCourseInput = {
   created_at?: Date | string
   updated_at?: Date | string
   reference_id: string
-  course_id: string
   paper_code?: string | null
   kind: $Enums.ReferenceKind
   ut_key: string
@@ -648,6 +691,87 @@ export type PaperReferenceCreateWithoutUserInput = {
   text_hash: string
   token_count?: number
   status?: $Enums.ReferenceStatus
+  user: Prisma.UserCreateNestedOneWithoutPaperReferencesInput
+}
+
+export type PaperReferenceUncheckedCreateWithoutCourseInput = {
+  id?: number
+  created_at?: Date | string
+  updated_at?: Date | string
+  reference_id: string
+  user_id: string
+  paper_code?: string | null
+  kind: $Enums.ReferenceKind
+  ut_key: string
+  ut_url: string
+  filename: string
+  extracted_text: string
+  text_hash: string
+  token_count?: number
+  status?: $Enums.ReferenceStatus
+}
+
+export type PaperReferenceCreateOrConnectWithoutCourseInput = {
+  where: Prisma.PaperReferenceWhereUniqueInput
+  create: Prisma.XOR<Prisma.PaperReferenceCreateWithoutCourseInput, Prisma.PaperReferenceUncheckedCreateWithoutCourseInput>
+}
+
+export type PaperReferenceCreateManyCourseInputEnvelope = {
+  data: Prisma.PaperReferenceCreateManyCourseInput | Prisma.PaperReferenceCreateManyCourseInput[]
+  skipDuplicates?: boolean
+}
+
+export type PaperReferenceUpsertWithWhereUniqueWithoutCourseInput = {
+  where: Prisma.PaperReferenceWhereUniqueInput
+  update: Prisma.XOR<Prisma.PaperReferenceUpdateWithoutCourseInput, Prisma.PaperReferenceUncheckedUpdateWithoutCourseInput>
+  create: Prisma.XOR<Prisma.PaperReferenceCreateWithoutCourseInput, Prisma.PaperReferenceUncheckedCreateWithoutCourseInput>
+}
+
+export type PaperReferenceUpdateWithWhereUniqueWithoutCourseInput = {
+  where: Prisma.PaperReferenceWhereUniqueInput
+  data: Prisma.XOR<Prisma.PaperReferenceUpdateWithoutCourseInput, Prisma.PaperReferenceUncheckedUpdateWithoutCourseInput>
+}
+
+export type PaperReferenceUpdateManyWithWhereWithoutCourseInput = {
+  where: Prisma.PaperReferenceScalarWhereInput
+  data: Prisma.XOR<Prisma.PaperReferenceUpdateManyMutationInput, Prisma.PaperReferenceUncheckedUpdateManyWithoutCourseInput>
+}
+
+export type PaperReferenceScalarWhereInput = {
+  AND?: Prisma.PaperReferenceScalarWhereInput | Prisma.PaperReferenceScalarWhereInput[]
+  OR?: Prisma.PaperReferenceScalarWhereInput[]
+  NOT?: Prisma.PaperReferenceScalarWhereInput | Prisma.PaperReferenceScalarWhereInput[]
+  id?: Prisma.IntFilter<"PaperReference"> | number
+  created_at?: Prisma.DateTimeFilter<"PaperReference"> | Date | string
+  updated_at?: Prisma.DateTimeFilter<"PaperReference"> | Date | string
+  reference_id?: Prisma.StringFilter<"PaperReference"> | string
+  user_id?: Prisma.StringFilter<"PaperReference"> | string
+  course_id?: Prisma.StringFilter<"PaperReference"> | string
+  paper_code?: Prisma.StringNullableFilter<"PaperReference"> | string | null
+  kind?: Prisma.EnumReferenceKindFilter<"PaperReference"> | $Enums.ReferenceKind
+  ut_key?: Prisma.StringFilter<"PaperReference"> | string
+  ut_url?: Prisma.StringFilter<"PaperReference"> | string
+  filename?: Prisma.StringFilter<"PaperReference"> | string
+  extracted_text?: Prisma.StringFilter<"PaperReference"> | string
+  text_hash?: Prisma.StringFilter<"PaperReference"> | string
+  token_count?: Prisma.IntFilter<"PaperReference"> | number
+  status?: Prisma.EnumReferenceStatusFilter<"PaperReference"> | $Enums.ReferenceStatus
+}
+
+export type PaperReferenceCreateWithoutUserInput = {
+  created_at?: Date | string
+  updated_at?: Date | string
+  reference_id: string
+  paper_code?: string | null
+  kind: $Enums.ReferenceKind
+  ut_key: string
+  ut_url: string
+  filename: string
+  extracted_text: string
+  text_hash: string
+  token_count?: number
+  status?: $Enums.ReferenceStatus
+  course: Prisma.CourseCreateNestedOneWithoutPaperReferencesInput
 }
 
 export type PaperReferenceUncheckedCreateWithoutUserInput = {
@@ -693,25 +817,71 @@ export type PaperReferenceUpdateManyWithWhereWithoutUserInput = {
   data: Prisma.XOR<Prisma.PaperReferenceUpdateManyMutationInput, Prisma.PaperReferenceUncheckedUpdateManyWithoutUserInput>
 }
 
-export type PaperReferenceScalarWhereInput = {
-  AND?: Prisma.PaperReferenceScalarWhereInput | Prisma.PaperReferenceScalarWhereInput[]
-  OR?: Prisma.PaperReferenceScalarWhereInput[]
-  NOT?: Prisma.PaperReferenceScalarWhereInput | Prisma.PaperReferenceScalarWhereInput[]
-  id?: Prisma.IntFilter<"PaperReference"> | number
-  created_at?: Prisma.DateTimeFilter<"PaperReference"> | Date | string
-  updated_at?: Prisma.DateTimeFilter<"PaperReference"> | Date | string
-  reference_id?: Prisma.StringFilter<"PaperReference"> | string
-  user_id?: Prisma.StringFilter<"PaperReference"> | string
-  course_id?: Prisma.StringFilter<"PaperReference"> | string
-  paper_code?: Prisma.StringNullableFilter<"PaperReference"> | string | null
-  kind?: Prisma.EnumReferenceKindFilter<"PaperReference"> | $Enums.ReferenceKind
-  ut_key?: Prisma.StringFilter<"PaperReference"> | string
-  ut_url?: Prisma.StringFilter<"PaperReference"> | string
-  filename?: Prisma.StringFilter<"PaperReference"> | string
-  extracted_text?: Prisma.StringFilter<"PaperReference"> | string
-  text_hash?: Prisma.StringFilter<"PaperReference"> | string
-  token_count?: Prisma.IntFilter<"PaperReference"> | number
-  status?: Prisma.EnumReferenceStatusFilter<"PaperReference"> | $Enums.ReferenceStatus
+export type PaperReferenceCreateManyCourseInput = {
+  id?: number
+  created_at?: Date | string
+  updated_at?: Date | string
+  reference_id: string
+  user_id: string
+  paper_code?: string | null
+  kind: $Enums.ReferenceKind
+  ut_key: string
+  ut_url: string
+  filename: string
+  extracted_text: string
+  text_hash: string
+  token_count?: number
+  status?: $Enums.ReferenceStatus
+}
+
+export type PaperReferenceUpdateWithoutCourseInput = {
+  created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  reference_id?: Prisma.StringFieldUpdateOperationsInput | string
+  paper_code?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  kind?: Prisma.EnumReferenceKindFieldUpdateOperationsInput | $Enums.ReferenceKind
+  ut_key?: Prisma.StringFieldUpdateOperationsInput | string
+  ut_url?: Prisma.StringFieldUpdateOperationsInput | string
+  filename?: Prisma.StringFieldUpdateOperationsInput | string
+  extracted_text?: Prisma.StringFieldUpdateOperationsInput | string
+  text_hash?: Prisma.StringFieldUpdateOperationsInput | string
+  token_count?: Prisma.IntFieldUpdateOperationsInput | number
+  status?: Prisma.EnumReferenceStatusFieldUpdateOperationsInput | $Enums.ReferenceStatus
+  user?: Prisma.UserUpdateOneRequiredWithoutPaperReferencesNestedInput
+}
+
+export type PaperReferenceUncheckedUpdateWithoutCourseInput = {
+  id?: Prisma.IntFieldUpdateOperationsInput | number
+  created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  reference_id?: Prisma.StringFieldUpdateOperationsInput | string
+  user_id?: Prisma.StringFieldUpdateOperationsInput | string
+  paper_code?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  kind?: Prisma.EnumReferenceKindFieldUpdateOperationsInput | $Enums.ReferenceKind
+  ut_key?: Prisma.StringFieldUpdateOperationsInput | string
+  ut_url?: Prisma.StringFieldUpdateOperationsInput | string
+  filename?: Prisma.StringFieldUpdateOperationsInput | string
+  extracted_text?: Prisma.StringFieldUpdateOperationsInput | string
+  text_hash?: Prisma.StringFieldUpdateOperationsInput | string
+  token_count?: Prisma.IntFieldUpdateOperationsInput | number
+  status?: Prisma.EnumReferenceStatusFieldUpdateOperationsInput | $Enums.ReferenceStatus
+}
+
+export type PaperReferenceUncheckedUpdateManyWithoutCourseInput = {
+  id?: Prisma.IntFieldUpdateOperationsInput | number
+  created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  reference_id?: Prisma.StringFieldUpdateOperationsInput | string
+  user_id?: Prisma.StringFieldUpdateOperationsInput | string
+  paper_code?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  kind?: Prisma.EnumReferenceKindFieldUpdateOperationsInput | $Enums.ReferenceKind
+  ut_key?: Prisma.StringFieldUpdateOperationsInput | string
+  ut_url?: Prisma.StringFieldUpdateOperationsInput | string
+  filename?: Prisma.StringFieldUpdateOperationsInput | string
+  extracted_text?: Prisma.StringFieldUpdateOperationsInput | string
+  text_hash?: Prisma.StringFieldUpdateOperationsInput | string
+  token_count?: Prisma.IntFieldUpdateOperationsInput | number
+  status?: Prisma.EnumReferenceStatusFieldUpdateOperationsInput | $Enums.ReferenceStatus
 }
 
 export type PaperReferenceCreateManyUserInput = {
@@ -735,7 +905,6 @@ export type PaperReferenceUpdateWithoutUserInput = {
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   reference_id?: Prisma.StringFieldUpdateOperationsInput | string
-  course_id?: Prisma.StringFieldUpdateOperationsInput | string
   paper_code?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   kind?: Prisma.EnumReferenceKindFieldUpdateOperationsInput | $Enums.ReferenceKind
   ut_key?: Prisma.StringFieldUpdateOperationsInput | string
@@ -745,6 +914,7 @@ export type PaperReferenceUpdateWithoutUserInput = {
   text_hash?: Prisma.StringFieldUpdateOperationsInput | string
   token_count?: Prisma.IntFieldUpdateOperationsInput | number
   status?: Prisma.EnumReferenceStatusFieldUpdateOperationsInput | $Enums.ReferenceStatus
+  course?: Prisma.CourseUpdateOneRequiredWithoutPaperReferencesNestedInput
 }
 
 export type PaperReferenceUncheckedUpdateWithoutUserInput = {
@@ -800,6 +970,7 @@ export type PaperReferenceSelect<ExtArgs extends runtime.Types.Extensions.Intern
   token_count?: boolean
   status?: boolean
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
+  course?: boolean | Prisma.CourseDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["paperReference"]>
 
 export type PaperReferenceSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
@@ -819,6 +990,7 @@ export type PaperReferenceSelectCreateManyAndReturn<ExtArgs extends runtime.Type
   token_count?: boolean
   status?: boolean
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
+  course?: boolean | Prisma.CourseDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["paperReference"]>
 
 export type PaperReferenceSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
@@ -838,6 +1010,7 @@ export type PaperReferenceSelectUpdateManyAndReturn<ExtArgs extends runtime.Type
   token_count?: boolean
   status?: boolean
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
+  course?: boolean | Prisma.CourseDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["paperReference"]>
 
 export type PaperReferenceSelectScalar = {
@@ -861,18 +1034,22 @@ export type PaperReferenceSelectScalar = {
 export type PaperReferenceOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "created_at" | "updated_at" | "reference_id" | "user_id" | "course_id" | "paper_code" | "kind" | "ut_key" | "ut_url" | "filename" | "extracted_text" | "text_hash" | "token_count" | "status", ExtArgs["result"]["paperReference"]>
 export type PaperReferenceInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
+  course?: boolean | Prisma.CourseDefaultArgs<ExtArgs>
 }
 export type PaperReferenceIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
+  course?: boolean | Prisma.CourseDefaultArgs<ExtArgs>
 }
 export type PaperReferenceIncludeUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
+  course?: boolean | Prisma.CourseDefaultArgs<ExtArgs>
 }
 
 export type $PaperReferencePayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   name: "PaperReference"
   objects: {
     user: Prisma.$UserPayload<ExtArgs>
+    course: Prisma.$CoursePayload<ExtArgs>
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: number
@@ -1285,6 +1462,7 @@ readonly fields: PaperReferenceFieldRefs;
 export interface Prisma__PaperReferenceClient<T, Null = never, ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
   readonly [Symbol.toStringTag]: "PrismaPromise"
   user<T extends Prisma.UserDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.UserDefaultArgs<ExtArgs>>): Prisma.Prisma__UserClient<runtime.Types.Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+  course<T extends Prisma.CourseDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.CourseDefaultArgs<ExtArgs>>): Prisma.Prisma__CourseClient<runtime.Types.Result.GetResult<Prisma.$CoursePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.

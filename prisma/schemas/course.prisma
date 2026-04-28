@@ -12,6 +12,7 @@ model Course {
   product_id String?
   year_level Int
   papers     Paper[]
+  paperReferences PaperReference[]
 
   @@index([user_id])
 }
