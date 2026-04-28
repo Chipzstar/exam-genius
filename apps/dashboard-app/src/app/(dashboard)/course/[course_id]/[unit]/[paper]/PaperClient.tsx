@@ -135,7 +135,7 @@ export default function PaperClient({ params, searchParams, initialPapers }: Pap
 	);
 	const { mutateAsync: checkPaperGenerated } = api.paper.checkPaperGenerated.useMutation();
 	const { mutate: regeneratePaper, isPending: regenLoading } = api.paper.regeneratePaper.useMutation();
-	const { mutate: regenerateWithLegacyGrant, isPending: legacyGrantLoading } =
+	const { mutateAsync: regenerateWithLegacyGrantAsync, isPending: legacyGrantLoading } =
 		api.paper.regenerateWithLegacyGrant.useMutation();
 	const { mutate: deletePaper, isPending: deletePaperPending } = api.paper.deletePaper.useMutation({
 		onSuccess(_, variables) {
@@ -306,17 +306,27 @@ export default function PaperClient({ params, searchParams, initialPapers }: Pap
 																		),
 																		labels: { confirm: 'Regenerate', cancel: 'Cancel' },
 																		confirmProps: { color: 'brand' },
-																		onConfirm: () => {
-																			regenerateWithLegacyGrant({
-																				id: paper.paper_id,
-																				num_questions: paper_info.num_questions,
-																				num_marks: paper_info.marks
-																			});
-																			start({
-																				id: paper.paper_id,
-																				num_questions: paper_info.num_questions,
-																				num_marks: paper_info.marks
-																			});
+																		onConfirm: async () => {
+																			try {
+																				await regenerateWithLegacyGrantAsync({
+																					id: paper.paper_id,
+																					num_questions: paper_info.num_questions,
+																					num_marks: paper_info.marks
+																				});
+																				start({
+																					id: paper.paper_id,
+																					num_questions: paper_info.num_questions,
+																					num_marks: paper_info.marks
+																				});
+																			} catch (err: unknown) {
+																				const msg =
+																					err instanceof Error ? err.message : String(err);
+																				notifyError(
+																					'legacy-regenerate-failed',
+																					msg || 'Could not start regeneration.',
+																					<IconX size={20} />
+																				);
+																			}
 																		}
 																	});
 																}}
