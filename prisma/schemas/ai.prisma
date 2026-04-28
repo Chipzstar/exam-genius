@@ -94,6 +94,7 @@ model PaperReference {
   user_id          String
   user             User            @relation(fields: [user_id], references: [clerk_id], onDelete: Cascade)
   course_id        String
+  course           Course          @relation(fields: [course_id], references: [course_id], onDelete: Cascade)
   paper_code       String?
   kind             ReferenceKind
   ut_key           String
