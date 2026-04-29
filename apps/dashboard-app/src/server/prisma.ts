@@ -1,30 +1,18 @@
-import { env } from '~/env';
-import { Pool } from 'pg';
-import { PrismaPg } from '@prisma/adapter-pg';
+import { withAccelerate } from '@prisma/extension-accelerate';
 import { PrismaClient } from '@exam-genius/shared/prisma';
+import { env } from '~/env';
 
-const globalForDb = globalThis as unknown as {
-	prisma: PrismaClient | undefined;
-	pgPool: Pool | undefined;
-};
-
-const pool =
-	globalForDb.pgPool ??
-	new Pool({
-		connectionString: env.DATABASE_URL
-	});
-
-if (process.env.NODE_ENV !== 'production') {
-	globalForDb.pgPool = pool;
+function createPrismaClient() {
+	return new PrismaClient({
+		accelerateUrl: env.DATABASE_URL,
+		log: process.env.NODE_ENV === 'development' ? ['error', 'warn'] : ['error']
+	}).$extends(withAccelerate());
 }
 
-const adapter = new PrismaPg(pool);
+const globalForDb = globalThis as unknown as {
+	prisma: ReturnType<typeof createPrismaClient> | undefined;
+};
 
-export const prisma =
-	globalForDb.prisma ??
-	new PrismaClient({
-		adapter,
-		log: process.env.NODE_ENV === 'development' ? ['error', 'warn'] : ['error']
-	});
+export const prisma = globalForDb.prisma ?? createPrismaClient();
 
 if (process.env.NODE_ENV !== 'production') globalForDb.prisma = prisma;

@@ -14,7 +14,8 @@ const userRouter = createTRPCRouter({
 			},
 			select: {
 				stripe_subscription_status: true
-			}
+			},
+			cacheStrategy: { swr: 60, ttl: 60 }
 		});
 
 		if (!data) {

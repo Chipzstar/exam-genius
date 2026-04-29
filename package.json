@@ -18,7 +18,6 @@
 		"lint:landing": "turbo run lint --filter=@exam-genius/landing-page",
 		"test": "turbo run test",
 		"ngrok": "ngrok http --domain=present-shepherd-shining.ngrok-free.app 3000 --config=./bin/ngrok.yml",
-		"prisma:sync": "pnpm prismerge -i prismerge.json && npx prisma generate && npx prisma db push",
 		"prisma:generate": "pnpm prismerge -i prismerge.json && npx prisma generate",
 		"prisma:merge": "pnpm prismerge -i prismerge.json",
 		"db:reset": "npx prisma migrate reset",

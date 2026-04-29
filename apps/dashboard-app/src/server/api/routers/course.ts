@@ -9,7 +9,8 @@ const courseRouter = createTRPCRouter({
 			return await ctx.prisma.course.findMany({
 				where: {
 					user_id: ctx.auth.userId
-				}
+				},
+				cacheStrategy: { swr: 30, ttl: 60 }
 			});
 		} catch (err) {
 			console.error(err);
@@ -28,7 +29,8 @@ const courseRouter = createTRPCRouter({
 					where: {
 						user_id: ctx.auth.userId,
 						course_id: input.id
-					}
+					},
+					cacheStrategy: { swr: 30, ttl: 60 }
 				});
 				return dbCourse as Course;
 			} catch (err) {
