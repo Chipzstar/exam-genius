@@ -66,8 +66,7 @@ const paperRouter = createTRPCRouter({
 					},
 					include: {
 						paperRating: true
-					},
-					cacheStrategy: { swr: 30, ttl: 60 }
+					}
 				});
 				return papers;
 			} catch (err) {
