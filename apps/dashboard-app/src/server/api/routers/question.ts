@@ -24,6 +24,12 @@ const questionRouter = createTRPCRouter({
 			return ctx.prisma.question.findMany({
 				where: { paper_id: input.paperId },
 				orderBy: [{ order: 'asc' }],
+				include: {
+					feedback: {
+						where: { user_id: ctx.auth.userId },
+						select: { sentiment: true }
+					}
+				},
 				cacheStrategy: { swr: 30, ttl: 60 }
 			});
 		}),

@@ -1,6 +1,9 @@
 import { clerkMiddleware, createRouteMatcher } from '@clerk/nextjs/server';
 
 const isPublicRoute = createRouteMatcher([
+	// PostHog reverse proxy (next.config rewrites); must not hit auth.protect()
+	// or event + session-recording POSTs fail / get redirected for guests.
+	'/ph(.*)',
 	'/login(.*)',
 	'/signup(.*)',
 	'/api/panel',
