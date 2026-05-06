@@ -7,6 +7,7 @@ import { Logger } from '~/server/logger';
 import { CHECKOUT_TYPE, PATHS } from '~/utils/constants';
 import { PAPER_PRICE_IDS, SUBJECT_STRIPE_IDS } from '~/utils/constants.server';
 import { env } from '~/env';
+import { logger } from '@exam-genius/shared/utils';
 
 const courseSchema = z.object({
 	type: z.literal(CHECKOUT_TYPE.COURSE),
@@ -37,7 +38,7 @@ const stripeRouter = createTRPCRouter({
 			const { type, exam_board, subject } = input;
 			try {
 				if (!auth?.userId) throw new Error('Not authenticated');
-				console.log('[Stripe] Create checkout session auth', { auth });
+				logger.info('[Stripe] Create checkout session auth', { auth });
 				const customer_id = await getOrCreateStripeCustomerIdForUser({
 					prisma,
 					stripe,
@@ -69,7 +70,8 @@ const stripeRouter = createTRPCRouter({
 							paper_code: input?.paper_code,
 							num_questions: input?.num_questions,
                             num_marks: input?.marks
-						}
+						},
+						allow_promotion_codes: true
 					});
 					if (!session) {  throw new Error("Could not create checkout session");  }
 				} else {
@@ -86,7 +88,8 @@ const stripeRouter = createTRPCRouter({
 							userId: auth.userId,
 							exam_board: exam_board,
 							subject: subject,
-						}
+						},
+						allow_promotion_codes: true
 					});
 					if (!session) {  throw new Error("Could not create checkout session");  }
 				}
