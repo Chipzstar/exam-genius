@@ -224,10 +224,10 @@ export default function PaperClient({ params, searchParams, initialPapers }: Pap
 						<Link href={PATHS.FAQ}>
 							<span className='text-primary '>FAQ page</span>
 						</Link>{' '}
-						or contact us via{' '}
-						<span className='font-medium cursor-pointer text-primary' onClick={() => window.Tawk_API?.toggle()}>
-							Live Chat
-						</span>
+						or contact us at{' '}
+						<Anchor className='font-bold' href='mailto:support@exam-genius.com' target='_blank' rel='noreferrer'>
+							support@exam-genius.com
+						</Anchor>
 					</Text>
 				</div>
 			</header>
