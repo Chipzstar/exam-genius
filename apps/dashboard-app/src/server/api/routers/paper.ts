@@ -66,7 +66,8 @@ const paperRouter = createTRPCRouter({
 					},
 					include: {
 						paperRating: true
-					}
+					},
+					orderBy: { created_at: 'desc' }
 				});
 				return papers;
 			} catch (err) {

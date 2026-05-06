@@ -3,6 +3,7 @@ import localFont from 'next/font/local';
 import { ColorSchemeScript } from '@mantine/core';
 import '@mantine/core/styles.css';
 import '@mantine/notifications/styles.css';
+import '@mantine/carousel/styles.css';
 import 'katex/dist/katex.min.css';
 import '../../styles/globals.css';
 import Favicon from '~/components/Favicon';
