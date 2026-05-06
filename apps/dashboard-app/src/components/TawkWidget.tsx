@@ -23,6 +23,8 @@ type TawkApi = {
 	logout?: (callback: TawkCallback) => void;
 	shutdown?: () => void;
 	start?: () => void;
+	/** Show/hide the chat widget when using the popup layout */
+	toggle?: () => void;
 };
 
 declare global {

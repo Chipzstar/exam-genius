@@ -9,6 +9,9 @@ tmp
 # dependencies
 node_modules
 
+# pnpm store-dir inside repo (local cache; do not commit)
+.pnpm-store/
+
 # IDEs and editors
 /.idea
 .project

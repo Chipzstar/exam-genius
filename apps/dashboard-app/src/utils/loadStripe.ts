@@ -1,7 +1,7 @@
-import { loadStripe, Stripe } from '@stripe/stripe-js';
+import { loadStripe, Stripe, StripeConstructorOptions } from '@stripe/stripe-js';
 
 let stripePromise: Promise<Stripe | null>;
-const getStripe = (config) => {
+const getStripe = (config?: StripeConstructorOptions) => {
 	if (!stripePromise) {
 		stripePromise = loadStripe(process.env.NEXT_PUBLIC_STRIPE_API_KEY!, config);
 	}

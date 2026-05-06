@@ -11,12 +11,12 @@ import { notifyError } from '~/utils/functions';
 import { IconX } from '@tabler/icons-react';
 import { useRouter } from 'next/navigation';
 import { api } from '~/trpc/react';
-import type { ExamBoard, Subject } from '@exam-genius/shared/utils';
+import { logger, type ExamBoard, type Subject } from '@exam-genius/shared/utils';
 import { useValue } from '@legendapp/state/react';
 import { appStore$ } from '~/store/app.store';
 
 if (typeof window !== 'undefined') {
-	getStripe(process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY ?? '').then(r => console.log('Stripe loaded', r));
+	getStripe().then(r => logger.info('Stripe loaded', r));
 }
 
 export default function ExamBoardPage() {
@@ -50,7 +50,7 @@ export default function ExamBoardPage() {
 				router.push(checkout_url);
 			}
 		} catch (err: any) {
-			console.error(err);
+			logger.error('Open checkout failed', err);
 			notifyError('open-checkout-failed', err.message, <IconX size={20} />);
 		}
 	}
