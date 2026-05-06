@@ -11,7 +11,8 @@ const referenceRouter = createTRPCRouter({
 					user_id: ctx.auth.userId,
 					...(input?.courseId ? { course_id: input.courseId } : {})
 				},
-				orderBy: { created_at: 'desc' }
+				orderBy: { created_at: 'desc' },
+				cacheStrategy: { swr: 60, ttl: 120 }
 			});
 		}),
 

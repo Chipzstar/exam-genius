@@ -19,7 +19,7 @@ import { useMediaQuery, useTimeout, useViewportSize } from '@mantine/hooks';
 import { IconArrowLeft, IconCheck, IconX } from '@tabler/icons-react';
 import { useRouter } from 'next/navigation';
 import { api } from '~/trpc/react';
-import { Carousel } from '@mantine/carousel';
+import { Carousel, type Embla } from '@mantine/carousel';
 import CustomLoader from '~/components/CustomLoader';
 import { PATHS, TWO_MINUTES } from '~/utils/constants';
 import { ExamBoard, Subject, SUBJECT_PAPERS } from '@exam-genius/shared/utils';
@@ -122,6 +122,7 @@ const NoPapers = ({
 export default function PaperClient({ params, searchParams, initialPapers }: PaperClientProps) {
 	const [regenerateData, setRegenerateData] = useState<RegeneratePayload | null>(null);
 	const [activeSlideIndex, setActiveSlideIndex] = useState(0);
+	const emblaRef = useRef<Embla | null>(null);
 	const lastRecordedRef = useRef('');
 	const router = useRouter();
 	const { code, subject, board, mode: modeFromUrl } = searchParams;
@@ -158,6 +159,10 @@ export default function PaperClient({ params, searchParams, initialPapers }: Pap
 		});
 	}, TWO_MINUTES);
 	const mobileScreen = useMediaQuery('(max-width: 30em)');
+
+	const goToPaperVariantPage = useCallback((page: number) => {
+		emblaRef.current?.scrollTo(page - 1);
+	}, []);
 
 	useEffect(() => {
 		if (focusMode) {
@@ -224,10 +229,10 @@ export default function PaperClient({ params, searchParams, initialPapers }: Pap
 						<Link href={PATHS.FAQ}>
 							<span className='text-primary '>FAQ page</span>
 						</Link>{' '}
-						or contact us at{' '}
-						<Anchor className='font-bold' href='mailto:support@exam-genius.com' target='_blank' rel='noreferrer'>
-							support@exam-genius.com
-						</Anchor>
+						or contact us via{' '}
+						<span className='font-medium cursor-pointer text-primary' onClick={() => window.Tawk_API?.toggle?.()}>
+							Live Chat
+						</span>
 					</Text>
 				</div>
 			</header>
@@ -243,7 +248,14 @@ export default function PaperClient({ params, searchParams, initialPapers }: Pap
 							mx='auto'
 							classNames={classes}
 							controlsOffset='xl'
+							align='start'
+							containScroll='trimSnaps'
+							withControls={false}
+							withIndicators={false}
 							onSlideChange={setActiveSlideIndex}
+							getEmblaApi={emblaApi => {
+								emblaRef.current = emblaApi;
+							}}
 						>
 						{papers.map((paper, slideIndex) => {
 							const hasPdfExport =
@@ -267,8 +279,14 @@ export default function PaperClient({ params, searchParams, initialPapers }: Pap
 										deleteLoading={deletePaperPending}
 										paperTitle={paper.name}
 										paperId={paper.paper_id}
+										paperVariantTotal={papers.length}
+										onPaperVariantPageChange={papers.length > 1 ? goToPaperVariantPage : undefined}
 									/>
-									<ScrollArea.Autosize mah={height - 150} p='sm'>
+									<ScrollArea.Autosize
+										mah={height - 150}
+										p='sm'
+										viewportProps={{ style: { touchAction: 'pan-y' } }}
+									>
 										<Card shadow='sm' radius='md' className={clsx('w-full', classes.paperCard)} p='xl'>
 											{paper.content && paper.status === 'success' ? (
 												<>

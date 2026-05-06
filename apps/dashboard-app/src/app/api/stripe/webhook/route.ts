@@ -34,8 +34,6 @@ export const POST = withAxiom(async (req: AxiomRequest) => {
 					log: req.log
 				});
 				break;
-			case 'checkout.session.expired':
-				break;
 			case 'customer.created':
 				break;
 			case 'customer.updated':
@@ -47,7 +45,7 @@ export const POST = withAxiom(async (req: AxiomRequest) => {
 					log: req.log
 				});
 				break;
-			case 'customer.subscription.cancelled':
+			case 'customer.subscription.deleted':
 				await handleSubscriptionCanceled({ event, prisma, log: req.log });
 				break;
 			case 'customer.subscription.updated':

@@ -23,7 +23,14 @@ const questionRouter = createTRPCRouter({
 			if (!paper) throw new TRPCError({ code: 'NOT_FOUND' });
 			return ctx.prisma.question.findMany({
 				where: { paper_id: input.paperId },
-				orderBy: [{ order: 'asc' }]
+				orderBy: [{ order: 'asc' }],
+				include: {
+					feedback: {
+						where: { user_id: ctx.auth.userId },
+						select: { sentiment: true }
+					}
+				},
+				cacheStrategy: { swr: 30, ttl: 60 }
 			});
 		}),
 
@@ -39,7 +46,8 @@ const questionRouter = createTRPCRouter({
 			if (!q) throw new TRPCError({ code: 'NOT_FOUND' });
 			return ctx.prisma.questionRevision.findMany({
 				where: { question_id: input.questionId },
-				orderBy: { revision: 'desc' }
+				orderBy: { revision: 'desc' },
+				cacheStrategy: { swr: 15, ttl: 30 }
 			});
 		}),
 

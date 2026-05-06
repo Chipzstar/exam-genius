@@ -15,7 +15,8 @@ const paperRouter = createTRPCRouter({
 			const papers = await ctx.prisma.paper.findMany({
 				where: {
 					user_id
-				}
+				},
+				cacheStrategy: { swr: 30, ttl: 60 }
 			});
 			logger.info('Papers', { papers });
 			return papers;
@@ -36,7 +37,8 @@ const paperRouter = createTRPCRouter({
 					where: {
 						user_id: ctx.auth.userId,
 						paper_id: input.paperId
-					}
+					},
+					cacheStrategy: { swr: 15, ttl: 30 }
 				});
 				return paper;
 			} catch (err) {
@@ -64,7 +66,8 @@ const paperRouter = createTRPCRouter({
 					},
 					include: {
 						paperRating: true
-					}
+					},
+					orderBy: { created_at: 'desc' }
 				});
 				return papers;
 			} catch (err) {
@@ -87,7 +90,8 @@ const paperRouter = createTRPCRouter({
 					where: {
 						user_id: ctx.auth.userId,
 						course_id: input.courseId
-					}
+					},
+					cacheStrategy: { swr: 30, ttl: 60 }
 				});
 				logger.info('Papers', { papers });
 				return papers;
@@ -250,7 +254,8 @@ const paperRouter = createTRPCRouter({
 			});
 			if (!paper) throw new TRPCError({ code: 'NOT_FOUND' });
 			return ctx.prisma.markScheme.findUnique({
-				where: { paper_id: input.paperId }
+				where: { paper_id: input.paperId },
+				cacheStrategy: { swr: 60, ttl: 300 }
 			});
 		}),
 
