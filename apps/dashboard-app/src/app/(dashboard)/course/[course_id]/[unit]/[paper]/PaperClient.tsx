@@ -253,8 +253,8 @@ export default function PaperClient({ params, searchParams, initialPapers }: Pap
 							withControls={false}
 							withIndicators={false}
 							onSlideChange={setActiveSlideIndex}
-							getEmblaApi={api => {
-								emblaRef.current = api;
+							getEmblaApi={emblaApi => {
+								emblaRef.current = emblaApi;
 							}}
 						>
 						{papers.map((paper, slideIndex) => {

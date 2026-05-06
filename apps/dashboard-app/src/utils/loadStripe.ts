@@ -1,9 +1,10 @@
 import { loadStripe, Stripe, StripeConstructorOptions } from '@stripe/stripe-js';
+import { env } from '~/env';
 
 let stripePromise: Promise<Stripe | null>;
 const getStripe = (config?: StripeConstructorOptions) => {
 	if (!stripePromise) {
-		stripePromise = loadStripe(process.env.NEXT_PUBLIC_STRIPE_API_KEY!, config);
+		stripePromise = loadStripe(env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY, config);
 	}
 	return stripePromise;
 };
