@@ -122,6 +122,10 @@ You are an expert in TypeScript, Node.js, Next.js App Router, React, Turborepo, 
 - Never commit `.env` files. Use `.env.local` for local overrides and Doppler for secure storage.
 - Access env vars via the typed env helpers (e.g. `env` from `@t3-oss/env-nextjs`) instead of `process.env` directly.
 
+## LLM / OpenAI prompt inventory
+- Maintain a single register of production model prompts in `apps/dashboard-app/misc/gpt-prompts.md`. It documents each prompt’s purpose, source paths in this monorepo and in `exam-genius-backend`, models, and the text (or templates) in use.
+- When you add or materially change an OpenAI or AI SDK prompt, update `gpt-prompts.md` in the same change (or immediately after) so the registry stays authoritative.
+
 ## Testing
 - Use Jest for unit/integration tests (configured at the root, driven via Turborepo).
 - Prefer running tests via root scripts, e.g. `pnpm test`, and add per-package `test` scripts when needed.

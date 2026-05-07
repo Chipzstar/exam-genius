@@ -65,7 +65,7 @@ const questionRouter = createTRPCRouter({
 			const q = await loadQuestionForEdit(ctx.prisma, input.questionId, ctx.auth.userId);
 
 			const { text } = await generateText({
-				model: openaiSdk(process.env.OPENAI_QUESTION_EDIT_MODEL ?? 'gpt-4o-mini'),
+				model: openaiSdk(env.OPENAI_QUESTION_EDIT_MODEL ?? 'gpt-4o-mini'),
 				prompt: buildQuestionEditPrompt(q, {
 					userPrompt: input.userPrompt,
 					preset: input.preset,

@@ -230,7 +230,7 @@ export default function PaperClient({ params, searchParams, initialPapers }: Pap
 							<span className='text-primary '>FAQ page</span>
 						</Link>{' '}
 						or contact us via{' '}
-						<span className='font-medium cursor-pointer text-primary' onClick={() => window.Tawk_API?.toggle?.()}>
+						<span role='button' className='font-medium cursor-pointer text-primary' onClick={() => window.Tawk_API?.toggle?.()}>
 							Live Chat
 						</span>
 					</Text>

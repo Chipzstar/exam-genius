@@ -16,7 +16,9 @@ import { useValue } from '@legendapp/state/react';
 import { appStore$ } from '~/store/app.store';
 
 if (typeof window !== 'undefined') {
-	getStripe().then(r => logger.info('Stripe loaded', r));
+	getStripe()
+		.then(r => logger.info('Stripe loaded', r))
+		.catch(err => logger.error('Stripe failed to load', err));
 }
 
 export default function ExamBoardPage() {
