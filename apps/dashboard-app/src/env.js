@@ -9,7 +9,7 @@ export const env = createEnv({
 	server: {
 		// Database
 		DATABASE_URL: z.string().url(),
-		DATABASE_URL_UNPOOLED: z.string().url().optional(),
+		DIRECT_DATABASE_URL: z.string().url().optional(),
 
 		// Stripe
 		STRIPE_SECRET_KEY: z.string().min(1),
@@ -45,6 +45,8 @@ export const env = createEnv({
 
 		// OpenAI
 		OPENAI_API_KEY: z.string().min(1),
+		OPENAI_QUESTION_EDIT_MODEL: z.string().min(1).default('gpt-4o-mini'),
+		// OPENAI_MARKING_MODEL: z.string().min(1).default('gpt-4o-mini'),
 
 		// Sentry
 		SENTRY_AUTH_TOKEN: z.string().optional(),
@@ -123,7 +125,7 @@ export const env = createEnv({
 	runtimeEnv: {
 		// Database
 		DATABASE_URL: process.env.DATABASE_URL,
-		DATABASE_URL_UNPOOLED: process.env.DATABASE_URL_UNPOOLED,
+		DIRECT_DATABASE_URL: process.env.DIRECT_DATABASE_URL,
 
 		// Stripe
 		STRIPE_SECRET_KEY: process.env.STRIPE_SECRET_KEY,
@@ -159,6 +161,7 @@ export const env = createEnv({
 
 		// OpenAI
 		OPENAI_API_KEY: process.env.OPENAI_API_KEY,
+		OPENAI_QUESTION_EDIT_MODEL: process.env.OPENAI_QUESTION_EDIT_MODEL,
 
 		// Sentry
 		SENTRY_AUTH_TOKEN: process.env.SENTRY_AUTH_TOKEN,

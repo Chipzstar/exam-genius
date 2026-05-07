@@ -16,20 +16,21 @@ import {
 	TextInput,
 	Checkbox
 } from '@mantine/core';
-import { IconDotsVertical, IconThumbDown, IconThumbUp } from '@tabler/icons-react';
+import { IconCheck, IconDotsVertical, IconThumbDown, IconThumbUp, IconX } from '@tabler/icons-react';
 import { LatexHtml, LatexText } from './Latex';
 import type { RouterOutputs } from '~/trpc/react';
 import { api } from '~/trpc/react';
-import { useMemo, useState } from 'react';
+import { useCallback, useMemo, useState } from 'react';
 import { useDisclosure, useMediaQuery } from '@mantine/hooks';
 import { notifications } from '@mantine/notifications';
 import { notifyError, notifySuccess } from '~/utils/functions';
-import { IconCheck, IconX } from '@tabler/icons-react';
 import { captureQuestionEdit, captureRating } from '~/utils/posthog-events';
 import { MarkSchemeHintButton } from './MarkSchemeHintButton';
 import type { MarkSchemeItem } from './mark-scheme-hint.utils';
 
 type Q = RouterOutputs['question']['listForPaper'][number];
+
+type QuestionFeedbackSentiment = 1 | -1;
 
 function wrapBlockMath(value: string): string {
 	const v = value.trim();
@@ -108,7 +109,9 @@ function QuestionSubtree({
 	attemptAnswers,
 	onAnswerChange,
 	flags,
-	markSchemeByQuestionId
+	markSchemeByQuestionId,
+	sessionFeedback,
+	onFeedbackRecorded
 }: {
 	parentId: string | null;
 	questions: Q[];
@@ -118,6 +121,8 @@ function QuestionSubtree({
 	onAnswerChange?: (questionId: string, text: string) => void;
 	flags: Flags;
 	markSchemeByQuestionId?: Map<string, MarkSchemeItem>;
+	sessionFeedback: Record<string, QuestionFeedbackSentiment>;
+	onFeedbackRecorded: (questionId: string, sentiment: QuestionFeedbackSentiment) => void;
 }) {
 	const nodes = useMemo(
 		() =>
@@ -140,6 +145,8 @@ function QuestionSubtree({
 					onAnswerChange={onAnswerChange}
 					flags={flags}
 					markSchemeByQuestionId={markSchemeByQuestionId}
+					sessionFeedback={sessionFeedback}
+					onFeedbackRecorded={onFeedbackRecorded}
 				/>
 			))}
 		</Stack>
@@ -154,7 +161,9 @@ function QuestionNode({
 	attemptAnswers,
 	onAnswerChange,
 	flags,
-	markSchemeByQuestionId
+	markSchemeByQuestionId,
+	sessionFeedback,
+	onFeedbackRecorded
 }: {
 	node: Q;
 	depth: number;
@@ -164,6 +173,8 @@ function QuestionNode({
 	onAnswerChange?: (questionId: string, text: string) => void;
 	flags: Flags;
 	markSchemeByQuestionId?: Map<string, MarkSchemeItem>;
+	sessionFeedback: Record<string, QuestionFeedbackSentiment>;
+	onFeedbackRecorded: (questionId: string, sentiment: QuestionFeedbackSentiment) => void;
 }) {
 	const utils = api.useUtils();
 	const mobileDrawer = useMediaQuery('(max-width: 30em)');
@@ -175,9 +186,40 @@ function QuestionNode({
 	const [streamPreview, setStreamPreview] = useState('');
 	const [streaming, setStreaming] = useState(false);
 
-	const { mutateAsync: submitFeedback } = api.rating.submitQuestion.useMutation({
-		onSuccess: () => captureRating('question', { questionId: node.question_id })
+	const { mutateAsync: submitFeedback, isPending: feedbackSubmitting } = api.rating.submitQuestion.useMutation({
+		onSuccess: (_data, variables) => {
+			onFeedbackRecorded(node.question_id, variables.sentiment);
+			void utils.question.listForPaper.invalidate();
+			captureRating('question', { questionId: node.question_id });
+			notifySuccess(
+				`question-feedback-${node.question_id}`,
+				variables.sentiment === 1
+					? 'Thanks — we saved your positive feedback for this question.'
+					: 'Thanks — we saved your feedback for this question.',
+				<IconCheck size={18} />
+			);
+		},
+		onError: error => {
+			const msg = error.message || 'Could not save feedback';
+			notifyError(`question-feedback-err-${node.question_id}`, msg, <IconX size={18} />);
+		}
 	});
+
+	const serverSentiment = node.feedback[0]?.sentiment;
+	const recordedSentiment: QuestionFeedbackSentiment | undefined =
+		serverSentiment === 1 || serverSentiment === -1
+			? serverSentiment
+			: sessionFeedback[node.question_id];
+	const feedbackLocked = recordedSentiment !== undefined;
+
+	const giveFeedback = (sentiment: QuestionFeedbackSentiment) => {
+		if (feedbackLocked || feedbackSubmitting) return;
+		void submitFeedback({
+			questionId: node.question_id,
+			sentiment,
+			reason_tags: sentiment === -1 ? ['too_hard'] : []
+		});
+	};
 
 	const { data: revisions = [] } = api.question.listRevisions.useQuery(
 		{ questionId: node.question_id },
@@ -219,35 +261,50 @@ function QuestionNode({
 						<MarkSchemeHintButton item={markSchemeItem} questionLabel={node.label} />
 					) : null}
 				</Group>
-				<Menu shadow='md' width={220}>
+				<Menu shadow='md' width={240}>
 					<Menu.Target>
-						<ActionIcon variant='subtle' size='sm' aria-label='Question menu'>
+						<ActionIcon
+							variant='subtle'
+							size='sm'
+							aria-label='Question menu'
+							aria-busy={feedbackSubmitting}
+							color={feedbackLocked ? 'dimmed' : undefined}
+						>
 							<IconDotsVertical size={16} />
 						</ActionIcon>
 					</Menu.Target>
 					<Menu.Dropdown>
 						{flags.questionEdits && <Menu.Item onClick={openDrawer}>Edit with AI…</Menu.Item>}
 						{flags.questionEdits && <Menu.Item onClick={openHist}>Revision history</Menu.Item>}
-						<Menu.Item
-							leftSection={<IconThumbUp size={14} />}
-							onClick={() =>
-								void submitFeedback({ questionId: node.question_id, sentiment: 1, reason_tags: [] })
-							}
-						>
-							Thumbs up
-						</Menu.Item>
-						<Menu.Item
-							leftSection={<IconThumbDown size={14} />}
-							onClick={() =>
-								void submitFeedback({
-									questionId: node.question_id,
-									sentiment: -1,
-									reason_tags: ['too_hard']
-								})
-							}
-						>
-							Thumbs down
-						</Menu.Item>
+						{feedbackLocked ? (
+							<Menu.Item
+								disabled
+								leftSection={<IconCheck size={14} />}
+								closeMenuOnClick={false}
+								style={{ opacity: 1 }}
+							>
+								{recordedSentiment === 1
+									? 'Feedback recorded — you said this was helpful'
+									: 'Feedback recorded — thanks for letting us know'}
+							</Menu.Item>
+						) : (
+							<>
+								<Menu.Item
+									leftSection={<IconThumbUp size={14} />}
+									disabled={feedbackSubmitting}
+									onClick={() => giveFeedback(1)}
+								>
+									Thumbs up
+								</Menu.Item>
+								<Menu.Item
+									leftSection={<IconThumbDown size={14} />}
+									disabled={feedbackSubmitting}
+									onClick={() => giveFeedback(-1)}
+								>
+									Thumbs down
+								</Menu.Item>
+							</>
+						)}
 					</Menu.Dropdown>
 				</Menu>
 			</Group>
@@ -279,6 +336,8 @@ function QuestionNode({
 				onAnswerChange={onAnswerChange}
 				flags={flags}
 				markSchemeByQuestionId={markSchemeByQuestionId}
+				sessionFeedback={sessionFeedback}
+				onFeedbackRecorded={onFeedbackRecorded}
 			/>
 			<Drawer
 				opened={drawerOpen}
@@ -435,6 +494,11 @@ export function QuestionTree({
 	flags: Flags;
 	markSchemeByQuestionId?: Map<string, MarkSchemeItem>;
 }) {
+	const [sessionFeedback, setSessionFeedback] = useState<Record<string, QuestionFeedbackSentiment>>({});
+	const onFeedbackRecorded = useCallback((questionId: string, sentiment: QuestionFeedbackSentiment) => {
+		setSessionFeedback(prev => ({ ...prev, [questionId]: sentiment }));
+	}, []);
+
 	return (
 		<QuestionSubtree
 			parentId={null}
@@ -445,6 +509,8 @@ export function QuestionTree({
 			onAnswerChange={onAnswerChange}
 			flags={flags}
 			markSchemeByQuestionId={markSchemeByQuestionId}
+			sessionFeedback={sessionFeedback}
+			onFeedbackRecorded={onFeedbackRecorded}
 		/>
 	);
 }

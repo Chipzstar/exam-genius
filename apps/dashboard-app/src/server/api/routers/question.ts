@@ -10,6 +10,7 @@ import {
 	parseEditModelText,
 	persistQuestionEditFromParsed
 } from '~/server/question-edit-logic';
+import { questionsForPaperListTag } from '~/server/accelerate-cache-tags';
 
 const openaiSdk = createOpenAI({ apiKey: env.OPENAI_API_KEY });
 
@@ -23,7 +24,18 @@ const questionRouter = createTRPCRouter({
 			if (!paper) throw new TRPCError({ code: 'NOT_FOUND' });
 			return ctx.prisma.question.findMany({
 				where: { paper_id: input.paperId },
-				orderBy: [{ order: 'asc' }]
+				orderBy: [{ order: 'asc' }],
+				include: {
+					feedback: {
+						where: { user_id: ctx.auth.userId },
+						select: { sentiment: true }
+					}
+				},
+				cacheStrategy: {
+					swr: 30,
+					ttl: 60,
+					tags: [questionsForPaperListTag(input.paperId)]
+				}
 			});
 		}),
 
@@ -39,7 +51,8 @@ const questionRouter = createTRPCRouter({
 			if (!q) throw new TRPCError({ code: 'NOT_FOUND' });
 			return ctx.prisma.questionRevision.findMany({
 				where: { question_id: input.questionId },
-				orderBy: { revision: 'desc' }
+				orderBy: { revision: 'desc' },
+				cacheStrategy: { swr: 15, ttl: 30 }
 			});
 		}),
 
@@ -57,7 +70,7 @@ const questionRouter = createTRPCRouter({
 			const q = await loadQuestionForEdit(ctx.prisma, input.questionId, ctx.auth.userId);
 
 			const { text } = await generateText({
-				model: openaiSdk(process.env.OPENAI_QUESTION_EDIT_MODEL ?? 'gpt-4o-mini'),
+				model: openaiSdk(env.OPENAI_QUESTION_EDIT_MODEL ?? 'gpt-4o-mini'),
 				prompt: buildQuestionEditPrompt(q, {
 					userPrompt: input.userPrompt,
 					preset: input.preset,
@@ -72,7 +85,11 @@ const questionRouter = createTRPCRouter({
 				throw new TRPCError({ code: 'BAD_REQUEST', message: 'Model returned invalid JSON' });
 			}
 
-			return persistQuestionEditFromParsed(ctx.prisma, q, parsed, input.preserveMarks);
+			const updated = await persistQuestionEditFromParsed(ctx.prisma, q, parsed, input.preserveMarks);
+			await ctx.prisma.$accelerate.invalidate({
+				tags: [questionsForPaperListTag(updated.paper_id)]
+			});
+			return updated;
 		}),
 
 	revertToRevision: protectedProcedure
@@ -100,7 +117,7 @@ const questionRouter = createTRPCRouter({
 				}
 			});
 
-			return ctx.prisma.question.update({
+			const updated = await ctx.prisma.question.update({
 				where: { question_id: input.questionId },
 				data: {
 					body: rev.body as object[],
@@ -108,6 +125,10 @@ const questionRouter = createTRPCRouter({
 					revision: { increment: 1 }
 				}
 			});
+			await ctx.prisma.$accelerate.invalidate({
+				tags: [questionsForPaperListTag(q.paper_id)]
+			});
+			return updated;
 		})
 });
 

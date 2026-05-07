@@ -1,5 +1,6 @@
 import type { PrismaClient, Subject, ExamBoard } from '@exam-genius/shared/prisma';
-import type Stripe from 'stripe';
+import { logger } from '@exam-genius/shared/utils';
+import type { Stripe } from 'stripe/cjs/stripe.core';
 import type { Logger } from 'next-axiom';
 import { CHECKOUT_TYPE } from '../../utils/constants';
 import { capitalize, genCourseOrPaperName, genID, sanitize } from '../../utils/functions';
@@ -16,10 +17,10 @@ export const getOrCreateStripeCustomerIdForUser = async ({
 	prisma: PrismaClient;
 	userId: string | null;
 }) => {
-	console.log('[Stripe] getOrCreateStripeCustomerIdForUser called', { userId });
+	logger.info('[Stripe] getOrCreateStripeCustomerIdForUser called', { userId });
 	try {
 		if (!userId) throw new Error('User not logged in!');
-		console.log('[Stripe] Looking up user by clerk_id', { userId });
+		logger.info('[Stripe] Looking up user by clerk_id', { userId });
 		const user = await prisma.user.findUniqueOrThrow({
 			where: {
 				clerk_id: userId
@@ -27,15 +28,15 @@ export const getOrCreateStripeCustomerIdForUser = async ({
 		});
 
 		if (!user) throw new Error('User not found');
-		console.log('[Stripe] User found', { userId: user.clerk_id, stripeCustomerId: user.stripe_customer_id });
+		logger.info('[Stripe] User found', { userId: user.clerk_id, stripeCustomerId: user.stripe_customer_id });
 
 		if (user.stripe_customer_id) {
-			console.log('[Stripe] Returning existing stripe_customer_id', { stripe_customer_id: user.stripe_customer_id });
+			logger.info('[Stripe] Returning existing stripe_customer_id', { stripe_customer_id: user.stripe_customer_id });
 			return user.stripe_customer_id;
 		}
 
 		// create a new customer
-		console.log('[Stripe] Creating new Stripe customer');
+		logger.info('[Stripe] Creating new Stripe customer');
 		const customer = await stripe.customers.create({
 			email: user.email ?? undefined,
 			name: user.full_name ?? undefined,
@@ -46,7 +47,7 @@ export const getOrCreateStripeCustomerIdForUser = async ({
 		});
 
 		// update with new customer id
-		console.log('[Stripe] Updating user with new stripe_customer_id', { customerId: customer.id });
+		logger.info('[Stripe] Updating user with new stripe_customer_id', { customerId: customer.id });
 		const updatedUser = await prisma.user.update({
 			where: {
 				clerk_id: userId
@@ -57,13 +58,13 @@ export const getOrCreateStripeCustomerIdForUser = async ({
 		});
 
 		if (updatedUser.stripe_customer_id) {
-			console.log('[Stripe] Returning newly created stripe_customer_id', { stripe_customer_id: updatedUser.stripe_customer_id });
+			logger.info('[Stripe] Returning newly created stripe_customer_id', { stripe_customer_id: updatedUser.stripe_customer_id });
 			return updatedUser.stripe_customer_id;
 		}
-		console.log('[Stripe] Returning customer.id', { customerId: customer.id });
+		logger.info('[Stripe] Returning customer.id', { customerId: customer.id });
 		return customer.id;
 	} catch (err) {
-		console.error('[Stripe] getOrCreateStripeCustomerIdForUser error', err);
+		logger.error('[Stripe] getOrCreateStripeCustomerIdForUser error', err);
 		throw err;
 	}
 };
@@ -79,28 +80,28 @@ export const handleCheckoutSessionComplete = async ({
 	prisma: PrismaClient;
 	log: Logger;
 }) => {
-	console.log('[Stripe Checkout] handleCheckoutSessionComplete called', { eventId: event.id, eventType: event.type });
+	logger.info('[Stripe Checkout] handleCheckoutSessionComplete called', { eventId: event.id, eventType: event.type });
 	try {
 		const session = event.data.object as Stripe.Checkout.Session;
-		console.log('[Stripe Checkout] Session details', { sessionId: session.id, metadata: session?.metadata ?? {}, customerEmail: session.customer_email });
+		logger.info('[Stripe Checkout] Session details', { sessionId: session.id, metadata: session?.metadata ?? {}, customerEmail: session.customer_email });
 		const checkout_type = String(session?.metadata?.type);
 		const metadataUserId = session?.metadata?.userId ?? '';
-		console.log('[Stripe Checkout] Looking up user', { metadataUserId, checkout_type });
+		logger.info('[Stripe Checkout] Looking up user', { metadataUserId, checkout_type });
 		const user = await prisma.user.findUniqueOrThrow({
 			where: {
 				clerk_id: metadataUserId
 			}
 		});
-		console.log('[Stripe Checkout] User found', { clerk_id: user.clerk_id });
+		logger.info('[Stripe Checkout] User found', { clerk_id: user.clerk_id });
 		const line_items = await stripe.checkout.sessions.listLineItems(session.id, { limit: 5 });
-		console.log('[Stripe Checkout] Line items count', { count: line_items.data.length });
+		logger.info('[Stripe Checkout] Line items count', { count: line_items.data.length });
 		for (const item of line_items.data) {
-			console.log('[Stripe Checkout] Processing line item', { priceId: item.price?.id });
+			logger.info('[Stripe Checkout] Processing line item', { priceId: item.price?.id });
 			if (!item.price) throw new Error('No price found');
 			const price = await stripe.prices.retrieve(String(item.price.id));
-			console.log('[Stripe Checkout] Price retrieved', { priceId: price.id, productId: price.product });
+			logger.info('[Stripe Checkout] Price retrieved', { priceId: price.id, productId: price.product });
 			if (checkout_type === CHECKOUT_TYPE.COURSE) {
-				console.log('[Stripe Checkout] Course checkout branch', { subject: session?.metadata?.subject, exam_board: session?.metadata?.exam_board });
+				logger.info('[Stripe Checkout] Course checkout branch', { subject: session?.metadata?.subject, exam_board: session?.metadata?.exam_board });
 				if (session?.metadata?.subject && session?.metadata?.exam_board) {
 					const subject = session.metadata.subject as Subject;
 					const exam_board = session.metadata.exam_board as ExamBoard;
@@ -116,11 +117,10 @@ export const handleCheckoutSessionComplete = async ({
 							year_level: 13
 						}
 					});
-					console.log('[Stripe Checkout] Course created', { courseId: course.course_id });
-					console.log('[Stripe Checkout] New course created', course);
+					logger.info('[Stripe Checkout] Course created', course);
 				}
 			} else {
-				console.log('[Stripe Checkout] Paper checkout branch', { metadataKeys: session?.metadata ? Object.keys(session.metadata) : [] });
+				logger.info('[Stripe Checkout] Paper checkout branch', { metadataKeys: session?.metadata ? Object.keys(session.metadata) : [] });
 				if (session?.metadata && [
 					'exam_board',
 					'subject',
@@ -152,8 +152,8 @@ export const handleCheckoutSessionComplete = async ({
 							content: ''
 						}
 					});
-					console.log('[Stripe Checkout] Paper created', { paperId: paper.paper_id });
-					console.log('[Stripe Checkout] Triggering paper generate API', { paper_id: paper.paper_id });
+					logger.info('[Stripe Checkout] Paper created', { paperId: paper.paper_id });
+					logger.info('[Stripe Checkout] Triggering paper generate API', { paper_id: paper.paper_id });
 					backendApi
 						.post('/server/paper/generate', {
 							paper_id: paper.paper_id,
@@ -165,15 +165,15 @@ export const handleCheckoutSessionComplete = async ({
 							num_marks: num_marks
 						} as GeneratePaperPayload)
 						.catch(err => {
-							console.error('[Stripe Checkout] Paper generate API error', err);
+							logger.error('[Stripe Checkout] Paper generate API error', err);
 						});
 				}
 			}
 		}
-		console.log('[Stripe Checkout] handleCheckoutSessionComplete completed successfully');
+		logger.info('[Stripe Checkout] handleCheckoutSessionComplete completed successfully');
 		return;
 	} catch (err) {
-		console.error('[Stripe Checkout] Handle checkout session error', err);
+		logger.error('[Stripe Checkout] Handle checkout session error', err);
 		throw err;
 	}
 };
@@ -190,28 +190,27 @@ export const handleInvoicePaid = async ({
 	log?: Logger;
 }) => {
 	const invoice = event.data.object as Stripe.Invoice;
-	console.log('[Stripe Invoice] handleInvoicePaid called', { invoiceId: invoice.id, customerId: invoice.customer });
+	logger.info('[Stripe Invoice] handleInvoicePaid called', { invoiceId: invoice.id, customerId: invoice.customer });
 	if (!invoice.customer) throw new Error('No stripe customer found');
 	// Check if the user with the corresponding ID already exists
 	try {
-		console.log('[Stripe Invoice] Looking up user by stripe_customer_id', { stripeCustomerId: invoice.customer });
+		logger.info('[Stripe Invoice] Looking up user by stripe_customer_id', { stripeCustomerId: invoice.customer });
 		const user = await prisma.user.findUnique({
 			where: {
 				stripe_customer_id: String(invoice.customer)
 			}
 		});
 		if (!user) throw new Error('User not found');
-		console.log('[Stripe Invoice] User found', { clerk_id: user.clerk_id });
+		logger.info('[Stripe Invoice] User found', { clerk_id: user.clerk_id });
 		// for each line item, check if the item is a subject
 		// if so create the course under the user that purchased it
 		for (const item of invoice.lines.data) {
-			console.log('[Stripe Invoice] Processing line item', { priceId: item.price?.id });
-			if (!item.price) throw new Error('No price found');
-			const price = await stripe.prices.retrieve(String(item.price.id));
-			console.log('[Stripe Invoice] Price retrieved', { priceId: price.id, metadata: price.metadata });
-			console.log('-----------------------------------------');
-			console.log(price);
-			console.log('-----------------------------------------');
+			const priceRef = item.pricing?.price_details?.price;
+			const priceId = priceRef == null ? null : typeof priceRef === 'string' ? priceRef : priceRef.id;
+			logger.info('[Stripe Invoice] Processing line item', { priceId });
+			if (!priceId) throw new Error('No price found');
+			const price = await stripe.prices.retrieve(priceId);
+			logger.info('[Stripe Invoice] Price retrieved', price);
 			if (price?.metadata?.subject && price?.metadata?.exam_board) {
 				const subject = price.metadata.subject as Subject;
 				const exam_board = price.metadata.exam_board as ExamBoard;
@@ -227,16 +226,13 @@ export const handleInvoicePaid = async ({
 						year_level: 13
 					}
 				});
-				console.log('[Stripe Invoice] Course created', { courseId: course.course_id });
-				console.log('*****************************************');
-				console.log(course);
-				console.log('*****************************************');
+				logger.info('[Stripe Invoice] Course created', course);
 			}
 		}
-		console.log('[Stripe Invoice] handleInvoicePaid completed successfully');
+		logger.info('[Stripe Invoice] handleInvoicePaid completed successfully');
 		return;
 	} catch (err) {
-		console.error('[Stripe Invoice] handleInvoicePaid error', err);
+		logger.error('[Stripe Invoice] handleInvoicePaid error', err);
 		throw err;
 	}
 };
@@ -274,10 +270,10 @@ export const handleSubscriptionCreatedOrUpdated = async ({
 	log?: Logger;
 }) => {
 	const subscription = event.data.object as Stripe.Subscription;
-	console.log('[Stripe Subscription] handleSubscriptionCreatedOrUpdated called', { subscriptionId: subscription.id, customerId: subscription.customer, status: subscription.status });
+	logger.info('[Stripe Subscription] handleSubscriptionCreatedOrUpdated called', { subscriptionId: subscription.id, customerId: subscription.customer, status: subscription.status });
 	const customer_id = subscription.customer;
 	const plan = resolvePlanFromStripeSubscription(subscription);
-	console.log('[Stripe Subscription] Updating user with subscription data', { stripeCustomerId: customer_id, plan });
+	logger.info('[Stripe Subscription] Updating user with subscription data', { stripeCustomerId: customer_id, plan });
 	await prisma.user.update({
 		where: {
 			stripe_customer_id: String(customer_id)
@@ -288,7 +284,7 @@ export const handleSubscriptionCreatedOrUpdated = async ({
 			plan
 		}
 	});
-	console.log('[Stripe Subscription] handleSubscriptionCreatedOrUpdated completed');
+	logger.info('[Stripe Subscription] handleSubscriptionCreatedOrUpdated completed');
 	return;
 };
 
@@ -303,10 +299,10 @@ export const handleSubscriptionCanceled = async ({
 }) => {
 	const subscription = event.data.object as Stripe.Subscription;
 	const userId = subscription.metadata.userId;
-	console.log('[Stripe Subscription] handleSubscriptionCanceled called', { subscriptionId: subscription.id, userId });
+	logger.info('[Stripe Subscription] handleSubscriptionCanceled called', { subscriptionId: subscription.id, userId });
 
 	// remove subscription data from user
-	console.log('[Stripe Subscription] Removing subscription data from user', { userId });
+	logger.info('[Stripe Subscription] Removing subscription data from user', { userId });
 	await prisma.user.update({
 		where: {
 			id: Number(userId)
@@ -317,5 +313,5 @@ export const handleSubscriptionCanceled = async ({
 			plan: 'free'
 		}
 	});
-	console.log('[Stripe Subscription] handleSubscriptionCanceled completed');
+	logger.info('[Stripe Subscription] handleSubscriptionCanceled completed');
 };

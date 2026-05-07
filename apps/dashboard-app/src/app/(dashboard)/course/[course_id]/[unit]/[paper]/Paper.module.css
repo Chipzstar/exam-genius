@@ -8,8 +8,14 @@
 	height: 100%;
 }
 
-.root:hover .controls {
-	opacity: 1;
+@media (hover: hover) and (pointer: fine) {
+	.controls {
+		opacity: 0;
+	}
+
+	.root:hover .controls {
+		opacity: 1;
+	}
 }
 
 .paperViewRoot {

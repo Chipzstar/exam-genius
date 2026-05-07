@@ -1,7 +1,7 @@
 'use client';
 
 import { useRef, useState } from 'react';
-import { Button, Group, Text } from '@mantine/core';
+import { Box, Button, Group, Pagination, Text } from '@mantine/core';
 import { modals } from '@mantine/modals';
 import { useValue } from '@legendapp/state/react';
 import { IconArrowsMaximize, IconPrinter, IconX } from '@tabler/icons-react';
@@ -25,6 +25,10 @@ export type ReaderToolbarProps = {
 	paperTitle?: string | null;
 	/** Unique id for Mantine modal instance (e.g. paper_id) */
 	paperId?: string;
+	/** When >1, show pagination to switch between generated copies for this paper code */
+	paperVariantTotal?: number;
+	/** 1-based page index from Mantine Pagination */
+	onPaperVariantPageChange?: (page: number) => void;
 };
 
 export function ReaderToolbar({
@@ -36,7 +40,9 @@ export function ReaderToolbar({
 	onDelete,
 	deleteLoading,
 	paperTitle,
-	paperId
+	paperId,
+	paperVariantTotal,
+	onPaperVariantPageChange
 }: ReaderToolbarProps) {
 	const focusMode = useValue(appStore$.reader.focusMode);
 	const fontScale = useValue(appStore$.reader.fontScale);
@@ -153,6 +159,12 @@ export function ReaderToolbar({
 	const canPrintPdf = Boolean(pdfSourceId) && slideIndex === activeSlideIndex;
 	const isActiveSlide = slideIndex === activeSlideIndex;
 
+	const showPaperVariants =
+		typeof paperVariantTotal === 'number' &&
+		paperVariantTotal > 1 &&
+		isActiveSlide &&
+		typeof onPaperVariantPageChange === 'function';
+
 	const openDeleteConfirm = () => {
 		if (!onDelete) return;
 		const label = paperTitle?.trim() ? `"${paperTitle.trim()}"` : 'this paper';
@@ -186,7 +198,7 @@ export function ReaderToolbar({
 				backgroundColor: 'light-dark(var(--mantine-color-body), var(--mantine-color-dark-7))'
 			}}
 		>
-			<Group gap='xs'>
+			<Group gap='xs' wrap='nowrap'>
 				<Button size='sm' variant='light' onClick={toggleFocus} leftSection={<IconArrowsMaximize size={16} />}>
 					{focusMode ? 'Exit focus' : 'Focus'}
 				</Button>
@@ -214,7 +226,46 @@ export function ReaderToolbar({
 					</Button>
 				) : null}
 			</Group>
-			<Group gap={4} align='center'>
+
+			{showPaperVariants ? (
+				<Box
+					style={{
+						flex: '1 1 12rem',
+						display: 'flex',
+						alignItems: 'center',
+						justifyContent: 'center',
+						minWidth: 0
+					}}
+				>
+					<Group gap='xs' wrap='nowrap' align='center' justify='center'>
+						<Text size='xs' c='dimmed' ff='sans-serif' fw={500} visibleFrom='sm' style={{ letterSpacing: '0.02em' }}>
+							Copies
+						</Text>
+						<Pagination
+							total={paperVariantTotal}
+							value={activeSlideIndex + 1}
+							onChange={onPaperVariantPageChange}
+							size='sm'
+							color='brand'
+							radius='md'
+							gap='xs'
+							siblings={1}
+							boundaries={1}
+							withEdges={false}
+							getControlProps={control => {
+								if (control === 'next') return { 'aria-label': 'Next generated paper' };
+								if (control === 'previous') return { 'aria-label': 'Previous generated paper' };
+								return {};
+							}}
+							styles={{
+								root: { flexWrap: 'nowrap' }
+							}}
+						/>
+					</Group>
+				</Box>
+			) : null}
+
+			<Group gap={4} align='center' wrap='nowrap'>
 				<Text size='xs' c='dimmed' visibleFrom='xs'>
 					Text size
 				</Text>

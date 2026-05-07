@@ -62,7 +62,7 @@ export async function POST(req: Request) {
 		});
 
 		const result = streamText({
-			model: openaiSdk(process.env.OPENAI_QUESTION_EDIT_MODEL ?? 'gpt-4o-mini'),
+			model: openaiSdk(env.OPENAI_QUESTION_EDIT_MODEL ?? 'gpt-4o-mini'),
 			prompt,
 			onFinish: async ({ text }) => {
 				try {
