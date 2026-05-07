@@ -4,6 +4,8 @@ import { auth } from '@clerk/nextjs/server';
 import { z } from 'zod';
 import { genID } from '~/utils/functions';
 import { backendApi } from '~/server/backend-headers';
+import { prisma } from '~/server/prisma';
+import { referencesListTag } from '~/server/accelerate-cache-tags';
 
 const f = createUploadthing();
 
@@ -35,6 +37,12 @@ export const ourFileRouter = {
 					ut_key: file.key,
 					ut_url: file.ufsUrl,
 					filename: file.name
+				});
+				await prisma.$accelerate.invalidate({
+					tags: [
+						referencesListTag(metadata.userId),
+						referencesListTag(metadata.userId, metadata.courseId)
+					]
 				});
 			} catch (e) {
 				console.error('[uploadthing] extract callback', e);
