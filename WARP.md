@@ -212,8 +212,8 @@ Environment variables are managed through **Doppler**:
 - Config: `loc` (local development)
 
 Required environment variables:
-- `DATABASE_URL`: PostgreSQL connection string (e.g. from Prisma Postgres)
-- `DATABASE_URL_UNPOOLED`: Direct connection string
+- `DATABASE_URL`: Prisma **Accelerate** URL (`prisma+postgres://…`) — runtime connection
+- `DIRECT_DATABASE_URL`: **Direct** PostgreSQL URL for Prisma CLI (`migrate`, `db push`, etc.; see `apps/dashboard-app/prisma.config.ts`)
 - `NGROK_AUTHTOKEN`: ngrok authentication token (for local webhook testing)
 - Clerk auth variables (see Clerk dashboard)
 - Stripe API keys

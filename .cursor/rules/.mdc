@@ -96,7 +96,7 @@ You are an expert in TypeScript, Node.js, Next.js App Router, React, Turborepo, 
   - `paper.prisma`: paper / exam models
 - The merged schema is output to `prisma/schema.prisma` via `prismerge`.
 - Access the Prisma client via shared code under `libs/shared/prisma` (and the `server/prisma` helper in `dashboard-app`).
-- **Environment:** `DATABASE_URL` is the **Accelerate** connection string (app runtime). `DIRECT_DATABASE_URL` is the **direct** Postgres URL used by Prisma CLI (`migrate`, `db push`, etc.) via `apps/dashboard-app/prisma.config.ts`. `DATABASE_URL_UNPOOLED` remains optional for providers that expose a separate unpooled URL.
+- **Environment:** `DATABASE_URL` is the **Accelerate** connection string (app runtime). `DIRECT_DATABASE_URL` is the **direct** Postgres URL used by Prisma CLI (`migrate`, `db push`, etc.) via `apps/dashboard-app/prisma.config.ts`.
 - Handle Prisma errors gracefully and translate them into appropriate tRPC errors.
 
 ## Clerk Authentication
@@ -117,7 +117,7 @@ You are an expert in TypeScript, Node.js, Next.js App Router, React, Turborepo, 
 ## Environment Variables
 - Use **Doppler** for secrets management where possible (project `exam-genius`, config `loc`).
 - For local development with Doppler, use `pnpm dev:dashboard:doppler` or the corresponding Doppler command.
-- Required env vars include: `DATABASE_URL` (Accelerate), `DIRECT_DATABASE_URL` (direct DB for CLI; set where migrations run), optional `DATABASE_URL_UNPOOLED`, Clerk keys, Stripe keys, `OPENAI_API_KEY`, `APP_BASE_URL`,
+- Required env vars include: `DATABASE_URL` (Accelerate), `DIRECT_DATABASE_URL` (direct DB for CLI; set where migrations run), Clerk keys, Stripe keys, `OPENAI_API_KEY`, `APP_BASE_URL`,
   as well as multiple subject- and board-specific Stripe price IDs.
 - Never commit `.env` files. Use `.env.local` for local overrides and Doppler for secure storage.
 - Access env vars via the typed env helpers (e.g. `env` from `@t3-oss/env-nextjs`) instead of `process.env` directly.
