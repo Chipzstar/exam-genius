@@ -10,6 +10,7 @@ import {
 	parseEditModelText,
 	persistQuestionEditFromParsed
 } from '~/server/question-edit-logic';
+import { questionsForPaperListTag } from '~/server/accelerate-cache-tags';
 
 const openaiSdk = createOpenAI({ apiKey: env.OPENAI_API_KEY });
 
@@ -30,7 +31,11 @@ const questionRouter = createTRPCRouter({
 						select: { sentiment: true }
 					}
 				},
-				cacheStrategy: { swr: 30, ttl: 60 }
+				cacheStrategy: {
+					swr: 30,
+					ttl: 60,
+					tags: [questionsForPaperListTag(input.paperId)]
+				}
 			});
 		}),
 
@@ -80,7 +85,11 @@ const questionRouter = createTRPCRouter({
 				throw new TRPCError({ code: 'BAD_REQUEST', message: 'Model returned invalid JSON' });
 			}
 
-			return persistQuestionEditFromParsed(ctx.prisma, q, parsed, input.preserveMarks);
+			const updated = await persistQuestionEditFromParsed(ctx.prisma, q, parsed, input.preserveMarks);
+			await ctx.prisma.$accelerate.invalidate({
+				tags: [questionsForPaperListTag(updated.paper_id)]
+			});
+			return updated;
 		}),
 
 	revertToRevision: protectedProcedure
@@ -108,7 +117,7 @@ const questionRouter = createTRPCRouter({
 				}
 			});
 
-			return ctx.prisma.question.update({
+			const updated = await ctx.prisma.question.update({
 				where: { question_id: input.questionId },
 				data: {
 					body: rev.body as object[],
@@ -116,6 +125,10 @@ const questionRouter = createTRPCRouter({
 					revision: { increment: 1 }
 				}
 			});
+			await ctx.prisma.$accelerate.invalidate({
+				tags: [questionsForPaperListTag(q.paper_id)]
+			});
+			return updated;
 		})
 });
 

@@ -1,6 +1,7 @@
 import { z } from 'zod';
 import { TRPCError } from '@trpc/server';
 import { createTRPCRouter, protectedProcedure, rateLimited } from '../trpc';
+import { questionsForPaperListTag } from '~/server/accelerate-cache-tags';
 
 const ratingRouter = createTRPCRouter({
 	submitPaper: protectedProcedure
@@ -49,7 +50,7 @@ const ratingRouter = createTRPCRouter({
 				where: { question_id: input.questionId, paper: { user_id: ctx.auth.userId } }
 			});
 			if (!q) throw new TRPCError({ code: 'NOT_FOUND' });
-			return ctx.prisma.questionFeedback.upsert({
+			const feedback = await ctx.prisma.questionFeedback.upsert({
 				where: {
 					user_id_question_id: {
 						user_id: ctx.auth.userId,
@@ -69,6 +70,10 @@ const ratingRouter = createTRPCRouter({
 					note: input.note
 				}
 			});
+			await ctx.prisma.$accelerate.invalidate({
+				tags: [questionsForPaperListTag(q.paper_id)]
+			});
+			return feedback;
 		})
 });
 
