@@ -62,7 +62,11 @@ export interface PrivateMetadata {}
 
 export interface PublicMetadata {}
 
-export interface UnsafeMetadata {}
+export interface UnsafeMetadata {
+	onboarding_subject?: string
+	onboarding_exam_board?: string
+	onboarding_source?: string
+}
 
 export interface GeneratePaperPayload {
 	paper_id: string;

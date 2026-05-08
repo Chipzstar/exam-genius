@@ -13,6 +13,7 @@ import { env } from '~/env';
 import { NextSSRPlugin } from '@uploadthing/react/next-ssr-plugin';
 import { extractRouterConfig } from 'uploadthing/server';
 import { ourFileRouter } from '~/app/api/uploadthing/core';
+import { NuqsAdapter } from 'nuqs/adapters/next/app';
 
 const poppins = localFont({
 	src: [
@@ -82,12 +83,14 @@ export default function RootLayout({
 			</head>
 			<body className="font-sans">
 				<NextSSRPlugin routerConfig={extractRouterConfig(ourFileRouter)} />
-				<Providers baseUrl={baseUrl}>
-					<>
-						{children}
-						<ThemeToggleFloating />
-					</>
-				</Providers>
+				<NuqsAdapter>
+					<Providers baseUrl={baseUrl}>
+						<>
+							{children}
+							<ThemeToggleFloating />
+						</>
+					</Providers>
+				</NuqsAdapter>
 			</body>
 		</html>
 	);

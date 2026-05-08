@@ -65,6 +65,7 @@
 		"nanoid": "^4.0.2",
 		"next": "catalog:",
 		"next-axiom": "^1.10.0",
+		"nuqs": "^2.8.9",
 		"openai": "^3.2.1",
 		"posthog-js": "^1.369.3",
 		"react": "catalog:",
