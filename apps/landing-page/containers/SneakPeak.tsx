@@ -16,7 +16,20 @@ interface SneakPeakProps {
 const SneakPeak = ({ prev, sneak_peak_questions, subject, examBoard, paper }: SneakPeakProps) => {
 	const mobileScreen = useMediaQuery('(max-width: 48em)');
 	const { width } = useViewportSize();
-	const signupUrl = `https://app.exam-genius.com/signup?source=landing&phase=sneak_peak&subject=${encodeURIComponent(subject ?? '')}&examBoard=${encodeURIComponent(examBoard ?? '')}&paper=${encodeURIComponent(paper ?? '')}`;
+	const signupParams = new URLSearchParams({
+		source: 'landing',
+		phase: 'sneak_peak'
+	});
+	if (subject) {
+		signupParams.set('subject', subject);
+	}
+	if (examBoard) {
+		signupParams.set('examBoard', examBoard);
+	}
+	if (paper) {
+		signupParams.set('paper', paper);
+	}
+	const signupUrl = `${process.env.NEXT_PUBLIC_DASHBOARD_APP_URL}/signup?${signupParams.toString()}`;
 	return (
 		<Page.Container classNames='h-full flex flex-col pb-2'>
 			<header className='pb-20'>
