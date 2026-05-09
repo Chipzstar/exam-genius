@@ -27,6 +27,7 @@ const ChoosePaper = ({ course, next, prev, form } : Props) => {
 		trackSneakPeakEngagement({
 			subject: form.values.subject,
 			exam_board: form.values.examBoard,
+			exam_level: form.values.examLevel === 'as_level' ? 'as_level' : 'a_level',
 			paper: unit_name,
 			question_count: question_answers.length
 		});

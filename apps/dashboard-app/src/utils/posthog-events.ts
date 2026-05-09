@@ -1,5 +1,6 @@
 import posthog from 'posthog-js';
 
+/** Prefer passing `exam_level` (`a_level` | `as_level`) when known from the owning course. */
 export function capturePaperGeneration(event: 'started' | 'succeeded' | 'failed', props?: Record<string, unknown>) {
 	if (typeof window === 'undefined') return;
 	posthog.capture(`paper_generation_${event}`, props);
@@ -20,6 +21,7 @@ export function captureRating(kind: 'paper' | 'question', props?: Record<string,
 	posthog.capture(`rating_${kind}_submitted`, props);
 }
 
+/** Prefer passing `exam_level` (`a_level` | `as_level`) when known from the owning course. */
 export function captureAttempt(event: 'started' | 'submitted' | 'marked', props?: Record<string, unknown>) {
 	if (typeof window === 'undefined') return;
 	posthog.capture(`attempt_${event}`, props);

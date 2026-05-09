@@ -3,7 +3,7 @@ import { Box, Button, Group, Radio, SimpleGrid, Title } from '@mantine/core';
 import Page from '../layout/Page';
 import { SubjectCard } from '@exam-genius/shared/ui';
 
-const ChooseSubject = ({ next, disabled, onChange }) => {
+const ChooseSubject = ({ next, disabled, onChange, subjectTitlePrefix = 'A-Level' }) => {
 	return (
 		<Page.Container classNames='flex flex-col pb-2 h-full'>
 			<header className='pb-6'>
@@ -14,12 +14,12 @@ const ChooseSubject = ({ next, disabled, onChange }) => {
 			<Page.Body extraClassNames='justify-between py-4'>
 				<Radio.Group name='subject' onChange={onChange}>
 					<SimpleGrid cols={{ base: 1, xs: 3 }}>
-						<SubjectCard subject='Maths' src='/static/images/maths-icon.svg' />
-						<SubjectCard subject='Biology' src='/static/images/biology-icon.svg' />
-						<SubjectCard subject='Chemistry' src='/static/images/chemistry-icon.svg' />
-						<SubjectCard subject='Economics' src='/static/images/economics-icon.svg' />
-						<SubjectCard subject='Physics' src='/static/images/physics-icon.svg' />
-						<SubjectCard subject='Psychology' src='/static/images/psychology-icon.svg' />
+						<SubjectCard subjectTitlePrefix={subjectTitlePrefix} subject='Maths' src='/static/images/maths-icon.svg' />
+						<SubjectCard subjectTitlePrefix={subjectTitlePrefix} subject='Biology' src='/static/images/biology-icon.svg' />
+						<SubjectCard subjectTitlePrefix={subjectTitlePrefix} subject='Chemistry' src='/static/images/chemistry-icon.svg' />
+						<SubjectCard subjectTitlePrefix={subjectTitlePrefix} subject='Economics' src='/static/images/economics-icon.svg' />
+						<SubjectCard subjectTitlePrefix={subjectTitlePrefix} subject='Physics' src='/static/images/physics-icon.svg' />
+						<SubjectCard subjectTitlePrefix={subjectTitlePrefix} subject='Psychology' src='/static/images/psychology-icon.svg' />
 					</SimpleGrid>
 				</Radio.Group>
 				<Group justify="flex-end" pt="lg">

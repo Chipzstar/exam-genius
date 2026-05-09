@@ -16,6 +16,7 @@ if (posthogKey) {
 		autocapture: true,
 		capture_pageview: true,
 		capture_pageleave: true,
+		// Feature flags: create boolean flag `enable_exam_level_selection` in PostHog (default off).
 		defaults: '2026-01-30'
 	});
 
