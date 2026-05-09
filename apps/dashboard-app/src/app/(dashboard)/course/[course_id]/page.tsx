@@ -11,7 +11,7 @@ import { IconArrowLeft } from '@tabler/icons-react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { api } from '~/trpc/react';
 import { useMediaQuery, useViewportSize } from '@mantine/hooks';
-import { type CourseInfo, SUBJECT_PAPERS } from '@exam-genius/shared/utils';
+import { type CourseInfo, getSubjectPapersCatalog } from '@exam-genius/shared/utils';
 import { AnimatedList } from '~/components/AnimatedList';
 import { motion, useReducedMotion } from 'motion/react';
 
@@ -28,7 +28,8 @@ export default function CoursePage({ params }: { params: Promise<{ course_id: st
 
 	const course_info = useMemo(() => {
 		if (course?.subject != null && course?.exam_board != null) {
-			const info = SUBJECT_PAPERS[course.subject][course.exam_board];
+			const catalog = getSubjectPapersCatalog(course.exam_level ?? 'a_level');
+			const info = catalog[course.subject][course.exam_board];
 			return Object.entries(info) as [string, CourseInfo][];
 		}
 		return [];
@@ -44,7 +45,7 @@ export default function CoursePage({ params }: { params: Promise<{ course_id: st
 				<header className='flex items-center justify-between mb-6'>
 					<div>
 						<Title order={mobileScreen ? 3 : 2} fw={600}>
-							{genCourseOrPaperName(course.subject, course.exam_board)} 📚
+							{genCourseOrPaperName(course.subject, course.exam_board, null, course.exam_level ?? 'a_level')} 📚
 						</Title>
 					</div>
 					<div className='flex'>
