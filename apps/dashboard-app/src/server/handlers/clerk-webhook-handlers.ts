@@ -1,7 +1,9 @@
-import type { ExamBoard, PrismaClient, Subject } from '@exam-genius/shared/prisma';
+import type { ExamBoard, ExamLevel, PrismaClient, Subject } from '@exam-genius/shared/prisma';
 import type { Logger } from 'next-axiom';
 import { genCourseOrPaperName, genID } from '~/utils/functions';
 import { ClerkEvent } from '../../utils/types';
+import { normalizeExamLevelInput } from '~/utils/exam-level';
+import { assertAsLevelExamFlowAllowedPlain } from '~/server/exam-level-guard';
 
 const VALID_SUBJECTS = new Set<Subject>(['maths', 'physics', 'chemistry', 'biology', 'economics', 'psychology']);
 const VALID_EXAM_BOARDS = new Set<ExamBoard>(['aqa', 'ocr', 'edexcel']);
@@ -9,6 +11,7 @@ const VALID_EXAM_BOARDS = new Set<ExamBoard>(['aqa', 'ocr', 'edexcel']);
 const getNormalizedOnboardingMetadata = (event: ClerkEvent) => {
 	const rawSubject = event.data.unsafe_metadata?.onboarding_subject;
 	const rawExamBoard = event.data.unsafe_metadata?.onboarding_exam_board;
+	const rawExamLevel = event.data.unsafe_metadata?.onboarding_exam_level;
 
 	if (typeof rawSubject !== 'string' || typeof rawExamBoard !== 'string') {
 		return null;
@@ -21,7 +24,10 @@ const getNormalizedOnboardingMetadata = (event: ClerkEvent) => {
 		return null;
 	}
 
-	return { subject, examBoard };
+	const examLevel: ExamLevel =
+		typeof rawExamLevel === 'string' ? normalizeExamLevelInput(rawExamLevel) : 'a_level';
+
+	return { subject, examBoard, examLevel };
 };
 
 export const createNewUser = async ({
@@ -51,7 +57,8 @@ export const createNewUser = async ({
 				where: {
 					user_id: user.clerk_id,
 					subject: onboardingSelection.subject,
-					exam_board: onboardingSelection.examBoard
+					exam_board: onboardingSelection.examBoard,
+					exam_level: onboardingSelection.examLevel
 				}
 			});
 
@@ -59,24 +66,34 @@ export const createNewUser = async ({
 				log.info('Onboarding course already exists for new user', {
 					user_id: user.clerk_id,
 					subject: onboardingSelection.subject,
-					exam_board: onboardingSelection.examBoard
+					exam_board: onboardingSelection.examBoard,
+					exam_level: onboardingSelection.examLevel
 				});
 			} else {
+				assertAsLevelExamFlowAllowedPlain(onboardingSelection.examLevel);
+				const yearLevel = onboardingSelection.examLevel === 'as_level' ? 12 : 13;
 				const course = await prisma.course.create({
 					data: {
 						course_id: genID('course'),
-						name: genCourseOrPaperName(onboardingSelection.subject, onboardingSelection.examBoard),
+						name: genCourseOrPaperName(
+							onboardingSelection.subject,
+							onboardingSelection.examBoard,
+							null,
+							onboardingSelection.examLevel
+						),
 						subject: onboardingSelection.subject,
 						exam_board: onboardingSelection.examBoard,
+						exam_level: onboardingSelection.examLevel,
 						user_id: user.clerk_id,
-						year_level: 13
+						year_level: yearLevel
 					}
 				});
 				log.info('Onboarding course auto-created for new user', {
 					user_id: user.clerk_id,
 					course_id: course.course_id,
 					subject: course.subject,
-					exam_board: course.exam_board
+					exam_board: course.exam_board,
+					exam_level: course.exam_level
 				});
 			}
 		}
