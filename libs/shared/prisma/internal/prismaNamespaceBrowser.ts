@@ -220,6 +220,7 @@ export const CourseScalarFieldEnum = {
   code: 'code',
   user_id: 'user_id',
   exam_board: 'exam_board',
+  exam_level: 'exam_level',
   product_id: 'product_id',
   year_level: 'year_level'
 } as const

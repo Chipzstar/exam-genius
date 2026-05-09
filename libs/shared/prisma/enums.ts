@@ -66,6 +66,14 @@ export const AttemptStatus = {
 export type AttemptStatus = (typeof AttemptStatus)[keyof typeof AttemptStatus]
 
 
+export const ExamLevel = {
+  a_level: 'a_level',
+  as_level: 'as_level'
+} as const
+
+export type ExamLevel = (typeof ExamLevel)[keyof typeof ExamLevel]
+
+
 export const Subject = {
   maths: 'maths',
   biology: 'biology',
