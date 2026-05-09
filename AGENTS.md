@@ -34,3 +34,6 @@ ExamGenius is a Turborepo monorepo with two Next.js 15 apps and shared libs. See
 - `dotenv-cli` is a root devDependency required for the dashboard's `with-env` script. If you see `dotenv: not found`, re-run `pnpm install`.
 - The Jest config references `@nx/jest`, `@nx/react`, and `@nx/next` (legacy from Nx migration). These are installed as devDependencies to keep tests runnable.
 - The dashboard app returns HTTP 500 without valid Clerk keys because Clerk middleware rejects requests with invalid publishable keys. This is expected in local dev without real credentials.
+- Clerk sign-in/sign-up routes are at `/login` and `/signup` (not `/sign-in`/`/sign-up`). Set `NEXT_PUBLIC_CLERK_SIGN_IN_URL=/login` and `NEXT_PUBLIC_CLERK_SIGN_UP_URL=/signup` in `.env.local`.
+- The root `/` route is protected by Clerk middleware; unauthenticated requests redirect to the login page.
+- First page compilation in dev mode takes ~20s (4998 modules); subsequent requests are fast.
