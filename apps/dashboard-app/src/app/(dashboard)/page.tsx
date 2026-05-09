@@ -10,7 +10,7 @@ import Page from '~/layout/Page';
 import { useValue } from '@legendapp/state/react';
 import { appStore$ } from '~/store/app.store';
 import { genCourseOrPaperName } from '~/utils/functions';
-import type { ExamBoard, Subject } from '@exam-genius/shared/utils';
+import type { ExamBoard, ExamLevel, Subject } from '@exam-genius/shared/utils';
 import { AnimatedList } from '~/components/AnimatedList';
 import { motion, useReducedMotion } from 'motion/react';
 
@@ -45,7 +45,12 @@ export default function HomePage() {
 									{lastOpened.name}
 								</Title>
 								<Text size='sm' c='dimmed'>
-									{genCourseOrPaperName(lastOpened.subject as Subject, lastOpened.board as ExamBoard)}
+									{genCourseOrPaperName(
+										lastOpened.subject as Subject,
+										lastOpened.board as ExamBoard,
+										null,
+										(lastOpened.examLevel as ExamLevel | undefined) ?? null
+									)}
 								</Text>
 							</Box>
 							<Button component={Link} href={lastOpened.resumeUrl} size={mobileScreen ? 'sm' : 'md'}>
@@ -78,7 +83,12 @@ export default function HomePage() {
 										{p.name}
 									</Text>
 									<Text size='xs' c='dimmed' lineClamp={1}>
-										{genCourseOrPaperName(p.subject as Subject, p.board as ExamBoard)}
+										{genCourseOrPaperName(
+											p.subject as Subject,
+											p.board as ExamBoard,
+											null,
+											(p.examLevel as ExamLevel | undefined) ?? null
+										)}
 									</Text>
 								</Card>
 							))}
@@ -92,7 +102,7 @@ export default function HomePage() {
 					<Title order={3} fw={600}>
 						Courses 📚
 					</Title>
-					<Link href={PATHS.NEW_SUBJECT}>
+					<Link href={PATHS.CHOOSE_EXAM_LEVEL}>
 						<Button size={mobileScreen ? 'sm' : 'md'}>
 							<Text>Add Course</Text>
 						</Button>

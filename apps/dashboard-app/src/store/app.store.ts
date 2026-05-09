@@ -2,6 +2,8 @@ import { observable } from '@legendapp/state';
 import { syncObservable } from '@legendapp/state/sync';
 import { ObservablePersistLocalStorage } from '@legendapp/state/persist-plugins/local-storage';
 
+import type { ExamLevel } from '@exam-genius/shared/utils';
+
 export type ReaderFontScale = 1 | 1.125 | 1.25;
 
 export type LastOpenedPaper = {
@@ -15,6 +17,8 @@ export type LastOpenedPaper = {
 	name: string;
 	openedAt: number;
 	resumeUrl: string;
+	/** Set when known from paper.course or prefetched course (legacy persisted rows omit). */
+	examLevel?: ExamLevel | null;
 };
 
 export type RecentPaper = LastOpenedPaper;
@@ -41,7 +45,8 @@ const initialState = {
 	},
 	onboarding: {
 		subject: '',
-		board: ''
+		board: '',
+		examLevel: 'a_level' as ExamLevel | ''
 	}
 };
 
@@ -50,7 +55,7 @@ export const appStore$ = observable(initialState);
 if (typeof window !== 'undefined') {
 	syncObservable(appStore$, {
 		persist: {
-			name: 'exam-genius-v1',
+			name: 'exam-genius-v2',
 			plugin: ObservablePersistLocalStorage
 		}
 	});

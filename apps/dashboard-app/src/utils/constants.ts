@@ -36,6 +36,7 @@ export const PATHS = {
 	SETTINGS: '/settings',
 	ONBOARDING: '/onboarding',
 	PROFILE: '/profile',
+	CHOOSE_EXAM_LEVEL: '/choose-exam-level',
 	NEW_SUBJECT: '/choose-subject',
 	EXAM_BOARD: '/exam-board',
 	MATHS: '/papers/maths',

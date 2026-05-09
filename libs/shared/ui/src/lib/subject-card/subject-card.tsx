@@ -5,15 +5,18 @@ import Image from 'next/image';
 export interface SubjectCardProps {
 	subject: string;
 	src: string;
+	/** Display prefix before subject name (e.g. "A-Level", "AS-Level"). */
+	subjectTitlePrefix?: string;
 }
 
 export function SubjectCard(props: SubjectCardProps) {
+	const prefix = props.subjectTitlePrefix ?? 'A-Level';
 	return (
 		<Card shadow='sm' radius='xs' withBorder>
 			<Stack justify="center" align="center">
 				<Image src={props.src} alt="subject-icon" width={150} height={150}/>
 				<Group align="center">
-					<Text size="xl" fw={600}>A-Level {props.subject}</Text>
+					<Text size="xl" fw={600}>{prefix} {props.subject}</Text>
 					<Radio value={props.subject.toLowerCase()} />
 				</Group>
 			</Stack>
