@@ -26,7 +26,7 @@ export default function ChooseExamLevel({ next, disabled, value, onChange }: Pro
 					<Radio.Group name='exam-level' value={value || ''} onChange={onChange}>
 						<SimpleGrid cols={{ base: 1, xs: 2 }}>
 							<ExamLevelCard value='a_level' src='/static/images/a-level-icon.jpg' alt='A-Level' />
-							<ExamLevelCard value='as_level' src='/static/images/as-level-icon.png' alt='AS-Level' />
+							<ExamLevelCard value='as_level' src='/static/images/as-level-icon-2.png' alt='AS-Level' />
 						</SimpleGrid>
 					</Radio.Group>
 					<Group justify='flex-end' pt='xl'>
