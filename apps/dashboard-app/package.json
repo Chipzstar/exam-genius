@@ -3,7 +3,7 @@
 	"version": "0.0.0",
 	"private": true,
 	"scripts": {
-		"dev": "pnpm with-env next dev",
+		"dev": "next dev",
 		"build": "next build",
 		"start": "next start",
 		"lint": "pnpm with-env next lint",
