@@ -1,0 +1,18 @@
+.card {
+	cursor: pointer;
+	transition:
+		transform 120ms ease,
+		box-shadow 120ms ease,
+		border-color 120ms ease;
+}
+
+.card:hover {
+	transform: translateY(-2px);
+	box-shadow: var(--mantine-shadow-md);
+	border-color: var(--mantine-color-brand-5);
+}
+
+.card:has(input[type='radio']:checked) {
+	border-color: var(--mantine-color-brand-5);
+	box-shadow: 0 0 0 2px var(--mantine-color-brand-5);
+}
