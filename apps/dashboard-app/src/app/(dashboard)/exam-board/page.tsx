@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useEffect } from 'react';
-import { Box, Button, Radio, SimpleGrid, Text, Title } from '@mantine/core';
+import { Button, Group, Radio, SimpleGrid, Text, Title } from '@mantine/core';
 import Page from '~/layout/Page';
 import { ExamBoardCard } from '@exam-genius/shared/ui';
 import getStripe from '~/utils/loadStripe';
@@ -14,12 +14,6 @@ import { api } from '~/trpc/react';
 import { logger, type ExamBoard, type Subject } from '@exam-genius/shared/utils';
 import { useValue } from '@legendapp/state/react';
 import { appStore$ } from '~/store/app.store';
-
-if (typeof window !== 'undefined') {
-	getStripe()
-		.then(r => logger.info('Stripe loaded', r))
-		.catch(err => logger.error('Stripe failed to load', err));
-}
 
 export default function ExamBoardPage() {
 	const mobileScreen = useMediaQuery('(max-width: 30em)');
@@ -68,7 +62,7 @@ export default function ExamBoardPage() {
 					Choose your exam board
 				</Title>
 			</header>
-			<Page.Body extraClassNames='justify-center'>
+			<Page.Body extraClassNames='justify-between py-8'>
 				<Radio.Group name='board' value={board} onChange={v => appStore$.onboarding.board.set(v)}>
 					<SimpleGrid cols={3}>
 						<ExamBoardCard value='aqa' src='/static/images/aqa-icon.svg' />
@@ -76,18 +70,7 @@ export default function ExamBoardPage() {
 						<ExamBoardCard value='ocr' src='/static/images/ocr-icon.svg' />
 					</SimpleGrid>
 				</Radio.Group>
-
-				<Box
-					style={
-						mobileScreen
-							? { float: 'left', paddingTop: '2em' }
-							: {
-									position: 'absolute',
-									left: 20,
-									bottom: 20
-								}
-					}
-				>
+				<Group justify='space-between' pt='lg'>
 					<Button
 						variant='outline'
 						size={mobileScreen ? 'lg' : 'xl'}
@@ -96,24 +79,10 @@ export default function ExamBoardPage() {
 					>
 						<Text>Previous</Text>
 					</Button>
-				</Box>
-
-				<Box
-					w={140}
-					style={
-						mobileScreen
-							? { float: 'right', paddingTop: '2em' }
-							: {
-									position: 'absolute',
-									right: 20,
-									bottom: 20
-								}
-					}
-				>
-					<Button fullWidth size={mobileScreen ? 'lg' : 'xl'} disabled={!board} onClick={() => openCheckout()}>
+					<Button w={140} size={mobileScreen ? 'lg' : 'xl'} disabled={!board} onClick={() => openCheckout()}>
 						<Text>Next</Text>
 					</Button>
-				</Box>
+				</Group>
 			</Page.Body>
 		</Page.Container>
 	);

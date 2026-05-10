@@ -10,12 +10,17 @@ export function useExamLevelSelectionFlag(): { enabled: boolean; ready: boolean 
 	const [ready, setReady] = useState(false);
 
 	useEffect(() => {
-		const sync = () => {
+		const cached = posthog.getFeatureFlag(POSTHOG_FEATURE_ENABLE_EXAM_LEVEL_SELECTION);
+		if (cached !== undefined) {
+			setEnabled(cached === true);
+			setReady(true);
+		}
+
+		const unsubscribe = posthog.onFeatureFlags(() => {
 			setEnabled(posthog.isFeatureEnabled(POSTHOG_FEATURE_ENABLE_EXAM_LEVEL_SELECTION) === true);
 			setReady(true);
-		};
-		sync();
-		const unsubscribe = posthog.onFeatureFlags(sync);
+		});
+
 		return unsubscribe;
 	}, []);
 

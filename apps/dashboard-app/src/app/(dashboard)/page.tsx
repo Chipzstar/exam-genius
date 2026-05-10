@@ -3,7 +3,9 @@
 import { Box, Button, Card, Group, LoadingOverlay, ScrollArea, Text, Title } from '@mantine/core';
 import Image from 'next/image';
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 import { PATHS } from '~/utils/constants';
+import { useExamLevelSelectionFlag } from '~/hooks/useExamLevelSelectionFlag';
 import { api } from '~/trpc/react';
 import { useMediaQuery, useViewportSize } from '@mantine/hooks';
 import Page from '~/layout/Page';
@@ -13,14 +15,27 @@ import { genCourseOrPaperName } from '~/utils/functions';
 import type { ExamBoard, ExamLevel, Subject } from '@exam-genius/shared/utils';
 import { AnimatedList } from '~/components/AnimatedList';
 import { motion, useReducedMotion } from 'motion/react';
+import { useCallback } from 'react';
 
 export default function HomePage() {
 	const { height } = useViewportSize();
+	const router = useRouter();
 	const { data: courses, isLoading } = api.course.getCourses.useQuery();
 	const mobileScreen = useMediaQuery('(max-width: 30em)');
 	const lastOpened = useValue(appStore$.lastOpenedPaper);
 	const recentPapers = useValue(appStore$.recentPapers);
 	const reduceMotion = useReducedMotion();
+	const { enabled: examLevelSelectionEnabled, ready: examLevelFlagReady } = useExamLevelSelectionFlag();
+
+	const goAddCourse = useCallback(() => {
+		if (!examLevelFlagReady) return;
+		if (!examLevelSelectionEnabled) {
+			appStore$.onboarding.examLevel.set('a_level');
+			router.push(PATHS.NEW_SUBJECT);
+			return;
+		}
+		router.push(PATHS.CHOOSE_EXAM_LEVEL);
+	}, [examLevelFlagReady, examLevelSelectionEnabled, router]);
 
 	// Calculate dynamic heights for optimal space usage
 	const continueCardHeight = lastOpened ? 110 : 0;
@@ -102,11 +117,14 @@ export default function HomePage() {
 					<Title order={3} fw={600}>
 						Courses 📚
 					</Title>
-					<Link href={PATHS.CHOOSE_EXAM_LEVEL}>
-						<Button size={mobileScreen ? 'sm' : 'md'}>
-							<Text>Add Course</Text>
-						</Button>
-					</Link>
+					<Button
+						size={mobileScreen ? 'sm' : 'md'}
+						onClick={goAddCourse}
+						disabled={!examLevelFlagReady}
+						loading={!examLevelFlagReady}
+					>
+						<Text>Add Course</Text>
+					</Button>
 				</Group>
 			</Card>
 			<ScrollArea.Autosize mah={coursesScrollHeight}>
