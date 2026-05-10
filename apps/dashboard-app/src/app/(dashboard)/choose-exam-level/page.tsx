@@ -47,7 +47,7 @@ export default function ChooseExamLevelPage() {
 						>
 							<SimpleGrid cols={2}>
 								<ExamLevelCard value='a_level' src='/static/images/a-level-icon.jpg' alt='A-Level' />
-								<ExamLevelCard value='as_level' src='/static/images/as-level-icon.png' alt='AS-Level' />
+								<ExamLevelCard value='as_level' src='/static/images/as-level-icon-2.png' alt='AS-Level' />
 							</SimpleGrid>
 						</Radio.Group>
 
