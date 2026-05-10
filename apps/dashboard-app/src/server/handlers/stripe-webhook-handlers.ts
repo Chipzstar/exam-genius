@@ -270,13 +270,22 @@ export const handleSubscriptionCreatedOrUpdated = async ({
 	log?: Logger;
 }) => {
 	const subscription = event.data.object as Stripe.Subscription;
-	logger.info('[Stripe Subscription] handleSubscriptionCreatedOrUpdated called', { subscriptionId: subscription.id, customerId: subscription.customer, status: subscription.status });
-	const customer_id = subscription.customer;
+	const customer_id =
+		typeof subscription.customer === 'string'
+			? subscription.customer
+			: subscription.customer?.id;
+	logger.info('[Stripe Subscription] handleSubscriptionCreatedOrUpdated called', { subscriptionId: subscription.id, customerId: customer_id, status: subscription.status });
+	if (!customer_id || typeof customer_id !== 'string') {
+		logger.error('[Stripe Subscription] Subscription missing customer id', {
+			subscriptionId: subscription.id
+		});
+		throw new Error('No stripe customer found');
+	}
 	const plan = resolvePlanFromStripeSubscription(subscription);
 	logger.info('[Stripe Subscription] Updating user with subscription data', { stripeCustomerId: customer_id, plan });
 	await prisma.user.update({
 		where: {
-			stripe_customer_id: String(customer_id)
+			stripe_customer_id: customer_id
 		},
 		data: {
 			stripe_subscription_id: subscription.id,
@@ -298,14 +307,30 @@ export const handleSubscriptionCanceled = async ({
 	log?: Logger;
 }) => {
 	const subscription = event.data.object as Stripe.Subscription;
-	const userId = subscription.metadata.userId;
-	logger.info('[Stripe Subscription] handleSubscriptionCanceled called', { subscriptionId: subscription.id, userId });
+	const customer_id =
+		typeof subscription.customer === 'string'
+			? subscription.customer
+			: subscription.customer?.id;
+	logger.info('[Stripe Subscription] handleSubscriptionCanceled called', {
+		subscriptionId: subscription.id,
+		customerId: customer_id
+	});
 
-	// remove subscription data from user
-	logger.info('[Stripe Subscription] Removing subscription data from user', { userId });
+	if (!customer_id || typeof customer_id !== 'string') {
+		logger.error('[Stripe Subscription] Canceled subscription missing customer', {
+			subscriptionId: subscription.id
+		});
+		throw new Error('No stripe customer found');
+	}
+
+	// Match handleSubscriptionCreatedOrUpdated: checkout metadata uses Clerk `userId`,
+	// but the DB row is keyed by `stripe_customer_id`, not numeric `User.id`.
+	logger.info('[Stripe Subscription] Clearing subscription fields for customer', {
+		stripeCustomerId: customer_id
+	});
 	await prisma.user.update({
 		where: {
-			id: Number(userId)
+			stripe_customer_id: customer_id
 		},
 		data: {
 			stripe_subscription_id: null,
