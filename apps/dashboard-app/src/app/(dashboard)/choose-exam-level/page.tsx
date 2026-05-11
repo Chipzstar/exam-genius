@@ -1,7 +1,7 @@
 'use client';
 
 import { Box, Button, Radio, SimpleGrid, Text, Title } from '@mantine/core';
-import React, { useEffect } from 'react';
+import React from 'react';
 import Page from '~/layout/Page';
 import { PATHS } from '~/utils/constants';
 import { useMediaQuery } from '@mantine/hooks';
@@ -16,15 +16,7 @@ export default function ChooseExamLevelPage() {
 	const mobileScreen = useMediaQuery('(max-width: 30em)');
 	const examLevel = useValue(appStore$.onboarding.examLevel);
 	const router = useRouter();
-	const { enabled: levelChoiceEnabled, ready: flagReady } = useExamLevelSelectionFlag();
-
-	useEffect(() => {
-		if (!flagReady) return;
-		if (!levelChoiceEnabled) {
-			appStore$.onboarding.examLevel.set('a_level');
-			// router.replace(PATHS.NEW_SUBJECT);
-		}
-	}, [flagReady, levelChoiceEnabled]);
+	const { ready: flagReady } = useExamLevelSelectionFlag();
 
 	return (
 		<Page.Container extraClassNames='bg-[var(--mantine-color-body)]'>

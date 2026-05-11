@@ -38,7 +38,7 @@ export function PaperBody({ paper, mobileScreen, fontScale, initialMode, classes
 	const router = useRouter();
 	const pathname = usePathname();
 	const searchParams = useSearchParams();
-	const examLevel = paper.course?.exam_level;
+	const examLevel = paper.course?.exam_level ?? 'a_level';
 
 	const modeApplied = useRef(false);
 	useEffect(() => {

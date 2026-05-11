@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import posthog from 'posthog-js';
-import { POSTHOG_FEATURE_ENABLE_EXAM_LEVEL_SELECTION } from '@exam-genius/shared/utils';
+import { logger, POSTHOG_FEATURE_ENABLE_EXAM_LEVEL_SELECTION } from '@exam-genius/shared/utils';
 
 /** Same semantics as dashboard hook — landing PostHog init lives in instrumentation-client. */
 export function useExamLevelSelectionFlag(): { enabled: boolean; ready: boolean } {
@@ -11,6 +11,7 @@ export function useExamLevelSelectionFlag(): { enabled: boolean; ready: boolean 
 
 	useEffect(() => {
 		const cached = posthog.getFeatureFlag(POSTHOG_FEATURE_ENABLE_EXAM_LEVEL_SELECTION);
+		logger.debug('useExamLevelSelectionFlag: cached flag', cached);
 		if (cached !== undefined) {
 			setEnabled(cached === true);
 			setReady(true);
