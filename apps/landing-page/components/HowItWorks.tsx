@@ -92,15 +92,15 @@ const HowItWorks = () => {
 			id='how-it-works'
 			className='flex min-h-screen flex-col items-center justify-center gap-y-8 py-10 md:gap-y-20'
 		>
-			<p className='text-center text-2xl font-medium sm:text-3xl md:text-5xl lg:text-6xl'>
+			<h2 className='text-center text-2xl font-medium sm:text-3xl md:text-5xl lg:text-6xl'>
 				<span className='inline-block leading-normal'>
 					📚 Study smarter with ExamGenius’ AI
-					<div className='flex inline-flex shrink flex-col items-center pl-4'>
+					<span className='inline-flex shrink flex-col items-center pl-4'>
 						<span> predicted papers</span>
 						<Image src='/static/images/swoosh.svg' alt='swoosh-underline' height={10} width={250} />
-					</div>
+					</span>
 				</span>
-			</p>
+			</h2>
 			<div style={{ width: mobileScreen ? '100%' : 800 }} className='text-center md:text-xl'>
 				<span>
 					Our AI has read exam papers for the previous 10 years and uses this data to predict which questions

@@ -13,10 +13,10 @@ export const Hero = () => {
 			<div className='flex grid grid-cols-1 items-center justify-center gap-20 md:grid-cols-2'>
 				<div className='flex flex-col gap-10 md:col-span-1'>
 					<p className='text-primary text-base font-medium'>Do you want to achieve A*/A?</p>
-					<p className='text-4xl font-medium sm:text-4xl md:text-5xl lg:text-6xl'>
+					<h1 className='text-4xl font-medium sm:text-4xl md:text-5xl lg:text-6xl'>
 						<span className='inline-block leading-tight'>
 							Ace your A-level exams
-							<div className='inline-flex flex-col items-center max-w-60'>
+							<span className='inline-flex flex-col items-center max-w-60'>
 								<span className=''> with AI.</span>{' '}
 								<Image
 									src='/static/images/swoosh.svg'
@@ -24,9 +24,9 @@ export const Hero = () => {
 									height={10}
 									width={mobileScreen ? 100 : 200}
 								/>
-							</div>
+							</span>
 						</span>
-					</p>
+					</h1>
 					<p className='text-sm text-black sm:text-base lg:text-lg'>
 						ExamGenius uses AI to read through every exam paper of the last 10 years to predict this years
 						questions.

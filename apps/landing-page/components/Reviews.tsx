@@ -20,14 +20,14 @@ const Reviews = () => {
 	));
 	return (
 		<div id='reviews' className='flex h-screen flex-col items-center justify-center gap-y-20 py-10'>
-			<p className='text-4xl font-medium sm:text-4xl md:text-5xl lg:text-6xl'>
+			<h2 className='text-4xl font-medium sm:text-4xl md:text-5xl lg:text-6xl'>
 				<span className='inline-block leading-normal'>
-					<div className='flex inline-flex shrink flex-col items-center pl-4'>
+					<span className='inline-flex shrink flex-col items-center pl-4'>
 						Student reviews
 						<Image src='/static/images/swoosh.svg' alt='swoosh-underline' height={10} width={250} />
-					</div>
+					</span>
 				</span>
-			</p>
+			</h2>
 			<div className='flex flex-col space-y-4 px-6 md:px-0'>
 				<Carousel
 					px={mobileScreen ? 'lg' : 0}
