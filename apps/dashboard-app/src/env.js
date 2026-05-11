@@ -83,6 +83,9 @@ export const env = createEnv({
 
 		// App Base URL
 		APP_BASE_URL: z.string().url(),
+
+		/** When `true`, reject AS-level onboarding, checkout, and generation (kill-switch). */
+		DISABLE_AS_LEVEL_EXAM_FLOW: z.enum(['true', 'false']).optional(),
 	},
 
 	/**
@@ -191,6 +194,8 @@ export const env = createEnv({
 
 		// App Base URL
 		APP_BASE_URL: process.env.APP_BASE_URL,
+
+		DISABLE_AS_LEVEL_EXAM_FLOW: process.env.DISABLE_AS_LEVEL_EXAM_FLOW,
 
 		// Client
 		NEXT_PUBLIC_AXIOM_DATASET: process.env.NEXT_PUBLIC_AXIOM_DATASET,

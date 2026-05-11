@@ -9,10 +9,10 @@ export const Body = () => {
 		<div className='flex min-h-screen items-center py-10'>
 			<div className='flex grid grid-cols-1 items-center justify-center gap-20 md:grid-cols-7'>
 				<div className='flex flex-col space-y-12 md:col-span-4'>
-					<p className='text-2xl font-medium sm:text-3xl md:text-5xl lg:text-6xl'>
+					<h2 className='text-2xl font-medium sm:text-3xl md:text-5xl lg:text-6xl'>
 						<span className='inline-block leading-normal'>
 							Accurate predictions to remove
-							<div className='flex inline-flex flex-col items-center pl-2 md:pl-4'>
+							<span className='inline-flex flex-col items-center pl-2 md:pl-4'>
 								<span> exam stress</span>
 								<Image
 									src='/static/images/swoosh.svg'
@@ -20,9 +20,9 @@ export const Body = () => {
 									height={10}
 									width={mobileScreen ? 100 : 250}
 								/>
-							</div>
+							</span>
 						</span>
-					</p>
+					</h2>
 					<List
 						spacing="lg"
 						size='lg'

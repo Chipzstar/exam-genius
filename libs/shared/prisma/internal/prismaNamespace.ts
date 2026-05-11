@@ -1407,6 +1407,7 @@ export const CourseScalarFieldEnum = {
   code: 'code',
   user_id: 'user_id',
   exam_board: 'exam_board',
+  exam_level: 'exam_level',
   product_id: 'product_id',
   year_level: 'year_level'
 } as const
@@ -1663,6 +1664,20 @@ export type EnumExamBoardFieldRefInput<$PrismaModel> = FieldRefInputType<$Prisma
  * Reference to a field of type 'ExamBoard[]'
  */
 export type ListEnumExamBoardFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'ExamBoard[]'>
+    
+
+
+/**
+ * Reference to a field of type 'ExamLevel'
+ */
+export type EnumExamLevelFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'ExamLevel'>
+    
+
+
+/**
+ * Reference to a field of type 'ExamLevel[]'
+ */
+export type ListEnumExamLevelFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'ExamLevel[]'>
     
 
 

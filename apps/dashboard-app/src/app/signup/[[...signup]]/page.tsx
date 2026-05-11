@@ -22,9 +22,10 @@ export default function SignUpPage() {
 		return {
 			onboarding_subject: params.subject,
 			onboarding_exam_board: params.examBoard,
+			onboarding_exam_level: params.examLevel ?? undefined,
 			onboarding_source: `${params.source}:${params.phase}`
 		};
-	}, [params.source, params.phase, params.subject, params.examBoard]);
+	}, [params.source, params.phase, params.subject, params.examBoard, params.examLevel]);
 
 	useEffect(() => {
 		markSignupIntent();
@@ -33,9 +34,10 @@ export default function SignUpPage() {
 			origin_phase: params.phase,
 			subject: params.subject ?? undefined,
 			exam_board: params.examBoard ?? undefined,
+			exam_level: params.examLevel ?? undefined,
 			paper: params.paper ?? undefined
 		});
-	}, [params.source, params.phase, params.subject, params.examBoard, params.paper]);
+	}, [params.source, params.phase, params.subject, params.examBoard, params.examLevel, params.paper]);
 
 	return (
 		<div className='h-screen w-full overflow-x-hidden bg-[var(--mantine-color-body)] p-5'>

@@ -7,6 +7,8 @@ import { capitalize, genCourseOrPaperName, genID, sanitize } from '../../utils/f
 import { GeneratePaperPayload } from '../../utils/types';
 import { env } from '~/env';
 import { backendApi } from '~/server/backend-headers';
+import { assertAsLevelExamFlowAllowedPlain } from '~/server/exam-level-guard';
+import { normalizeExamLevelInput } from '~/utils/exam-level';
 
 export const getOrCreateStripeCustomerIdForUser = async ({
 	stripe,
@@ -105,16 +107,22 @@ export const handleCheckoutSessionComplete = async ({
 				if (session?.metadata?.subject && session?.metadata?.exam_board) {
 					const subject = session.metadata.subject as Subject;
 					const exam_board = session.metadata.exam_board as ExamBoard;
+					const exam_level = normalizeExamLevelInput(session.metadata.exam_level);
+					assertAsLevelExamFlowAllowedPlain(exam_level);
+					const year_level = exam_level === 'as_level' ? 12 : 13;
 					const product_id = price.product;
 					const course = await prisma.course.create({
 						data: {
-							name: price?.nickname ?? genCourseOrPaperName(subject, exam_board),
+							name:
+								price?.nickname ??
+								genCourseOrPaperName(subject, exam_board, null, exam_level),
 							subject,
 							exam_board,
+							exam_level,
 							user_id: user.clerk_id,
 							course_id: genID("course"),
 							product_id: String(product_id) ?? null,
-							year_level: 13
+							year_level
 						}
 					});
 					logger.info('[Stripe Checkout] Course created', course);
@@ -139,6 +147,16 @@ export const handleCheckoutSessionComplete = async ({
 					const paper_code = session.metadata.paper_code as string;
 					const num_questions = session.metadata.num_questions as string;
 					const num_marks = session.metadata.num_marks as string;
+					const owningCourse = await prisma.course.findFirst({
+						where: {
+							course_id,
+							user_id: user.clerk_id
+						}
+					});
+					if (!owningCourse) {
+						throw new Error('Course not found for paper checkout');
+					}
+					assertAsLevelExamFlowAllowedPlain(owningCourse.exam_level);
 					const paper = await prisma.paper.create({
 						data: {
 							name: paper_name,
@@ -214,16 +232,20 @@ export const handleInvoicePaid = async ({
 			if (price?.metadata?.subject && price?.metadata?.exam_board) {
 				const subject = price.metadata.subject as Subject;
 				const exam_board = price.metadata.exam_board as ExamBoard;
+				const exam_level = normalizeExamLevelInput(price.metadata.exam_level);
+				assertAsLevelExamFlowAllowedPlain(exam_level);
+				const year_level = exam_level === 'as_level' ? 12 : 13;
 				const product_id = price.product;
 				const course = await prisma.course.create({
 					data: {
-						name: price?.nickname ?? '',
+						name: price?.nickname ?? genCourseOrPaperName(subject, exam_board, null, exam_level),
 						subject,
 						exam_board,
+						exam_level,
 						user_id: user.clerk_id,
 						course_id: genID("course"),
 						product_id: String(product_id) ?? null,
-						year_level: 13
+						year_level
 					}
 				});
 				logger.info('[Stripe Invoice] Course created', course);

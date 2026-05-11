@@ -201,12 +201,18 @@ model Course {
   user_id         String
   user            User             @relation(fields: [user_id], references: [clerk_id], onDelete: Cascade)
   exam_board      ExamBoard
+  exam_level      ExamLevel        @default(a_level)
   product_id      String?
   year_level      Int
   papers          Paper[]
   paperReferences PaperReference[]
 
   @@index([user_id])
+}
+
+enum ExamLevel {
+  a_level
+  as_level
 }
 
 enum Subject {

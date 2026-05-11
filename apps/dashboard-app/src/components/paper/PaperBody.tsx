@@ -38,6 +38,7 @@ export function PaperBody({ paper, mobileScreen, fontScale, initialMode, classes
 	const router = useRouter();
 	const pathname = usePathname();
 	const searchParams = useSearchParams();
+	const examLevel = paper.course?.exam_level ?? 'a_level';
 
 	const modeApplied = useRef(false);
 	useEffect(() => {
@@ -104,14 +105,14 @@ export function PaperBody({ paper, mobileScreen, fontScale, initialMode, classes
 	const startAttempt = api.attempt.start.useMutation({
 		onSuccess: () => {
 			void refetchAttempt();
-			captureAttempt('started', { paperId: paper.paper_id });
+			captureAttempt('started', { paperId: paper.paper_id, exam_level: examLevel });
 		}
 	});
 	const saveAnswer = api.attempt.saveAnswer.useMutation();
 	const submitAttempt = api.attempt.submit.useMutation({
 		onSuccess: () => {
 			void refetchAttempt();
-			captureAttempt('submitted', { paperId: paper.paper_id });
+			captureAttempt('submitted', { paperId: paper.paper_id, exam_level: examLevel });
 		}
 	});
 

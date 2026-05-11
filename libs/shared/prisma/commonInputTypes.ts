@@ -390,6 +390,13 @@ export type EnumExamBoardFilter<$PrismaModel = never> = {
   not?: Prisma.NestedEnumExamBoardFilter<$PrismaModel> | $Enums.ExamBoard
 }
 
+export type EnumExamLevelFilter<$PrismaModel = never> = {
+  equals?: $Enums.ExamLevel | Prisma.EnumExamLevelFieldRefInput<$PrismaModel>
+  in?: $Enums.ExamLevel[] | Prisma.ListEnumExamLevelFieldRefInput<$PrismaModel>
+  notIn?: $Enums.ExamLevel[] | Prisma.ListEnumExamLevelFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumExamLevelFilter<$PrismaModel> | $Enums.ExamLevel
+}
+
 export type EnumSubjectWithAggregatesFilter<$PrismaModel = never> = {
   equals?: $Enums.Subject | Prisma.EnumSubjectFieldRefInput<$PrismaModel>
   in?: $Enums.Subject[] | Prisma.ListEnumSubjectFieldRefInput<$PrismaModel>
@@ -408,6 +415,16 @@ export type EnumExamBoardWithAggregatesFilter<$PrismaModel = never> = {
   _count?: Prisma.NestedIntFilter<$PrismaModel>
   _min?: Prisma.NestedEnumExamBoardFilter<$PrismaModel>
   _max?: Prisma.NestedEnumExamBoardFilter<$PrismaModel>
+}
+
+export type EnumExamLevelWithAggregatesFilter<$PrismaModel = never> = {
+  equals?: $Enums.ExamLevel | Prisma.EnumExamLevelFieldRefInput<$PrismaModel>
+  in?: $Enums.ExamLevel[] | Prisma.ListEnumExamLevelFieldRefInput<$PrismaModel>
+  notIn?: $Enums.ExamLevel[] | Prisma.ListEnumExamLevelFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumExamLevelWithAggregatesFilter<$PrismaModel> | $Enums.ExamLevel
+  _count?: Prisma.NestedIntFilter<$PrismaModel>
+  _min?: Prisma.NestedEnumExamLevelFilter<$PrismaModel>
+  _max?: Prisma.NestedEnumExamLevelFilter<$PrismaModel>
 }
 
 export type EnumStatusFilter<$PrismaModel = never> = {
@@ -809,6 +826,13 @@ export type NestedEnumExamBoardFilter<$PrismaModel = never> = {
   not?: Prisma.NestedEnumExamBoardFilter<$PrismaModel> | $Enums.ExamBoard
 }
 
+export type NestedEnumExamLevelFilter<$PrismaModel = never> = {
+  equals?: $Enums.ExamLevel | Prisma.EnumExamLevelFieldRefInput<$PrismaModel>
+  in?: $Enums.ExamLevel[] | Prisma.ListEnumExamLevelFieldRefInput<$PrismaModel>
+  notIn?: $Enums.ExamLevel[] | Prisma.ListEnumExamLevelFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumExamLevelFilter<$PrismaModel> | $Enums.ExamLevel
+}
+
 export type NestedEnumSubjectWithAggregatesFilter<$PrismaModel = never> = {
   equals?: $Enums.Subject | Prisma.EnumSubjectFieldRefInput<$PrismaModel>
   in?: $Enums.Subject[] | Prisma.ListEnumSubjectFieldRefInput<$PrismaModel>
@@ -827,6 +851,16 @@ export type NestedEnumExamBoardWithAggregatesFilter<$PrismaModel = never> = {
   _count?: Prisma.NestedIntFilter<$PrismaModel>
   _min?: Prisma.NestedEnumExamBoardFilter<$PrismaModel>
   _max?: Prisma.NestedEnumExamBoardFilter<$PrismaModel>
+}
+
+export type NestedEnumExamLevelWithAggregatesFilter<$PrismaModel = never> = {
+  equals?: $Enums.ExamLevel | Prisma.EnumExamLevelFieldRefInput<$PrismaModel>
+  in?: $Enums.ExamLevel[] | Prisma.ListEnumExamLevelFieldRefInput<$PrismaModel>
+  notIn?: $Enums.ExamLevel[] | Prisma.ListEnumExamLevelFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumExamLevelWithAggregatesFilter<$PrismaModel> | $Enums.ExamLevel
+  _count?: Prisma.NestedIntFilter<$PrismaModel>
+  _min?: Prisma.NestedEnumExamLevelFilter<$PrismaModel>
+  _max?: Prisma.NestedEnumExamLevelFilter<$PrismaModel>
 }
 
 export type NestedEnumStatusFilter<$PrismaModel = never> = {

@@ -23,7 +23,7 @@ import { useRouter, useSearchParams, usePathname } from 'next/navigation';
 import { api } from '~/trpc/react';
 import { useMediaQuery, useViewportSize } from '@mantine/hooks';
 import CustomLoader from '~/components/CustomLoader';
-import { ExamBoard, PaperInfo, Subject, SUBJECT_PAPERS } from '@exam-genius/shared/utils';
+import { ExamBoard, PaperInfo, Subject, getSubjectPapersCatalog } from '@exam-genius/shared/utils';
 import NotFound from '~/app/not-found';
 import { AnimatedList } from '~/components/AnimatedList';
 import { motion, useReducedMotion } from 'motion/react';
@@ -61,7 +61,7 @@ export default function PapersPage({ params }: { params: Promise<{ course_id: st
 	const items = [
 		{ title: 'Courses', href: PATHS.HOME },
 		{
-			title: genCourseOrPaperName(course?.subject ?? subject, course?.exam_board ?? board),
+			title: genCourseOrPaperName(course?.subject ?? subject, course?.exam_board ?? board, null, course?.exam_level ?? null),
 			href: `${PATHS.COURSE}/${resolvedParams.course_id}?subject=${subject}&board=${board}`
 		},
 		{
@@ -78,7 +78,10 @@ export default function PapersPage({ params }: { params: Promise<{ course_id: st
 	});
 
 	const course_info = useMemo(() => {
-		return course ? SUBJECT_PAPERS[course.subject][course.exam_board][resolvedParams.unit] : null;
+		if (!course?.subject || !course?.exam_board) return null;
+		const level = course.exam_level ?? 'a_level';
+		const catalog = getSubjectPapersCatalog(level);
+		return catalog[course.subject][course.exam_board][resolvedParams.unit] ?? null;
 	}, [course, resolvedParams.unit]);
 
 	const openCheckoutSession = useCallback(

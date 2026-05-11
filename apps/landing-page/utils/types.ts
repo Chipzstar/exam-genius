@@ -1,4 +1,4 @@
-import { CourseInfo, ExamBoard, Subject } from '@exam-genius/shared/utils';
+import type { CourseInfo, ExamBoard, Subject } from '@exam-genius/shared/utils';
 
 export interface FormValues {
 	subject: Subject | string;

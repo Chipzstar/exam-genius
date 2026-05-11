@@ -65,6 +65,7 @@ export interface PublicMetadata {}
 export interface UnsafeMetadata {
 	onboarding_subject?: string
 	onboarding_exam_board?: string
+	onboarding_exam_level?: string
 	onboarding_source?: string
 }
 

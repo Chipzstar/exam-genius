@@ -3,6 +3,8 @@ import { TRPCError } from '@trpc/server';
 import { z } from 'zod';
 import { Course } from '@exam-genius/shared/prisma';
 
+const examLevelSchema = z.enum(['a_level', 'as_level']);
+
 const courseRouter = createTRPCRouter({
 	getCourses: protectedProcedure.query(async ({ ctx }) => {
 		try {
@@ -45,7 +47,8 @@ const courseRouter = createTRPCRouter({
 		.input(
 			z.object({
 				exam_board: z.enum(['ocr', 'aqa', 'edexcel']),
-				subject: z.enum(['maths', 'physics', 'chemistry', 'biology', 'economics', 'psychology'])
+				subject: z.enum(['maths', 'physics', 'chemistry', 'biology', 'economics', 'psychology']),
+				exam_level: examLevelSchema.default('a_level')
 			})
 		)
 		.mutation(async ({ input, ctx }) => {
@@ -54,7 +57,8 @@ const courseRouter = createTRPCRouter({
 					where: {
 						user_id: ctx.auth.userId,
 						exam_board: input.exam_board,
-						subject: input.subject
+						subject: input.subject,
+						exam_level: input.exam_level
 					}
 				});
 				return Boolean(courses.length);

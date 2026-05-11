@@ -1,0 +1,588 @@
+{
+    "maths": {
+      "edexcel": {
+        "pure-maths": {
+          "label": "Pure Mathematics",
+          "icon": "/static/images/pure-maths-icon.svg",
+          "papers": [
+            {
+              "href": "paper-1",
+              "code": "8MA0/01",
+              "name": "Paper 1: Pure Mathematics",
+              "num_questions": 14,
+              "marks": 100
+            }
+          ]
+        },
+        "stats-and-mechanics": {
+          "label": "Statistics & Mechanics",
+          "icon": "/static/images/statistics-icon.svg",
+          "papers": [
+            {
+              "href": "paper-2",
+              "code": "8MA0/02",
+              "name": "Paper 2: Statistics and Mechanics",
+              "num_questions": 10,
+              "marks": 80
+            }
+          ]
+        }
+      },
+      "aqa": {
+        "paper-1": {
+          "label": "Paper 1",
+          "icon": "/static/images/maths-icon.svg",
+          "papers": [
+            {
+              "href": "paper-1",
+              "code": "7356/1",
+              "name": "AS Mathematics Paper 1",
+              "num_questions": 14,
+              "marks": 100
+            }
+          ]
+        },
+        "paper-2": {
+          "label": "Paper 2",
+          "icon": "/static/images/statistics-icon.svg",
+          "papers": [
+            {
+              "href": "paper-2",
+              "code": "7356/2",
+              "name": "AS Mathematics Paper 2",
+              "num_questions": 14,
+              "marks": 100
+            }
+          ]
+        }
+      },
+      "ocr": {
+        "maths-a": {
+          "label": "AS Mathematics - A",
+          "icon": "/static/images/maths-icon.svg",
+          "papers": [
+            {
+              "href": "pure-maths",
+              "code": "H230/01",
+              "name": "Pure Mathematics",
+              "num_questions": 12,
+              "marks": 75
+            },
+            {
+              "href": "pure-maths-stats-mech",
+              "code": "H230/02",
+              "name": "Pure Mathematics and Statistics/Mechanics",
+              "num_questions": 12,
+              "marks": 75
+            }
+          ]
+        },
+        "maths-b": {
+          "label": "AS Mathematics - B (MEI)",
+          "icon": "/static/images/maths-icon.svg",
+          "papers": [
+            {
+              "href": "pure-maths",
+              "code": "H630/01",
+              "name": "Pure Mathematics and Mechanics",
+              "num_questions": 11,
+              "marks": 75
+            },
+            {
+              "href": "pure-maths-stats",
+              "code": "H630/02",
+              "name": "Pure Mathematics and Statistics",
+              "num_questions": 11,
+              "marks": 75
+            }
+          ]
+        }
+      }
+    },
+    "economics": {
+      "edexcel": {
+        "economics-a": {
+          "label": "Economics - A (AS)",
+          "icon": "/static/images/economics-icon.svg",
+          "papers": [
+            {
+              "href": "paper-1",
+              "code": "8EC0/01",
+              "name": "Paper 1: Introduction to Markets and Market Failure",
+              "num_questions": 6,
+              "marks": 80
+            },
+            {
+              "href": "paper-2",
+              "code": "8EC0/02",
+              "name": "Paper 2: The UK Economy – Performance and Policies",
+              "num_questions": 6,
+              "marks": 80
+            }
+          ]
+        },
+        "economics-b": {
+          "label": "Economics - B (AS)",
+          "icon": "/static/images/economics-icon.svg",
+          "papers": [
+            {
+              "href": "paper-1",
+              "code": "8EB0/01",
+              "name": "Paper 1: Markets, Consumers and Firms",
+              "num_questions": 4,
+              "marks": 80
+            },
+            {
+              "href": "paper-2",
+              "code": "8EB0/02",
+              "name": "Paper 2: The Wider Economic Environment",
+              "num_questions": 4,
+              "marks": 80
+            }
+          ]
+        }
+      },
+      "ocr": {
+        "microeconomics": {
+          "label": "Paper 1",
+          "icon": "/static/images/microeconomics-icon.svg",
+          "papers": [
+            {
+              "href": "paper-1",
+              "code": "H060/01",
+              "name": "Microeconomics",
+              "num_questions": 5,
+              "marks": 60
+            }
+          ]
+        },
+        "macroeconomics": {
+          "label": "Paper 2",
+          "icon": "/static/images/macroeconomics-icon.svg",
+          "papers": [
+            {
+              "href": "paper-2",
+              "code": "H060/02",
+              "name": "Macroeconomics",
+              "num_questions": 5,
+              "marks": 60
+            }
+          ]
+        }
+      },
+      "aqa": {
+        "markets-and-market-failure": {
+          "label": "Paper 1",
+          "icon": "/static/images/economics-icon.svg",
+          "papers": [
+            {
+              "href": "paper-1",
+              "code": "7135/1",
+              "name": "Paper 1: The operation of markets and market failure",
+              "num_questions": 12,
+              "marks": 70
+            }
+          ]
+        },
+        "national-economy": {
+          "label": "Paper 2",
+          "icon": "/static/images/economics-icon.svg",
+          "papers": [
+            {
+              "href": "paper-2",
+              "code": "7135/2",
+              "name": "Paper 2: The national economy in a global context",
+              "num_questions": 12,
+              "marks": 70
+            }
+          ]
+        }
+      }
+    },
+    "biology": {
+      "edexcel": {
+        "biology-a": {
+          "label": "Biology - A (Salters-Nuffield AS)",
+          "icon": "/static/images/biology-icon.svg",
+          "papers": [
+            {
+              "href": "paper-1",
+              "code": "8BN0/01",
+              "name": "Paper 1 – Lifestyle, Transport, Genes and Health",
+              "num_questions": 10,
+              "marks": 80
+            },
+            {
+              "href": "paper-2",
+              "code": "8BN0/02",
+              "name": "Paper 2 – Development, Plants and the Environment",
+              "num_questions": 10,
+              "marks": 80
+            }
+          ]
+        },
+        "biology-b": {
+          "label": "Biology - B (AS)",
+          "icon": "/static/images/biology-icon.svg",
+          "papers": [
+            {
+              "href": "paper-1",
+              "code": "8BI0/01",
+              "name": "Paper 1 – Core Cellular Biology and Physiology",
+              "num_questions": 9,
+              "marks": 80
+            },
+            {
+              "href": "paper-2",
+              "code": "8BI0/02",
+              "name": "Paper 2 – Core Biology and Disease",
+              "num_questions": 9,
+              "marks": 80
+            }
+          ]
+        }
+      },
+      "ocr": {
+        "biology-a": {
+          "label": "Biology - A (AS)",
+          "icon": "/static/images/biology-icon.svg",
+          "papers": [
+            {
+              "href": "paper-1",
+              "code": "H020/01",
+              "name": "Breadth in biology",
+              "num_questions": 18,
+              "marks": 70
+            },
+            {
+              "href": "paper-2",
+              "code": "H020/02",
+              "name": "Depth in biology",
+              "num_questions": 18,
+              "marks": 70
+            }
+          ]
+        },
+        "biology-b": {
+          "label": "Biology - B (Advanced Biology AS)",
+          "icon": "/static/images/biology-icon.svg",
+          "papers": [
+            {
+              "href": "paper-1",
+              "code": "H022/01",
+              "name": "Foundations of biology",
+              "num_questions": 20,
+              "marks": 70
+            },
+            {
+              "href": "paper-2",
+              "code": "H022/02",
+              "name": "Applications of biology",
+              "num_questions": 20,
+              "marks": 70
+            }
+          ]
+        }
+      },
+      "aqa": {
+        "paper-1": {
+          "label": "Paper 1",
+          "icon": "/static/images/biology-icon.svg",
+          "papers": [
+            {
+              "href": "paper-1",
+              "code": "7401/1",
+              "name": "AS Biology Paper 1",
+              "num_questions": 10,
+              "marks": 75
+            }
+          ]
+        },
+        "paper-2": {
+          "label": "Paper 2",
+          "icon": "/static/images/biology-icon.svg",
+          "papers": [
+            {
+              "href": "paper-2",
+              "code": "7401/2",
+              "name": "AS Biology Paper 2",
+              "num_questions": 10,
+              "marks": 75
+            }
+          ]
+        }
+      }
+    },
+    "chemistry": {
+      "edexcel": {
+        "paper-1": {
+          "label": "Paper 1 (AS)",
+          "icon": "/static/images/chemistry-icon.svg",
+          "papers": [
+            {
+              "href": "paper-1",
+              "code": "8CH0/01",
+              "name": "Paper 1 – Core Inorganic and Physical Chemistry",
+              "num_questions": 9,
+              "marks": 80
+            }
+          ]
+        },
+        "paper-2": {
+          "label": "Paper 2 (AS)",
+          "icon": "/static/images/chemistry-icon.svg",
+          "papers": [
+            {
+              "href": "paper-2",
+              "code": "8CH0/02",
+              "name": "Paper 2 – Core Organic and Physical Chemistry",
+              "num_questions": 9,
+              "marks": 80
+            }
+          ]
+        }
+      },
+      "aqa": {
+        "paper-1": {
+          "label": "Paper 1",
+          "icon": "/static/images/chemistry-icon.svg",
+          "papers": [
+            {
+              "href": "paper-1",
+              "code": "7404/1",
+              "name": "AS Chemistry Paper 1",
+              "num_questions": 10,
+              "marks": 65
+            }
+          ]
+        },
+        "paper-2": {
+          "label": "Paper 2",
+          "icon": "/static/images/chemistry-icon.svg",
+          "papers": [
+            {
+              "href": "paper-2",
+              "code": "7404/2",
+              "name": "AS Chemistry Paper 2",
+              "num_questions": 10,
+              "marks": 65
+            }
+          ]
+        }
+      },
+      "ocr": {
+        "paper-1": {
+          "label": "Paper 1",
+          "icon": "/static/images/chemistry-icon.svg",
+          "papers": [
+            {
+              "href": "paper-1",
+              "code": "H032/01",
+              "name": "Breadth in chemistry",
+              "num_questions": 20,
+              "marks": 70
+            }
+          ]
+        },
+        "paper-2": {
+          "label": "Paper 2",
+          "icon": "/static/images/chemistry-icon.svg",
+          "papers": [
+            {
+              "href": "paper-2",
+              "code": "H032/02",
+              "name": "Depth in chemistry",
+              "num_questions": 20,
+              "marks": 70
+            }
+          ]
+        }
+      }
+    },
+    "physics": {
+      "edexcel": {
+        "paper-1": {
+          "label": "Paper 1 (AS)",
+          "icon": "/static/images/physics-icon.svg",
+          "papers": [
+            {
+              "href": "paper-1",
+              "code": "8PH0/01",
+              "name": "Paper 1 – Core Physics",
+              "num_questions": 18,
+              "marks": 80
+            }
+          ]
+        },
+        "paper-2": {
+          "label": "Paper 2 (AS)",
+          "icon": "/static/images/physics-icon.svg",
+          "papers": [
+            {
+              "href": "paper-2",
+              "code": "8PH0/02",
+              "name": "Paper 2 – Applications of Physics",
+              "num_questions": 18,
+              "marks": 80
+            }
+          ]
+        }
+      },
+      "aqa": {
+        "paper-1": {
+          "label": "Paper 1",
+          "icon": "/static/images/physics-icon.svg",
+          "papers": [
+            {
+              "href": "paper-1",
+              "code": "7407/1",
+              "name": "AS Physics Paper 1",
+              "num_questions": 20,
+              "marks": 70
+            }
+          ]
+        },
+        "paper-2": {
+          "label": "Paper 2",
+          "icon": "/static/images/physics-icon.svg",
+          "papers": [
+            {
+              "href": "paper-2",
+              "code": "7407/2",
+              "name": "AS Physics Paper 2",
+              "num_questions": 20,
+              "marks": 70
+            }
+          ]
+        }
+      },
+      "ocr": {
+        "physics-a": {
+          "label": "Physics A (AS)",
+          "icon": "/static/images/physics-icon.svg",
+          "papers": [
+            {
+              "href": "paper-1",
+              "code": "H156/01",
+              "name": "Breadth in physics",
+              "num_questions": 18,
+              "marks": 70
+            },
+            {
+              "href": "paper-2",
+              "code": "H156/02",
+              "name": "Depth in physics",
+              "num_questions": 18,
+              "marks": 70
+            }
+          ]
+        },
+        "physics-b": {
+          "label": "Physics B (Advanced Physics AS)",
+          "icon": "/static/images/physics-icon.svg",
+          "papers": [
+            {
+              "href": "paper-1",
+              "code": "H158/01",
+              "name": "Fundamentals of physics",
+              "num_questions": 25,
+              "marks": 70
+            },
+            {
+              "href": "paper-2",
+              "code": "H158/02",
+              "name": "Scientific literacy in physics",
+              "num_questions": 10,
+              "marks": 70
+            }
+          ]
+        }
+      }
+    },
+    "psychology": {
+      "edexcel": {
+        "unit-1": {
+          "label": "Unit 1",
+          "icon": "/static/images/psychology-icon.svg",
+          "papers": [
+            {
+              "href": "paper-1",
+              "code": "8PS0/01",
+              "name": "Social and cognitive psychology",
+              "num_questions": 10,
+              "marks": 90
+            }
+          ]
+        },
+        "unit-2": {
+          "label": "Unit 2",
+          "icon": "/static/images/psychology-icon.svg",
+          "papers": [
+            {
+              "href": "paper-2",
+              "code": "8PS0/02",
+              "name": "Biological psychology and learning theories",
+              "num_questions": 10,
+              "marks": 90
+            }
+          ]
+        }
+      },
+      "aqa": {
+        "paper-1": {
+          "label": "Paper 1",
+          "icon": "/static/images/psychology-icon.svg",
+          "papers": [
+            {
+              "href": "paper-1",
+              "code": "7181/1",
+              "name": "AS Psychology Paper 1",
+              "num_questions": 24,
+              "marks": 72
+            }
+          ]
+        },
+        "paper-2": {
+          "label": "Paper 2",
+          "icon": "/static/images/psychology-icon.svg",
+          "papers": [
+            {
+              "href": "paper-2",
+              "code": "7181/2",
+              "name": "AS Psychology Paper 2",
+              "num_questions": 24,
+              "marks": 72
+            }
+          ]
+        }
+      },
+      "ocr": {
+        "research-methods": {
+          "label": "Paper 1",
+          "icon": "/static/images/psychology-icon.svg",
+          "papers": [
+            {
+              "href": "paper-1",
+              "code": "H169/01",
+              "name": "Research methods in psychology",
+              "num_questions": 25,
+              "marks": 75
+            }
+          ]
+        },
+        "core-studies": {
+          "label": "Paper 2",
+          "icon": "/static/images/psychology-icon.svg",
+          "papers": [
+            {
+              "href": "paper-2",
+              "code": "H169/02",
+              "name": "Psychological themes through core studies (AS)",
+              "num_questions": 12,
+              "marks": 75
+            }
+          ]
+        }
+      }
+    }
+  }

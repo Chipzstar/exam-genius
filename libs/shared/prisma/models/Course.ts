@@ -46,6 +46,7 @@ export type CourseMinAggregateOutputType = {
   code: string | null
   user_id: string | null
   exam_board: $Enums.ExamBoard | null
+  exam_level: $Enums.ExamLevel | null
   product_id: string | null
   year_level: number | null
 }
@@ -60,6 +61,7 @@ export type CourseMaxAggregateOutputType = {
   code: string | null
   user_id: string | null
   exam_board: $Enums.ExamBoard | null
+  exam_level: $Enums.ExamLevel | null
   product_id: string | null
   year_level: number | null
 }
@@ -74,6 +76,7 @@ export type CourseCountAggregateOutputType = {
   code: number
   user_id: number
   exam_board: number
+  exam_level: number
   product_id: number
   year_level: number
   _all: number
@@ -100,6 +103,7 @@ export type CourseMinAggregateInputType = {
   code?: true
   user_id?: true
   exam_board?: true
+  exam_level?: true
   product_id?: true
   year_level?: true
 }
@@ -114,6 +118,7 @@ export type CourseMaxAggregateInputType = {
   code?: true
   user_id?: true
   exam_board?: true
+  exam_level?: true
   product_id?: true
   year_level?: true
 }
@@ -128,6 +133,7 @@ export type CourseCountAggregateInputType = {
   code?: true
   user_id?: true
   exam_board?: true
+  exam_level?: true
   product_id?: true
   year_level?: true
   _all?: true
@@ -229,6 +235,7 @@ export type CourseGroupByOutputType = {
   code: string | null
   user_id: string
   exam_board: $Enums.ExamBoard
+  exam_level: $Enums.ExamLevel
   product_id: string | null
   year_level: number
   _count: CourseCountAggregateOutputType | null
@@ -266,6 +273,7 @@ export type CourseWhereInput = {
   code?: Prisma.StringNullableFilter<"Course"> | string | null
   user_id?: Prisma.StringFilter<"Course"> | string
   exam_board?: Prisma.EnumExamBoardFilter<"Course"> | $Enums.ExamBoard
+  exam_level?: Prisma.EnumExamLevelFilter<"Course"> | $Enums.ExamLevel
   product_id?: Prisma.StringNullableFilter<"Course"> | string | null
   year_level?: Prisma.IntFilter<"Course"> | number
   user?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
@@ -283,6 +291,7 @@ export type CourseOrderByWithRelationInput = {
   code?: Prisma.SortOrderInput | Prisma.SortOrder
   user_id?: Prisma.SortOrder
   exam_board?: Prisma.SortOrder
+  exam_level?: Prisma.SortOrder
   product_id?: Prisma.SortOrderInput | Prisma.SortOrder
   year_level?: Prisma.SortOrder
   user?: Prisma.UserOrderByWithRelationInput
@@ -303,6 +312,7 @@ export type CourseWhereUniqueInput = Prisma.AtLeast<{
   code?: Prisma.StringNullableFilter<"Course"> | string | null
   user_id?: Prisma.StringFilter<"Course"> | string
   exam_board?: Prisma.EnumExamBoardFilter<"Course"> | $Enums.ExamBoard
+  exam_level?: Prisma.EnumExamLevelFilter<"Course"> | $Enums.ExamLevel
   product_id?: Prisma.StringNullableFilter<"Course"> | string | null
   year_level?: Prisma.IntFilter<"Course"> | number
   user?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
@@ -320,6 +330,7 @@ export type CourseOrderByWithAggregationInput = {
   code?: Prisma.SortOrderInput | Prisma.SortOrder
   user_id?: Prisma.SortOrder
   exam_board?: Prisma.SortOrder
+  exam_level?: Prisma.SortOrder
   product_id?: Prisma.SortOrderInput | Prisma.SortOrder
   year_level?: Prisma.SortOrder
   _count?: Prisma.CourseCountOrderByAggregateInput
@@ -342,6 +353,7 @@ export type CourseScalarWhereWithAggregatesInput = {
   code?: Prisma.StringNullableWithAggregatesFilter<"Course"> | string | null
   user_id?: Prisma.StringWithAggregatesFilter<"Course"> | string
   exam_board?: Prisma.EnumExamBoardWithAggregatesFilter<"Course"> | $Enums.ExamBoard
+  exam_level?: Prisma.EnumExamLevelWithAggregatesFilter<"Course"> | $Enums.ExamLevel
   product_id?: Prisma.StringNullableWithAggregatesFilter<"Course"> | string | null
   year_level?: Prisma.IntWithAggregatesFilter<"Course"> | number
 }
@@ -354,6 +366,7 @@ export type CourseCreateInput = {
   subject: $Enums.Subject
   code?: string | null
   exam_board: $Enums.ExamBoard
+  exam_level?: $Enums.ExamLevel
   product_id?: string | null
   year_level: number
   user: Prisma.UserCreateNestedOneWithoutCoursesInput
@@ -371,6 +384,7 @@ export type CourseUncheckedCreateInput = {
   code?: string | null
   user_id: string
   exam_board: $Enums.ExamBoard
+  exam_level?: $Enums.ExamLevel
   product_id?: string | null
   year_level: number
   papers?: Prisma.PaperUncheckedCreateNestedManyWithoutCourseInput
@@ -385,6 +399,7 @@ export type CourseUpdateInput = {
   subject?: Prisma.EnumSubjectFieldUpdateOperationsInput | $Enums.Subject
   code?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   exam_board?: Prisma.EnumExamBoardFieldUpdateOperationsInput | $Enums.ExamBoard
+  exam_level?: Prisma.EnumExamLevelFieldUpdateOperationsInput | $Enums.ExamLevel
   product_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   year_level?: Prisma.IntFieldUpdateOperationsInput | number
   user?: Prisma.UserUpdateOneRequiredWithoutCoursesNestedInput
@@ -402,6 +417,7 @@ export type CourseUncheckedUpdateInput = {
   code?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   user_id?: Prisma.StringFieldUpdateOperationsInput | string
   exam_board?: Prisma.EnumExamBoardFieldUpdateOperationsInput | $Enums.ExamBoard
+  exam_level?: Prisma.EnumExamLevelFieldUpdateOperationsInput | $Enums.ExamLevel
   product_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   year_level?: Prisma.IntFieldUpdateOperationsInput | number
   papers?: Prisma.PaperUncheckedUpdateManyWithoutCourseNestedInput
@@ -418,6 +434,7 @@ export type CourseCreateManyInput = {
   code?: string | null
   user_id: string
   exam_board: $Enums.ExamBoard
+  exam_level?: $Enums.ExamLevel
   product_id?: string | null
   year_level: number
 }
@@ -430,6 +447,7 @@ export type CourseUpdateManyMutationInput = {
   subject?: Prisma.EnumSubjectFieldUpdateOperationsInput | $Enums.Subject
   code?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   exam_board?: Prisma.EnumExamBoardFieldUpdateOperationsInput | $Enums.ExamBoard
+  exam_level?: Prisma.EnumExamLevelFieldUpdateOperationsInput | $Enums.ExamLevel
   product_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   year_level?: Prisma.IntFieldUpdateOperationsInput | number
 }
@@ -444,6 +462,7 @@ export type CourseUncheckedUpdateManyInput = {
   code?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   user_id?: Prisma.StringFieldUpdateOperationsInput | string
   exam_board?: Prisma.EnumExamBoardFieldUpdateOperationsInput | $Enums.ExamBoard
+  exam_level?: Prisma.EnumExamLevelFieldUpdateOperationsInput | $Enums.ExamLevel
   product_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   year_level?: Prisma.IntFieldUpdateOperationsInput | number
 }
@@ -463,6 +482,7 @@ export type CourseCountOrderByAggregateInput = {
   code?: Prisma.SortOrder
   user_id?: Prisma.SortOrder
   exam_board?: Prisma.SortOrder
+  exam_level?: Prisma.SortOrder
   product_id?: Prisma.SortOrder
   year_level?: Prisma.SortOrder
 }
@@ -482,6 +502,7 @@ export type CourseMaxOrderByAggregateInput = {
   code?: Prisma.SortOrder
   user_id?: Prisma.SortOrder
   exam_board?: Prisma.SortOrder
+  exam_level?: Prisma.SortOrder
   product_id?: Prisma.SortOrder
   year_level?: Prisma.SortOrder
 }
@@ -496,6 +517,7 @@ export type CourseMinOrderByAggregateInput = {
   code?: Prisma.SortOrder
   user_id?: Prisma.SortOrder
   exam_board?: Prisma.SortOrder
+  exam_level?: Prisma.SortOrder
   product_id?: Prisma.SortOrder
   year_level?: Prisma.SortOrder
 }
@@ -535,6 +557,10 @@ export type EnumSubjectFieldUpdateOperationsInput = {
 
 export type EnumExamBoardFieldUpdateOperationsInput = {
   set?: $Enums.ExamBoard
+}
+
+export type EnumExamLevelFieldUpdateOperationsInput = {
+  set?: $Enums.ExamLevel
 }
 
 export type CourseCreateNestedOneWithoutPapersInput = {
@@ -601,6 +627,7 @@ export type CourseCreateWithoutPaperReferencesInput = {
   subject: $Enums.Subject
   code?: string | null
   exam_board: $Enums.ExamBoard
+  exam_level?: $Enums.ExamLevel
   product_id?: string | null
   year_level: number
   user: Prisma.UserCreateNestedOneWithoutCoursesInput
@@ -617,6 +644,7 @@ export type CourseUncheckedCreateWithoutPaperReferencesInput = {
   code?: string | null
   user_id: string
   exam_board: $Enums.ExamBoard
+  exam_level?: $Enums.ExamLevel
   product_id?: string | null
   year_level: number
   papers?: Prisma.PaperUncheckedCreateNestedManyWithoutCourseInput
@@ -646,6 +674,7 @@ export type CourseUpdateWithoutPaperReferencesInput = {
   subject?: Prisma.EnumSubjectFieldUpdateOperationsInput | $Enums.Subject
   code?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   exam_board?: Prisma.EnumExamBoardFieldUpdateOperationsInput | $Enums.ExamBoard
+  exam_level?: Prisma.EnumExamLevelFieldUpdateOperationsInput | $Enums.ExamLevel
   product_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   year_level?: Prisma.IntFieldUpdateOperationsInput | number
   user?: Prisma.UserUpdateOneRequiredWithoutCoursesNestedInput
@@ -662,6 +691,7 @@ export type CourseUncheckedUpdateWithoutPaperReferencesInput = {
   code?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   user_id?: Prisma.StringFieldUpdateOperationsInput | string
   exam_board?: Prisma.EnumExamBoardFieldUpdateOperationsInput | $Enums.ExamBoard
+  exam_level?: Prisma.EnumExamLevelFieldUpdateOperationsInput | $Enums.ExamLevel
   product_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   year_level?: Prisma.IntFieldUpdateOperationsInput | number
   papers?: Prisma.PaperUncheckedUpdateManyWithoutCourseNestedInput
@@ -675,6 +705,7 @@ export type CourseCreateWithoutPapersInput = {
   subject: $Enums.Subject
   code?: string | null
   exam_board: $Enums.ExamBoard
+  exam_level?: $Enums.ExamLevel
   product_id?: string | null
   year_level: number
   user: Prisma.UserCreateNestedOneWithoutCoursesInput
@@ -691,6 +722,7 @@ export type CourseUncheckedCreateWithoutPapersInput = {
   code?: string | null
   user_id: string
   exam_board: $Enums.ExamBoard
+  exam_level?: $Enums.ExamLevel
   product_id?: string | null
   year_level: number
   paperReferences?: Prisma.PaperReferenceUncheckedCreateNestedManyWithoutCourseInput
@@ -720,6 +752,7 @@ export type CourseUpdateWithoutPapersInput = {
   subject?: Prisma.EnumSubjectFieldUpdateOperationsInput | $Enums.Subject
   code?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   exam_board?: Prisma.EnumExamBoardFieldUpdateOperationsInput | $Enums.ExamBoard
+  exam_level?: Prisma.EnumExamLevelFieldUpdateOperationsInput | $Enums.ExamLevel
   product_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   year_level?: Prisma.IntFieldUpdateOperationsInput | number
   user?: Prisma.UserUpdateOneRequiredWithoutCoursesNestedInput
@@ -736,6 +769,7 @@ export type CourseUncheckedUpdateWithoutPapersInput = {
   code?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   user_id?: Prisma.StringFieldUpdateOperationsInput | string
   exam_board?: Prisma.EnumExamBoardFieldUpdateOperationsInput | $Enums.ExamBoard
+  exam_level?: Prisma.EnumExamLevelFieldUpdateOperationsInput | $Enums.ExamLevel
   product_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   year_level?: Prisma.IntFieldUpdateOperationsInput | number
   paperReferences?: Prisma.PaperReferenceUncheckedUpdateManyWithoutCourseNestedInput
@@ -749,6 +783,7 @@ export type CourseCreateWithoutUserInput = {
   subject: $Enums.Subject
   code?: string | null
   exam_board: $Enums.ExamBoard
+  exam_level?: $Enums.ExamLevel
   product_id?: string | null
   year_level: number
   papers?: Prisma.PaperCreateNestedManyWithoutCourseInput
@@ -764,6 +799,7 @@ export type CourseUncheckedCreateWithoutUserInput = {
   subject: $Enums.Subject
   code?: string | null
   exam_board: $Enums.ExamBoard
+  exam_level?: $Enums.ExamLevel
   product_id?: string | null
   year_level: number
   papers?: Prisma.PaperUncheckedCreateNestedManyWithoutCourseInput
@@ -809,6 +845,7 @@ export type CourseScalarWhereInput = {
   code?: Prisma.StringNullableFilter<"Course"> | string | null
   user_id?: Prisma.StringFilter<"Course"> | string
   exam_board?: Prisma.EnumExamBoardFilter<"Course"> | $Enums.ExamBoard
+  exam_level?: Prisma.EnumExamLevelFilter<"Course"> | $Enums.ExamLevel
   product_id?: Prisma.StringNullableFilter<"Course"> | string | null
   year_level?: Prisma.IntFilter<"Course"> | number
 }
@@ -822,6 +859,7 @@ export type CourseCreateManyUserInput = {
   subject: $Enums.Subject
   code?: string | null
   exam_board: $Enums.ExamBoard
+  exam_level?: $Enums.ExamLevel
   product_id?: string | null
   year_level: number
 }
@@ -834,6 +872,7 @@ export type CourseUpdateWithoutUserInput = {
   subject?: Prisma.EnumSubjectFieldUpdateOperationsInput | $Enums.Subject
   code?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   exam_board?: Prisma.EnumExamBoardFieldUpdateOperationsInput | $Enums.ExamBoard
+  exam_level?: Prisma.EnumExamLevelFieldUpdateOperationsInput | $Enums.ExamLevel
   product_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   year_level?: Prisma.IntFieldUpdateOperationsInput | number
   papers?: Prisma.PaperUpdateManyWithoutCourseNestedInput
@@ -849,6 +888,7 @@ export type CourseUncheckedUpdateWithoutUserInput = {
   subject?: Prisma.EnumSubjectFieldUpdateOperationsInput | $Enums.Subject
   code?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   exam_board?: Prisma.EnumExamBoardFieldUpdateOperationsInput | $Enums.ExamBoard
+  exam_level?: Prisma.EnumExamLevelFieldUpdateOperationsInput | $Enums.ExamLevel
   product_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   year_level?: Prisma.IntFieldUpdateOperationsInput | number
   papers?: Prisma.PaperUncheckedUpdateManyWithoutCourseNestedInput
@@ -864,6 +904,7 @@ export type CourseUncheckedUpdateManyWithoutUserInput = {
   subject?: Prisma.EnumSubjectFieldUpdateOperationsInput | $Enums.Subject
   code?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   exam_board?: Prisma.EnumExamBoardFieldUpdateOperationsInput | $Enums.ExamBoard
+  exam_level?: Prisma.EnumExamLevelFieldUpdateOperationsInput | $Enums.ExamLevel
   product_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   year_level?: Prisma.IntFieldUpdateOperationsInput | number
 }
@@ -918,6 +959,7 @@ export type CourseSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs =
   code?: boolean
   user_id?: boolean
   exam_board?: boolean
+  exam_level?: boolean
   product_id?: boolean
   year_level?: boolean
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
@@ -936,6 +978,7 @@ export type CourseSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extens
   code?: boolean
   user_id?: boolean
   exam_board?: boolean
+  exam_level?: boolean
   product_id?: boolean
   year_level?: boolean
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
@@ -951,6 +994,7 @@ export type CourseSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extens
   code?: boolean
   user_id?: boolean
   exam_board?: boolean
+  exam_level?: boolean
   product_id?: boolean
   year_level?: boolean
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
@@ -966,11 +1010,12 @@ export type CourseSelectScalar = {
   code?: boolean
   user_id?: boolean
   exam_board?: boolean
+  exam_level?: boolean
   product_id?: boolean
   year_level?: boolean
 }
 
-export type CourseOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "created_at" | "updated_at" | "course_id" | "name" | "subject" | "code" | "user_id" | "exam_board" | "product_id" | "year_level", ExtArgs["result"]["course"]>
+export type CourseOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "created_at" | "updated_at" | "course_id" | "name" | "subject" | "code" | "user_id" | "exam_board" | "exam_level" | "product_id" | "year_level", ExtArgs["result"]["course"]>
 export type CourseInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
   papers?: boolean | Prisma.Course$papersArgs<ExtArgs>
@@ -1001,6 +1046,7 @@ export type $CoursePayload<ExtArgs extends runtime.Types.Extensions.InternalArgs
     code: string | null
     user_id: string
     exam_board: $Enums.ExamBoard
+    exam_level: $Enums.ExamLevel
     product_id: string | null
     year_level: number
   }, ExtArgs["result"]["course"]>
@@ -1438,6 +1484,7 @@ export interface CourseFieldRefs {
   readonly code: Prisma.FieldRef<"Course", 'String'>
   readonly user_id: Prisma.FieldRef<"Course", 'String'>
   readonly exam_board: Prisma.FieldRef<"Course", 'ExamBoard'>
+  readonly exam_level: Prisma.FieldRef<"Course", 'ExamLevel'>
   readonly product_id: Prisma.FieldRef<"Course", 'String'>
   readonly year_level: Prisma.FieldRef<"Course", 'Int'>
 }

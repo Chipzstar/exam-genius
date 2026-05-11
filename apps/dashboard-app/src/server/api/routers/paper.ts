@@ -7,6 +7,7 @@ import { GeneratePaperPayload } from '~/utils/types';
 import { backendApi } from '~/server/backend-headers';
 import { buildStudentStyleContextDashboard } from '~/server/style-context-dashboard';
 import { logger } from '@exam-genius/shared/utils';
+import { assertAsLevelExamFlowAllowed } from '~/server/exam-level-guard';
 
 const paperRouter = createTRPCRouter({
 	getPapers: protectedProcedure.query(async ({ ctx }) => {
@@ -65,7 +66,8 @@ const paperRouter = createTRPCRouter({
 						user_id: ctx.auth.userId
 					},
 					include: {
-						paperRating: true
+						paperRating: true,
+						course: { select: { exam_level: true } }
 					},
 					orderBy: { created_at: 'desc' }
 				});
@@ -120,6 +122,22 @@ const paperRouter = createTRPCRouter({
 			const log = new Logger();
 			try {
 				const user_id = ctx.auth.userId;
+				const course = await ctx.prisma.course.findFirst({
+					where: {
+						course_id: input.course_id,
+						user_id
+					}
+				});
+				if (!course) {
+					throw new TRPCError({ code: 'NOT_FOUND', message: 'Course not found' });
+				}
+				if (course.subject !== input.subject || course.exam_board !== input.exam_board) {
+					throw new TRPCError({
+						code: 'BAD_REQUEST',
+						message: 'Subject/exam board does not match this course'
+					});
+				}
+				assertAsLevelExamFlowAllowed(course.exam_level);
 				const paper_id = genID('paper');
 				const paper = await ctx.prisma.paper.create({
 					data: {
@@ -212,9 +230,12 @@ const paperRouter = createTRPCRouter({
 		)
 		.mutation(async ({ ctx, input }) => {
 			const paper = await ctx.prisma.paper.findFirst({
-				where: { paper_id: input.paperId, user_id: ctx.auth.userId }
+				where: { paper_id: input.paperId, user_id: ctx.auth.userId },
+				include: { course: true }
 			});
 			if (!paper) throw new TRPCError({ code: 'NOT_FOUND', message: 'Paper not found' });
+			if (!paper.course) throw new TRPCError({ code: 'INTERNAL_SERVER_ERROR', message: 'Course missing for paper' });
+			assertAsLevelExamFlowAllowed(paper.course.exam_level);
 			try {
 				await backendApi.post('/server/paper/generate', {
 					paper_id: paper.paper_id,
@@ -327,9 +348,12 @@ const paperRouter = createTRPCRouter({
 			const log = new Logger();
 			try {
 				const existing = await ctx.prisma.paper.findFirst({
-					where: { paper_id: input.id, user_id: ctx.auth.userId }
+					where: { paper_id: input.id, user_id: ctx.auth.userId },
+					include: { course: true }
 				});
 				if (!existing) throw new TRPCError({ code: 'NOT_FOUND' });
+				if (!existing.course) throw new TRPCError({ code: 'INTERNAL_SERVER_ERROR', message: 'Course missing' });
+				assertAsLevelExamFlowAllowed(existing.course.exam_level);
 				if (!existing.legacy_one_time_regenerate_available) {
 					throw new TRPCError({
 						code: 'FORBIDDEN',
@@ -393,9 +417,12 @@ const paperRouter = createTRPCRouter({
 			const log = new Logger();
 			try {
 				const existing = await ctx.prisma.paper.findFirst({
-					where: { paper_id: input.id, user_id: ctx.auth.userId }
+					where: { paper_id: input.id, user_id: ctx.auth.userId },
+					include: { course: true }
 				});
 				if (!existing) throw new TRPCError({ code: 'NOT_FOUND' });
+				if (!existing.course) throw new TRPCError({ code: 'INTERNAL_SERVER_ERROR', message: 'Course missing' });
+				assertAsLevelExamFlowAllowed(existing.course.exam_level);
 				const paper = await ctx.prisma.paper.update({
 					where: {
 						paper_id: input.id

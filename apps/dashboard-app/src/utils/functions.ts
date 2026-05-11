@@ -3,7 +3,7 @@ import { showNotification } from '@mantine/notifications';
 import { requirements } from './constants';
 import bcrypt from 'bcryptjs';
 import CryptoJS from 'crypto-js';
-import type { ExamBoard, Subject } from '@exam-genius/shared/prisma';
+import type { ExamBoard, ExamLevel, Subject } from '@exam-genius/shared/prisma';
 import { customAlphabet } from 'nanoid';
 
 const nanoid = customAlphabet('1234567890abcdefghiklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ', 16)
@@ -34,8 +34,9 @@ export function sanitize(str: string): string {
 export function genCourseOrPaperName(
 	subject: Subject,
 	board: ExamBoard,
-	paper: string | null=null
-) : string {
+	paper: string | null = null,
+	examLevel: ExamLevel | null = null
+): string {
 	let exam_board: string;
 	switch (board) {
 		case 'ocr':
@@ -49,11 +50,14 @@ export function genCourseOrPaperName(
 			exam_board = board;
 			break;
 	}
-	if (paper) {
-		return `${exam_board} ${capitalize(subject)} - ${capitalize(paper)}`;
-	} else {
-		return `${exam_board} ${capitalize(subject)}`;
+	const core =
+		paper != null
+			? `${exam_board} ${capitalize(subject)} - ${capitalize(paper)}`
+			: `${exam_board} ${capitalize(subject)}`;
+	if (examLevel === 'as_level') {
+		return `${core} · AS`;
 	}
+	return core;
 }
 
 export function includesCaseInsensitive(this: string, str: string): boolean {

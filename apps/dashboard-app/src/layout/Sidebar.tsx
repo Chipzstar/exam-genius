@@ -8,6 +8,7 @@ import clsx from 'clsx';
 import Image from 'next/image';
 import { usePathname, useRouter } from 'next/navigation';
 import { useState } from 'react';
+import posthog from 'posthog-js';
 import { resetAppStoreOnLogout } from '~/store/app.store';
 import { PATHS } from '~/utils/constants';
 import classes from './Sidebar.module.css';
@@ -89,6 +90,7 @@ const Sidebar = ({ opened, setOpened }: { opened: boolean; setOpened: (opened: b
 						className={classes.link}
 						onClick={() => {
 							resetAppStoreOnLogout();
+							posthog.reset();
 							void signOut();
 						}}
 					>

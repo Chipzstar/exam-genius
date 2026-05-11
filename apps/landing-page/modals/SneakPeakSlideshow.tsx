@@ -4,13 +4,18 @@ import { useForm } from '@mantine/form';
 import ChooseSubject from '../containers/ChooseSubject';
 import ChooseExamBoard from '../containers/ChooseExamBoard';
 import ChoosePaper from '../containers/ChoosePaper';
-import { SUBJECT_PAPERS } from '@exam-genius/shared/utils';
+import type { ExamBoard, Subject } from '@exam-genius/shared/utils';
+import { getSubjectPapersCatalog } from '@exam-genius/shared/utils';
 import { FormValues } from '../utils/types';
 import SneakPeak from '../containers/SneakPeak';
 import { trackSneakPeakOpened, trackSneakPeakStepCompleted } from '../utils/analytics';
 
+const STEP_LABELS = ['subject', 'exam_board', 'paper_selection'] as const;
+const COMPLETED_STEP_INDEX = 3;
+
 const SneakPeakSlideshow = ({ opened, onClose }) => {
 	const [active, setActive] = useState(0);
+
 	const form = useForm<FormValues>({
 		initialValues: {
 			subject: '',
@@ -23,13 +28,20 @@ const SneakPeakSlideshow = ({ opened, onClose }) => {
 
 	useEffect(() => {
 		const storedValue = window.localStorage.getItem('form');
-		if (storedValue) {
-			try {
-				form.setValues(JSON.parse(storedValue));
-			} catch (e) {
-				console.log('Failed to parse stored value');
-			}
+		if (!storedValue) return;
+		try {
+			const parsed = JSON.parse(storedValue) as Partial<FormValues>;
+			form.setValues({
+				subject: parsed.subject ?? '',
+				examBoard: parsed.examBoard ?? '',
+				course: parsed.course ?? [],
+				paper: parsed.paper ?? '',
+				sneak_peak_questions: parsed.sneak_peak_questions ?? []
+			});
+		} catch (e) {
+			console.log('Failed to parse stored value');
 		}
+		// eslint-disable-next-line react-hooks/exhaustive-deps -- one-shot hydrate from localStorage
 	}, []);
 
 	useEffect(() => {
@@ -37,8 +49,15 @@ const SneakPeakSlideshow = ({ opened, onClose }) => {
 	}, [form.values]);
 
 	useEffect(() => {
-		const { subject, examBoard } = form.values;
-		if (subject && examBoard) form.setFieldValue('course', Object.entries(SUBJECT_PAPERS[subject][examBoard]));
+		const subject = form.values.subject as Subject | '';
+		const examBoard = form.values.examBoard as ExamBoard | '';
+		if (!subject || !examBoard) return;
+		const catalog = getSubjectPapersCatalog('a_level');
+		const boardMap = catalog[subject]?.[examBoard];
+		if (boardMap) {
+			form.setFieldValue('course', Object.entries(boardMap));
+		}
+		// eslint-disable-next-line react-hooks/exhaustive-deps -- derived catalog refresh only when selections change
 	}, [form.values.subject, form.values.examBoard]);
 
 	useEffect(() => {
@@ -53,18 +72,20 @@ const SneakPeakSlideshow = ({ opened, onClose }) => {
 				return current;
 			}
 
-			const currentStep = ['subject', 'exam_board', 'paper_selection'][current] ?? 'unknown';
+			const currentStep = STEP_LABELS[current] ?? 'unknown';
 			trackSneakPeakStepCompleted(currentStep, {
 				active_step_index: current,
 				subject: form.values.subject || undefined,
 				exam_board: form.values.examBoard || undefined,
+				exam_level: 'a_level',
 				paper: form.values.paper || undefined
 			});
 
-			return current < 3 ? current + 1 : current;
+			return current < COMPLETED_STEP_INDEX ? current + 1 : current;
 		});
 
 	const prevStep = () => setActive(current => (current > 0 ? current - 1 : current));
+
 	return (
 		<Modal
 			opened={opened}
@@ -89,15 +110,11 @@ const SneakPeakSlideshow = ({ opened, onClose }) => {
 					separator: 'hidden'
 				}}
 			>
-				<Stepper.Step label='First step' description='Profile settings'>
-					<ChooseSubject
-						next={nextStep}
-						disabled={!form.values.subject}
-						onChange={value => form.setFieldValue('subject', value)}
-					/>
+				<Stepper.Step label='Subject' description='Subject'>
+					<ChooseSubject next={nextStep} disabled={!form.values.subject} onChange={value => form.setFieldValue('subject', value)} />
 				</Stepper.Step>
 
-				<Stepper.Step label='Second step' description='Personal information'>
+				<Stepper.Step label='Exam board' description='Board'>
 					<ChooseExamBoard
 						next={nextStep}
 						prev={prevStep}
@@ -107,7 +124,7 @@ const SneakPeakSlideshow = ({ opened, onClose }) => {
 					/>
 				</Stepper.Step>
 
-				<Stepper.Step label='Final step' description='Social media'>
+				<Stepper.Step label='Paper' description='Paper'>
 					<ChoosePaper next={nextStep} prev={prevStep} course={form.values.course} form={form} />
 				</Stepper.Step>
 				<Stepper.Completed>

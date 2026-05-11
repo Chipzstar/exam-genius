@@ -8,11 +8,15 @@ import { CHECKOUT_TYPE, PATHS } from '~/utils/constants';
 import { PAPER_PRICE_IDS, SUBJECT_STRIPE_IDS } from '~/utils/constants.server';
 import { env } from '~/env';
 import { logger } from '@exam-genius/shared/utils';
+import { assertAsLevelExamFlowAllowed } from '~/server/exam-level-guard';
+
+const examLevelSchema = z.enum(['a_level', 'as_level']);
 
 const courseSchema = z.object({
 	type: z.literal(CHECKOUT_TYPE.COURSE),
 	exam_board: z.enum(['ocr', 'aqa', 'edexcel']),
-	subject: z.enum(['maths', 'physics', 'chemistry', 'biology', 'economics', 'psychology'])
+	subject: z.enum(['maths', 'physics', 'chemistry', 'biology', 'economics', 'psychology']),
+	exam_level: examLevelSchema.default('a_level')
 });
 
 const paperSchema = z.object({
@@ -39,6 +43,16 @@ const stripeRouter = createTRPCRouter({
 			try {
 				if (!auth?.userId) throw new Error('Not authenticated');
 				logger.info('[Stripe] Create checkout session auth', { auth });
+				if (type === CHECKOUT_TYPE.COURSE) {
+					assertAsLevelExamFlowAllowed(input.exam_level);
+				}
+				if (type === CHECKOUT_TYPE.PAPER) {
+					const owning = await prisma.course.findFirst({
+						where: { course_id: input.course_id, user_id: auth.userId }
+					});
+					if (!owning) throw new Error('Course not found');
+					assertAsLevelExamFlowAllowed(owning.exam_level);
+				}
 				const customer_id = await getOrCreateStripeCustomerIdForUser({
 					prisma,
 					stripe,
@@ -88,6 +102,7 @@ const stripeRouter = createTRPCRouter({
 							userId: auth.userId,
 							exam_board: exam_board,
 							subject: subject,
+							exam_level: input.exam_level
 						},
 						allow_promotion_codes: true
 					});

@@ -16,15 +16,18 @@ export default async function PaperPage({ params, searchParams }: PageProps) {
 	const board = (resolvedSearchParams.board ?? '') as ExamBoard;
 	const mode = resolvedSearchParams.mode;
 
-	// Fetch data on the server
-	const trpcApi = await api();
-	const initialPapers = await trpcApi.paper.getPapersByCode({ courseId: resolvedParams.course_id, code });
+	const caller = await api();
+	const [initialPapers, initialCourse] = await Promise.all([
+		caller.paper.getPapersByCode({ courseId: resolvedParams.course_id, code }),
+		caller.course.getSingleCourse({ id: resolvedParams.course_id })
+	]);
+	const courseExamLevel = initialCourse.exam_level ?? 'a_level';
 
 	// Prefetch data for React Query
 	const queryClient = getQueryClient();
 	await queryClient.prefetchQuery({
 		queryKey: [['paper', 'getPapersByCode'], { input: { courseId: resolvedParams.course_id, code }, type: 'query' }],
-		queryFn: () => initialPapers
+		queryFn: () => Promise.resolve(initialPapers)
 	});
 
 	return (
@@ -33,6 +36,7 @@ export default async function PaperPage({ params, searchParams }: PageProps) {
 				params={resolvedParams}
 				searchParams={{ code, subject, board, mode }}
 				initialPapers={initialPapers}
+				courseExamLevel={courseExamLevel}
 			/>
 		</HydrateClient>
 	);

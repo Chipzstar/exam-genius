@@ -22,7 +22,7 @@ import { api } from '~/trpc/react';
 import { Carousel, type Embla } from '@mantine/carousel';
 import CustomLoader from '~/components/CustomLoader';
 import { PATHS, TWO_MINUTES } from '~/utils/constants';
-import { ExamBoard, Subject, SUBJECT_PAPERS } from '@exam-genius/shared/utils';
+import { ExamBoard, Subject, getSubjectPapersCatalog, type ExamLevel } from '@exam-genius/shared/utils';
 import { capitalize, notifyError, notifySuccess, sanitize } from '~/utils/functions';
 import Link from 'next/link';
 import classes from './Paper.module.css';
@@ -40,6 +40,17 @@ interface RegeneratePayload {
 	num_marks: number;
 }
 
+function findPaperInCatalog(params: {
+	examLevel: ExamLevel;
+	subject: Subject;
+	board: ExamBoard;
+	unit: string;
+	code: string;
+}) {
+	const cat = getSubjectPapersCatalog(params.examLevel);
+	return cat[params.subject]?.[params.board]?.[params.unit]?.papers.find(p => p.code === params.code) ?? null;
+}
+
 interface PaperClientProps {
 	params: {
 		course_id: string;
@@ -53,13 +64,21 @@ interface PaperClientProps {
 		mode?: string;
 	};
 	initialPapers: RouterOutputs['paper']['getPapersByCode'];
+	courseExamLevel: ExamLevel;
 }
 
 const NoPapers = ({
 	query,
 	start
 }: {
-	query: { course_id: string; unit: string; code: string; subject: Subject; board: ExamBoard };
+	query: {
+		course_id: string;
+		unit: string;
+		code: string;
+		subject: Subject;
+		board: ExamBoard;
+		examLevel: ExamLevel;
+	};
 	start: (...callbackParams: RegeneratePayload[]) => void;
 }) => {
 	const [loading, setLoading] = useState(false);
@@ -68,7 +87,13 @@ const NoPapers = ({
 
 	const generatePaper = useCallback(async () => {
 		setLoading(true);
-		const paper = SUBJECT_PAPERS[query.subject][query.board][query.unit].papers.find(p => p.code === query.code);
+		const paper = findPaperInCatalog({
+			examLevel: query.examLevel,
+			subject: query.subject,
+			board: query.board,
+			unit: query.unit,
+			code: query.code
+		});
 		if (!paper) throw new Error('No paper found with paper code ' + query.code);
 		try {
 			const created_paper = await createPastPaper({
@@ -119,7 +144,7 @@ const NoPapers = ({
 	);
 };
 
-export default function PaperClient({ params, searchParams, initialPapers }: PaperClientProps) {
+export default function PaperClient({ params, searchParams, initialPapers, courseExamLevel }: PaperClientProps) {
 	const [regenerateData, setRegenerateData] = useState<RegeneratePayload | null>(null);
 	const [activeSlideIndex, setActiveSlideIndex] = useState(0);
 	const emblaRef = useRef<Embla | null>(null);
@@ -194,9 +219,10 @@ export default function PaperClient({ params, searchParams, initialPapers }: Pap
 			subject,
 			board,
 			name: paper.name ?? 'Paper',
-			resumeUrl
+			resumeUrl,
+			examLevel: paper.course?.exam_level ?? courseExamLevel
 		});
-	}, [papers, activeSlideIndex, params.course_id, params.unit, params.paper, subject, board, code]);
+	}, [papers, activeSlideIndex, params.course_id, params.unit, params.paper, subject, board, code, courseExamLevel]);
 
 	useEffect(() => {
 		if (papers?.length && activeSlideIndex > papers.length - 1) {
@@ -240,7 +266,17 @@ export default function PaperClient({ params, searchParams, initialPapers }: Pap
 				{isLoading ? (
 					<LoadingOverlay visible={isLoading} />
 				) : !papers.length ? (
-					<NoPapers query={{ course_id: params.course_id, unit: params.unit, code, subject, board }} start={start} />
+					<NoPapers
+						query={{
+							course_id: params.course_id,
+							unit: params.unit,
+							code,
+							subject,
+							board,
+							examLevel: courseExamLevel
+						}}
+						start={start}
+					/>
 				) : (
 					<>
 						<DisclaimerStrip />
@@ -302,10 +338,14 @@ export default function PaperClient({ params, searchParams, initialPapers }: Pap
 																variant='light'
 																loading={legacyGrantLoading}
 																onClick={() => {
-																	const paper_info =
-																		SUBJECT_PAPERS[paper.subject][paper.exam_board][paper.unit_name]?.papers.find(
-																			p => p.code === paper.paper_code
-																		);
+																	const level = paper.course?.exam_level ?? courseExamLevel;
+																	const paper_info = findPaperInCatalog({
+																		examLevel: level,
+																		subject: paper.subject as Subject,
+																		board: paper.exam_board as ExamBoard,
+																		unit: paper.unit_name,
+																		code: paper.paper_code
+																	});
 																	if (!paper_info) {
 																		notifyError(
 																			'invalid-paper-code',
@@ -393,9 +433,14 @@ export default function PaperClient({ params, searchParams, initialPapers }: Pap
 															<Button
 																size='md'
 																onClick={() => {
-																	const paper_info = SUBJECT_PAPERS[paper.subject][paper.exam_board][
-																		paper.unit_name
-																	].papers.find(p => p.code === paper.paper_code);
+																	const level = paper.course?.exam_level ?? courseExamLevel;
+																	const paper_info = findPaperInCatalog({
+																		examLevel: level,
+																		subject: paper.subject as Subject,
+																		board: paper.exam_board as ExamBoard,
+																		unit: paper.unit_name,
+																		code: paper.paper_code
+																	});
 																	if (!paper_info)
 																		notifyError(
 																			'invalid-paper-code',
