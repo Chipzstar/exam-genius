@@ -11,10 +11,9 @@ interface SneakPeakProps {
 	subject?: string;
 	examBoard?: string;
 	paper?: string;
-	examLevel?: 'a_level' | 'as_level';
 }
 
-const SneakPeak = ({ prev, sneak_peak_questions, subject, examBoard, paper, examLevel = 'a_level' }: SneakPeakProps) => {
+const SneakPeak = ({ prev, sneak_peak_questions, subject, examBoard, paper }: SneakPeakProps) => {
 	const mobileScreen = useMediaQuery('(max-width: 48em)');
 	const { width } = useViewportSize();
 	const signupParams = new URLSearchParams({
@@ -30,7 +29,6 @@ const SneakPeak = ({ prev, sneak_peak_questions, subject, examBoard, paper, exam
 	if (paper) {
 		signupParams.set('paper', paper);
 	}
-	signupParams.set('examLevel', examLevel);
 	const signupUrl = `${process.env.NEXT_PUBLIC_DASHBOARD_APP_URL}/signup?${signupParams.toString()}`;
 	return (
 		<Page.Container classNames='h-full flex flex-col pb-2'>
@@ -74,7 +72,6 @@ const SneakPeak = ({ prev, sneak_peak_questions, subject, examBoard, paper, exam
 								source: 'sneak_peak',
 								subject: subject || undefined,
 								exam_board: examBoard || undefined,
-								exam_level: examLevel,
 								paper: paper || undefined
 							});
 						}}

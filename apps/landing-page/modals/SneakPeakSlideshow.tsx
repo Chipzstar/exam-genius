@@ -1,35 +1,23 @@
-import React, { useEffect, useMemo, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Modal, Stepper } from '@mantine/core';
 import { useForm } from '@mantine/form';
 import ChooseSubject from '../containers/ChooseSubject';
 import ChooseExamBoard from '../containers/ChooseExamBoard';
 import ChoosePaper from '../containers/ChoosePaper';
-import ChooseExamLevel from '../containers/ChooseExamLevel';
-import type { ExamBoard, ExamLevel, Subject } from '@exam-genius/shared/utils';
+import type { ExamBoard, Subject } from '@exam-genius/shared/utils';
 import { getSubjectPapersCatalog } from '@exam-genius/shared/utils';
 import { FormValues } from '../utils/types';
 import SneakPeak from '../containers/SneakPeak';
 import { trackSneakPeakOpened, trackSneakPeakStepCompleted } from '../utils/analytics';
-import { useExamLevelSelectionFlag } from '../hooks/useExamLevelSelectionFlag';
+
+const STEP_LABELS = ['subject', 'exam_board', 'paper_selection'] as const;
+const COMPLETED_STEP_INDEX = 3;
 
 const SneakPeakSlideshow = ({ opened, onClose }) => {
 	const [active, setActive] = useState(0);
-	const { enabled: levelChoiceEnabled, ready: flagReady } = useExamLevelSelectionFlag();
-	const showLevelStep = flagReady && levelChoiceEnabled;
-
-	const completedStepIndex = showLevelStep ? 4 : 3;
-
-	const stepLabels = useMemo(
-		() =>
-			showLevelStep
-				? (['exam_level', 'subject', 'exam_board', 'paper_selection'] as const)
-				: (['subject', 'exam_board', 'paper_selection'] as const),
-		[showLevelStep]
-	);
 
 	const form = useForm<FormValues>({
 		initialValues: {
-			examLevel: '',
 			subject: '',
 			examBoard: '',
 			course: [],
@@ -44,7 +32,6 @@ const SneakPeakSlideshow = ({ opened, onClose }) => {
 		try {
 			const parsed = JSON.parse(storedValue) as Partial<FormValues>;
 			form.setValues({
-				examLevel: parsed.examLevel ?? '',
 				subject: parsed.subject ?? '',
 				examBoard: parsed.examBoard ?? '',
 				course: parsed.course ?? [],
@@ -64,15 +51,14 @@ const SneakPeakSlideshow = ({ opened, onClose }) => {
 	useEffect(() => {
 		const subject = form.values.subject as Subject | '';
 		const examBoard = form.values.examBoard as ExamBoard | '';
-		const level: ExamLevel = form.values.examLevel === 'as_level' ? 'as_level' : 'a_level';
 		if (!subject || !examBoard) return;
-		const catalog = getSubjectPapersCatalog(level);
+		const catalog = getSubjectPapersCatalog('a_level');
 		const boardMap = catalog[subject]?.[examBoard];
 		if (boardMap) {
 			form.setFieldValue('course', Object.entries(boardMap));
 		}
 		// eslint-disable-next-line react-hooks/exhaustive-deps -- derived catalog refresh only when selections change
-	}, [form.values.subject, form.values.examBoard, form.values.examLevel]);
+	}, [form.values.subject, form.values.examBoard]);
 
 	useEffect(() => {
 		if (!opened) return;
@@ -80,35 +66,25 @@ const SneakPeakSlideshow = ({ opened, onClose }) => {
 		trackSneakPeakOpened('sneak-peak-modal');
 	}, [opened]);
 
-	const resolvedExamLevelForAnalytics = (): ExamLevel | undefined => {
-		if (!showLevelStep) return 'a_level';
-		if (form.values.examLevel === 'as_level' || form.values.examLevel === 'a_level') {
-			return form.values.examLevel;
-		}
-		return undefined;
-	};
-
 	const nextStep = () =>
 		setActive(current => {
 			if (form.validate().hasErrors) {
 				return current;
 			}
 
-			const currentStep = stepLabels[current] ?? 'unknown';
+			const currentStep = STEP_LABELS[current] ?? 'unknown';
 			trackSneakPeakStepCompleted(currentStep, {
 				active_step_index: current,
 				subject: form.values.subject || undefined,
 				exam_board: form.values.examBoard || undefined,
-				exam_level: resolvedExamLevelForAnalytics(),
+				exam_level: 'a_level',
 				paper: form.values.paper || undefined
 			});
 
-			return current < completedStepIndex ? current + 1 : current;
+			return current < COMPLETED_STEP_INDEX ? current + 1 : current;
 		});
 
 	const prevStep = () => setActive(current => (current > 0 ? current - 1 : current));
-
-	const subjectPrefix = form.values.examLevel === 'as_level' ? 'AS-Level' : 'A-Level';
 
 	return (
 		<Modal
@@ -134,24 +110,8 @@ const SneakPeakSlideshow = ({ opened, onClose }) => {
 					separator: 'hidden'
 				}}
 			>
-				{showLevelStep ? (
-					<Stepper.Step label='Exam level' description='Qualification'>
-						<ChooseExamLevel
-							next={nextStep}
-							disabled={!form.values.examLevel}
-							value={form.values.examLevel}
-							onChange={value => form.setFieldValue('examLevel', value as ExamLevel)}
-						/>
-					</Stepper.Step>
-				) : null}
-
 				<Stepper.Step label='Subject' description='Subject'>
-					<ChooseSubject
-						next={nextStep}
-						disabled={!form.values.subject}
-						onChange={value => form.setFieldValue('subject', value)}
-						subjectTitlePrefix={subjectPrefix}
-					/>
+					<ChooseSubject next={nextStep} disabled={!form.values.subject} onChange={value => form.setFieldValue('subject', value)} />
 				</Stepper.Step>
 
 				<Stepper.Step label='Exam board' description='Board'>
@@ -174,7 +134,6 @@ const SneakPeakSlideshow = ({ opened, onClose }) => {
 						subject={form.values.subject}
 						examBoard={form.values.examBoard}
 						paper={form.values.paper}
-						examLevel={form.values.examLevel === 'as_level' ? 'as_level' : 'a_level'}
 					/>
 				</Stepper.Completed>
 			</Stepper>

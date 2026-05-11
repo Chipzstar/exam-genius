@@ -1,7 +1,6 @@
-import type { CourseInfo, ExamBoard, ExamLevel, Subject } from '@exam-genius/shared/utils';
+import type { CourseInfo, ExamBoard, Subject } from '@exam-genius/shared/utils';
 
 export interface FormValues {
-	examLevel: ExamLevel | '';
 	subject: Subject | string;
 	examBoard: ExamBoard | string;
 	course: [string, CourseInfo][];
