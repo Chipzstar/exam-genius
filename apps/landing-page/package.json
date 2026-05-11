@@ -19,7 +19,7 @@
 		"@mantine/form": "^7.14.6",
 		"@mantine/hooks": "catalog:",
 		"@tabler/icons-react": "^2.14.0",
-		"@vercel/analytics": "^1.0.0",
+		"@vercel/analytics": "^2.0.1",
 		"embla-carousel-react": "^7.1.0",
 		"html-react-parser": "^3.0.15",
 		"next": "catalog:",
