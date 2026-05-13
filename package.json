@@ -47,6 +47,7 @@
 		"@babel/core": "^7.29.0",
 		"@babel/preset-react": "^7.28.5",
 		"@prisma-utils/prismerge": "^1.7.0",
+		"@prisma/client": "^7.8.0",
 		"@swc/core": "1.5.7",
 		"@swc/jest": "0.2.37",
 		"@testing-library/react": "15.0.6",

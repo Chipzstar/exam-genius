@@ -15,6 +15,8 @@
 		"db:studio": "pnpm with-env prisma studio",
 		"db:grant-legacy-regenerate": "pnpm with-env prisma db execute --file ../../scripts/grant-legacy-one-time-regenerate.sql",
 		"db:grant-legacy-regenerate:prod": "doppler run -c prd -p exam-genius -- prisma db execute --file ../../scripts/grant-legacy-one-time-regenerate.sql",
+		"db:seed:llm-models": "pnpm with-env tsx --tsconfig ../../tsconfig.base.json ../../prisma/seed-llm-models.ts",
+		"db:seed:llm-models:prod": "doppler run -c prd -p exam-genius -- pnpm exec tsx --tsconfig ../../tsconfig.base.json ../../prisma/seed-llm-models.ts",
 		"with-env": "dotenv -e .env.local --"
 	},
 	"dependencies": {
@@ -83,6 +85,7 @@
 		"zod": "catalog:"
 	},
 	"devDependencies": {
+		"tsx": "^4.21.0",
 		"@clerk/types": "^4.101.20",
 		"postcss": "8.4.38",
 		"postcss-preset-mantine": "^1.17.0",

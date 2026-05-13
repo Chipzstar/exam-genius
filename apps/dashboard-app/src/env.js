@@ -48,6 +48,7 @@ export const env = createEnv({
 		OPENROUTER_API_KEY: z.string().min(1),
 		OPENAI_QUESTION_EDIT_MODEL: z.string().min(1).default('gpt-4o-mini'),
 		// OPENAI_MARKING_MODEL: z.string().min(1).default('gpt-4o-mini'),
+		FIGURE_RASTER_MODELS: z.string().optional(),
 
 		// Sentry
 		SENTRY_AUTH_TOKEN: z.string().optional(),
@@ -188,6 +189,7 @@ export const env = createEnv({
 		UPSTASH_REDIS_REST_URL: process.env.UPSTASH_REDIS_REST_URL,
 		UPSTASH_REDIS_REST_TOKEN: process.env.UPSTASH_REDIS_REST_TOKEN,
 		STRIPE_PLAN_MAP: process.env.STRIPE_PLAN_MAP,
+		FIGURE_RASTER_MODELS: process.env.FIGURE_RASTER_MODELS,
 
 		// Doppler
 		DOPPLER_CONFIG: process.env.DOPPLER_CONFIG,
