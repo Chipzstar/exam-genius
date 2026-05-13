@@ -1,19 +1,18 @@
 'use client';
 
-import React, { useEffect } from 'react';
-import { Button, Group, Radio, SimpleGrid, Text, Title } from '@mantine/core';
-import Page from '~/layout/Page';
 import { ExamBoardCard } from '@exam-genius/shared/ui';
-import getStripe from '~/utils/loadStripe';
-import { useMediaQuery } from '@mantine/hooks';
-import { CHECKOUT_TYPE, PATHS } from '~/utils/constants';
-import { notifyError } from '~/utils/functions';
-import { IconArrowLeft, IconX } from '@tabler/icons-react';
-import { useRouter } from 'next/navigation';
-import { api } from '~/trpc/react';
 import { logger, type ExamBoard, type Subject } from '@exam-genius/shared/utils';
 import { useValue } from '@legendapp/state/react';
+import { Button, Group, Radio, SimpleGrid, Text, Title } from '@mantine/core';
+import { useMediaQuery } from '@mantine/hooks';
+import { IconArrowLeft, IconX } from '@tabler/icons-react';
+import { useRouter } from 'next/navigation';
+import { useEffect } from 'react';
+import Page from '~/layout/Page';
 import { appStore$ } from '~/store/app.store';
+import { api } from '~/trpc/react';
+import { CHECKOUT_TYPE, PATHS } from '~/utils/constants';
+import { notifyError } from '~/utils/functions';
 
 export default function ExamBoardPage() {
 	const mobileScreen = useMediaQuery('(max-width: 30em)');

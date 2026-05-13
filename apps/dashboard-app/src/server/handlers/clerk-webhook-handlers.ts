@@ -4,6 +4,7 @@ import { genCourseOrPaperName, genID } from '~/utils/functions';
 import { ClerkEvent } from '../../utils/types';
 import { normalizeExamLevelInput } from '~/utils/exam-level';
 import { assertAsLevelExamFlowAllowedPlain } from '~/server/exam-level-guard';
+import type { Stripe } from 'stripe/cjs/stripe.core';
 
 const VALID_SUBJECTS = new Set<Subject>(['maths', 'physics', 'chemistry', 'biology', 'economics', 'psychology']);
 const VALID_EXAM_BOARDS = new Set<ExamBoard>(['aqa', 'ocr', 'edexcel']);
@@ -138,14 +139,17 @@ export const updateUser = async ({
 export const deleteUser = async ({
 	event,
 	prisma,
-	log
+	log,
+	stripe
 }: {
 	event: ClerkEvent;
 	prisma: PrismaClient;
 	log: Logger;
+	stripe: Stripe;
 }) => {
 	try {
 		const payload = event.data;
+		// Delete the user from the DB
 		const user = await prisma.user.delete({
 			where: {
 				clerk_id: payload.id
@@ -153,6 +157,15 @@ export const deleteUser = async ({
 		});
 		if (user) {
 			log.info('User deleted', { user });
+			// Attempt to delete the Stripe customer, if customer_id exists
+			if (user.stripe_customer_id) {
+				try {
+					await stripe.customers.del(user.stripe_customer_id);
+					log.info('Stripe customer deleted', { stripe_customer_id: user.stripe_customer_id });
+				} catch (stripeErr) {
+					log.error('Failed to delete Stripe customer', { stripe_customer_id: user.stripe_customer_id, error: String(stripeErr) });
+				}
+			}
 		}
 		return;
 	} catch (err) {

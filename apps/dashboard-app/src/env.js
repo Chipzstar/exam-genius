@@ -45,6 +45,7 @@ export const env = createEnv({
 
 		// OpenAI
 		OPENAI_API_KEY: z.string().min(1),
+		OPENROUTER_API_KEY: z.string().min(1),
 		OPENAI_QUESTION_EDIT_MODEL: z.string().min(1).default('gpt-4o-mini'),
 		// OPENAI_MARKING_MODEL: z.string().min(1).default('gpt-4o-mini'),
 
@@ -164,6 +165,7 @@ export const env = createEnv({
 
 		// OpenAI
 		OPENAI_API_KEY: process.env.OPENAI_API_KEY,
+		OPENROUTER_API_KEY: process.env.OPENROUTER_API_KEY,
 		OPENAI_QUESTION_EDIT_MODEL: process.env.OPENAI_QUESTION_EDIT_MODEL,
 
 		// Sentry
