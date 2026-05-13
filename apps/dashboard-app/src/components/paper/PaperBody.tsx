@@ -64,7 +64,20 @@ export function PaperBody({ paper, mobileScreen, fontScale, initialMode, classes
 		{ paperId: paper.paper_id },
 		{
 			enabled:
-				Boolean(paper.structured_at) && flags.structuredQuestions && rendererMode === 'structured'
+				Boolean(paper.structured_at) && flags.structuredQuestions && rendererMode === 'structured',
+			refetchInterval: query => {
+				const data = query.state.data ?? [];
+				const pending = data.some(q => {
+					const rows = Array.isArray(q.body) ? q.body : [];
+					return rows.some(bl => {
+						if (!bl || typeof bl !== 'object' || !('kind' in bl)) return false;
+						const k = (bl as { kind?: string }).kind;
+						const st = (bl as { status?: string }).status;
+						return k === 'figure' && st === 'pending';
+					});
+				});
+				return pending ? 3000 : false;
+			}
 		}
 	);
 
@@ -164,6 +177,20 @@ export function PaperBody({ paper, mobileScreen, fontScale, initialMode, classes
 	const showStructured =
 		flags.structuredQuestions && Boolean(paper.structured_at) && rendererMode === 'structured';
 	const attemptAnswers = useMemo(() => draftAnswers, [draftAnswers]);
+
+	const hasPendingFigure = useMemo(
+		() =>
+			questions.some(q => {
+				const rows = Array.isArray(q.body) ? q.body : [];
+				return rows.some(bl => {
+					if (!bl || typeof bl !== 'object' || !('kind' in bl)) return false;
+					const k = (bl as { kind?: string }).kind;
+					const st = (bl as { status?: string }).status;
+					return k === 'figure' && st === 'pending';
+				});
+			}),
+		[questions]
+	);
 
 	const markSchemeParsed = useMemo(
 		() => parseMarkSchemeModelAnswer(markScheme?.model_answer),
@@ -278,6 +305,19 @@ export function PaperBody({ paper, mobileScreen, fontScale, initialMode, classes
 					Mark scheme hints are being generated and will appear automatically in a moment.
 				</Alert>
 			) : null}
+			{showStructured && hasPendingFigure ? (
+				<Alert
+					variant='light'
+					color='grape'
+					mb='xs'
+					py='xs'
+					px='sm'
+					ta='center'
+					styles={{ message: { fontSize: 'var(--mantine-font-size-xs)' } }}
+				>
+					Some diagrams are still generating and will appear automatically.
+				</Alert>
+			) : null}
 			<MarkSchemeUnstructuredModal
 				opened={markSchemeModalOpen}
 				onClose={() => setMarkSchemeModalOpen(false)}
@@ -294,6 +334,7 @@ export function PaperBody({ paper, mobileScreen, fontScale, initialMode, classes
 							onAnswerChange={onAnswerChange}
 							flags={{ questionEdits: flags.questionEdits, aiMarking: flags.aiMarking }}
 							markSchemeByQuestionId={markSchemeByQuestionId}
+							paperId={paper.paper_id}
 						/>
 					</div>
 				) : (
