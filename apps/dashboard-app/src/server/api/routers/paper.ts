@@ -280,6 +280,25 @@ const paperRouter = createTRPCRouter({
 			});
 		}),
 
+	regeneratePaperFigures: protectedProcedure
+		.input(z.object({ paperId: z.string() }))
+		.mutation(async ({ ctx, input }) => {
+			const paper = await ctx.prisma.paper.findFirst({
+				where: { paper_id: input.paperId, user_id: ctx.auth.userId }
+			});
+			if (!paper) throw new TRPCError({ code: 'NOT_FOUND', message: 'Paper not found' });
+			try {
+				await backendApi.post('/server/paper/generate-figures', { paper_id: input.paperId });
+				return { ok: true as const };
+			} catch (e) {
+				console.error(e);
+				throw new TRPCError({
+					code: 'INTERNAL_SERVER_ERROR',
+					message: 'Failed to enqueue figure generation'
+				});
+			}
+		}),
+
 	ensureStructured: protectedProcedure
 		.input(z.object({ paperId: z.string() }))
 		.mutation(async ({ ctx, input }) => {
