@@ -392,6 +392,7 @@ export const ModelName = {
   QuestionFeedback: 'QuestionFeedback',
   Attempt: 'Attempt',
   AttemptAnswer: 'AttemptAnswer',
+  LlmModelConfig: 'LlmModelConfig',
   Course: 'Course',
   Paper: 'Paper',
   User: 'User'
@@ -410,7 +411,7 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
     omit: GlobalOmitOptions
   }
   meta: {
-    modelProps: "question" | "questionRevision" | "markScheme" | "paperReference" | "paperRating" | "questionFeedback" | "attempt" | "attemptAnswer" | "course" | "paper" | "user"
+    modelProps: "question" | "questionRevision" | "markScheme" | "paperReference" | "paperRating" | "questionFeedback" | "attempt" | "attemptAnswer" | "llmModelConfig" | "course" | "paper" | "user"
     txIsolationLevel: TransactionIsolationLevel
   }
   model: {
@@ -1006,6 +1007,80 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         }
       }
     }
+    LlmModelConfig: {
+      payload: Prisma.$LlmModelConfigPayload<ExtArgs>
+      fields: Prisma.LlmModelConfigFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.LlmModelConfigFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$LlmModelConfigPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.LlmModelConfigFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$LlmModelConfigPayload>
+        }
+        findFirst: {
+          args: Prisma.LlmModelConfigFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$LlmModelConfigPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.LlmModelConfigFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$LlmModelConfigPayload>
+        }
+        findMany: {
+          args: Prisma.LlmModelConfigFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$LlmModelConfigPayload>[]
+        }
+        create: {
+          args: Prisma.LlmModelConfigCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$LlmModelConfigPayload>
+        }
+        createMany: {
+          args: Prisma.LlmModelConfigCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.LlmModelConfigCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$LlmModelConfigPayload>[]
+        }
+        delete: {
+          args: Prisma.LlmModelConfigDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$LlmModelConfigPayload>
+        }
+        update: {
+          args: Prisma.LlmModelConfigUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$LlmModelConfigPayload>
+        }
+        deleteMany: {
+          args: Prisma.LlmModelConfigDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.LlmModelConfigUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.LlmModelConfigUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$LlmModelConfigPayload>[]
+        }
+        upsert: {
+          args: Prisma.LlmModelConfigUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$LlmModelConfigPayload>
+        }
+        aggregate: {
+          args: Prisma.LlmModelConfigAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateLlmModelConfig>
+        }
+        groupBy: {
+          args: Prisma.LlmModelConfigGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.LlmModelConfigGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.LlmModelConfigCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.LlmModelConfigCountAggregateOutputType> | number
+        }
+      }
+    }
     Course: {
       payload: Prisma.$CoursePayload<ExtArgs>
       fields: Prisma.CourseFieldRefs
@@ -1397,6 +1472,20 @@ export const AttemptAnswerScalarFieldEnum = {
 export type AttemptAnswerScalarFieldEnum = (typeof AttemptAnswerScalarFieldEnum)[keyof typeof AttemptAnswerScalarFieldEnum]
 
 
+export const LlmModelConfigScalarFieldEnum = {
+  id: 'id',
+  created_at: 'created_at',
+  updated_at: 'updated_at',
+  key: 'key',
+  model_id: 'model_id',
+  provider: 'provider',
+  description: 'description',
+  is_active: 'is_active'
+} as const
+
+export type LlmModelConfigScalarFieldEnum = (typeof LlmModelConfigScalarFieldEnum)[keyof typeof LlmModelConfigScalarFieldEnum]
+
+
 export const CourseScalarFieldEnum = {
   id: 'id',
   created_at: 'created_at',
@@ -1640,6 +1729,13 @@ export type ListEnumAttemptStatusFieldRefInput<$PrismaModel> = FieldRefInputType
 
 
 /**
+ * Reference to a field of type 'Boolean'
+ */
+export type BooleanFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Boolean'>
+    
+
+
+/**
  * Reference to a field of type 'Subject'
  */
 export type EnumSubjectFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Subject'>
@@ -1692,13 +1788,6 @@ export type EnumStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaMod
  * Reference to a field of type 'Status[]'
  */
 export type ListEnumStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Status[]'>
-    
-
-
-/**
- * Reference to a field of type 'Boolean'
- */
-export type BooleanFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Boolean'>
     
 
 
@@ -1846,6 +1935,7 @@ export type GlobalOmitConfig = {
   questionFeedback?: Prisma.QuestionFeedbackOmit
   attempt?: Prisma.AttemptOmit
   attemptAnswer?: Prisma.AttemptAnswerOmit
+  llmModelConfig?: Prisma.LlmModelConfigOmit
   course?: Prisma.CourseOmit
   paper?: Prisma.PaperOmit
   user?: Prisma.UserOmit

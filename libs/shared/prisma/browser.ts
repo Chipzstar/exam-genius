@@ -58,6 +58,11 @@ export type Attempt = Prisma.AttemptModel
  */
 export type AttemptAnswer = Prisma.AttemptAnswerModel
 /**
+ * Model LlmModelConfig
+ * 
+ */
+export type LlmModelConfig = Prisma.LlmModelConfigModel
+/**
  * Model Course
  * 
  */
