@@ -220,7 +220,7 @@ export default function PaperClient({ params, searchParams, initialPapers, cours
 			board,
 			name: paper.name ?? 'Paper',
 			resumeUrl,
-			examLevel: paper.course?.exam_level ?? courseExamLevel
+			examLevel: courseExamLevel
 		});
 	}, [papers, activeSlideIndex, params.course_id, params.unit, params.paper, subject, board, code, courseExamLevel]);
 
@@ -338,9 +338,8 @@ export default function PaperClient({ params, searchParams, initialPapers, cours
 																variant='light'
 																loading={legacyGrantLoading}
 																onClick={() => {
-																	const level = paper.course?.exam_level ?? courseExamLevel;
 																	const paper_info = findPaperInCatalog({
-																		examLevel: level,
+																		examLevel: courseExamLevel,
 																		subject: paper.subject as Subject,
 																		board: paper.exam_board as ExamBoard,
 																		unit: paper.unit_name,
@@ -433,9 +432,8 @@ export default function PaperClient({ params, searchParams, initialPapers, cours
 															<Button
 																size='md'
 																onClick={() => {
-																	const level = paper.course?.exam_level ?? courseExamLevel;
 																	const paper_info = findPaperInCatalog({
-																		examLevel: level,
+																		examLevel: courseExamLevel,
 																		subject: paper.subject as Subject,
 																		board: paper.exam_board as ExamBoard,
 																		unit: paper.unit_name,

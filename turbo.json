@@ -16,6 +16,9 @@
       "cache": true,
       "inputs": ["$TURBO_DEFAULT$", "jest.config.*", "jest.preset.js"]
     },
+    "clean": {
+      "cache": false
+    },
     "db:generate": { "cache": false },
     "db:push": { "cache": false, "persistent": true, "interactive": true },
     "db:pull": { "cache": false, "persistent": true, "interactive": true },

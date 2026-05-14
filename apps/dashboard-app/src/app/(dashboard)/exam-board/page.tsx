@@ -61,7 +61,7 @@ export default function ExamBoardPage() {
 					Choose your exam board
 				</Title>
 			</header>
-			<Page.Body extraClassNames='justify-between py-8'>
+			<Page.Body extraClassNames='justify-around py-8'>
 				<Radio.Group name='board' value={board} onChange={v => appStore$.onboarding.board.set(v)}>
 					<SimpleGrid cols={3}>
 						<ExamBoardCard value='aqa' src='/static/images/aqa-icon.svg' />

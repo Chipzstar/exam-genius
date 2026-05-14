@@ -12,12 +12,14 @@ import { useValue } from '@legendapp/state/react';
 import { appStore$ } from '~/store/app.store';
 import { useExamLevelSelectionFlag } from '~/hooks/useExamLevelSelectionFlag';
 import { useRouter } from 'next/navigation';
+import { formatExamLevelForDisplay } from '@exam-genius/shared/utils';
 
 export default function ChooseSubjectPage() {
 	const mobileScreen = useMediaQuery('(max-width: 30em)');
 	const subject = useValue(appStore$.onboarding.subject);
 	const rawExamLevel = useValue(appStore$.onboarding.examLevel);
-	const subjectPrefix = rawExamLevel === 'as_level' ? 'AS-Level' : 'A-Level';
+	const subjectPrefix =
+		rawExamLevel === 'as_level' ? formatExamLevelForDisplay('as_level') : formatExamLevelForDisplay('a_level');
 	const router = useRouter();
 	const { enabled: levelChoiceEnabled, ready: flagReady } = useExamLevelSelectionFlag();
 
