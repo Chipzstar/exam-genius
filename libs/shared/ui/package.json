@@ -7,6 +7,7 @@
 		"test": "jest"
 	},
 	"dependencies": {
+		"@exam-genius/shared-utils": "workspace:*",
 		"next": "^15.5"
 	},
 	"peerDependencies": {

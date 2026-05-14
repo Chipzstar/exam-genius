@@ -3,6 +3,8 @@
 	"version": "0.0.0",
 	"license": "MIT",
 	"scripts": {
+		"clean": "git clean -xdf node_modules",
+    	"clean:workspaces": "turbo run clean",
 		"dev": "turbo run dev",
 		"dev:dashboard": "turbo run dev --filter=@exam-genius/dashboard-app",
 		"dev:landing": "turbo run dev --filter=@exam-genius/landing-page",
