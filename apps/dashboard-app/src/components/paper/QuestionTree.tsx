@@ -26,7 +26,6 @@ import {
 	IconX
 } from '@tabler/icons-react';
 import DOMPurify from 'dompurify';
-import { UploadButton } from '~/utils/uploadthing';
 import { LatexHtml, LatexText } from './Latex';
 import type { RouterOutputs } from '~/trpc/react';
 import { api } from '~/trpc/react';
@@ -111,78 +110,55 @@ function FigureBlockView({
 					Diagram auto-generation is currently disabled.
 				</Text>
 			) : null}
-			{data.status === 'failed' ? (
-				<Stack gap='sm'>
-					<Text size='sm' c='red'>
-						{data.error_message ?? 'Could not generate this diagram.'}
-					</Text>
-					<Group gap='xs' align='center' wrap='wrap'>
-						{ctx.figureGenerationEnabled ? (
-							<Button
-								size='xs'
-								variant='light'
-								leftSection={<IconRefresh size={14} />}
-								loading={retrying}
-								onClick={() => retryFigures({ paperId: ctx.paperId })}
-							>
-								Retry generation
-							</Button>
-						) : null}
-						<UploadButton
-							endpoint='figureReplace'
-							input={{
-								paperId: ctx.paperId,
-								questionId: ctx.questionId,
-								blockIndex: ctx.blockIndex
-							}}
-							onClientUploadComplete={() => {
-								ctx.invalidateQuestions();
-								notifySuccess('figure-upload', 'Diagram updated', <IconCheck size={18} />);
-							}}
-							onUploadError={err => notifyError('figure-upload', err.message, <IconX size={18} />)}
-						/>
-					</Group>
-				</Stack>
-			) : null}
-			{data.status === 'ready' && Boolean(sanitizedSvg) ? (
-				<div
-					className='max-w-full overflow-x-auto [&_svg]:max-h-[28rem]'
-					dangerouslySetInnerHTML={{ __html: sanitizedSvg }}
-				/>
-			) : null}
-			{data.status === 'ready' && !sanitizedSvg && data.image_url ? (
-				// eslint-disable-next-line @next/next/no-img-element
-				<img
-					src={data.image_url}
-					alt={data.caption}
-					className='max-h-[28rem] max-w-full object-contain'
-				/>
-			) : null}
-			{data.status === 'ready' && !sanitizedSvg && !data.image_url ? (
-				<Text size='sm' c='dimmed'>
-					No diagram preview available yet.
+		{data.status === 'failed' ? (
+			<Stack gap='sm'>
+				<Text size='sm' c='red'>
+					{data.error_message ?? 'Could not generate this diagram.'}
 				</Text>
-			) : null}
-			{data.status === 'ready' && (Boolean(sanitizedSvg) || Boolean(data.image_url)) ? (
-				<Group gap='xs' wrap='wrap'>
-					<Text size='xs' c='dimmed'>
-						Prefer your own graphic?
-					</Text>
-					<UploadButton
-						endpoint='figureReplace'
-						input={{
-							paperId: ctx.paperId,
-							questionId: ctx.questionId,
-							blockIndex: ctx.blockIndex
-						}}
-						onClientUploadComplete={() => {
-							ctx.invalidateQuestions();
-							notifySuccess('figure-upload', 'Diagram replaced', <IconCheck size={18} />);
-						}}
-						onUploadError={err => notifyError('figure-upload', err.message, <IconX size={18} />)}
-					/>
-				</Group>
-			) : null}
+				{ctx.figureGenerationEnabled ? (
+					<Button
+						size='xs'
+						variant='light'
+						leftSection={<IconRefresh size={14} />}
+						loading={retrying}
+						onClick={() => retryFigures({ paperId: ctx.paperId })}
+					>
+						Retry generation
+					</Button>
+				) : null}
+			</Stack>
+		) : null}
+		{data.status === 'ready' && Boolean(sanitizedSvg) ? (
+			<div
+				className='max-w-full overflow-x-auto [&_svg]:max-h-[28rem]'
+				dangerouslySetInnerHTML={{ __html: sanitizedSvg }}
+			/>
+		) : null}
+		{data.status === 'ready' && !sanitizedSvg && data.image_url ? (
+			// eslint-disable-next-line @next/next/no-img-element
+			<img
+				src={data.image_url}
+				alt={data.caption}
+				className='max-h-[28rem] max-w-full object-contain'
+			/>
+		) : null}
+		{data.status === 'ready' && !sanitizedSvg && !data.image_url ? (
+			<Text size='sm' c='dimmed'>
+				No diagram preview available yet.
+			</Text>
+		) : null}
+		{data.status === 'ready' && ctx.figureGenerationEnabled ? (
+			<Button
+				size='xs'
+				variant='subtle'
+				color='gray'
+				leftSection={<IconRefresh size={14} />}
+				loading={retrying}
+				onClick={() => retryFigures({ paperId: ctx.paperId })}
+			>
+				Regenerate diagram
+			</Button>
+		) : null}
 		</Stack>
 	);
 }

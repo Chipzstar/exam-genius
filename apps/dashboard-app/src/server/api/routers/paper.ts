@@ -9,6 +9,7 @@ import { buildStudentStyleContextDashboard } from '~/server/style-context-dashbo
 import { logger } from '@exam-genius/shared/utils';
 import { assertAsLevelExamFlowAllowed } from '~/server/exam-level-guard';
 import { getPapersByCodeOutputSchema } from '~/server/schemas/get-papers-by-code.schema';
+import { questionsForPaperListTag } from '~/server/accelerate-cache-tags';
 
 const paperRouter = createTRPCRouter({
 	getPapers: protectedProcedure.query(async ({ ctx }) => {
@@ -73,7 +74,7 @@ const paperRouter = createTRPCRouter({
 					},
 					orderBy: { created_at: 'desc' }
 				});
-				logger.debug('1st Paper', JSON.stringify(papers[0], null, 2));
+				// logger.debug('1st Paper', JSON.stringify(papers[0], null, 2));
 				return getPapersByCodeOutputSchema.parse(papers);
 			} catch (err) {
 				console.error(err);
@@ -290,9 +291,40 @@ const paperRouter = createTRPCRouter({
 				where: { paper_id: input.paperId, user_id: ctx.auth.userId }
 			});
 			if (!paper) throw new TRPCError({ code: 'NOT_FOUND', message: 'Paper not found' });
+
+			const questions = await ctx.prisma.question.findMany({
+				where: { paper_id: input.paperId },
+				select: { question_id: true, body: true }
+			});
+
+			let figuresReset = 0;
+			for (const q of questions) {
+				if (!Array.isArray(q.body)) continue;
+				let changed = false;
+				const nextBody = (q.body as Record<string, unknown>[]).map(block => {
+					if (block?.kind !== 'figure') return block;
+					changed = true;
+					figuresReset++;
+					logger.debug('Figure reset', { block });
+					return { ...block, status: 'pending', error_message: null, svg: null, image_url: null };
+				});
+				if (!changed) continue;
+				await ctx.prisma.question.update({
+					where: { question_id: q.question_id },
+					data: { body: JSON.parse(JSON.stringify(nextBody)) }
+				});
+				logger.info('Question updated', { question_id: q.question_id });
+			}
+
+			if (figuresReset > 0) {
+				await ctx.prisma.$accelerate.invalidate({
+					tags: [questionsForPaperListTag(input.paperId)]
+				});
+			}
+
 			try {
 				await backendApi.post('/server/paper/generate-figures', { paper_id: input.paperId });
-				return { ok: true as const };
+				return { ok: true as const, figuresReset };
 			} catch (e) {
 				console.error(e);
 				throw new TRPCError({
