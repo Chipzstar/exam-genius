@@ -1,0 +1,28 @@
+# CodeRabbit configuration for Chipzstar/exam-genius
+# Docs: https://docs.coderabbit.ai/reference/configuration
+#
+# By default, only PRs targeting the repository default branch (master) are auto-reviewed.
+# Use base_branches to also review PRs into staging, dev, and other integration branches.
+
+language: en-GB
+
+reviews:
+  profile: chill
+  request_changes_workflow: false
+  high_level_summary: true
+  review_status: true
+  auto_review:
+    enabled: true
+    auto_incremental_review: true
+    drafts: false
+    # Target branches other than the default (master is always reviewed).
+    base_branches:
+      - staging
+      - dev
+      - ".*"
+  path_filters:
+    - "!**/*.lock"
+    - "!**/pnpm-lock.yaml"
+    - "!**/tsconfig.tsbuildinfo"
+    - "!libs/shared/prisma/**"
+    - "!libs/shared/prisma-zod/**"
