@@ -2,6 +2,22 @@ import { z } from 'zod';
 import { TRPCError } from '@trpc/server';
 import type { AppPrismaClient } from '~/server/prisma';
 
+/** Aligned with `figureBlockSchema` in exam-genius-backend `src/app/modules/paper/schema.ts`. */
+const figureBlockSchema = z.object({
+	kind: z.literal('figure'),
+	caption: z.string(),
+	figure_label: z.string().nullable(),
+	diagram_type: z.string(),
+	elements: z.record(z.string(), z.unknown()),
+	render_method: z.enum(['svg_primary', 'raster_fallback', 'manual_upload']).nullable(),
+	svg: z.string().nullable(),
+	image_url: z.string().nullable(),
+	status: z.enum(['pending', 'ready', 'failed']),
+	generation_model: z.string().nullable(),
+	error_message: z.string().nullable(),
+	generation_started_at: z.string().nullable().optional()
+});
+
 export const blockSchema = z.discriminatedUnion('kind', [
 	z.object({ kind: z.literal('text'), value: z.string() }),
 	z.object({ kind: z.literal('math'), value: z.string() }),
@@ -10,7 +26,8 @@ export const blockSchema = z.discriminatedUnion('kind', [
 		headers: z.array(z.string()),
 		rows: z.array(z.array(z.string()))
 	}),
-	z.object({ kind: z.literal('image_placeholder'), caption: z.string() })
+	z.object({ kind: z.literal('image_placeholder'), caption: z.string() }),
+	figureBlockSchema
 ]);
 
 export const editOutputSchema = z.object({
@@ -38,7 +55,7 @@ export function buildQuestionEditPrompt(
 		`${presetLine}${marksLine} Student request: ${input.userPrompt}\n\n` +
 		`Current question body (JSON blocks): ${JSON.stringify(q.body)}\n\n` +
 		`Return ONLY valid JSON: {"body":[...blocks...],"marks": optional number}. ` +
-		`Blocks use kind: text|math|table|image_placeholder with the same shape as input.`
+		`Blocks use kind: text|math|table|image_placeholder|figure with the same shape as input; preserve figure blocks unless the student asks to change the diagram.`
 	);
 }
 
