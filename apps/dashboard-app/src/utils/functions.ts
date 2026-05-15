@@ -6,6 +6,7 @@ import CryptoJS from 'crypto-js';
 import type { ExamBoard, ExamLevel, Subject } from '@exam-genius/shared/prisma';
 import { formatExamBoardForDisplay, formatExamLevelForDisplay } from '@exam-genius/shared/utils';
 import { customAlphabet } from 'nanoid';
+import type { JSX } from 'react';
 
 const nanoid = customAlphabet('1234567890abcdefghiklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ', 16)
 

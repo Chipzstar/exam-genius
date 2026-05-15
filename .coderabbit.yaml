@@ -23,5 +23,5 @@ reviews:
     - "!**/*.lock"
     - "!**/pnpm-lock.yaml"
     - "!**/tsconfig.tsbuildinfo"
-    - "!libs/shared/prisma/**"
-    - "!libs/shared/prisma-zod/**"
+    - "!libs/shared/prisma/generated/**"
+    - "!libs/shared/prisma-zod/generated/**"
