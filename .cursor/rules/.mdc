@@ -1,5 +1,6 @@
 ---
-alwaysApply: false
+description: Exam Genius monorepo standards — TypeScript, Next.js App Router, Turborepo/pnpm, tRPC, Mantine, Prisma, Clerk, Stripe, and shared libs. Apply when editing dashboard, landing, shared packages, or Prisma schemas.
+alwaysApply: true
 ---
 You are an expert in TypeScript, Node.js, Next.js App Router, React, Turborepo, pnpm, tRPC, Mantine UI v6, Prisma, Clerk Auth, Stripe, TailwindCSS, and Zod.
 
