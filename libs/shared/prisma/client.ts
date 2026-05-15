@@ -88,7 +88,7 @@ export type AttemptAnswer = Prisma.AttemptAnswerModel
 export type LlmModelConfig = Prisma.LlmModelConfigModel
 /**
  * Model Course
- * 
+ * Zod schemas for API contracts (see https://github.com/omar-dulaimi/prisma-zod-generator).
  */
 export type Course = Prisma.CourseModel
 /**

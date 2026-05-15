@@ -1,4 +1,5 @@
-import type { ExamBoard, ExamLevel, PrismaClient, Subject } from '@exam-genius/shared/prisma';
+import type { ExamBoard, ExamLevel, Subject } from '@exam-genius/shared/prisma';
+import type { AppPrismaClient } from '~/server/prisma';
 import type { Logger } from 'next-axiom';
 import { genCourseOrPaperName, genID } from '~/utils/functions';
 import { ClerkEvent } from '../../utils/types';
@@ -37,7 +38,7 @@ export const createNewUser = async ({
 	log
 }: {
 	event: ClerkEvent;
-	prisma: PrismaClient;
+	prisma: AppPrismaClient;
 	log: Logger;
 }) => {
 	try {
@@ -112,7 +113,7 @@ export const updateUser = async ({
 	log
 }: {
 	event: ClerkEvent;
-	prisma: PrismaClient;
+	prisma: AppPrismaClient;
 	log: Logger;
 }) => {
 	try {
@@ -143,7 +144,7 @@ export const deleteUser = async ({
 	stripe
 }: {
 	event: ClerkEvent;
-	prisma: PrismaClient;
+	prisma: AppPrismaClient;
 	log: Logger;
 	stripe: Stripe;
 }) => {

@@ -1,6 +1,6 @@
 import { z } from 'zod';
-import type { PrismaClient } from '@exam-genius/shared/prisma';
 import { TRPCError } from '@trpc/server';
+import type { AppPrismaClient } from '~/server/prisma';
 
 export const blockSchema = z.discriminatedUnion('kind', [
 	z.object({ kind: z.literal('text'), value: z.string() }),
@@ -48,7 +48,7 @@ export function parseEditModelText(text: string): z.infer<typeof editOutputSchem
 }
 
 export async function persistQuestionEditFromParsed(
-	prisma: PrismaClient,
+	prisma: AppPrismaClient,
 	q: QuestionForEdit,
 	parsed: z.infer<typeof editOutputSchema>,
 	preserveMarks: boolean
@@ -75,7 +75,7 @@ export async function persistQuestionEditFromParsed(
 }
 
 export async function loadQuestionForEdit(
-	prisma: PrismaClient,
+	prisma: AppPrismaClient,
 	questionId: string,
 	userId: string
 ): Promise<QuestionForEdit> {
