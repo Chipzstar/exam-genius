@@ -123,7 +123,7 @@ function FigureBlockView({
 						loading={retrying}
 						onClick={() => retryFigures({ paperId: ctx.paperId })}
 					>
-						Retry generation
+						Regenerate all diagrams
 					</Button>
 				) : null}
 			</Stack>

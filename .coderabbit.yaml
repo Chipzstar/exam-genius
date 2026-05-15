@@ -19,7 +19,6 @@ reviews:
     base_branches:
       - staging
       - dev
-      - ".*"
   path_filters:
     - "!**/*.lock"
     - "!**/pnpm-lock.yaml"

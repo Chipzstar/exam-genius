@@ -285,6 +285,7 @@ const paperRouter = createTRPCRouter({
 		}),
 
 	regeneratePaperFigures: protectedProcedure
+		.use(rateLimited('paper_generate'))
 		.input(z.object({ paperId: z.string() }))
 		.mutation(async ({ ctx, input }) => {
 			const paper = await ctx.prisma.paper.findFirst({

@@ -5,11 +5,11 @@
 Exam Genius is implemented across two codebases:
 
 - **Dashboard / frontend (Turborepo):**  
-  `/Users/chiso/Projects/Omnicentra/Exam Genius/exam-genius`  
+  This repository (`exam-genius`)  
   Example: question body validation for AI edits lives in `apps/dashboard-app/src/server/question-edit-logic.ts`.
 
 - **Backend (Nx / Fastify):**  
-  `/Users/chiso/Projects/Omnicentra/Exam Genius/exam-genius-backend`  
+  Separate repository (`exam-genius-backend`)  
   Example: canonical question / paper JSON shapes for generation and persistence live in `src/app/modules/paper/schema.ts`.
 
 ## Architectural issue
