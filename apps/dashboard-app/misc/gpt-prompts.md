@@ -123,10 +123,11 @@ Please generate a new sample past paper for the upcoming A-level ${exam_board} $
 | --- | --- |
 | **Purpose** | Apply a natural-language or preset edit to a question’s block JSON while preserving schema; optionally preserve or update marks. |
 | **Code** | `apps/dashboard-app/src/server/question-edit-logic.ts` (`buildQuestionEditPrompt`) |
+| **Version constant** | `QUESTION_EDIT_PROMPT_VERSION` → `question_edit_v1` |
 | **Call sites** | `apps/dashboard-app/src/server/api/routers/question.ts` (`generateText`); `apps/dashboard-app/src/app/api/question/edit/route.ts` (`streamText`) |
 | **Model** | `OPENAI_QUESTION_EDIT_MODEL` (default `gpt-4o-mini`) |
 | **Response** | Model text stripped of ` ```json ` fences; parsed as `editOutputSchema` (`body` block array, optional `marks`) |
-
+| **Observability** | `logAiStructured('question_edit', …)` via `apps/dashboard-app/src/server/ai-structured-log.ts` (Axiom when `AXIOM_TOKEN` + `AXIOM_DATASET` set); fields include `channel` (`trpc` \| `stream`), `ok`, `duration_ms`, `question_id`, `paper_id`, `model`, `prompt_version`. |
 **Prompt** (single string; no separate system message): built as:
 
 ```text
@@ -134,7 +135,7 @@ ${presetLine}${marksLine} Student request: ${userPrompt}
 
 Current question body (JSON blocks): ${JSON.stringify(q.body)}
 
-Return ONLY valid JSON: {"body":[...blocks...],"marks": optional number}. Blocks use kind: text|math|table|image_placeholder with the same shape as input.
+Return ONLY valid JSON: {"body":[...blocks...],"marks": optional number}. Blocks use kind: text|math|table|image_placeholder|figure with the same shape as input.
 ```
 
 Where `presetLine` is `Preset: ${preset}. ` when a preset is set; `marksLine` is either `Keep total marks at ${q.marks}.` or `You may adjust marks; return "marks" in JSON.`
@@ -152,4 +153,5 @@ Where `presetLine` is `Preset: ${preset}. ` when a preset is set; `marksLine` is
 
 | Date | Change |
 | --- | --- |
+| 2026-04-28 | Question edit: `QUESTION_EDIT_PROMPT_VERSION` (`question_edit_v1`), dashboard `logAiStructured('question_edit')` for stream + tRPC paths. |
 | *(add rows here when prompts change)* | |

@@ -39,6 +39,10 @@ testem.log
 /typings
 /bin/pgloader/*
 /bin/ngrok.yml
+*.bak
+apps/dashboard-app/misc/sample-papers/*.pdf
+*.doppler.prod
+libs/shared/prisma-zod/
 
 # System Files
 .DS_Store
@@ -58,6 +62,3 @@ Thumbs.db
 
 # Turborepo
 .turbo
-
-*.bak
-apps/dashboard-app/misc/sample-papers/*.pdf

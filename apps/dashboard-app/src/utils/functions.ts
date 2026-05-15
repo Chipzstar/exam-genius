@@ -4,7 +4,9 @@ import { requirements } from './constants';
 import bcrypt from 'bcryptjs';
 import CryptoJS from 'crypto-js';
 import type { ExamBoard, ExamLevel, Subject } from '@exam-genius/shared/prisma';
+import { formatExamBoardForDisplay, formatExamLevelForDisplay } from '@exam-genius/shared/utils';
 import { customAlphabet } from 'nanoid';
+import type { JSX } from 'react';
 
 const nanoid = customAlphabet('1234567890abcdefghiklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ', 16)
 
@@ -37,25 +39,13 @@ export function genCourseOrPaperName(
 	paper: string | null = null,
 	examLevel: ExamLevel | null = null
 ): string {
-	let exam_board: string;
-	switch (board) {
-		case 'ocr':
-		case 'aqa':
-			exam_board = board.toUpperCase();
-			break;
-		case 'edexcel':
-			exam_board = capitalize(board);
-			break;
-		default:
-			exam_board = board;
-			break;
-	}
+	const exam_board = formatExamBoardForDisplay(board);
 	const core =
 		paper != null
 			? `${exam_board} ${capitalize(subject)} - ${capitalize(paper)}`
 			: `${exam_board} ${capitalize(subject)}`;
 	if (examLevel === 'as_level') {
-		return `${core} · AS`;
+		return `${core} · ${formatExamLevelForDisplay('as_level')}`;
 	}
 	return core;
 }

@@ -59,6 +59,7 @@ export const ModelName = {
   QuestionFeedback: 'QuestionFeedback',
   Attempt: 'Attempt',
   AttemptAnswer: 'AttemptAnswer',
+  LlmModelConfig: 'LlmModelConfig',
   Course: 'Course',
   Paper: 'Paper',
   User: 'User'
@@ -208,6 +209,20 @@ export const AttemptAnswerScalarFieldEnum = {
 } as const
 
 export type AttemptAnswerScalarFieldEnum = (typeof AttemptAnswerScalarFieldEnum)[keyof typeof AttemptAnswerScalarFieldEnum]
+
+
+export const LlmModelConfigScalarFieldEnum = {
+  id: 'id',
+  created_at: 'created_at',
+  updated_at: 'updated_at',
+  key: 'key',
+  model_id: 'model_id',
+  provider: 'provider',
+  description: 'description',
+  is_active: 'is_active'
+} as const
+
+export type LlmModelConfigScalarFieldEnum = (typeof LlmModelConfigScalarFieldEnum)[keyof typeof LlmModelConfigScalarFieldEnum]
 
 
 export const CourseScalarFieldEnum = {

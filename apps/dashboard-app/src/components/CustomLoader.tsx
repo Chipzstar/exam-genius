@@ -1,5 +1,6 @@
 import React from 'react';
 import { DEFAULT_THEME, Stack, Text } from '@mantine/core';
+import type { JSX } from 'react';
 
 export interface LoadingOverlayProps {
 	text: string;

@@ -180,10 +180,27 @@ model AttemptAnswer {
   @@unique([attempt_id, question_id])
 }
 
+model LlmModelConfig {
+  id          Int      @id @unique @default(autoincrement())
+  created_at  DateTime @default(now())
+  updated_at  DateTime @updatedAt
+  key         String   @unique
+  model_id    String
+  provider    String   @default("openai")
+  description String?
+  is_active   Boolean  @default(true)
+}
+
 generator client {
   provider   = "prisma-client"
   output     = "../libs/shared/prisma"
   engineType = "client" // enable Prisma ORM without Rust
+}
+
+/// Zod schemas for API contracts (see https://github.com/omar-dulaimi/prisma-zod-generator).
+generator zod {
+  provider = "prisma-zod-generator"
+  output   = "../libs/shared/prisma-zod"
 }
 
 datasource db {

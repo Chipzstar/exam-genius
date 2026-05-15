@@ -4,6 +4,7 @@ import { withAxiom, type AxiomRequest } from 'next-axiom';
 import { createNewUser, deleteUser, updateUser } from '~/server/handlers/clerk-webhook-handlers';
 import { prisma } from '~/server/prisma';
 import { ClerkEvent } from '~/utils/types';
+import stripe from '~/server/stripe';
 
 export const POST = withAxiom(async (req: AxiomRequest) => {
 	console.log('[Clerk Webhook] POST received');
@@ -25,7 +26,7 @@ export const POST = withAxiom(async (req: AxiomRequest) => {
 				break;
 			case 'user.deleted':
 				console.log('[Clerk Webhook] Dispatching user.deleted');
-				await deleteUser({ event, prisma, log: req.log });
+				await deleteUser({ event, prisma, log: req.log, stripe });
 				console.log('[Clerk Webhook] user.deleted completed');
 				break;
 			default:
