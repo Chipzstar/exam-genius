@@ -2,6 +2,9 @@ import { z } from 'zod';
 import { TRPCError } from '@trpc/server';
 import type { AppPrismaClient } from '~/server/prisma';
 
+/** Bumped when `buildQuestionEditPrompt` contract or output shape changes (telemetry + registry). */
+export const QUESTION_EDIT_PROMPT_VERSION = 'question_edit_v1';
+
 /** Aligned with `figureBlockSchema` in exam-genius-backend `src/app/modules/paper/schema.ts`. */
 const figureBlockSchema = z.object({
 	kind: z.literal('figure'),
@@ -40,7 +43,7 @@ export type QuestionForEdit = {
 	revision: number;
 	marks: number;
 	body: unknown;
-	paper: { user_id: string };
+	paper: { user_id: string; paper_id: string };
 };
 
 export function buildQuestionEditPrompt(
@@ -109,6 +112,6 @@ export async function loadQuestionForEdit(
 		revision: q.revision,
 		marks: q.marks,
 		body: q.body,
-		paper: { user_id: q.paper.user_id }
+		paper: { user_id: q.paper.user_id, paper_id: q.paper_id }
 	};
 }
