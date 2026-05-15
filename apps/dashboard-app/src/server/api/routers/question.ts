@@ -11,18 +11,20 @@ import {
 	persistQuestionEditFromParsed
 } from '~/server/question-edit-logic';
 import { questionsForPaperListTag } from '~/server/accelerate-cache-tags';
+import { listForPaperOutputSchema } from '~/server/schemas/list-for-paper.schema';
 
 const openaiSdk = createOpenAI({ apiKey: env.OPENAI_API_KEY });
 
 const questionRouter = createTRPCRouter({
 	listForPaper: protectedProcedure
 		.input(z.object({ paperId: z.string() }))
+		.output(listForPaperOutputSchema)
 		.query(async ({ ctx, input }) => {
 			const paper = await ctx.prisma.paper.findFirst({
 				where: { paper_id: input.paperId, user_id: ctx.auth.userId }
 			});
 			if (!paper) throw new TRPCError({ code: 'NOT_FOUND' });
-			return ctx.prisma.question.findMany({
+			const rows = await ctx.prisma.question.findMany({
 				where: { paper_id: input.paperId },
 				orderBy: [{ order: 'asc' }],
 				include: {
@@ -37,6 +39,7 @@ const questionRouter = createTRPCRouter({
 					tags: [questionsForPaperListTag(input.paperId)]
 				}
 			});
+			return listForPaperOutputSchema.parse(rows);
 		}),
 
 	listRevisions: protectedProcedure

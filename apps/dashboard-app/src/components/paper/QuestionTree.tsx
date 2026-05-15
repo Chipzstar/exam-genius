@@ -56,6 +56,7 @@ type FigureCtx = {
 	questionId: string;
 	blockIndex: number;
 	invalidateQuestions: () => void;
+	figureGenerationEnabled: boolean;
 };
 
 function FigureBlockView({
@@ -97,7 +98,7 @@ function FigureBlockView({
 					{data.caption}
 				</Text>
 			</Group>
-			{data.status === 'pending' ? (
+			{data.status === 'pending' && ctx.figureGenerationEnabled ? (
 				<>
 					<Skeleton height={180} radius='md' animate />
 					<Text size='xs' c='dimmed'>
@@ -105,21 +106,28 @@ function FigureBlockView({
 					</Text>
 				</>
 			) : null}
+			{data.status === 'pending' && !ctx.figureGenerationEnabled ? (
+				<Text size='sm' c='dimmed'>
+					Diagram auto-generation is currently disabled.
+				</Text>
+			) : null}
 			{data.status === 'failed' ? (
 				<Stack gap='sm'>
 					<Text size='sm' c='red'>
 						{data.error_message ?? 'Could not generate this diagram.'}
 					</Text>
 					<Group gap='xs' align='center' wrap='wrap'>
-						<Button
-							size='xs'
-							variant='light'
-							leftSection={<IconRefresh size={14} />}
-							loading={retrying}
-							onClick={() => retryFigures({ paperId: ctx.paperId })}
-						>
-							Retry generation
-						</Button>
+						{ctx.figureGenerationEnabled ? (
+							<Button
+								size='xs'
+								variant='light'
+								leftSection={<IconRefresh size={14} />}
+								loading={retrying}
+								onClick={() => retryFigures({ paperId: ctx.paperId })}
+							>
+								Retry generation
+							</Button>
+						) : null}
 						<UploadButton
 							endpoint='figureReplace'
 							input={{
@@ -266,7 +274,7 @@ function BlockView({ block, figureCtx }: { block: unknown; figureCtx?: FigureCtx
 	}
 }
 
-type Flags = { questionEdits: boolean; aiMarking: boolean };
+type Flags = { questionEdits: boolean; aiMarking: boolean; figureGenerationEnabled: boolean };
 
 function QuestionSubtree({
 	parentId,
@@ -492,7 +500,8 @@ function QuestionNode({
 							paperId,
 							questionId: node.question_id,
 							blockIndex: i,
-							invalidateQuestions
+							invalidateQuestions,
+							figureGenerationEnabled: flags.figureGenerationEnabled
 						}}
 					/>
 				))}

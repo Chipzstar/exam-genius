@@ -1,5 +1,6 @@
 import { z } from 'zod';
 import { TRPCError } from '@trpc/server';
+import type { Prisma } from '@exam-genius/shared/prisma';
 import { createTRPCRouter, protectedProcedure, rateLimited } from '../trpc';
 import { questionsForPaperListTag } from '~/server/accelerate-cache-tags';
 
@@ -25,12 +26,12 @@ const ratingRouter = createTRPCRouter({
 					paper_id: input.paperId,
 					stars: input.stars,
 					comment: input.comment,
-					dimensions: input.dimensions ?? undefined
+					dimensions: input.dimensions as Prisma.InputJsonValue | undefined
 				},
 				update: {
 					stars: input.stars,
 					comment: input.comment,
-					dimensions: input.dimensions ?? undefined
+					dimensions: input.dimensions as Prisma.InputJsonValue | undefined
 				}
 			});
 		}),

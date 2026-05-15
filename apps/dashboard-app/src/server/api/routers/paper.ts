@@ -8,6 +8,7 @@ import { backendApi } from '~/server/backend-headers';
 import { buildStudentStyleContextDashboard } from '~/server/style-context-dashboard';
 import { logger } from '@exam-genius/shared/utils';
 import { assertAsLevelExamFlowAllowed } from '~/server/exam-level-guard';
+import { getPapersByCodeOutputSchema } from '~/server/schemas/get-papers-by-code.schema';
 
 const paperRouter = createTRPCRouter({
 	getPapers: protectedProcedure.query(async ({ ctx }) => {
@@ -57,6 +58,7 @@ const paperRouter = createTRPCRouter({
 				code: z.string()
 			})
 		)
+		.output(getPapersByCodeOutputSchema)
 		.query(async ({ input, ctx }) => {
 			try {
 				const papers = await ctx.prisma.paper.findMany({
@@ -71,7 +73,8 @@ const paperRouter = createTRPCRouter({
 					},
 					orderBy: { created_at: 'desc' }
 				});
-				return papers;
+				logger.debug('1st Paper', JSON.stringify(papers[0], null, 2));
+				return getPapersByCodeOutputSchema.parse(papers);
 			} catch (err) {
 				console.error(err);
 				throw new TRPCError({

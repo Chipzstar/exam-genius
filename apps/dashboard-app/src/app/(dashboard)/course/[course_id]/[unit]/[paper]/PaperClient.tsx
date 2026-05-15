@@ -403,6 +403,7 @@ export default function PaperClient({ params, searchParams, initialPapers, cours
 															paperContent: classes.paperContent,
 															paperContentPrintFooter: classes.paperContentPrintFooter
 														}}
+														courseExamLevel={courseExamLevel}
 													/>
 												</div>
 												</>

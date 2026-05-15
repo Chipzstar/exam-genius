@@ -16,6 +16,8 @@ import { MarkSchemeUnstructuredModal } from './MarkSchemeUnstructuredModal';
 import { parseMarkSchemeModelAnswer } from './mark-scheme-hint.utils';
 import { captureAttempt, captureRating } from '~/utils/posthog-events';
 import type { RouterOutputs } from '~/trpc/react';
+import { ExamLevel } from '@exam-genius/shared/prisma';
+import { useFigureGenerationFlag } from '~/hooks/useFigureGenerationFlag';
 
 type PaperRow = RouterOutputs['paper']['getPapersByCode'][number];
 
@@ -29,16 +31,17 @@ type Props = {
 		paperContent: string;
 		paperContentPrintFooter: string;
 	};
+	courseExamLevel: ExamLevel;
 };
 
-export function PaperBody({ paper, mobileScreen, fontScale, initialMode, classes }: Props) {
+export function PaperBody({ paper, mobileScreen, fontScale, initialMode, classes, courseExamLevel }: Props) {
 	const flags = useValue(appStore$.flags);
+	const { enabled: figureGenerationEnabled, ready: figureFlagReady } = useFigureGenerationFlag();
 	const rendererMode = useValue(appStore$.reader.rendererMode);
 	const paperMode = useValue(appStore$.reader.paperMode);
 	const router = useRouter();
 	const pathname = usePathname();
 	const searchParams = useSearchParams();
-	const examLevel = paper.course?.exam_level ?? 'a_level';
 
 	const modeApplied = useRef(false);
 	useEffect(() => {
@@ -76,7 +79,7 @@ export function PaperBody({ paper, mobileScreen, fontScale, initialMode, classes
 						return k === 'figure' && st === 'pending';
 					});
 				});
-				return pending ? 3000 : false;
+				return pending && figureGenerationEnabled ? 3000 : false;
 			}
 		}
 	);
@@ -118,14 +121,14 @@ export function PaperBody({ paper, mobileScreen, fontScale, initialMode, classes
 	const startAttempt = api.attempt.start.useMutation({
 		onSuccess: () => {
 			void refetchAttempt();
-			captureAttempt('started', { paperId: paper.paper_id, exam_level: examLevel });
+			captureAttempt('started', { paperId: paper.paper_id, exam_level: courseExamLevel });
 		}
 	});
 	const saveAnswer = api.attempt.saveAnswer.useMutation();
 	const submitAttempt = api.attempt.submit.useMutation({
 		onSuccess: () => {
 			void refetchAttempt();
-			captureAttempt('submitted', { paperId: paper.paper_id, exam_level: examLevel });
+			captureAttempt('submitted', { paperId: paper.paper_id, exam_level: courseExamLevel });
 		}
 	});
 
@@ -171,7 +174,7 @@ export function PaperBody({ paper, mobileScreen, fontScale, initialMode, classes
 		setRatingVal(pr?.stars ?? 0);
 		setRatingNote(pr?.comment ?? '');
 		setRatingSaved(Boolean(pr));
-	}, [paper.paper_id, paper.paperRating?.stars, paper.paperRating?.comment]);
+	}, [paper.paper_id, paper.paperRating]);
 	const [markSchemeModalOpen, setMarkSchemeModalOpen] = useState(false);
 
 	const showStructured =
@@ -305,7 +308,7 @@ export function PaperBody({ paper, mobileScreen, fontScale, initialMode, classes
 					Mark scheme hints are being generated and will appear automatically in a moment.
 				</Alert>
 			) : null}
-			{showStructured && hasPendingFigure ? (
+			{showStructured && hasPendingFigure && figureGenerationEnabled ? (
 				<Alert
 					variant='light'
 					color='grape'
@@ -316,6 +319,19 @@ export function PaperBody({ paper, mobileScreen, fontScale, initialMode, classes
 					styles={{ message: { fontSize: 'var(--mantine-font-size-xs)' } }}
 				>
 					Some diagrams are still generating and will appear automatically.
+				</Alert>
+			) : null}
+			{showStructured && hasPendingFigure && figureFlagReady && !figureGenerationEnabled ? (
+				<Alert
+					variant='light'
+					color='gray'
+					mb='xs'
+					py='xs'
+					px='sm'
+					ta='center'
+					styles={{ message: { fontSize: 'var(--mantine-font-size-xs)' } }}
+				>
+					Diagram auto-generation is currently disabled.
 				</Alert>
 			) : null}
 			<MarkSchemeUnstructuredModal
@@ -332,7 +348,11 @@ export function PaperBody({ paper, mobileScreen, fontScale, initialMode, classes
 							mode={paperMode}
 							attemptAnswers={attemptAnswers}
 							onAnswerChange={onAnswerChange}
-							flags={{ questionEdits: flags.questionEdits, aiMarking: flags.aiMarking }}
+							flags={{
+								questionEdits: flags.questionEdits,
+								aiMarking: flags.aiMarking,
+								figureGenerationEnabled
+							}}
 							markSchemeByQuestionId={markSchemeByQuestionId}
 							paperId={paper.paper_id}
 						/>
