@@ -68,6 +68,8 @@ export function PaperBody({ paper, mobileScreen, fontScale, initialMode, classes
 		{
 			enabled:
 				Boolean(paper.structured_at) && flags.structuredQuestions && rendererMode === 'structured',
+			// Poll every 3s while any figure block is still `pending` (backend raster gen is async).
+			// Stops polling once diagrams are ready/failed.
 			refetchInterval: query => {
 				const data = query.state.data ?? [];
 				const pending = data.some(q => {
@@ -79,7 +81,7 @@ export function PaperBody({ paper, mobileScreen, fontScale, initialMode, classes
 						return k === 'figure' && st === 'pending';
 					});
 				});
-				return pending && figureGenerationEnabled ? 3000 : false;
+				return pending ? 3000 : false;
 			}
 		}
 	);

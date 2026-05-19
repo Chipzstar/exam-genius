@@ -35,12 +35,6 @@ const rows = [
 		model_id: 'gpt-5-mini',
 		provider: 'openai',
 		description: 'Student attempt AI marking'
-	},
-	{
-		key: 'figure_svg',
-		model_id: 'gpt-5-mini',
-		provider: 'openai',
-		description: 'Figure diagram SVG code generation'
 	}
 ] as const;
 

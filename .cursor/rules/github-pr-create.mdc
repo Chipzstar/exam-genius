@@ -35,6 +35,8 @@ A good body helps reviewers, release readers, and your future self. Merged PRs i
 
 One short paragraph: **what** changed and **why** (business or technical reason). If the PR replaces or deprecates something (e.g. one chat provider for another), say so here.
 
+**Do not state the obvious.** GitHub already shows base/head branches and the merge direction. Skip openings like “This release merges `dev` into `master` for `exam-genius`…” or “This PR merges `staging` into `master`…”. Start with the substance: the feature, fix, or risk you are shipping.
+
 ### 2. Changes (grouped)
 
 Use `###` subheadings for each **theme** or feature area, then bullets:
@@ -118,6 +120,7 @@ Tailor to your PR; not every item applies every time.
 
 ## Anti-patterns (observed gaps to avoid)
 
+- **Merge boilerplate in the summary** — e.g. “This release merges `dev` into `master` for …”. Reviewers already see that; lead with what changed and why it matters.
 - **Empty PR body** for non-trivial merges.
 - **Title = branch name only** with no product or technical meaning.
 - **Unscoped mega-PRs** with no subsections—split or structure with headings.
