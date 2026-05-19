@@ -3,16 +3,19 @@ import { TRPCError } from '@trpc/server';
 import { createTRPCRouter, protectedProcedure, rateLimited } from '../trpc';
 import { genID } from '~/utils/functions';
 import { backendApi } from '~/server/backend-headers';
+import { getLatestForPaperOutputSchema } from '~/server/schemas/get-latest-for-paper.schema';
 
 const attemptRouter = createTRPCRouter({
 	getLatestForPaper: protectedProcedure
 		.input(z.object({ paperId: z.string() }))
+		.output(getLatestForPaperOutputSchema)
 		.query(async ({ ctx, input }) => {
-			return ctx.prisma.attempt.findFirst({
+			const row = await ctx.prisma.attempt.findFirst({
 				where: { paper_id: input.paperId, user_id: ctx.auth.userId },
 				orderBy: { started_at: 'desc' },
 				include: { answers: true }
 			});
+			return getLatestForPaperOutputSchema.parse(row);
 		}),
 
 	start: protectedProcedure

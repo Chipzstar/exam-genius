@@ -1,13 +1,21 @@
-import type { PrismaClient } from '@exam-genius/shared/prisma';
+import type { AppPrismaClient } from '~/server/prisma';
+import type { Prisma } from '@exam-genius/shared/prisma';
+
+type PaperForStyleContext = Prisma.PaperGetPayload<{
+	include: {
+		paperRating: true;
+		questions: { orderBy: [{ order: 'asc' }]; take: 12 };
+	};
+}>;
 
 /** Mirrors backend style-context for the “What we learned” panel before generation. */
 export async function buildStudentStyleContextDashboard(
-	prisma: PrismaClient,
+	prisma: AppPrismaClient,
 	params: { userId: string; courseId: string; paperCode: string }
 ): Promise<{ exemplars: string; avoid: string }> {
 	const thirtyDaysAgo = new Date(Date.now() - 30 * 24 * 60 * 60 * 1000);
 
-	const papers = await prisma.paper.findMany({
+	const papers = (await prisma.paper.findMany({
 		where: {
 			user_id: params.userId,
 			course_id: params.courseId,
@@ -22,7 +30,7 @@ export async function buildStudentStyleContextDashboard(
 		},
 		orderBy: { updated_at: 'desc' },
 		take: 10
-	});
+	})) as PaperForStyleContext[];
 
 	const liked = papers
 		.filter(p => p.paperRating && p.paperRating.stars >= 4)

@@ -1,6 +1,25 @@
 import { z } from 'zod';
-import type { PrismaClient } from '@exam-genius/shared/prisma';
 import { TRPCError } from '@trpc/server';
+import type { AppPrismaClient } from '~/server/prisma';
+
+/** Bumped when `buildQuestionEditPrompt` contract or output shape changes (telemetry + registry). */
+export const QUESTION_EDIT_PROMPT_VERSION = 'question_edit_v1';
+
+/** Aligned with `figureBlockSchema` in exam-genius-backend `src/app/modules/paper/schema.ts`. */
+const figureBlockSchema = z.object({
+	kind: z.literal('figure'),
+	caption: z.string(),
+	figure_label: z.string().nullable(),
+	diagram_type: z.string(),
+	elements: z.record(z.string(), z.unknown()),
+	render_method: z.enum(['svg_primary', 'raster_fallback', 'manual_upload']).nullable(),
+	svg: z.string().nullable(),
+	image_url: z.string().nullable(),
+	status: z.enum(['pending', 'ready', 'failed']),
+	generation_model: z.string().nullable(),
+	error_message: z.string().nullable(),
+	generation_started_at: z.string().nullable().optional()
+});
 
 export const blockSchema = z.discriminatedUnion('kind', [
 	z.object({ kind: z.literal('text'), value: z.string() }),
@@ -10,7 +29,8 @@ export const blockSchema = z.discriminatedUnion('kind', [
 		headers: z.array(z.string()),
 		rows: z.array(z.array(z.string()))
 	}),
-	z.object({ kind: z.literal('image_placeholder'), caption: z.string() })
+	z.object({ kind: z.literal('image_placeholder'), caption: z.string() }),
+	figureBlockSchema
 ]);
 
 export const editOutputSchema = z.object({
@@ -23,7 +43,7 @@ export type QuestionForEdit = {
 	revision: number;
 	marks: number;
 	body: unknown;
-	paper: { user_id: string };
+	paper: { user_id: string; paper_id: string };
 };
 
 export function buildQuestionEditPrompt(
@@ -38,7 +58,7 @@ export function buildQuestionEditPrompt(
 		`${presetLine}${marksLine} Student request: ${input.userPrompt}\n\n` +
 		`Current question body (JSON blocks): ${JSON.stringify(q.body)}\n\n` +
 		`Return ONLY valid JSON: {"body":[...blocks...],"marks": optional number}. ` +
-		`Blocks use kind: text|math|table|image_placeholder with the same shape as input.`
+		`Blocks use kind: text|math|table|image_placeholder|figure with the same shape as input; preserve figure blocks unless the student asks to change the diagram.`
 	);
 }
 
@@ -48,7 +68,7 @@ export function parseEditModelText(text: string): z.infer<typeof editOutputSchem
 }
 
 export async function persistQuestionEditFromParsed(
-	prisma: PrismaClient,
+	prisma: AppPrismaClient,
 	q: QuestionForEdit,
 	parsed: z.infer<typeof editOutputSchema>,
 	preserveMarks: boolean
@@ -75,7 +95,7 @@ export async function persistQuestionEditFromParsed(
 }
 
 export async function loadQuestionForEdit(
-	prisma: PrismaClient,
+	prisma: AppPrismaClient,
 	questionId: string,
 	userId: string
 ): Promise<QuestionForEdit> {
@@ -92,6 +112,6 @@ export async function loadQuestionForEdit(
 		revision: q.revision,
 		marks: q.marks,
 		body: q.body,
-		paper: { user_id: q.paper.user_id }
+		paper: { user_id: q.paper.user_id, paper_id: q.paper_id }
 	};
 }

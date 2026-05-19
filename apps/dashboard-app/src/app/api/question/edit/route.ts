@@ -9,8 +9,10 @@ import {
 	buildQuestionEditPrompt,
 	loadQuestionForEdit,
 	parseEditModelText,
-	persistQuestionEditFromParsed
+	persistQuestionEditFromParsed,
+	QUESTION_EDIT_PROMPT_VERSION
 } from '~/server/question-edit-logic';
+import { logAiStructured } from '~/server/ai-structured-log';
 
 export const runtime = 'nodejs';
 export const maxDuration = 60;
@@ -44,7 +46,10 @@ export async function POST(req: Request) {
 
 	const input = parsedBody.data;
 
-	let q;
+	const t0 = Date.now();
+	const modelName = env.OPENAI_QUESTION_EDIT_MODEL ?? 'gpt-4o-mini';
+
+	let q: Awaited<ReturnType<typeof loadQuestionForEdit>>;
 	try {
 		q = await loadQuestionForEdit(prisma, input.questionId, userId);
 	} catch (e) {
@@ -62,13 +67,33 @@ export async function POST(req: Request) {
 		});
 
 		const result = streamText({
-			model: openaiSdk(env.OPENAI_QUESTION_EDIT_MODEL ?? 'gpt-4o-mini'),
+			model: openaiSdk(modelName),
 			prompt,
 			onFinish: async ({ text }) => {
 				try {
 					const parsed = parseEditModelText(text);
 					await persistQuestionEditFromParsed(prisma, q, parsed, input.preserveMarks);
+					logAiStructured('question_edit', {
+						ok: true,
+						channel: 'stream',
+						question_id: q.question_id,
+						paper_id: q.paper.paper_id,
+						model: modelName,
+						prompt_version: QUESTION_EDIT_PROMPT_VERSION,
+						duration_ms: Date.now() - t0
+					});
 				} catch (e) {
+					logAiStructured('question_edit', {
+						ok: false,
+						channel: 'stream',
+						phase: 'persist',
+						question_id: q.question_id,
+						paper_id: q.paper.paper_id,
+						model: modelName,
+						prompt_version: QUESTION_EDIT_PROMPT_VERSION,
+						duration_ms: Date.now() - t0,
+						error: String(e)
+					});
 					console.error('[api/question/edit] persist failed', e);
 				}
 			}
@@ -76,6 +101,17 @@ export async function POST(req: Request) {
 
 		return result.toTextStreamResponse();
 	} catch (e) {
+		logAiStructured('question_edit', {
+			ok: false,
+			channel: 'stream',
+			phase: 'invoke',
+			question_id: q.question_id,
+			paper_id: q.paper.paper_id,
+			model: modelName,
+			prompt_version: QUESTION_EDIT_PROMPT_VERSION,
+			duration_ms: Date.now() - t0,
+			error: String(e)
+		});
 		console.error('[api/question/edit]', e);
 		return new Response('Failed', { status: 500 });
 	}

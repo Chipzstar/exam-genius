@@ -1,4 +1,4 @@
-import type { PrismaClient, Subject, ExamBoard } from '@exam-genius/shared/prisma';
+import type { Subject, ExamBoard } from '@exam-genius/shared/prisma';
 import { logger } from '@exam-genius/shared/utils';
 import type { Stripe } from 'stripe/cjs/stripe.core';
 import type { Logger } from 'next-axiom';
@@ -8,6 +8,7 @@ import { GeneratePaperPayload } from '../../utils/types';
 import { env } from '~/env';
 import { backendApi } from '~/server/backend-headers';
 import { assertAsLevelExamFlowAllowedPlain } from '~/server/exam-level-guard';
+import type { AppPrismaClient } from '~/server/prisma';
 import { normalizeExamLevelInput } from '~/utils/exam-level';
 
 export const getOrCreateStripeCustomerIdForUser = async ({
@@ -16,7 +17,7 @@ export const getOrCreateStripeCustomerIdForUser = async ({
 	userId
 }: {
 	stripe: Stripe;
-	prisma: PrismaClient;
+	prisma: AppPrismaClient;
 	userId: string | null;
 }) => {
 	logger.info('[Stripe] getOrCreateStripeCustomerIdForUser called', { userId });
@@ -79,7 +80,7 @@ export const handleCheckoutSessionComplete = async ({
 }: {
 	stripe: Stripe;
 	event: Stripe.Event;
-	prisma: PrismaClient;
+	prisma: AppPrismaClient;
 	log: Logger;
 }) => {
 	logger.info('[Stripe Checkout] handleCheckoutSessionComplete called', { eventId: event.id, eventType: event.type });
@@ -204,7 +205,7 @@ export const handleInvoicePaid = async ({
 }: {
 	stripe: Stripe;
 	event: Stripe.Event;
-	prisma: PrismaClient;
+	prisma: AppPrismaClient;
 	log?: Logger;
 }) => {
 	const invoice = event.data.object as Stripe.Invoice;
@@ -288,7 +289,7 @@ export const handleSubscriptionCreatedOrUpdated = async ({
 	log
 }: {
 	event: Stripe.Event;
-	prisma: PrismaClient;
+	prisma: AppPrismaClient;
 	log?: Logger;
 }) => {
 	const subscription = event.data.object as Stripe.Subscription;
@@ -325,7 +326,7 @@ export const handleSubscriptionCanceled = async ({
 	log
 }: {
 	event: Stripe.Event;
-	prisma: PrismaClient;
+	prisma: AppPrismaClient;
 	log?: Logger;
 }) => {
 	const subscription = event.data.object as Stripe.Subscription;

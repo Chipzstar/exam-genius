@@ -2,8 +2,14 @@ import React from 'react';
 import { Box, Button, Group, Radio, SimpleGrid, Title } from '@mantine/core';
 import Page from '../layout/Page';
 import { SubjectCard } from '@exam-genius/shared/ui';
+import { formatExamLevelForDisplay } from '@exam-genius/shared/utils';
 
-const ChooseSubject = ({ next, disabled, onChange, subjectTitlePrefix = 'A-Level' }) => {
+const ChooseSubject = ({
+	next,
+	disabled,
+	onChange,
+	subjectTitlePrefix = formatExamLevelForDisplay('a_level')
+}) => {
 	return (
 		<Page.Container classNames='flex flex-col pb-2 h-full'>
 			<header className='pb-6'>

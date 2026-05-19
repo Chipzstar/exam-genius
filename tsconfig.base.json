@@ -14,12 +14,13 @@
 		"skipLibCheck": true,
 		"skipDefaultLibCheck": true,
 		"baseUrl": ".",
-	"paths": {
-		"@exam-genius/shared/ui": ["libs/shared/ui/src/index.ts"],
-		"@exam-genius/shared/utils": ["libs/shared/utils/src/index.ts"],
-		"@exam-genius/shared/prisma": ["libs/shared/prisma/client.ts"],
-		"~/*": ["./apps/dashboard-app/src/*"]
-	}
+		"paths": {
+			"@exam-genius/shared/ui": ["libs/shared/ui/src/index.ts"],
+			"@exam-genius/shared/utils": ["libs/shared/utils/src/index.ts"],
+			"@exam-genius/shared/prisma": ["libs/shared/prisma/client.ts"],
+			"@exam-genius/shared/prisma-zod/*": ["libs/shared/prisma-zod/schemas/*"],
+			"~/*": ["./apps/dashboard-app/src/*"]
+		}
 	},
 	"exclude": ["node_modules", "tmp"]
 }

@@ -3,26 +3,30 @@ import { TRPCError } from '@trpc/server';
 import { createOpenAI } from '@ai-sdk/openai';
 import { generateText } from 'ai';
 import { createTRPCRouter, protectedProcedure, rateLimited } from '../trpc';
+import { logAiStructured } from '~/server/ai-structured-log';
 import { env } from '~/env';
 import {
 	buildQuestionEditPrompt,
 	loadQuestionForEdit,
 	parseEditModelText,
-	persistQuestionEditFromParsed
+	persistQuestionEditFromParsed,
+	QUESTION_EDIT_PROMPT_VERSION
 } from '~/server/question-edit-logic';
 import { questionsForPaperListTag } from '~/server/accelerate-cache-tags';
+import { listForPaperOutputSchema } from '~/server/schemas/list-for-paper.schema';
 
 const openaiSdk = createOpenAI({ apiKey: env.OPENAI_API_KEY });
 
 const questionRouter = createTRPCRouter({
 	listForPaper: protectedProcedure
 		.input(z.object({ paperId: z.string() }))
+		.output(listForPaperOutputSchema)
 		.query(async ({ ctx, input }) => {
 			const paper = await ctx.prisma.paper.findFirst({
 				where: { paper_id: input.paperId, user_id: ctx.auth.userId }
 			});
 			if (!paper) throw new TRPCError({ code: 'NOT_FOUND' });
-			return ctx.prisma.question.findMany({
+			const rows = await ctx.prisma.question.findMany({
 				where: { paper_id: input.paperId },
 				orderBy: [{ order: 'asc' }],
 				include: {
@@ -37,6 +41,7 @@ const questionRouter = createTRPCRouter({
 					tags: [questionsForPaperListTag(input.paperId)]
 				}
 			});
+			return listForPaperOutputSchema.parse(rows);
 		}),
 
 	listRevisions: protectedProcedure
@@ -67,29 +72,81 @@ const questionRouter = createTRPCRouter({
 			})
 		)
 		.mutation(async ({ ctx, input }) => {
-			const q = await loadQuestionForEdit(ctx.prisma, input.questionId, ctx.auth.userId);
-
-			const { text } = await generateText({
-				model: openaiSdk(env.OPENAI_QUESTION_EDIT_MODEL ?? 'gpt-4o-mini'),
-				prompt: buildQuestionEditPrompt(q, {
-					userPrompt: input.userPrompt,
-					preset: input.preset,
-					preserveMarks: input.preserveMarks
-				})
-			});
-
-			let parsed;
+			const t0 = Date.now();
+			const modelName = env.OPENAI_QUESTION_EDIT_MODEL ?? 'gpt-4o-mini';
 			try {
-				parsed = parseEditModelText(text);
-			} catch {
-				throw new TRPCError({ code: 'BAD_REQUEST', message: 'Model returned invalid JSON' });
-			}
+				const q = await loadQuestionForEdit(ctx.prisma, input.questionId, ctx.auth.userId);
 
-			const updated = await persistQuestionEditFromParsed(ctx.prisma, q, parsed, input.preserveMarks);
-			await ctx.prisma.$accelerate.invalidate({
-				tags: [questionsForPaperListTag(updated.paper_id)]
-			});
-			return updated;
+				const { text } = await generateText({
+					model: openaiSdk(modelName),
+					prompt: buildQuestionEditPrompt(q, {
+						userPrompt: input.userPrompt,
+						preset: input.preset,
+						preserveMarks: input.preserveMarks
+					})
+				});
+
+				let parsed;
+				try {
+					parsed = parseEditModelText(text);
+				} catch {
+					logAiStructured('question_edit', {
+						ok: false,
+						channel: 'trpc',
+						phase: 'parse',
+						question_id: input.questionId,
+						paper_id: q.paper.paper_id,
+						model: modelName,
+						prompt_version: QUESTION_EDIT_PROMPT_VERSION,
+						duration_ms: Date.now() - t0,
+						error: 'invalid_json'
+					});
+					throw new TRPCError({ code: 'BAD_REQUEST', message: 'Model returned invalid JSON' });
+				}
+
+				const updated = await persistQuestionEditFromParsed(ctx.prisma, q, parsed, input.preserveMarks);
+				await ctx.prisma.$accelerate.invalidate({
+					tags: [questionsForPaperListTag(updated.paper_id)]
+				});
+				logAiStructured('question_edit', {
+					ok: true,
+					channel: 'trpc',
+					question_id: updated.question_id,
+					paper_id: updated.paper_id,
+					model: modelName,
+					prompt_version: QUESTION_EDIT_PROMPT_VERSION,
+					duration_ms: Date.now() - t0
+				});
+				return updated;
+			} catch (e) {
+				if (e instanceof TRPCError) {
+					if (e.code !== 'BAD_REQUEST') {
+						logAiStructured('question_edit', {
+							ok: false,
+							channel: 'trpc',
+							phase: 'handler',
+							question_id: input.questionId,
+							model: modelName,
+							prompt_version: QUESTION_EDIT_PROMPT_VERSION,
+							duration_ms: Date.now() - t0,
+							error: e.message,
+							code: e.code
+						});
+					}
+					throw e;
+				}
+				logAiStructured('question_edit', {
+					ok: false,
+					channel: 'trpc',
+					phase: 'handler',
+					question_id: input.questionId,
+					model: modelName,
+					prompt_version: QUESTION_EDIT_PROMPT_VERSION,
+					duration_ms: Date.now() - t0,
+					error: String(e)
+				});
+				throw e;
+			}
 		}),
 
 	revertToRevision: protectedProcedure

@@ -4,6 +4,12 @@ generator client {
     engineType  = "client" // enable Prisma ORM without Rust
 }
 
+/// Zod schemas for API contracts (see https://github.com/omar-dulaimi/prisma-zod-generator).
+generator zod {
+    provider   = "prisma-zod-generator"
+    output     = "../libs/shared/prisma-zod"
+}
+
 datasource db {
     provider  = "postgresql"
 }

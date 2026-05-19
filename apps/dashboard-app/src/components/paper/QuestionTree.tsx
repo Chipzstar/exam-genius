@@ -14,9 +14,18 @@ import {
 	Button,
 	Chip,
 	TextInput,
-	Checkbox
+	Checkbox,
+	Skeleton
 } from '@mantine/core';
-import { IconCheck, IconDotsVertical, IconThumbDown, IconThumbUp, IconX } from '@tabler/icons-react';
+import {
+	IconCheck,
+	IconDotsVertical,
+	IconRefresh,
+	IconThumbDown,
+	IconThumbUp,
+	IconX
+} from '@tabler/icons-react';
+import DOMPurify from 'dompurify';
 import { LatexHtml, LatexText } from './Latex';
 import type { RouterOutputs } from '~/trpc/react';
 import { api } from '~/trpc/react';
@@ -41,7 +50,120 @@ function wrapBlockMath(value: string): string {
 	return `\\[${v}\\]`;
 }
 
-function BlockView({ block }: { block: unknown }) {
+type FigureCtx = {
+	paperId: string;
+	questionId: string;
+	blockIndex: number;
+	invalidateQuestions: () => void;
+	figureGenerationEnabled: boolean;
+};
+
+function FigureBlockView({
+	data,
+	ctx
+}: {
+	data: {
+		caption: string;
+		figure_label: string | null;
+		status: string;
+		svg: string | null;
+		image_url: string | null;
+		error_message: string | null;
+	};
+	ctx: FigureCtx;
+}) {
+	const { mutate: retryFigures, isPending: retrying } = api.paper.regeneratePaperFigures.useMutation({
+		onSuccess: () => {
+			ctx.invalidateQuestions();
+			notifySuccess('figure-retry', 'Regenerating figures…', <IconCheck size={18} />);
+		},
+		onError: err => notifyError('figure-retry', err.message, <IconX size={18} />)
+	});
+
+	const sanitizedSvg =
+		data.status === 'ready' && typeof data.svg === 'string' && data.svg.trim().length > 0
+			? DOMPurify.sanitize(data.svg, { USE_PROFILES: { svg: true, svgFilters: true } })
+			: '';
+
+	return (
+		<Stack gap='xs' className='eg-figure-block my-2'>
+			<Group gap='xs'>
+				{data.figure_label ? (
+					<Badge size='xs' variant='outline'>
+						{data.figure_label}
+					</Badge>
+				) : null}
+				<Text size='sm' fw={500}>
+					{data.caption}
+				</Text>
+			</Group>
+			{data.status === 'pending' && ctx.figureGenerationEnabled ? (
+				<>
+					<Skeleton height={180} radius='md' animate />
+					<Text size='xs' c='dimmed'>
+						Generating diagram…
+					</Text>
+				</>
+			) : null}
+			{data.status === 'pending' && !ctx.figureGenerationEnabled ? (
+				<Text size='sm' c='dimmed'>
+					Diagram auto-generation is currently disabled.
+				</Text>
+			) : null}
+		{data.status === 'failed' ? (
+			<Stack gap='sm'>
+				<Text size='sm' c='red'>
+					{data.error_message ?? 'Could not generate this diagram.'}
+				</Text>
+				{ctx.figureGenerationEnabled ? (
+					<Button
+						size='xs'
+						variant='light'
+						leftSection={<IconRefresh size={14} />}
+						loading={retrying}
+						onClick={() => retryFigures({ paperId: ctx.paperId })}
+					>
+						Regenerate all diagrams
+					</Button>
+				) : null}
+			</Stack>
+		) : null}
+		{data.status === 'ready' && Boolean(sanitizedSvg) ? (
+			<div
+				className='max-w-full overflow-x-auto [&_svg]:max-h-[28rem]'
+				dangerouslySetInnerHTML={{ __html: sanitizedSvg }}
+			/>
+		) : null}
+		{data.status === 'ready' && !sanitizedSvg && data.image_url ? (
+			// eslint-disable-next-line @next/next/no-img-element
+			<img
+				src={data.image_url}
+				alt={data.caption}
+				className='max-h-[28rem] max-w-full object-contain'
+			/>
+		) : null}
+		{data.status === 'ready' && !sanitizedSvg && !data.image_url ? (
+			<Text size='sm' c='dimmed'>
+				No diagram preview available yet.
+			</Text>
+		) : null}
+		{data.status === 'ready' && ctx.figureGenerationEnabled ? (
+			<Button
+				size='xs'
+				variant='subtle'
+				color='gray'
+				leftSection={<IconRefresh size={14} />}
+				loading={retrying}
+				onClick={() => retryFigures({ paperId: ctx.paperId })}
+			>
+				Regenerate diagram
+			</Button>
+		) : null}
+		</Stack>
+	);
+}
+
+function BlockView({ block, figureCtx }: { block: unknown; figureCtx?: FigureCtx }) {
 	if (!block || typeof block !== 'object' || !('kind' in block)) return null;
 	const b = block as {
 		kind: string;
@@ -49,6 +171,12 @@ function BlockView({ block }: { block: unknown }) {
 		caption?: string;
 		headers?: string[];
 		rows?: string[][];
+		figure_label?: string | null;
+		diagram_type?: string | null;
+		svg?: string | null;
+		image_url?: string | null;
+		status?: string | null;
+		error_message?: string | null;
 	};
 	switch (b.kind) {
 		case 'text':
@@ -69,6 +197,29 @@ function BlockView({ block }: { block: unknown }) {
 					[Figure: {b.caption}]
 				</Text>
 			);
+		case 'figure': {
+			if (!figureCtx) {
+				return (
+					<Text size='sm' c='dimmed'>
+						[Figure{(b.figure_label ?? b.caption) ? `: ${b.figure_label ?? b.caption ?? ''}` : ''}]
+					</Text>
+				);
+			}
+			const status = typeof b.status === 'string' ? b.status : 'pending';
+			return (
+				<FigureBlockView
+					data={{
+						caption: typeof b.caption === 'string' ? b.caption : 'Diagram',
+						figure_label: b.figure_label ?? null,
+						status,
+						svg: b.svg ?? null,
+						image_url: b.image_url ?? null,
+						error_message: b.error_message ?? null
+					}}
+					ctx={figureCtx}
+				/>
+			);
+		}
 		case 'table':
 			return (
 				<table className='eg-table my-2 w-full border-collapse text-sm'>
@@ -99,7 +250,7 @@ function BlockView({ block }: { block: unknown }) {
 	}
 }
 
-type Flags = { questionEdits: boolean; aiMarking: boolean };
+type Flags = { questionEdits: boolean; aiMarking: boolean; figureGenerationEnabled: boolean };
 
 function QuestionSubtree({
 	parentId,
@@ -111,7 +262,8 @@ function QuestionSubtree({
 	flags,
 	markSchemeByQuestionId,
 	sessionFeedback,
-	onFeedbackRecorded
+	onFeedbackRecorded,
+	paperId
 }: {
 	parentId: string | null;
 	questions: Q[];
@@ -123,6 +275,7 @@ function QuestionSubtree({
 	markSchemeByQuestionId?: Map<string, MarkSchemeItem>;
 	sessionFeedback: Record<string, QuestionFeedbackSentiment>;
 	onFeedbackRecorded: (questionId: string, sentiment: QuestionFeedbackSentiment) => void;
+	paperId: string;
 }) {
 	const nodes = useMemo(
 		() =>
@@ -147,6 +300,7 @@ function QuestionSubtree({
 					markSchemeByQuestionId={markSchemeByQuestionId}
 					sessionFeedback={sessionFeedback}
 					onFeedbackRecorded={onFeedbackRecorded}
+					paperId={paperId}
 				/>
 			))}
 		</Stack>
@@ -163,7 +317,8 @@ function QuestionNode({
 	flags,
 	markSchemeByQuestionId,
 	sessionFeedback,
-	onFeedbackRecorded
+	onFeedbackRecorded,
+	paperId
 }: {
 	node: Q;
 	depth: number;
@@ -175,8 +330,12 @@ function QuestionNode({
 	markSchemeByQuestionId?: Map<string, MarkSchemeItem>;
 	sessionFeedback: Record<string, QuestionFeedbackSentiment>;
 	onFeedbackRecorded: (questionId: string, sentiment: QuestionFeedbackSentiment) => void;
+	paperId: string;
 }) {
 	const utils = api.useUtils();
+	const invalidateQuestions = useCallback(() => {
+		void utils.question.listForPaper.invalidate({ paperId });
+	}, [utils, paperId]);
 	const mobileDrawer = useMediaQuery('(max-width: 30em)');
 	const [drawerOpen, { open: openDrawer, close: closeDrawer }] = useDisclosure(false);
 	const [histOpen, { open: openHist, close: closeHist }] = useDisclosure(false);
@@ -189,7 +348,7 @@ function QuestionNode({
 	const { mutateAsync: submitFeedback, isPending: feedbackSubmitting } = api.rating.submitQuestion.useMutation({
 		onSuccess: (_data, variables) => {
 			onFeedbackRecorded(node.question_id, variables.sentiment);
-			void utils.question.listForPaper.invalidate();
+			void utils.question.listForPaper.invalidate({ paperId });
 			captureRating('question', { questionId: node.question_id });
 			notifySuccess(
 				`question-feedback-${node.question_id}`,
@@ -228,7 +387,7 @@ function QuestionNode({
 
 	const { mutateAsync: revert } = api.question.revertToRevision.useMutation({
 		onSuccess: () => {
-			void utils.question.listForPaper.invalidate();
+			void utils.question.listForPaper.invalidate({ paperId });
 			closeHist();
 		}
 	});
@@ -310,7 +469,17 @@ function QuestionNode({
 			</Group>
 			<Stack gap={6}>
 				{body.map((bl, i) => (
-					<BlockView key={i} block={bl} />
+					<BlockView
+						key={i}
+						block={bl}
+						figureCtx={{
+							paperId,
+							questionId: node.question_id,
+							blockIndex: i,
+							invalidateQuestions,
+							figureGenerationEnabled: flags.figureGenerationEnabled
+						}}
+					/>
 				))}
 			</Stack>
 			{showAnswerInput && (
@@ -338,6 +507,7 @@ function QuestionNode({
 				markSchemeByQuestionId={markSchemeByQuestionId}
 				sessionFeedback={sessionFeedback}
 				onFeedbackRecorded={onFeedbackRecorded}
+				paperId={paperId}
 			/>
 			<Drawer
 				opened={drawerOpen}
@@ -407,7 +577,7 @@ function QuestionNode({
 											setStreamPreview(acc);
 										}
 									}
-									void utils.question.listForPaper.invalidate();
+									void utils.question.listForPaper.invalidate({ paperId });
 									notifySuccess('question-edit', 'Question updated', <IconCheck size={18} />);
 									captureQuestionEdit('succeeded', { questionId: node.question_id });
 
@@ -485,7 +655,8 @@ export function QuestionTree({
 	attemptAnswers,
 	onAnswerChange,
 	flags,
-	markSchemeByQuestionId
+	markSchemeByQuestionId,
+	paperId
 }: {
 	questions: Q[];
 	mode: 'study' | 'mock' | 'review';
@@ -493,6 +664,7 @@ export function QuestionTree({
 	onAnswerChange?: (questionId: string, text: string) => void;
 	flags: Flags;
 	markSchemeByQuestionId?: Map<string, MarkSchemeItem>;
+	paperId: string;
 }) {
 	const [sessionFeedback, setSessionFeedback] = useState<Record<string, QuestionFeedbackSentiment>>({});
 	const onFeedbackRecorded = useCallback((questionId: string, sentiment: QuestionFeedbackSentiment) => {
@@ -511,6 +683,7 @@ export function QuestionTree({
 			markSchemeByQuestionId={markSchemeByQuestionId}
 			sessionFeedback={sessionFeedback}
 			onFeedbackRecorded={onFeedbackRecorded}
+			paperId={paperId}
 		/>
 	);
 }

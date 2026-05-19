@@ -12,6 +12,9 @@ const courseRouter = createTRPCRouter({
 				where: {
 					user_id: ctx.auth.userId
 				},
+				orderBy: {
+					created_at: 'desc'
+				},
 				cacheStrategy: { swr: 30, ttl: 60 }
 			});
 		} catch (err) {

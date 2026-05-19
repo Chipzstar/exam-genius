@@ -837,10 +837,6 @@ export type EnumStatusFieldUpdateOperationsInput = {
   set?: $Enums.Status
 }
 
-export type BoolFieldUpdateOperationsInput = {
-  set?: boolean
-}
-
 export type PaperCreateNestedManyWithoutUserInput = {
   create?: Prisma.XOR<Prisma.PaperCreateWithoutUserInput, Prisma.PaperUncheckedCreateWithoutUserInput> | Prisma.PaperCreateWithoutUserInput[] | Prisma.PaperUncheckedCreateWithoutUserInput[]
   connectOrCreate?: Prisma.PaperCreateOrConnectWithoutUserInput | Prisma.PaperCreateOrConnectWithoutUserInput[]

@@ -1,17 +1,18 @@
 import { Card, Group, Radio, Stack, Text } from '@mantine/core';
 import Image from 'next/image';
+import { formatExamLevelForDisplay } from '@exam-genius/shared/utils';
 import classes from './subject-card.module.css';
 
 /* eslint-disable-next-line */
 export interface SubjectCardProps {
 	subject: string;
 	src: string;
-	/** Display prefix before subject name (e.g. "A-Level", "AS-Level"). */
+	/** Display prefix before subject name; default matches shared `formatExamLevelForDisplay('a_level')`. */
 	subjectTitlePrefix?: string;
 }
 
 export function SubjectCard(props: SubjectCardProps) {
-	const prefix = props.subjectTitlePrefix ?? 'A-Level';
+	const prefix = props.subjectTitlePrefix ?? formatExamLevelForDisplay('a_level');
 	return (
 		<Card component='label' shadow='sm' radius='xs' withBorder className={classes.card}>
 			<Stack justify='center' align='center'>

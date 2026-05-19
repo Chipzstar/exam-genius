@@ -14,7 +14,7 @@ import type * as Prisma from "../internal/prismaNamespace.ts"
 
 /**
  * Model Course
- * 
+ * Zod schemas for API contracts (see https://github.com/omar-dulaimi/prisma-zod-generator).
  */
 export type CourseModel = runtime.Types.Result.DefaultSelection<Prisma.$CoursePayload>
 

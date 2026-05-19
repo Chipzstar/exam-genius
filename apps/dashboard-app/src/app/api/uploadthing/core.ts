@@ -48,7 +48,8 @@ export const ourFileRouter = {
 				console.error('[uploadthing] extract callback', e);
 			}
 			return { referenceId: metadata.referenceId };
-		})
+		}),
+
 } satisfies FileRouter;
 
 export type OurFileRouter = typeof ourFileRouter;

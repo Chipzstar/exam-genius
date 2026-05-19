@@ -16,6 +16,9 @@
       "cache": true,
       "inputs": ["$TURBO_DEFAULT$", "jest.config.*", "jest.preset.js"]
     },
+    "clean": {
+      "cache": false
+    },
     "db:generate": { "cache": false },
     "db:push": { "cache": false, "persistent": true, "interactive": true },
     "db:pull": { "cache": false, "persistent": true, "interactive": true },
@@ -53,6 +56,7 @@
     "EDEXCEL_MATHS_COURSE_PRICE_ID",
     "EDEXCEL_PHYSICS_COURSE_PRICE_ID",
     "EDEXCEL_PSYCHOLOGY_COURSE_PRICE_ID",
+    "FIGURE_RASTER_MODELS",
     "MATHS_PAPER_PRICE_ID",
     "NEXT_PUBLIC_AXIOM_DATASET",
     "NEXT_PUBLIC_AXIOM_INGEST_ENDPOINT",
@@ -77,6 +81,7 @@
     "OCR_PHYSICS_COURSE_PRICE_ID",
     "OCR_PSYCHOLOGY_COURSE_PRICE_ID",
     "OPENAI_API_KEY",
+    "OPENROUTER_API_KEY",
     "PHYSICS_PAPER_PRICE_ID",
     "PSYCHOLOGY_PAPER_PRICE_ID",
     "SENTRY_AUTH_TOKEN",

@@ -1,5 +1,6 @@
 ---
-alwaysApply: false
+description: Exam Genius monorepo standards — TypeScript, Next.js App Router, Turborepo/pnpm, tRPC, Mantine, Prisma, Clerk, Stripe, and shared libs. Apply when editing dashboard, landing, shared packages, or Prisma schemas.
+alwaysApply: true
 ---
 You are an expert in TypeScript, Node.js, Next.js App Router, React, Turborepo, pnpm, tRPC, Mantine UI v6, Prisma, Clerk Auth, Stripe, TailwindCSS, and Zod.
 
@@ -151,8 +152,11 @@ You are an expert in TypeScript, Node.js, Next.js App Router, React, Turborepo, 
 - Design APIs and components to be streaming-friendly (Suspense boundaries, progressive rendering) where it adds value.
 
 ## Error Handling & Logging
-- Use Axiom (`next-axiom`) for structured logging and Web Vitals. In route handlers, use `withAxiom` and `req.log`; in
-  tRPC/server code, use the shared logger helper (e.g. `~/server/logger`) and flush logs before returning on critical paths.
+- **Dashboard (Next.js):** Use Axiom (`next-axiom`) for request-scoped logs and Web Vitals. In route handlers wrapped with `withAxiom`, use `req.log`. Elsewhere on the server (e.g. tRPC, handlers without request context), use the shared `Logger` from `~/server/logger` (re-exports `next-axiom`); flush logs before returning on critical paths.
+- **AI / LLM telemetry (Axiom dataset):** Use `logAiStructured(event, fields)` so model-driven flows appear in the same Axiom pipeline as the Fastify backend.
+  - **Dashboard:** `apps/dashboard-app/src/server/ai-structured-log.ts` — writes a structured row (and optional HTTP ingest when `AXIOM_TOKEN` + `AXIOM_DATASET` are set). Rows include `source: 'dashboard'`. Use for streaming and tRPC AI paths (e.g. question edit) alongside domain fields (`question_id`, `paper_id`, `model`, `prompt_version`, `ok`, `duration_ms`, `channel`, etc.).
+  - **Backend (`exam-genius-backend`):** `src/app/utils/ai-structured-log.ts` — logs via Winston and the same optional Axiom ingest when those vars are set. Rows include `source: 'backend'`. General debug/trace still uses `src/app/utils/logger.ts` (Winston → console); that path is **not** sent to Axiom unless you route it separately.
+- When you add or extend an **OpenAI / AI SDK** feature, emit **`logAiStructured`** for start/success/failure (and important preflight rejections) so production traces stay queryable; keep **`gpt-prompts.md`** in sync per the LLM section above.
 - Use Sentry for error tracking (see `sentry.*.config.ts`).
 - Log errors in tRPC procedures before throwing `TRPCError`.
 - Return user-friendly error messages to the client and keep detailed error information on the server side.

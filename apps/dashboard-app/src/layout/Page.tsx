@@ -1,5 +1,6 @@
 import React from 'react';
 import { DEFAULT_HEADER_HEIGHT } from '../utils/constants';
+import type { JSX } from 'react';
 
 interface PageContainerProps {
 	children: JSX.Element | JSX.Element[];
