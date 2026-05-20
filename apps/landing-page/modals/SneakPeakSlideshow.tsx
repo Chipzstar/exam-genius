@@ -9,12 +9,14 @@ import { getSubjectPapersCatalog } from '@exam-genius/shared/utils';
 import { FormValues } from '../utils/types';
 import SneakPeak from '../containers/SneakPeak';
 import { trackSneakPeakOpened, trackSneakPeakStepCompleted } from '../utils/analytics';
+import { useWjecExamBoardFlag } from '../hooks/useWjecExamBoardFlag';
 
 const STEP_LABELS = ['subject', 'exam_board', 'paper_selection'] as const;
 const COMPLETED_STEP_INDEX = 3;
 
 const SneakPeakSlideshow = ({ opened, onClose }) => {
 	const [active, setActive] = useState(0);
+	const { enabled: showWjec, ready: wjecFlagReady } = useWjecExamBoardFlag();
 
 	const form = useForm<FormValues>({
 		initialValues: {
@@ -47,6 +49,15 @@ const SneakPeakSlideshow = ({ opened, onClose }) => {
 	useEffect(() => {
 		window.localStorage.setItem('form', JSON.stringify(form.values));
 	}, [form.values]);
+
+	useEffect(() => {
+		if (!wjecFlagReady) return;
+		if (!showWjec && form.values.examBoard === 'wjec') {
+			form.setFieldValue('examBoard', '');
+			form.setFieldValue('course', []);
+			form.setFieldValue('paper', '');
+		}
+	}, [wjecFlagReady, showWjec, form]);
 
 	useEffect(() => {
 		const subject = form.values.subject as Subject | '';
@@ -118,6 +129,7 @@ const SneakPeakSlideshow = ({ opened, onClose }) => {
 					<ChooseExamBoard
 						next={nextStep}
 						prev={prevStep}
+						showWjec={showWjec}
 						value={form.values.examBoard}
 						disabled={!form.values.examBoard}
 						onChange={value => form.setFieldValue('examBoard', value)}

@@ -13,6 +13,7 @@ import { appStore$ } from '~/store/app.store';
 import { api } from '~/trpc/react';
 import { CHECKOUT_TYPE, PATHS } from '~/utils/constants';
 import { notifyError } from '~/utils/functions';
+import { useWjecExamBoardFlag } from '~/hooks/useWjecExamBoardFlag';
 
 export default function ExamBoardPage() {
 	const mobileScreen = useMediaQuery('(max-width: 30em)');
@@ -21,12 +22,18 @@ export default function ExamBoardPage() {
 	const rawExamLevel = useValue(appStore$.onboarding.examLevel);
 	const examLevel = rawExamLevel === 'as_level' ? 'as_level' : 'a_level';
 	const router = useRouter();
+	const { enabled: showWjec, ready: wjecFlagReady } = useWjecExamBoardFlag();
 	const { mutateAsync: createCheckoutSession } = api.stripe.createCheckoutSession.useMutation();
 	const { mutateAsync: checkDuplicateCourse } = api.course.checkDuplicateCourse.useMutation();
 
 	useEffect(() => {
 		appStore$.onboarding.board.set('');
 	}, []);
+
+	useEffect(() => {
+		if (!wjecFlagReady || showWjec) return;
+		if (board === 'wjec') appStore$.onboarding.board.set('');
+	}, [wjecFlagReady, showWjec, board]);
 
 	async function openCheckout() {
 		try {
@@ -63,10 +70,11 @@ export default function ExamBoardPage() {
 			</header>
 			<Page.Body extraClassNames='justify-around py-8'>
 				<Radio.Group name='board' value={board} onChange={v => appStore$.onboarding.board.set(v)}>
-					<SimpleGrid cols={3}>
+					<SimpleGrid cols={{ base: showWjec ? 2 : 1, sm: showWjec ? 2 : 3 }}>
 						<ExamBoardCard value='aqa' src='/static/images/aqa-icon.svg' />
 						<ExamBoardCard value='edexcel' src='/static/images/edexcel-icon.svg' />
 						<ExamBoardCard value='ocr' src='/static/images/ocr-icon.svg' />
+						{showWjec ? <ExamBoardCard value='wjec' src='/static/images/wjec-icon.png' /> : null}
 					</SimpleGrid>
 				</Radio.Group>
 				<Group justify='space-between' pt='lg'>
