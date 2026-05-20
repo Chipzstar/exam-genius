@@ -49,7 +49,7 @@ const courseRouter = createTRPCRouter({
 	checkDuplicateCourse: protectedProcedure
 		.input(
 			z.object({
-				exam_board: z.enum(['ocr', 'aqa', 'edexcel']),
+				exam_board: z.enum(['ocr', 'aqa', 'edexcel', 'wjec']),
 				subject: z.enum(['maths', 'physics', 'chemistry', 'biology', 'economics', 'psychology']),
 				exam_level: examLevelSchema.default('a_level')
 			})

@@ -1,5 +1,5 @@
 export type Subject = 'maths' | 'biology' | 'chemistry' | 'physics' | 'economics' | 'psychology';
-export type ExamBoard = 'edexcel' | 'aqa' | 'ocr';
+export type ExamBoard = 'edexcel' | 'aqa' | 'ocr' | 'wjec';
 
 /** Qualification tier stored on Course and used for catalog selection / prompts */
 export type ExamLevel = 'a_level' | 'as_level';

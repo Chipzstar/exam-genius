@@ -112,7 +112,7 @@ const paperRouter = createTRPCRouter({
 	createPaper: protectedProcedure
 		.input(
 			z.object({
-				exam_board: z.enum(['ocr', 'aqa', 'edexcel']),
+				exam_board: z.enum(['ocr', 'aqa', 'edexcel', 'wjec']),
 				subject: z.enum(['maths', 'physics', 'chemistry', 'biology', 'economics', 'psychology']),
 				paper_code: z.string(),
 				paper_name: z.string(),

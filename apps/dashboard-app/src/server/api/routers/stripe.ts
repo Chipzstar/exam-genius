@@ -14,7 +14,7 @@ const examLevelSchema = z.enum(['a_level', 'as_level']);
 
 const courseSchema = z.object({
 	type: z.literal(CHECKOUT_TYPE.COURSE),
-	exam_board: z.enum(['ocr', 'aqa', 'edexcel']),
+	exam_board: z.enum(['ocr', 'aqa', 'edexcel', 'wjec']),
 	subject: z.enum(['maths', 'physics', 'chemistry', 'biology', 'economics', 'psychology']),
 	exam_level: examLevelSchema.default('a_level')
 });
@@ -22,7 +22,7 @@ const courseSchema = z.object({
 const paperSchema = z.object({
 	type: z.literal(CHECKOUT_TYPE.PAPER),
 	course_id: z.string(),
-	exam_board: z.enum(['ocr', 'aqa', 'edexcel']),
+	exam_board: z.enum(['ocr', 'aqa', 'edexcel', 'wjec']),
 	subject: z.enum(['maths', 'physics', 'chemistry', 'biology', 'economics', 'psychology']),
 	paper_href: z.string(),
 	paper_name: z.string(),

@@ -89,7 +89,8 @@ export type Subject = (typeof Subject)[keyof typeof Subject]
 export const ExamBoard = {
   edexcel: 'edexcel',
   aqa: 'aqa',
-  ocr: 'ocr'
+  ocr: 'ocr',
+  wjec: 'wjec'
 } as const
 
 export type ExamBoard = (typeof ExamBoard)[keyof typeof ExamBoard]

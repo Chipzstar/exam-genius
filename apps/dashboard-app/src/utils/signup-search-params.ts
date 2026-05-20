@@ -4,7 +4,7 @@ import { parseAsString, parseAsStringLiteral } from 'nuqs';
 export const SIGNUP_SUBJECTS = ['maths', 'physics', 'chemistry', 'biology', 'economics', 'psychology'] as const;
 
 /** Matches Prisma `ExamBoard` enum */
-export const SIGNUP_EXAM_BOARDS = ['aqa', 'ocr', 'edexcel'] as const;
+export const SIGNUP_EXAM_BOARDS = ['aqa', 'ocr', 'edexcel', 'wjec'] as const;
 
 /** Matches Prisma `ExamLevel` enum */
 export const SIGNUP_EXAM_LEVELS = ['a_level', 'as_level'] as const;
