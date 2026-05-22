@@ -9,21 +9,20 @@ import { PAPER_PRICE_IDS, SUBJECT_STRIPE_IDS } from '~/utils/constants.server';
 import { env } from '~/env';
 import { logger } from '@exam-genius/shared/utils';
 import { assertAsLevelExamFlowAllowed } from '~/server/exam-level-guard';
-
-const examLevelSchema = z.enum(['a_level', 'as_level']);
+import { examBoardSchema, examLevelSchema, subjectSchema } from '~/server/schemas/exam-domain.schema';
 
 const courseSchema = z.object({
 	type: z.literal(CHECKOUT_TYPE.COURSE),
-	exam_board: z.enum(['ocr', 'aqa', 'edexcel', 'wjec']),
-	subject: z.enum(['maths', 'physics', 'chemistry', 'biology', 'economics', 'psychology']),
+	exam_board: examBoardSchema,
+	subject: subjectSchema,
 	exam_level: examLevelSchema.default('a_level')
 });
 
 const paperSchema = z.object({
 	type: z.literal(CHECKOUT_TYPE.PAPER),
 	course_id: z.string(),
-	exam_board: z.enum(['ocr', 'aqa', 'edexcel', 'wjec']),
-	subject: z.enum(['maths', 'physics', 'chemistry', 'biology', 'economics', 'psychology']),
+	exam_board: examBoardSchema,
+	subject: subjectSchema,
 	paper_href: z.string(),
 	paper_name: z.string(),
 	paper_code: z.string(),

@@ -105,9 +105,10 @@ const questionRouter = createTRPCRouter({
 				}
 
 				const updated = await persistQuestionEditFromParsed(ctx.prisma, q, parsed, input.preserveMarks);
-				await ctx.prisma.$accelerate.invalidate({
+				// Prisma Accelerate cache invalidation is not supported on the Starter plan, so we're disabling it for now
+				/* await ctx.prisma.$accelerate.invalidate({
 					tags: [questionsForPaperListTag(updated.paper_id)]
-				});
+				}); */
 				logAiStructured('question_edit', {
 					ok: true,
 					channel: 'trpc',
@@ -182,9 +183,10 @@ const questionRouter = createTRPCRouter({
 					revision: { increment: 1 }
 				}
 			});
-			await ctx.prisma.$accelerate.invalidate({
+			// Prisma Accelerate cache invalidation is not supported on the Starter plan, so we're disabling it for now
+			/* await ctx.prisma.$accelerate.invalidate({
 				tags: [questionsForPaperListTag(q.paper_id)]
-			});
+			}); */
 			return updated;
 		})
 });

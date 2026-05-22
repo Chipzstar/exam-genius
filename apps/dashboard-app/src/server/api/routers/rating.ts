@@ -2,7 +2,6 @@ import { z } from 'zod';
 import { TRPCError } from '@trpc/server';
 import type { Prisma } from '@exam-genius/shared/prisma';
 import { createTRPCRouter, protectedProcedure, rateLimited } from '../trpc';
-import { questionsForPaperListTag } from '~/server/accelerate-cache-tags';
 
 const ratingRouter = createTRPCRouter({
 	submitPaper: protectedProcedure
@@ -71,9 +70,10 @@ const ratingRouter = createTRPCRouter({
 					note: input.note
 				}
 			});
-			await ctx.prisma.$accelerate.invalidate({
+			// Prisma Accelerate cache invalidation is not supported on the Starter plan, so we're disabling it for now
+			/* await ctx.prisma.$accelerate.invalidate({
 				tags: [questionsForPaperListTag(q.paper_id)]
-			});
+			}); */
 			return feedback;
 		})
 });
