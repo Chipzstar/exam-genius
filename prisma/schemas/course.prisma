@@ -36,4 +36,5 @@ enum ExamBoard {
   edexcel
   aqa
   ocr
+  wjec
 }

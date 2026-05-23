@@ -125,7 +125,8 @@ Structured logging uses **`logAiStructured('reference_extract', …)`** with fie
 ## 6. Dashboard list API and caching (short)
 
 - `api.reference.list` reads `paperReference` with Accelerate **`cacheStrategy`** and **tags** keyed by user (and course when filtered).
-- Mutations and the UploadThing callback call **`$accelerate.invalidate`** for those tags so list reads are not stuck on stale cache.
+- Mutations and the UploadThing callback **would** call **`$accelerate.invalidate`** for those tags so list reads are not stuck on stale cache.
+- **Currently disabled:** cache tag invalidation is not supported on the Prisma Accelerate Starter plan. Invalidation calls are commented out until we upgrade. See `docs/prisma-accelerate-cache-invalidation.md`.
 
 ---
 

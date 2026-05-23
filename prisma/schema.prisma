@@ -245,6 +245,7 @@ enum ExamBoard {
   edexcel
   aqa
   ocr
+  wjec
 }
 
 model Paper {

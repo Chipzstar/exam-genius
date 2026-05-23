@@ -9,7 +9,7 @@ import { buildStudentStyleContextDashboard } from '~/server/style-context-dashbo
 import { logger } from '@exam-genius/shared/utils';
 import { assertAsLevelExamFlowAllowed } from '~/server/exam-level-guard';
 import { getPapersByCodeOutputSchema } from '~/server/schemas/get-papers-by-code.schema';
-import { questionsForPaperListTag } from '~/server/accelerate-cache-tags';
+import { examBoardSchema, subjectSchema } from '~/server/schemas/exam-domain.schema';
 
 const paperRouter = createTRPCRouter({
 	getPapers: protectedProcedure.query(async ({ ctx }) => {
@@ -112,8 +112,8 @@ const paperRouter = createTRPCRouter({
 	createPaper: protectedProcedure
 		.input(
 			z.object({
-				exam_board: z.enum(['ocr', 'aqa', 'edexcel']),
-				subject: z.enum(['maths', 'physics', 'chemistry', 'biology', 'economics', 'psychology']),
+				exam_board: examBoardSchema,
+				subject: subjectSchema,
 				paper_code: z.string(),
 				paper_name: z.string(),
 				course_id: z.string(),
@@ -286,45 +286,101 @@ const paperRouter = createTRPCRouter({
 
 	regeneratePaperFigures: protectedProcedure
 		.use(rateLimited('paper_generate'))
-		.input(z.object({ paperId: z.string() }))
+		.input(
+			z
+				.object({
+					paperId: z.string(),
+					questionId: z.string().optional(),
+					blockIndex: z.number().int().nonnegative().optional()
+				})
+				.refine(data => (data.questionId == null) === (data.blockIndex == null), {
+					message: 'questionId and blockIndex must be provided together'
+				})
+		)
 		.mutation(async ({ ctx, input }) => {
 			const paper = await ctx.prisma.paper.findFirst({
 				where: { paper_id: input.paperId, user_id: ctx.auth.userId }
 			});
 			if (!paper) throw new TRPCError({ code: 'NOT_FOUND', message: 'Paper not found' });
 
-			const questions = await ctx.prisma.question.findMany({
-				where: { paper_id: input.paperId },
-				select: { question_id: true, body: true }
-			});
-
+			const isSingleFigure = input.questionId != null && input.blockIndex != null;
 			let figuresReset = 0;
-			for (const q of questions) {
-				if (!Array.isArray(q.body)) continue;
-				let changed = false;
-				const nextBody = (q.body as Record<string, unknown>[]).map(block => {
-					if (block?.kind !== 'figure') return block;
-					changed = true;
-					figuresReset++;
-					logger.debug('Figure reset', { block });
-					return { ...block, status: 'pending', error_message: null, svg: null, image_url: null };
+
+			if (isSingleFigure) {
+				const question = await ctx.prisma.question.findFirst({
+					where: { question_id: input.questionId, paper_id: input.paperId },
+					select: { question_id: true, body: true }
 				});
-				if (!changed) continue;
+				if (!question) {
+					throw new TRPCError({ code: 'NOT_FOUND', message: 'Question not found on this paper' });
+				}
+				if (!Array.isArray(question.body)) {
+					throw new TRPCError({ code: 'BAD_REQUEST', message: 'Question body is invalid' });
+				}
+
+				const body = question.body as Record<string, unknown>[];
+				const block = body[input.blockIndex!];
+				if (block?.kind !== 'figure') {
+					throw new TRPCError({ code: 'BAD_REQUEST', message: 'Block is not a figure' });
+				}
+
+				const nextBody = [...body];
+				nextBody[input.blockIndex!] = {
+					...block,
+					status: 'pending',
+					error_message: null,
+					svg: null,
+					image_url: null
+				};
 				await ctx.prisma.question.update({
-					where: { question_id: q.question_id },
+					where: { question_id: question.question_id },
 					data: { body: JSON.parse(JSON.stringify(nextBody)) }
 				});
-				logger.info('Question updated', { question_id: q.question_id });
-			}
+				logger.info('Single figure reset', {
+					question_id: question.question_id,
+					block_index: input.blockIndex
+				});
+				figuresReset = 1;
+			} else {
+				const questions = await ctx.prisma.question.findMany({
+					where: { paper_id: input.paperId },
+					select: { question_id: true, body: true }
+				});
 
-			if (figuresReset > 0) {
+				for (const q of questions) {
+					if (!Array.isArray(q.body)) continue;
+					let changed = false;
+					const nextBody = (q.body as Record<string, unknown>[]).map(block => {
+						if (block?.kind !== 'figure') return block;
+						changed = true;
+						figuresReset++;
+						logger.debug('Figure reset', { block });
+						return { ...block, status: 'pending', error_message: null, svg: null, image_url: null };
+					});
+					if (!changed) continue;
+					await ctx.prisma.question.update({
+						where: { question_id: q.question_id },
+						data: { body: JSON.parse(JSON.stringify(nextBody)) }
+					});
+					logger.info('Question updated', { question_id: q.question_id });
+				}
+			}
+			
+			// Prisma Accelerate cache invalidation is not supported on the Starter plan, so we're disabling it for now
+			
+			/* if (figuresReset > 0) {
 				await ctx.prisma.$accelerate.invalidate({
 					tags: [questionsForPaperListTag(input.paperId)]
 				});
-			}
+			} */
 
 			try {
-				await backendApi.post('/server/paper/generate-figures', { paper_id: input.paperId });
+				await backendApi.post('/server/paper/generate-figures', {
+					paper_id: input.paperId,
+					...(isSingleFigure
+						? { question_id: input.questionId, block_index: input.blockIndex }
+						: {})
+				});
 				return { ok: true as const, figuresReset };
 			} catch (e) {
 				console.error(e);

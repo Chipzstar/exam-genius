@@ -7,32 +7,38 @@ export const SUBJECT_STRIPE_IDS = {
 	maths: {
 		edexcel: String(env.EDEXCEL_MATHS_COURSE_PRICE_ID),
 		aqa: String(env.AQA_MATHS_COURSE_PRICE_ID),
-		ocr: String(env.OCR_MATHS_COURSE_PRICE_ID)
+		ocr: String(env.OCR_MATHS_COURSE_PRICE_ID),
+		wjec: String(env.WJEC_MATHS_COURSE_PRICE_ID)
 	},
 	physics: {
 		edexcel: String(env.EDEXCEL_PHYSICS_COURSE_PRICE_ID),
 		aqa: String(env.AQA_PHYSICS_COURSE_PRICE_ID),
-		ocr: String(env.OCR_PHYSICS_COURSE_PRICE_ID)
+		ocr: String(env.OCR_PHYSICS_COURSE_PRICE_ID),
+		wjec: String(env.WJEC_PHYSICS_COURSE_PRICE_ID)
 	},
 	chemistry: {
 		edexcel: String(env.EDEXCEL_CHEMISTRY_COURSE_PRICE_ID),
 		aqa: String(env.AQA_CHEMISTRY_COURSE_PRICE_ID),
-		ocr: String(env.OCR_CHEMISTRY_COURSE_PRICE_ID)
+		ocr: String(env.OCR_CHEMISTRY_COURSE_PRICE_ID),
+		wjec: String(env.WJEC_CHEMISTRY_COURSE_PRICE_ID)
 	},
 	biology: {
 		edexcel: String(env.EDEXCEL_BIOLOGY_COURSE_PRICE_ID),
 		aqa: String(env.AQA_BIOLOGY_COURSE_PRICE_ID),
-		ocr: String(env.OCR_BIOLOGY_COURSE_PRICE_ID)
+		ocr: String(env.OCR_BIOLOGY_COURSE_PRICE_ID),
+		wjec: String(env.WJEC_BIOLOGY_COURSE_PRICE_ID)
 	},
 	economics: {
 		edexcel: String(env.EDEXCEL_ECONOMICS_COURSE_PRICE_ID),
 		aqa: String(env.AQA_ECONOMICS_COURSE_PRICE_ID),
-		ocr: String(env.OCR_ECONOMICS_COURSE_PRICE_ID)
+		ocr: String(env.OCR_ECONOMICS_COURSE_PRICE_ID),
+		wjec: String(env.WJEC_ECONOMICS_COURSE_PRICE_ID)
 	},
 	psychology: {
 		edexcel: String(env.EDEXCEL_PSYCHOLOGY_COURSE_PRICE_ID),
 		aqa: String(env.AQA_PSYCHOLOGY_COURSE_PRICE_ID),
-		ocr: String(env.OCR_PSYCHOLOGY_COURSE_PRICE_ID)
+		ocr: String(env.OCR_PSYCHOLOGY_COURSE_PRICE_ID),
+		wjec: String(env.WJEC_PSYCHOLOGY_COURSE_PRICE_ID)
 	}
 } as const;
 

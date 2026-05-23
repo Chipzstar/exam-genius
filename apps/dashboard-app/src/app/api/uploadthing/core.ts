@@ -5,7 +5,6 @@ import { z } from 'zod';
 import { genID } from '~/utils/functions';
 import { backendApi } from '~/server/backend-headers';
 import { prisma } from '~/server/prisma';
-import { referencesListTag } from '~/server/accelerate-cache-tags';
 
 const f = createUploadthing();
 
@@ -38,12 +37,13 @@ export const ourFileRouter = {
 					ut_url: file.ufsUrl,
 					filename: file.name
 				});
-				await prisma.$accelerate.invalidate({
+				// Prisma Accelerate cache invalidation is not supported on the Starter plan, so we're disabling it for now
+				/* await prisma.$accelerate.invalidate({
 					tags: [
 						referencesListTag(metadata.userId),
 						referencesListTag(metadata.userId, metadata.courseId)
 					]
-				});
+				}); */
 			} catch (e) {
 				console.error('[uploadthing] extract callback', e);
 			}

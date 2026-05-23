@@ -72,10 +72,17 @@ function FigureBlockView({
 	};
 	ctx: FigureCtx;
 }) {
-	const { mutate: retryFigures, isPending: retrying } = api.paper.regeneratePaperFigures.useMutation({
+	const { mutate: retryAllFigures, isPending: retryingAll } = api.paper.regeneratePaperFigures.useMutation({
 		onSuccess: () => {
 			ctx.invalidateQuestions();
-			notifySuccess('figure-retry', 'Regenerating figures…', <IconCheck size={18} />);
+			notifySuccess('figure-retry-all', 'Regenerating all diagrams…', <IconCheck size={18} />);
+		},
+		onError: err => notifyError('figure-retry-all', err.message, <IconX size={18} />)
+	});
+	const { mutate: retryFigure, isPending: retryingOne } = api.paper.regeneratePaperFigures.useMutation({
+		onSuccess: () => {
+			ctx.invalidateQuestions();
+			notifySuccess('figure-retry', 'Regenerating diagram…', <IconCheck size={18} />);
 		},
 		onError: err => notifyError('figure-retry', err.message, <IconX size={18} />)
 	});
@@ -120,8 +127,8 @@ function FigureBlockView({
 						size='xs'
 						variant='light'
 						leftSection={<IconRefresh size={14} />}
-						loading={retrying}
-						onClick={() => retryFigures({ paperId: ctx.paperId })}
+						loading={retryingAll}
+						onClick={() => retryAllFigures({ paperId: ctx.paperId })}
 					>
 						Regenerate all diagrams
 					</Button>
@@ -153,8 +160,14 @@ function FigureBlockView({
 				variant='subtle'
 				color='gray'
 				leftSection={<IconRefresh size={14} />}
-				loading={retrying}
-				onClick={() => retryFigures({ paperId: ctx.paperId })}
+				loading={retryingOne}
+				onClick={() =>
+					retryFigure({
+						paperId: ctx.paperId,
+						questionId: ctx.questionId,
+						blockIndex: ctx.blockIndex
+					})
+				}
 			>
 				Regenerate diagram
 			</Button>

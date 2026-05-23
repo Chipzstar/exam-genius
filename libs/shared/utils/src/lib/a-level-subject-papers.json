@@ -138,6 +138,34 @@
           }
         ]
       }
+    },
+    "wjec": {
+      "unit-3": {
+        "label": "Unit 3",
+        "icon": "/static/images/maths-icon.svg",
+        "papers": [
+          {
+            "href": "paper-1",
+            "code": "1300U3",
+            "name": "Unit 3: Pure Mathematics B",
+            "num_questions": 14,
+            "marks": 120
+          }
+        ]
+      },
+      "unit-4": {
+        "label": "Unit 4",
+        "icon": "/static/images/statistics-icon.svg",
+        "papers": [
+          {
+            "href": "paper-1",
+            "code": "1300U4",
+            "name": "Unit 4: Applied Mathematics B",
+            "num_questions": 10,
+            "marks": 80
+          }
+        ]
+      }
     }
   },
   "economics": {
@@ -275,6 +303,34 @@
             "name": "Paper 3 - Economic Principles and Issues",
             "num_questions": 33,
             "marks": 80
+          }
+        ]
+      }
+    },
+    "wjec": {
+      "unit-3": {
+        "label": "Unit 3",
+        "icon": "/static/images/economics-icon.svg",
+        "papers": [
+          {
+            "href": "paper-1",
+            "code": "1520U3",
+            "name": "Unit 3: Exploring Economic Behaviour",
+            "num_questions": 10,
+            "marks": 80
+          }
+        ]
+      },
+      "unit-4": {
+        "label": "Unit 4",
+        "icon": "/static/images/economics-icon.svg",
+        "papers": [
+          {
+            "href": "paper-1",
+            "code": "1520U4",
+            "name": "Unit 4: Evaluating Economic Models and Policies",
+            "num_questions": 12,
+            "marks": 90
           }
         ]
       }
@@ -433,6 +489,34 @@
           }
         ]
       }
+    },
+    "wjec": {
+      "unit-3": {
+        "label": "Unit 3",
+        "icon": "/static/images/biology-icon.svg",
+        "papers": [
+          {
+            "href": "paper-1",
+            "code": "1400U3",
+            "name": "Unit 3: Energy, Homeostasis and the Environment",
+            "num_questions": 10,
+            "marks": 100
+          }
+        ]
+      },
+      "unit-4": {
+        "label": "Unit 4",
+        "icon": "/static/images/biology-icon.svg",
+        "papers": [
+          {
+            "href": "paper-1",
+            "code": "1400U4",
+            "name": "Unit 4: Variation, Inheritance and Options",
+            "num_questions": 10,
+            "marks": 100
+          }
+        ]
+      }
     }
   },
   "chemistry": {
@@ -555,6 +639,34 @@
             "name": "Paper 3: Unified chemistry",
             "num_questions": 5,
             "marks": 70
+          }
+        ]
+      }
+    },
+    "wjec": {
+      "unit-3": {
+        "label": "Unit 3",
+        "icon": "/static/images/chemistry-icon.svg",
+        "papers": [
+          {
+            "href": "paper-1",
+            "code": "1410U3",
+            "name": "Unit 3: Physical and Inorganic Chemistry",
+            "num_questions": 10,
+            "marks": 95
+          }
+        ]
+      },
+      "unit-4": {
+        "label": "Unit 4",
+        "icon": "/static/images/chemistry-icon.svg",
+        "papers": [
+          {
+            "href": "paper-1",
+            "code": "1410U4",
+            "name": "Unit 4: Organic Chemistry and Analysis",
+            "num_questions": 10,
+            "marks": 95
           }
         ]
       }
@@ -739,6 +851,34 @@
           }
         ]
       }
+    },
+    "wjec": {
+      "unit-3": {
+        "label": "Unit 3",
+        "icon": "/static/images/physics-icon.svg",
+        "papers": [
+          {
+            "href": "paper-1",
+            "code": "1420U3",
+            "name": "Unit 3: Oscillations and Nuclei",
+            "num_questions": 22,
+            "marks": 100
+          }
+        ]
+      },
+      "unit-4": {
+        "label": "Unit 4",
+        "icon": "/static/images/physics-icon.svg",
+        "papers": [
+          {
+            "href": "paper-1",
+            "code": "1420U4",
+            "name": "Unit 4: Fields and Options",
+            "num_questions": 20,
+            "marks": 100
+          }
+        ]
+      }
     }
   },
   "psychology": {
@@ -861,6 +1001,34 @@
             "name": "Applied Psychology",
             "num_questions": 8,
             "marks": 105
+          }
+        ]
+      }
+    },
+    "wjec": {
+      "unit-3": {
+        "label": "Unit 3",
+        "icon": "/static/images/psychology-icon.svg",
+        "papers": [
+          {
+            "href": "paper-1",
+            "code": "1290U3",
+            "name": "Unit 3: Psychology: Implications in the Real World",
+            "num_questions": 16,
+            "marks": 100
+          }
+        ]
+      },
+      "unit-4": {
+        "label": "Unit 4",
+        "icon": "/static/images/psychology-icon.svg",
+        "papers": [
+          {
+            "href": "paper-1",
+            "code": "1290U4",
+            "name": "Unit 4: Psychology: Applied Research Methods",
+            "num_questions": 12,
+            "marks": 60
           }
         ]
       }

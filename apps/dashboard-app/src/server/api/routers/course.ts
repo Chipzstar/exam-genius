@@ -2,8 +2,7 @@ import { createTRPCRouter, protectedProcedure } from '../trpc';
 import { TRPCError } from '@trpc/server';
 import { z } from 'zod';
 import { Course } from '@exam-genius/shared/prisma';
-
-const examLevelSchema = z.enum(['a_level', 'as_level']);
+import { examBoardSchema, examLevelSchema, subjectSchema } from '~/server/schemas/exam-domain.schema';
 
 const courseRouter = createTRPCRouter({
 	getCourses: protectedProcedure.query(async ({ ctx }) => {
@@ -49,8 +48,8 @@ const courseRouter = createTRPCRouter({
 	checkDuplicateCourse: protectedProcedure
 		.input(
 			z.object({
-				exam_board: z.enum(['ocr', 'aqa', 'edexcel']),
-				subject: z.enum(['maths', 'physics', 'chemistry', 'biology', 'economics', 'psychology']),
+				exam_board: examBoardSchema,
+				subject: subjectSchema,
 				exam_level: examLevelSchema.default('a_level')
 			})
 		)

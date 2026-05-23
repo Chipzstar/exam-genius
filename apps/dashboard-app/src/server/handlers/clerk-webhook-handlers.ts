@@ -8,7 +8,7 @@ import { assertAsLevelExamFlowAllowedPlain } from '~/server/exam-level-guard';
 import type { Stripe } from 'stripe/cjs/stripe.core';
 
 const VALID_SUBJECTS = new Set<Subject>(['maths', 'physics', 'chemistry', 'biology', 'economics', 'psychology']);
-const VALID_EXAM_BOARDS = new Set<ExamBoard>(['aqa', 'ocr', 'edexcel']);
+const VALID_EXAM_BOARDS = new Set<ExamBoard>(['aqa', 'ocr', 'edexcel', 'wjec']);
 
 const getNormalizedOnboardingMetadata = (event: ClerkEvent) => {
 	const rawSubject = event.data.unsafe_metadata?.onboarding_subject;

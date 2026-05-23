@@ -19,7 +19,6 @@ export const FAQ = () => {
 					value={value}
 					onChange={setValue}
 					radius='xs'
-					defaultValue='customization'
 					chevron={<IconPlus size='1rem' />}
 					styles={{
 						chevron: {
@@ -30,73 +29,108 @@ export const FAQ = () => {
 					}}
 					style={{ width: mobileScreen ? undefined : 800 }}
 				>
-					<Accordion.Item value='item1'>
+					<Accordion.Item value='exam-boards'>
 						<Accordion.Control>Which exam boards do you cover?</Accordion.Control>
-						<Accordion.Panel>Edexcel, OCR and AQA</Accordion.Panel>
+						<Accordion.Panel>
+							We currently support AQA, Edexcel, OCR, and WJEC Wales (WJEC).
+						</Accordion.Panel>
 					</Accordion.Item>
-					<Accordion.Item value='item2'>
-						<Accordion.Control>Can I choose which specific topics I want to practice?</Accordion.Control>
-						<Accordion.Panel>Yes, you can select the topics from the subject you’ve chosen</Accordion.Panel>
+					<Accordion.Item value='subjects'>
+						<Accordion.Control>Which A-level subjects are available?</Accordion.Control>
+						<Accordion.Panel>
+							Maths, Physics, Biology, Chemistry, Economics, and Psychology. More subjects are coming soon.
+							We do not cover every A-level subject yet—only those listed above for now.
+						</Accordion.Panel>
 					</Accordion.Item>
-					<Accordion.Item value='item3'>
+					<Accordion.Item value='exam-level'>
+						<Accordion.Control>Do you support AS Level as well as A Level?</Accordion.Control>
+						<Accordion.Panel>
+							Yes. When you sign up you can choose A Level or AS Level for the same subjects and exam
+							boards, where that qualification is available in the app.
+						</Accordion.Panel>
+					</Accordion.Item>
+					<Accordion.Item value='choosing-papers'>
+						<Accordion.Control>Can I choose which topics to practise?</Accordion.Control>
+						<Accordion.Panel>
+							Not topic-by-topic from a checklist. You choose your subject and exam board, then pick a
+							module (unit) and paper type—such as Paper 1 or Paper 2—for the paper you want generated.
+							That matches how real courses are structured. After generation, each question is labelled with
+							its topic so you can see what came up, but you do not select individual topics before
+							generating.
+						</Accordion.Panel>
+					</Accordion.Item>
+					<Accordion.Item value='similarity'>
 						<Accordion.Control>
 							Are the predicted exam papers similar to the real exam papers?
 						</Accordion.Control>
 						<Accordion.Panel>
-							Yes, the AI predicts future papers based on learning from the past 15 years of exam papers
+							They are designed to match real exam style and structure. Our AI learns from patterns across
+							roughly the last 10 years of past papers for your board and subject, then generates new
+							papers in that style. They are practice papers—not copies of a specific future exam.
 						</Accordion.Panel>
 					</Accordion.Item>
-					<Accordion.Item value='item4'>
-						<Accordion.Control>How often are the predicted exam papers updated?</Accordion.Control>
-						<Accordion.Panel>We train the AI every week on new information</Accordion.Panel>
-					</Accordion.Item>
-					<Accordion.Item value='item5'>
-						<Accordion.Control>Are the mark-schemes for each paper generated too?</Accordion.Control>
-						<Accordion.Panel>Only predicted past-paper questions are generated. We plan to generate mark schemes in the future</Accordion.Panel>
-					</Accordion.Item>
-					<Accordion.Item value='item6'>
-						<Accordion.Control>What is the refund policy?</Accordion.Control>
-						<Accordion.Panel>
-							If a paper you pay for does not generate, we will offer you a refund
-						</Accordion.Panel>
-					</Accordion.Item>
-					<Accordion.Item value='item7'>
-						<Accordion.Control>Can I use ExamGenius for all my A-level subjects?</Accordion.Control>
-						<Accordion.Panel>
-							We support Maths, Physics, Biology, Chemistry, Economics and Psychology
-						</Accordion.Panel>
-					</Accordion.Item>
-					<Accordion.Item value='item8'>
+					<Accordion.Item value='generation'>
 						<Accordion.Control>How are the predicted exam papers generated?</Accordion.Control>
 						<Accordion.Panel>
-							Our friendly AI has been quietly teaching its self all the style and patterns from past
-							papers. Based on its learnings, it is able to predict the exam papers
+							When you request a paper, our AI analyses trends from historical exam papers and builds a
+							full question paper for your chosen module and paper type. You can rate papers and give
+							feedback, which helps improve future generations for you.
 						</Accordion.Panel>
 					</Accordion.Item>
-					<Accordion.Item value='item9'>
+					<Accordion.Item value='mark-schemes'>
+						<Accordion.Control>Are mark schemes generated for each paper?</Accordion.Control>
+						<Accordion.Panel>
+							Yes. Once your predicted paper is ready, we generate an AI mark scheme for that paper. While
+							it is building you may see a pending state; if generation fails, you can try again or contact
+							support. When ready, you can open the full mark scheme or use per-question marking hints on
+							structured papers to see how marks are awarded. Mark schemes are for practice and
+							self-checking—they are not official examiner mark schemes.
+						</Accordion.Panel>
+					</Accordion.Item>
+					<Accordion.Item value='features'>
+						<Accordion.Control>What can I do on ExamGenius today?</Accordion.Control>
+						<Accordion.Panel>
+							Beyond predicted papers and mark schemes, you can work through papers in study or timed mock
+							mode, submit answers for AI marking and feedback where enabled, upload reference PDFs (past
+							papers or mark schemes) to steer how future papers are generated, rate papers, and leave
+							question-level feedback that improves your next generations. You can also regenerate a paper
+							when we ship model improvements.
+						</Accordion.Panel>
+					</Accordion.Item>
+					<Accordion.Item value='paper-limits'>
+						<Accordion.Control>
+							Is there a limit to how many predicted papers I can generate?
+						</Accordion.Control>
+						<Accordion.Panel>
+							When you purchase a course for a subject and exam board, your first predicted paper for each
+							paper type in that course (for example each Paper 1 or Paper 2) is included. Generating
+							another paper of the same type costs £5. See our pricing section for the current Genius Plan
+							offer.
+						</Accordion.Panel>
+					</Accordion.Item>
+					<Accordion.Item value='accuracy'>
 						<Accordion.Control>
 							Will the predicted exam papers be the same as the actual exam papers?
 						</Accordion.Control>
 						<Accordion.Panel>
-							It will not be 100% the same but the more predicted papers you do, the higher the chances of
-							the predicted papers being the same as the actual exam papers coming up
+							No—they will not be identical to a real upcoming paper. They are informed predictions to
+							help you practise likely styles and themes. The more papers you work through, the better
+							prepared you should feel for the format and types of questions examiners use.
 						</Accordion.Panel>
 					</Accordion.Item>
-					<Accordion.Item value='item10'>
-						<Accordion.Control>
-							Is there a limit to the number of predicted exam papers I can access?
-						</Accordion.Control>
+					<Accordion.Item value='refund'>
+						<Accordion.Control>What is the refund policy?</Accordion.Control>
 						<Accordion.Panel>
-							You get one paper per topic per subject when you initially purchase a subject. To have
-							access to more, you would have to pay
+							If you pay for a paper generation and it fails to complete successfully, contact us and we
+							will arrange a refund for that purchase.
 						</Accordion.Panel>
 					</Accordion.Item>
-					<Accordion.Item value='item11'>
+					<Accordion.Item value='support'>
 						<Accordion.Control>
 							{"What happens if I'm not satisfied with the predicted exam papers?"}
 						</Accordion.Control>
 						<Accordion.Panel>
-							You can contact us at hello@examgenius.co.uk and we will see how we can help
+							Email us at support@exam-genius.com with your account email and we will do our best to help.
 						</Accordion.Panel>
 					</Accordion.Item>
 				</Accordion>

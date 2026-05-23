@@ -28,6 +28,8 @@ You are an expert assessment author for UK A-level ${subject}. You output a sing
 
 **User prompt** (`buildPaperGenerateUserPrompt`): instructs generation for `exam_board`, `subject`, `course`, `paper_name`, target question count and total marks; optional appended sections for reference excerpts (up to 120k chars), student 'liked' exemplars (up to 20k), and 'avoid' feedback (up to 8k). Ends with: return only JSON per system schema (no markdown fences). On retry after invalid JSON, an extra line asks for one valid JSON object.
 
+`exam_board` may include `wjec` (WJEC Wales). `course` and `paper_name` come from the dashboard catalog — WJEC uses unit-based titles such as \"Unit 3: Pure Mathematics B\" alongside entry codes elsewhere in metadata.
+
 ---
 
 ### Legacy HTML paper → structured parse

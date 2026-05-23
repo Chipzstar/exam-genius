@@ -34,9 +34,10 @@ const referenceRouter = createTRPCRouter({
 				where: { reference_id: input.referenceId, user_id: userId }
 			});
 			if (r.count === 0) throw new TRPCError({ code: 'NOT_FOUND' });
-			await ctx.prisma.$accelerate.invalidate({
+			// Prisma Accelerate cache invalidation is not supported on the Starter plan, so we're disabling it for now
+			/* await ctx.prisma.$accelerate.invalidate({
 				tags: [referencesListTag(userId), referencesListTag(userId, existing.course_id)]
-			});
+			}); */
 			return { ok: true };
 		})
 });

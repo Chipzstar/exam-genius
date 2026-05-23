@@ -97,6 +97,34 @@
             }
           ]
         }
+      },
+      "wjec": {
+        "unit-1": {
+          "label": "Unit 1",
+          "icon": "/static/images/maths-icon.svg",
+          "papers": [
+            {
+              "href": "paper-1",
+              "code": "2300U1",
+              "name": "Unit 1: Pure Mathematics A",
+              "num_questions": 14,
+              "marks": 120
+            }
+          ]
+        },
+        "unit-2": {
+          "label": "Unit 2",
+          "icon": "/static/images/statistics-icon.svg",
+          "papers": [
+            {
+              "href": "paper-1",
+              "code": "2300U2",
+              "name": "Unit 2: Applied Mathematics A",
+              "num_questions": 10,
+              "marks": 75
+            }
+          ]
+        }
       }
     },
     "economics": {
@@ -194,6 +222,34 @@
               "name": "Paper 2: The national economy in a global context",
               "num_questions": 12,
               "marks": 70
+            }
+          ]
+        }
+      },
+      "wjec": {
+        "unit-1": {
+          "label": "Unit 1",
+          "icon": "/static/images/economics-icon.svg",
+          "papers": [
+            {
+              "href": "paper-1",
+              "code": "2520U1",
+              "name": "Unit 1: Introduction to Economic Principles",
+              "num_questions": 6,
+              "marks": 55
+            }
+          ]
+        },
+        "unit-2": {
+          "label": "Unit 2",
+          "icon": "/static/images/macroeconomics-icon.svg",
+          "papers": [
+            {
+              "href": "paper-1",
+              "code": "2520U2",
+              "name": "Unit 2: Economics in Action",
+              "num_questions": 8,
+              "marks": 80
             }
           ]
         }
@@ -311,6 +367,34 @@
             }
           ]
         }
+      },
+      "wjec": {
+        "unit-1": {
+          "label": "Unit 1",
+          "icon": "/static/images/biology-icon.svg",
+          "papers": [
+            {
+              "href": "paper-1",
+              "code": "2400U1",
+              "name": "Unit 1: Basic Biochemistry and Cell Organisation",
+              "num_questions": 10,
+              "marks": 80
+            }
+          ]
+        },
+        "unit-2": {
+          "label": "Unit 2",
+          "icon": "/static/images/biology-icon.svg",
+          "papers": [
+            {
+              "href": "paper-1",
+              "code": "2400U2",
+              "name": "Unit 2: Biodiversity and Physiology of Body Systems",
+              "num_questions": 10,
+              "marks": 80
+            }
+          ]
+        }
       }
     },
     "chemistry": {
@@ -394,6 +478,34 @@
               "name": "Depth in chemistry",
               "num_questions": 20,
               "marks": 70
+            }
+          ]
+        }
+      },
+      "wjec": {
+        "unit-1": {
+          "label": "Unit 1",
+          "icon": "/static/images/chemistry-icon.svg",
+          "papers": [
+            {
+              "href": "paper-1",
+              "code": "2410U1",
+              "name": "Unit 1: The Language of Chemistry, Structure of Matter and Simple Reactions",
+              "num_questions": 9,
+              "marks": 80
+            }
+          ]
+        },
+        "unit-2": {
+          "label": "Unit 2",
+          "icon": "/static/images/chemistry-icon.svg",
+          "papers": [
+            {
+              "href": "paper-1",
+              "code": "2410U2",
+              "name": "Unit 2: Energy, Rate and Chemistry of Carbon Compounds",
+              "num_questions": 9,
+              "marks": 80
             }
           ]
         }
@@ -497,6 +609,34 @@
             }
           ]
         }
+      },
+      "wjec": {
+        "unit-1": {
+          "label": "Unit 1",
+          "icon": "/static/images/physics-icon.svg",
+          "papers": [
+            {
+              "href": "paper-1",
+              "code": "2420U1",
+              "name": "Unit 1: Motion, Energy and Matter",
+              "num_questions": 18,
+              "marks": 80
+            }
+          ]
+        },
+        "unit-2": {
+          "label": "Unit 2",
+          "icon": "/static/images/physics-icon.svg",
+          "papers": [
+            {
+              "href": "paper-1",
+              "code": "2420U2",
+              "name": "Unit 2: Electricity and Light",
+              "num_questions": 18,
+              "marks": 80
+            }
+          ]
+        }
       }
     },
     "psychology": {
@@ -580,6 +720,34 @@
               "name": "Psychological themes through core studies (AS)",
               "num_questions": 12,
               "marks": 75
+            }
+          ]
+        }
+      },
+      "wjec": {
+        "unit-1": {
+          "label": "Unit 1",
+          "icon": "/static/images/psychology-icon.svg",
+          "papers": [
+            {
+              "href": "paper-1",
+              "code": "2290U1",
+              "name": "Unit 1: Psychology: Past to Present",
+              "num_questions": 18,
+              "marks": 80
+            }
+          ]
+        },
+        "unit-2": {
+          "label": "Unit 2",
+          "icon": "/static/images/psychology-icon.svg",
+          "papers": [
+            {
+              "href": "paper-1",
+              "code": "2290U2",
+              "name": "Unit 2: Psychology: Using Psychological Concepts",
+              "num_questions": 18,
+              "marks": 80
             }
           ]
         }
