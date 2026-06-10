@@ -23,20 +23,23 @@ const poppins = localFont({
 
 export const metadata: Metadata = {
 	title: 'Exam Genius',
-	description: '',
-	keywords: '',
+	description:
+		'Generate AI-powered A-Level predicted papers, practise in mock conditions, study with hints, and review your answers with ExamGenius.',
+	keywords: 'A-Level predicted papers, AI exam prep, A-Level revision, exam practice, ExamGenius',
 	metadataBase: new URL('https://www.exam-genius.com'),
 	openGraph: {
 		type: 'website',
 		url: 'https://www.exam-genius.com/',
 		title: 'Exam Genius',
-		description: '',
+		description:
+			'AI-powered exam practice for A-Level students: predicted papers, mock mode, study hints, review tools and printable revision assets.',
 		images: ['/static/favicon/web-app-manifest-512x512.png']
 	},
 	twitter: {
 		card: 'summary_large_image',
 		title: 'Exam Genius',
-		description: '',
+		description:
+			'Generate predicted papers and practise with a complete AI exam-prep workspace built around real A-Level formats.',
 		images: ['/static/favicon/web-app-manifest-512x512.png']
 	},
 	icons: {

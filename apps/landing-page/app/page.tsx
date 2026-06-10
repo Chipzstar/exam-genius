@@ -1,34 +1,25 @@
 'use client';
 
 import { useContext } from 'react';
-import Navbar from '../components/Navbar';
-import Pricing from '../components/Pricing';
-import Hero from '../components/Hero';
-import Body from '../components/Body';
-import FAQ from '../components/FAQ';
-import CTA from '../components/CTA';
-import Footer from '../components/Footer';
-import Reviews from '../components/Reviews';
-import HowItWorks from '../components/HowItWorks';
 import SneakPeakSlideshow from '../modals/SneakPeakSlideshow';
 import { SneakPeakContext } from '../context/SneakPeakContext';
+import { LandingRedesign } from '../components/landing/landing-redesign';
+import { trackLandingCtaClick, trackSneakPeakOpened, trackStartNowClick } from '../utils/analytics';
 
 export default function HomePage() {
 	const [sneak, showSneakPeak] = useContext(SneakPeakContext);
+
+	function handleCtaClick(label: string, location: string) {
+		trackLandingCtaClick(label, location);
+		trackStartNowClick(location);
+		trackSneakPeakOpened(`${location}-${label.toLowerCase().replace(/[^a-z0-9]+/g, '-')}`);
+		showSneakPeak(true);
+	}
+
 	return (
-		<div className="w-full">
+		<div className='w-full'>
 			<SneakPeakSlideshow opened={sneak} onClose={() => showSneakPeak(false)} />
-			<div className="px-5 pt-5 md:px-16">
-				<Navbar />
-				<Hero />
-				<Reviews />
-				<HowItWorks />
-				<Body />
-				<Pricing />
-				<FAQ />
-				<CTA />
-			</div>
-			<Footer />
+			<LandingRedesign onCtaClick={handleCtaClick} />
 		</div>
 	);
 }

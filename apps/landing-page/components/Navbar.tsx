@@ -1,12 +1,11 @@
 import React, { useContext } from 'react';
 import { Box, Burger, Button, Divider, Drawer, Group, rem, ScrollArea, Text } from '@mantine/core';
 import { createStyles } from '@mantine/emotion';
-import Image from 'next/image';
-import Link from 'next/link';
 import { Link as ScrollLink } from 'react-scroll';
 import { useDisclosure } from '@mantine/hooks';
 import { SneakPeakContext } from '../context/SneakPeakContext';
 import { trackLandingCtaClick, trackSneakPeakOpened, trackStartNowClick } from '../utils/analytics';
+import { BrandLogo } from './landing/brand-logo';
 
 const useStyles = createStyles(theme => ({
     link: {
@@ -59,9 +58,7 @@ const Navbar = () => {
         <Box h={105}>
             <nav className="flex flex-wrap items-center justify-between py-5">
                 <div className="mr-6 flex flex-shrink-0 items-center text-white lg:mr-48">
-                    <Link href="/">
-                        <Image src="/static/images/logo.svg" alt="logo" width={250} height={50} />
-                    </Link>
+                    <BrandLogo />
                 </div>
                 <Group style={{ height: '100%' }} gap={0} className={classes.hiddenMobile}>
                     <div role="button" className={classes.link}>

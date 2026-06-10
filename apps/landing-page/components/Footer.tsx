@@ -1,26 +1,15 @@
 import React from 'react';
-import { Image } from '@mantine/core';
-import Link from 'next/link';
-import { useMediaQuery } from '@mantine/hooks';
 import { getYear } from 'date-fns';
+import { BrandLogo } from './landing/brand-logo';
 
 export const Footer = () => {
-	const mobileScreen = useMediaQuery('(max-width: 30em)');
 	const currentYear = getYear(new Date());
 	return (
 		<footer className='bg-gray-900'>
 			<div className='mx-auto w-full max-w-screen-xl p-4 py-6 lg:py-8'>
 				<div className='md:flex md:justify-between'>
 					<div className='mb-6 md:mb-0'>
-						<Link href='/'>
-							<Image
-								src='/static/images/logo2.svg'
-								className='md:mr-3'
-								height={45}
-								width={250}
-								alt='ExamGenius Logo'
-							/>
-						</Link>
+						<BrandLogo variant='light' className='md:mr-3' />
 					</div>
 					<div className='grid grid-cols-2 gap-8 sm:grid-cols-3 sm:gap-6'>
 						<div>

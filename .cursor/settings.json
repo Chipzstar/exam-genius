@@ -11,6 +11,12 @@
     },
     "linear": {
       "enabled": true
+    },
+    "figma": {
+      "enabled": true
+    },
+    "shadcn": {
+      "enabled": true
     }
   }
 }

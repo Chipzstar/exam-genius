@@ -2,8 +2,19 @@
 @tailwind components;
 @tailwind utilities;
 
-@import url("https://fonts.googleapis.com/css2?family=Poppins&display=swap");
 @import './styles.css';
+
+:root {
+    --background: 230 100% 99%;
+    --foreground: 234 85% 7%;
+    --card: 0 0% 100%;
+    --card-foreground: 234 85% 7%;
+    --muted: 229 100% 96%;
+    --muted-foreground: 226 18% 47%;
+    --border: 230 42% 90%;
+    --input: 230 42% 90%;
+    --ring: 234 91% 56%;
+}
 
 html {
     -webkit-text-size-adjust: 100%;
