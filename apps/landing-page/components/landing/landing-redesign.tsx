@@ -137,7 +137,7 @@ const faqItems: FaqItem[] = [
 
 export function LandingRedesign({ onCtaClick }: LandingRedesignProps) {
 	return (
-		<div className='min-h-screen overflow-hidden bg-background text-foreground'>
+		<div className='min-h-screen overflow-x-hidden bg-background text-foreground'>
 			<LandingNavbar onCtaClick={onCtaClick} />
 			<HeroSection onCtaClick={onCtaClick} />
 			<CapabilitySection />
@@ -189,7 +189,7 @@ function HeroSection({ onCtaClick }: LandingRedesignProps) {
 		<section className='relative mx-auto grid w-full max-w-7xl items-center gap-12 px-5 pb-24 pt-10 sm:px-8 lg:grid-cols-[0.92fr_1.08fr] lg:px-10 lg:pb-32 lg:pt-16'>
 			<div className='absolute -left-32 top-24 h-72 w-72 rounded-full bg-[#BEFF2D]/25 blur-3xl' />
 			<div className='absolute -right-36 top-0 h-[34rem] w-[34rem] rounded-full bg-primary-300/30 blur-3xl' />
-			<div className='relative z-10'>
+			<div className='relative z-10 min-w-0'>
 				<Badge variant='secondary' className='mb-7 border-primary/10 bg-white/80 text-primary shadow-sm'>
 					<Sparkles className='mr-2 h-3.5 w-3.5' />
 					AI exam-practice workspace
@@ -201,12 +201,21 @@ function HeroSection({ onCtaClick }: LandingRedesignProps) {
 					ExamGenius turns years of past-paper patterns into predicted papers, mock conditions,
 					study hints and review tools built around real A-Level exam-board formats.
 				</p>
-				<div className='mt-9 flex flex-col gap-3 sm:flex-row'>
-					<Button size='lg' onClick={() => onCtaClick('Start generating your predicted paper', 'hero')}>
+				<div className='mt-9 flex w-full min-w-0 flex-col gap-3 sm:flex-row'>
+					<Button
+						size='lg'
+						className='h-auto min-h-14 w-full whitespace-normal px-5 py-3.5 text-center sm:w-auto sm:whitespace-nowrap sm:px-8'
+						onClick={() => onCtaClick('Start generating your predicted paper', 'hero')}
+					>
 						Start generating your predicted paper
-						<ArrowRight className='h-4 w-4' />
+						<ArrowRight className='h-4 w-4 shrink-0' />
 					</Button>
-					<Button variant='secondary' size='lg' onClick={() => onCtaClick('See product tour', 'hero-secondary')}>
+					<Button
+						variant='secondary'
+						size='lg'
+						className='h-auto min-h-14 w-full whitespace-normal px-5 py-3.5 text-center sm:w-auto sm:whitespace-nowrap sm:px-8'
+						onClick={() => onCtaClick('See product tour', 'hero-secondary')}
+					>
 						See product tour
 					</Button>
 				</div>
@@ -217,9 +226,12 @@ function HeroSection({ onCtaClick }: LandingRedesignProps) {
 					<Badge variant='outline'>No subscription</Badge>
 					<Badge variant='outline'>Practice papers, not official papers</Badge>
 				</div>
-				<div className='mt-8 grid max-w-xl grid-cols-3 gap-3 sm:grid-cols-6'>
+				<div className='mt-8 grid max-w-xl grid-cols-3 gap-2 sm:grid-cols-6 sm:gap-3'>
 					{['AQA', 'Edexcel', 'OCR', 'WJEC', 'A-Level', 'AS-Level'].map(label => (
-						<div key={label} className='rounded-full bg-white/80 px-3 py-2 text-center text-xs font-bold shadow-sm'>
+						<div
+							key={label}
+							className='rounded-full bg-white/80 px-3 py-2 text-center text-xs font-bold shadow-sm sm:whitespace-nowrap'
+						>
 							{label}
 						</div>
 					))}
@@ -406,7 +418,7 @@ function FinalCtaSection({ onCtaClick }: LandingRedesignProps) {
 				<Button
 					variant='secondary'
 					size='lg'
-					className='relative mt-8 lg:mt-0'
+					className='relative mt-8 h-auto min-h-14 w-full shrink-0 whitespace-normal px-5 py-3.5 text-center sm:w-auto sm:whitespace-nowrap sm:px-8 lg:mt-0'
 					onClick={() => onCtaClick('Generate your first predicted paper', 'final-cta')}
 				>
 					Generate your first predicted paper
@@ -464,10 +476,10 @@ function LandingFooter() {
 
 function ProductPreview({ className, compact = false }: { className?: string; compact?: boolean }) {
 	return (
-		<Card className={cn('border-0 bg-white p-4 shadow-2xl shadow-slate-950/20 sm:p-6', className)}>
-			<div className='flex items-center justify-between gap-3'>
+		<Card className={cn('min-w-0 border-0 bg-white p-4 shadow-2xl shadow-slate-950/20 sm:p-6', className)}>
+			<div className='flex flex-wrap items-center justify-between gap-3'>
 				<BrandLogo markClassName='h-5 w-5' textClassName='text-xs' />
-				<div className='flex items-center gap-2'>
+				<div className='flex flex-wrap items-center gap-2'>
 					<Badge className='bg-slate-950 text-white'>89:56</Badge>
 					<Badge variant='default'>Start mock</Badge>
 				</div>
@@ -525,16 +537,16 @@ function ProductPreview({ className, compact = false }: { className?: string; co
 				</div>
 			</div>
 			{!compact ? (
-				<div className='mt-4 grid grid-cols-3 gap-3 text-xs font-bold text-slate-600'>
-					<div className='rounded-2xl bg-slate-50 p-4'>
+				<div className='mt-4 grid grid-cols-3 gap-2 text-xs font-bold text-slate-600 sm:gap-3'>
+					<div className='rounded-2xl bg-slate-50 p-2.5 sm:p-4'>
 						<Focus className='mb-2 h-4 w-4 text-primary' />
 						Focus mode
 					</div>
-					<div className='rounded-2xl bg-slate-50 p-4'>
+					<div className='rounded-2xl bg-slate-50 p-2.5 sm:p-4'>
 						<Printer className='mb-2 h-4 w-4 text-primary' />
 						Print PDF
 					</div>
-					<div className='rounded-2xl bg-slate-50 p-4'>
+					<div className='rounded-2xl bg-slate-50 p-2.5 sm:p-4'>
 						<PenLine className='mb-2 h-4 w-4 text-primary' />
 						AI review
 					</div>
