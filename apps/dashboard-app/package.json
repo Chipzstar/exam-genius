@@ -55,7 +55,7 @@
 		"cors": "^2.8.5",
 		"crypto-js": "^4.2.0",
 		"dayjs": "^1.11.7",
-		"dompurify": "^3.3.3",
+		"dompurify": "^3.4.9",
 		"dotenv": "^17.4.2",
 		"embla-carousel-autoplay": "^7.1.0",
 		"embla-carousel-react": "^7.1.0",
