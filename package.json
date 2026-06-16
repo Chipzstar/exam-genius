@@ -47,7 +47,7 @@
 		"zod": "^3.22.4"
 	},
 	"devDependencies": {
-		"@babel/core": "^7.29.0",
+		"@babel/core": "^7.29.6",
 		"@babel/preset-react": "^7.28.5",
 		"@prisma-utils/prismerge": "^1.7.0",
 		"@prisma/client": "^7.8.0",
