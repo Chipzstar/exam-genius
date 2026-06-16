@@ -364,8 +364,8 @@ importers:
         specifier: ^14.0.0
         version: 14.0.0
       ws:
-        specifier: ^8.16.0
-        version: 8.20.1(bufferutil@4.1.0)(utf-8-validate@6.0.6)
+        specifier: ^8.21.0
+        version: 8.21.0(bufferutil@4.1.0)(utf-8-validate@6.0.6)
       zod:
         specifier: 'catalog:'
         version: 3.25.76
@@ -7874,18 +7874,6 @@ packages:
       utf-8-validate:
         optional: true
 
-  ws@8.20.1:
-    resolution: {integrity: sha512-It4dO0K5v//JtTXuPkfEOaI3uUN87iYPnqo/ZzqCoG3g8uhA66QUMs/SrM0YK7/NAu+r4LMh/9dq2A7k+rHs+w==}
-    engines: {node: '>=10.0.0'}
-    peerDependencies:
-      bufferutil: ^4.0.1
-      utf-8-validate: '>=5.0.2'
-    peerDependenciesMeta:
-      bufferutil:
-        optional: true
-      utf-8-validate:
-        optional: true
-
   ws@8.21.0:
     resolution: {integrity: sha512-Vsp28b7DRcimFQvrqu2Wek3z1iYxDCWqHYB8Qsnk/S4RfaCQzPGPyBNuVjJV3cd6UiKtUtp6sNM77gWvzcCH+g==}
     engines: {node: '>=10.0.0'}
@@ -10834,7 +10822,7 @@ snapshots:
       '@solana/functional': 6.9.0(typescript@5.5.4)
       '@solana/rpc-subscriptions-spec': 6.9.0(typescript@5.5.4)
       '@solana/subscribable': 6.9.0(typescript@5.5.4)
-      ws: 8.20.1(bufferutil@4.1.0)(utf-8-validate@6.0.6)
+      ws: 8.21.0(bufferutil@4.1.0)(utf-8-validate@6.0.6)
     optionalDependencies:
       typescript: 5.5.4
     transitivePeerDependencies:
@@ -14165,7 +14153,7 @@ snapshots:
       whatwg-encoding: 2.0.0
       whatwg-mimetype: 3.0.0
       whatwg-url: 11.0.0
-      ws: 8.20.1(bufferutil@4.1.0)(utf-8-validate@6.0.6)
+      ws: 8.21.0(bufferutil@4.1.0)(utf-8-validate@6.0.6)
       xml-name-validator: 4.0.0
     transitivePeerDependencies:
       - bufferutil
@@ -16511,11 +16499,6 @@ snapshots:
       signal-exit: 3.0.7
 
   ws@7.5.11(bufferutil@4.1.0)(utf-8-validate@6.0.6):
-    optionalDependencies:
-      bufferutil: 4.1.0
-      utf-8-validate: 6.0.6
-
-  ws@8.20.1(bufferutil@4.1.0)(utf-8-validate@6.0.6):
     optionalDependencies:
       bufferutil: 4.1.0
       utf-8-validate: 6.0.6
