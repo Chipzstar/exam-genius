@@ -14,6 +14,7 @@ import {
 } from 'lucide-react';
 import type { CourseInfo, ExamBoard, Subject } from '@exam-genius/shared/utils';
 import { BrandLogo } from '../landing/brand-logo';
+import { SneakPeekLoader } from './sneak-peek-loader';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
@@ -151,8 +152,8 @@ export function SneakPeekFlow({
 							onGeneratePaper={onGeneratePaper}
 						/>
 					) : null}
-					{activeStep === 2 ? <GeneratingStep subject={subject} examBoard={examBoard} paper={paper} /> : null}
-					{activeStep === 3 ? (
+					{activeStep === 3 ? <GeneratingStep subject={subject} examBoard={examBoard} paper={paper} /> : null}
+					{activeStep === 2 ? (
 						<RevealStep
 							subject={subject}
 							examBoard={examBoard}
@@ -250,13 +251,13 @@ function PaperStep({
 	const selectedSubjectLabel = getSubjectLabel(subject);
 
 	return (
-		<div className='grid w-full gap-10 lg:grid-cols-[0.78fr_1.22fr] lg:items-center'>
+		<div className='grid w-full gap-10 lg:grid-cols-[0.78fr_1.22fr] lg:items-start'>
 			<IntroPanel
 				kicker='Make it exam-specific'
 				title='Pick the board and paper so the preview feels made for them.'
 				copy='This keeps the interaction fast while still proving ExamGenius understands real A-Level exam structure.'
 			/>
-			<div className='grid gap-5 xl:grid-cols-[0.9fr_1.1fr]'>
+			<div className='grid gap-5 2xl:grid-cols-[0.9fr_1.1fr]'>
 				<Card className='border-0 bg-white/90 p-5 shadow-2xl shadow-slate-950/10 sm:p-7'>
 					<div className='flex items-center justify-between gap-3'>
 						<div>
@@ -374,12 +375,7 @@ function GeneratingStep({ subject, examBoard, paper }: Pick<SneakPeekFlowProps, 
 			<Card className='relative overflow-hidden border-0 bg-white p-6 text-center shadow-2xl shadow-slate-950/10 sm:p-10'>
 				<div className='absolute -right-16 -top-16 h-48 w-48 rounded-full bg-primary/20 blur-3xl' />
 				<div className='absolute -bottom-20 left-8 h-56 w-56 rounded-full bg-[#BEFF2D]/25 blur-3xl' />
-				<div className='relative mx-auto flex h-52 w-52 items-center justify-center rounded-full bg-primary shadow-2xl shadow-primary/25'>
-					<div className='absolute h-40 w-40 animate-pulse rounded-full bg-white/10' />
-					<div className='flex h-24 w-24 items-center justify-center rounded-full bg-[#BEFF2D]'>
-						<Sparkles className='h-9 w-9 text-slate-950' />
-					</div>
-				</div>
+				<SneakPeekLoader />
 				<h2 className='mt-8 text-3xl font-bold tracking-[-0.06em] text-slate-950'>Preparing your sneak peek</h2>
 				<p className='mx-auto mt-3 max-w-md text-sm font-semibold leading-6 text-slate-500'>
 					{getSubjectLabel(subject)} · {getExamBoardLabel(examBoard)} · {getPaperLabel(paper)}

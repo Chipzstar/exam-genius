@@ -394,6 +394,9 @@ importers:
       '@emotion/server':
         specifier: ^11.10.0
         version: 11.11.0
+      '@lottiefiles/dotlottie-react':
+        specifier: ^0.19.4
+        version: 0.19.4(react@19.2.6)
       '@mantine/carousel':
         specifier: ^7.14.6
         version: 7.17.8(@mantine/core@7.17.8(@mantine/hooks@7.17.8(react@19.2.6))(@types/react@19.2.14)(react-dom@19.2.6(react@19.2.6))(react@19.2.6))(@mantine/hooks@7.17.8(react@19.2.6))(embla-carousel-react@7.1.0(react@19.2.6))(react-dom@19.2.6(react@19.2.6))(react@19.2.6)
@@ -1417,6 +1420,16 @@ packages:
     peerDependenciesMeta:
       expo-sqlite:
         optional: true
+
+  '@lottiefiles/dotlottie-react@0.19.4':
+    resolution: {integrity: sha512-YgX1Ie0gK9MEA89Ap7Ic/lOv85sOzELV3y3RAQ4GrB79+wJ4gLga9Ge59mWzBqjlbT8bZNhNPEm+jYyV8kMYqg==}
+    engines: {node: '>=18.17.0', npm: '>=9.5.0'}
+    peerDependencies:
+      react: ^17 || ^18 || ^19
+
+  '@lottiefiles/dotlottie-web@0.74.0':
+    resolution: {integrity: sha512-rG12+dJSVhQDdleGr9epR7zU/UJ6hh8jzBDHAurClHP5t5dSrOh3eP3UCFxolpVPcobaRVYsBnYg4HQokQewpg==}
+    engines: {node: '>=18.17.0', npm: '>=9.5.0'}
 
   '@mantine/carousel@7.17.8':
     resolution: {integrity: sha512-o9xozkiXYnAlh0n9QASBOcTx56VCoVGq6CzgcGVJBIx7QvZI95pNzGGC1HsP4It1xsyRsUHRySP/Q2Asn+upnw==}
@@ -8979,6 +8992,13 @@ snapshots:
       use-sync-external-store: 1.6.0(react@19.2.6)
     transitivePeerDependencies:
       - react
+
+  '@lottiefiles/dotlottie-react@0.19.4(react@19.2.6)':
+    dependencies:
+      '@lottiefiles/dotlottie-web': 0.74.0
+      react: 19.2.6
+
+  '@lottiefiles/dotlottie-web@0.74.0': {}
 
   '@mantine/carousel@7.17.8(@mantine/core@7.17.8(@mantine/hooks@7.17.8(react@19.2.6))(@types/react@19.2.14)(react-dom@19.2.6(react@19.2.6))(react@19.2.6))(@mantine/hooks@7.17.8(react@19.2.6))(embla-carousel-react@7.1.0(react@19.2.6))(react-dom@19.2.6(react@19.2.6))(react@19.2.6)':
     dependencies:
