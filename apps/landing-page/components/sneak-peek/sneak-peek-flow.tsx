@@ -152,8 +152,8 @@ export function SneakPeekFlow({
 							onGeneratePaper={onGeneratePaper}
 						/>
 					) : null}
-					{activeStep === 3 ? <GeneratingStep subject={subject} examBoard={examBoard} paper={paper} /> : null}
-					{activeStep === 2 ? (
+					{activeStep === 2 ? <GeneratingStep subject={subject} examBoard={examBoard} paper={paper} /> : null}
+					{activeStep === 3 ? (
 						<RevealStep
 							subject={subject}
 							examBoard={examBoard}
