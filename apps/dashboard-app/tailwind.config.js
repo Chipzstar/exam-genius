@@ -4,6 +4,7 @@ const { withUt } = require('uploadthing/tw');
 
 /** @type {import('tailwindcss').Config} */
 module.exports = withUt({
+	darkMode: ['class', '[data-mantine-color-scheme="dark"]'],
 	content: [
 		join(__dirname, '{src,pages,components,modals,layout}/**/*!(*.stories|*.spec).{ts,tsx,html}'),
 		join(__dirname, '../../libs/shared/ui/src/**/*.{ts,tsx,html}'),
