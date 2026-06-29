@@ -33,6 +33,7 @@ import { appStore$, recordPaperOpen } from '~/store/app.store';
 import { DisclaimerStrip } from '~/components/DisclaimerStrip';
 import { ReaderToolbar } from '~/components/ReaderToolbar';
 import { PaperBody } from '~/components/paper/PaperBody';
+import { SubjectIcon } from '~/components/subject-icon';
 
 interface RegeneratePayload {
 	id: string;
@@ -130,16 +131,35 @@ const NoPapers = ({
 	}, [query, start, createPastPaper, triggerBackendGenerate]);
 
 	return (
-		<div className='flex h-full flex-col items-center justify-center space-y-12'>
-			<Stack align='center'>
-				<Title order={1}>You have no papers for this course</Title>
-				<Text c='dimmed' size='sm'>
-					Click below to generate a new paper
-				</Text>
-			</Stack>
-			<Button size='xl' onClick={() => generatePaper()} loading={loading}>
+		<div className='flex h-full items-center justify-center px-4 py-10'>
+			<Card className='relative w-full max-w-2xl overflow-hidden rounded-[2rem] border-0 bg-white/90 p-8 text-center shadow-2xl shadow-slate-950/10 backdrop-blur dark:border dark:border-white/10 dark:bg-slate-900/90 dark:shadow-black/30'>
+				<div className='absolute -right-16 -top-16 h-40 w-40 rounded-full bg-primary/15 blur-2xl dark:bg-primary/25' />
+				<div className='absolute -bottom-20 left-[-2rem] h-44 w-44 rounded-full bg-[#BEFF2D]/25 blur-2xl dark:bg-[#BEFF2D]/10' />
+				<Stack align='center' className='relative'>
+					<SubjectIcon
+						subject={query.subject}
+						wrapperClassName='flex h-20 w-20 shrink-0 items-center justify-center overflow-hidden rounded-[1.75rem] bg-primary/10 p-3 shadow-xl shadow-primary/20 dark:bg-white/10'
+						imageSize={64}
+						imageClassName='h-16 w-16 object-contain'
+						fallbackClassName='flex h-full w-full items-center justify-center rounded-2xl bg-primary text-2xl font-bold text-white'
+					/>
+					<Text className='text-xs font-bold uppercase tracking-[0.2em] text-primary'>Ready to generate</Text>
+					<Title className='max-w-xl text-3xl font-bold tracking-[-0.05em] text-slate-950 dark:text-white'>
+						No generated papers yet.
+					</Title>
+					<Text className='max-w-md text-sm font-medium leading-6 text-slate-500 dark:text-slate-400'>
+						Create your first AI predicted paper for this unit, then return here to view each generated variant.
+					</Text>
+				</Stack>
+				<Button
+					size='lg'
+					onClick={() => generatePaper()}
+					loading={loading}
+					className='relative mt-8 rounded-full bg-[#BEFF2D] px-8 text-sm font-bold text-slate-950 shadow-lg shadow-[#BEFF2D]/20 hover:bg-[#d7ff70]'
+				>
 				Generate Paper
 			</Button>
+			</Card>
 		</div>
 	);
 };
@@ -232,37 +252,56 @@ export default function PaperClient({ params, searchParams, initialPapers, cours
 
 	return (
 		<Page.Container
+			classNames='min-h-screen bg-[#F7F8FF] text-slate-950 dark:bg-[#080B18] dark:text-slate-100'
 			extraClassNames={clsx(
-				'overflow-y-hidden',
+				'relative overflow-hidden',
 				classes.paperViewRoot,
 				focusMode && classes.paperFocusRoot
 			)}
 		>
-			<header className='paper-no-print flex items-center justify-between p-6'>
-				<Button
-					leftSection={<IconArrowLeft />}
-					size={mobileScreen ? 'sm' : 'md'}
-					variant='outline'
-					onClick={() =>
-						router.replace(`${PATHS.COURSE}/${params.course_id}/${params.unit}?subject=${subject}&board=${board}`)
-					}
-				>
-					Back
-				</Button>
-				<div className='flex flex-wrap items-center space-x-6'>
-					<Text>
-						Need Help? Visit our{' '}
-						<Link href={PATHS.FAQ}>
-							<span className='text-primary '>FAQ page</span>
-						</Link>{' '}
-						or contact us via{' '}
-						<span role='button' className='font-medium cursor-pointer text-primary' onClick={() => window.Tawk_API?.toggle?.()}>
-							Live Chat
-						</span>
-					</Text>
+			<div className='pointer-events-none absolute right-[-140px] top-[-180px] h-[34rem] w-[34rem] rounded-full bg-primary/15 blur-3xl dark:bg-primary/25' />
+			<div className='pointer-events-none absolute bottom-[-180px] left-[-120px] h-96 w-96 rounded-full bg-[#BEFF2D]/20 blur-3xl dark:bg-[#BEFF2D]/10' />
+			<header className='paper-no-print relative z-10 mx-auto w-full max-w-7xl px-4 py-4 sm:px-6'>
+				<div className='flex flex-col gap-4 rounded-[1.5rem] bg-[#030A39] p-4 text-white shadow-2xl shadow-slate-950/15 dark:border dark:border-white/10 dark:bg-[#020617] dark:shadow-black/40 sm:flex-row sm:items-center sm:justify-between sm:p-5'>
+					<div className='flex items-center gap-3'>
+						<SubjectIcon
+							subject={subject}
+							wrapperClassName='hidden h-12 w-12 shrink-0 items-center justify-center overflow-hidden rounded-2xl bg-white/10 p-2 sm:flex'
+							imageSize={40}
+							imageClassName='h-10 w-10 object-contain'
+							fallbackClassName='flex h-full w-full items-center justify-center rounded-xl bg-primary text-base font-bold text-white'
+						/>
+						<Button
+							leftSection={<IconArrowLeft />}
+							size={mobileScreen ? 'sm' : 'md'}
+							variant='subtle'
+							onClick={() =>
+								router.replace(`${PATHS.COURSE}/${params.course_id}/${params.unit}?subject=${subject}&board=${board}`)
+							}
+							className='rounded-full bg-white/10 px-6 text-white hover:bg-white/15'
+						>
+							Back
+						</Button>
+					</div>
+					<div className='flex flex-wrap items-center gap-x-2 gap-y-1 text-sm font-medium text-slate-300'>
+						<Text className='text-sm font-medium text-slate-300'>
+							Need Help? Visit our{' '}
+							<Link href={PATHS.FAQ}>
+								<span className='font-semibold text-[#BEFF2D]'>FAQ page</span>
+							</Link>{' '}
+							or contact us via{' '}
+							<span
+								role='button'
+								className='cursor-pointer font-semibold text-[#BEFF2D]'
+								onClick={() => window.Tawk_API?.toggle?.()}
+							>
+								Live Chat
+							</span>
+						</Text>
+					</div>
 				</div>
 			</header>
-			<Page.Body extraClassNames='px-2 sm:px-6 sm:justify-center w-full '>
+			<Page.Body classNames='relative z-10 flex grow flex-col px-2 sm:px-6 sm:justify-center w-full'>
 				{isLoading ? (
 					<LoadingOverlay visible={isLoading} />
 				) : !papers.length ? (
@@ -323,7 +362,13 @@ export default function PaperClient({ params, searchParams, initialPapers, cours
 										p='sm'
 										viewportProps={{ style: { touchAction: 'pan-y' } }}
 									>
-										<Card shadow='sm' radius='md' className={clsx('w-full', classes.paperCard)} p='xl'>
+										<Card
+											className={clsx(
+												'w-full rounded-[1.75rem] border-0 shadow-2xl shadow-slate-950/10 dark:border dark:border-white/10 dark:shadow-black/30',
+												classes.paperCard
+											)}
+											p='xl'
+										>
 											{paper.content && paper.status === 'success' ? (
 												<>
 													{paper.legacy_one_time_regenerate_available ? (
