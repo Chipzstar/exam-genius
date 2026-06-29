@@ -1,7 +1,6 @@
 'use client';
 
 import { Box, Button, Card, LoadingOverlay, ScrollArea, Text, Title } from '@mantine/core';
-import Image from 'next/image';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { PATHS } from '~/utils/constants';
@@ -14,8 +13,9 @@ import { appStore$, type LastOpenedPaper, type RecentPaper } from '~/store/app.s
 import { genCourseOrPaperName } from '~/utils/functions';
 import type { ExamBoard, ExamLevel, Subject } from '@exam-genius/shared/utils';
 import { AnimatedList } from '~/components/AnimatedList';
+import { SubjectIcon } from '~/components/subject-icon';
 import { motion, useReducedMotion } from 'motion/react';
-import { useCallback, useState } from 'react';
+import { useCallback } from 'react';
 import type { Course } from '@exam-genius/shared/prisma';
 
 const SETUP_STEPS = [
@@ -449,42 +449,4 @@ function SubjectOrb({ subject }: { subject: string }) {
 			fallbackClassName='flex h-full w-full items-center justify-center rounded-2xl bg-primary text-xl font-bold text-white'
 		/>
 	);
-}
-
-interface SubjectIconProps {
-	subject: string;
-	wrapperClassName: string;
-	imageSize: number;
-	imageClassName: string;
-	fallbackClassName: string;
-}
-
-function SubjectIcon({ subject, wrapperClassName, imageSize, imageClassName, fallbackClassName }: SubjectIconProps) {
-	const label = formatLabel(subject);
-	const [hasIconError, setHasIconError] = useState(false);
-
-	return (
-		<div className={wrapperClassName}>
-			{hasIconError ? (
-				<span className={fallbackClassName}>{label.slice(0, 1)}</span>
-			) : (
-				<Image
-					src={`/static/images/${subject}-icon.svg`}
-					width={imageSize}
-					height={imageSize}
-					alt=''
-					className={imageClassName}
-					onError={() => setHasIconError(true)}
-				/>
-			)}
-		</div>
-	);
-}
-
-function formatLabel(value: string) {
-	return value
-		.split(/[_-]/)
-		.filter(Boolean)
-		.map(part => part.slice(0, 1).toUpperCase() + part.slice(1))
-		.join(' ');
 }
